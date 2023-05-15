@@ -2,26 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.style_navbar{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  z-index: 99;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.style_banner{
+  height: 100%;
+  width: 100%;
+  background-image: url('../public/adex-home-banner.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+
+}
+.style_banner_box{
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(255, 255, 255, 40%);
+  
+}
+.style_banner_button{
+  color: white;
+
+}
+.style_banner_button:hover .style_banner_button_text{
+  color:black;
+  font-weight: 500;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.style_login{
+  height: 100%;
+  width: 100%;
+  background-image: url('../public/property-123.png');
+  background-size: cover;
+  background-position-x: center;
+  font-family: 'Roboto', sans-serif;
+
 }
