@@ -42,7 +42,6 @@ const validate = values => {
 };
 
 export default function LoginPage() {
-  const [firstName, setFirstName] = useState("");
   const [user,setUser] = useContext(UserContext)
   const router = useRouter();
 
@@ -56,10 +55,10 @@ export default function LoginPage() {
       password2: '',
     },
     validate,
-    onSubmit: async values =>  {
+    onSubmit:  values =>  {
       console.log('entrouuu')
       console.log(values)
-      await axios.post('http://localhost:3000/signup',
+       axios.post('http://localhost:8000/api/users',
           {
             name:`${values.firstName} ${values.lastName}`,
             firstName:values.firstName,
@@ -73,7 +72,8 @@ export default function LoginPage() {
             }})
           .then(function (response) {
             console.log(response)
-            setUser({...user,isLogged:true,name:values.firstName})
+            console.log('deu certo')
+            setUser({...user,isLogged:true,name:values.firstName,showLoginOptions:false})
             router.push('/')
           })
           .catch(function (error) {
@@ -184,7 +184,7 @@ export default function LoginPage() {
         <button type="submit" className='z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-black hover:text-[#FCD33B] text-lg'>
             <p className='style_banner_button_text font-semibold text-[18px]'>Sign Up</p>
         </button>
-        <p className="text-white mt-5">Have an account? <Link href='/hello' className="text-[#FCD33B] hover:opacity-80">Login</Link></p>
+        <p className="text-white mt-5">Have an account? <Link href='/login' className="text-[#FCD33B] hover:opacity-80">Login</Link></p>
       </form>
     </div>
   );

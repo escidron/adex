@@ -3,11 +3,11 @@ import banner from '../public/adex-home-banner.png'
 import Banner from '../components/Banner/Banner.jsx'
 import HaveSpace from '@/components/haveSpace/HaveSpace'
 export default function Home() {
+  console.log('home page')
   return (
     <main>
       <Banner />
       {/* <HaveSpace /> */}
-      <div>asdasdasd</div>
     </main>
   )
 }

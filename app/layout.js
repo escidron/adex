@@ -1,7 +1,7 @@
 "use client"
 import NavBar from '@/components/NavBar/NavBar'
 import { createContext,useState } from 'react';
-
+import { useEffect } from 'react';
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -22,8 +22,27 @@ export const UserContext = createContext();
 export default function RootLayout({ children }) {
   const [user, setUser] = useState(
     {isLogged:false,
-      name:'eee'
+      checkLogin:false,
+      showLoginOptions:false,
+      name:'',
     });
+    useEffect(() => {
+      async function autoLogin() {
+        const response = await fetch("http://localhost:8000/api/users/autologin", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.status === 200) {
+          console.log('response',response.name)
+          setUser((prev)=>({...prev,user: user.name,isLogged:true}));
+          console.log('achou token')
+        } else {
+          console.log('sin usuario');
+          setUser((prev)=>({...prev,isLogged:false,checkLogin:true}))
+        }
+      }
+      autoLogin();
+    }, []);
   return (
     <html lang="en">
       <body className={inter.className}>

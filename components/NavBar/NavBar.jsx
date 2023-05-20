@@ -1,20 +1,56 @@
 "use client"
-import { useContext } from 'react';
+import { useContext,useState,useEffect } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
-
+import axios from 'axios';
 import Link from 'next/link'
 import Image from 'next/image'
 import nouser from '../../public/nouser.png'
 import logo from '../../public/adex-logo-white-yellow.png'
 import MenuIcon from '@mui/icons-material/Menu';
-import LoginIcon from '@mui/icons-material/Login';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useRouter } from 'next/navigation';
 
 export default function NavBar() {
-    const [user,setUser] = useContext(UserContext)
     const pathname = usePathname();
-    console.log(pathname)
+    // const [showLoginOptions, setShowLoginOptions] = useState(false);
+    const [user,setUser] = useContext(UserContext)
+    const router = useRouter();
+    useEffect(() => {
+        async function autoLogin() {
+        const response = await fetch("http://localhost:8000/api/users/autologin", {
+            method: "GET",
+            credentials: "include",
+        });
+        if (response.status === 200) {
+            const user = await response.json()
+            setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false}));
+        } else {
+            console.log('sin usuario');
+        }
+        }
+        autoLogin();
+    }, []);
+    
+    const logout = ()=>{
+        axios.post('http://localhost:8000/api/users/logout',
+        {
+
+      }, {
+          withCredentials: true,
+          headers: {
+            'content-type': 'application/json'
+          }})
+        .then(function (response) {
+
+          setUser({...user,isLogged:false,name:'',checkLogin:true})
+            router.push('/login')
+        })
+        .catch(function (error) {
+          console.log('errrr',error.response);
+        });
+    }
 
     return (
         <div className='bg-black w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
@@ -26,29 +62,32 @@ export default function NavBar() {
                                 md:flex  md:justify-between md:items-center w-[500px]
                                 lg:w-[600px]
                                 xl:max-w-[50%]'>
-                <Link href="/hello">How it Work</Link>
-                <Link href="/hello">Contact Us</Link>
+                <Link href="/" className='hover:text-[#FCD33B]'>How it Work</Link>
+                <Link href="/" className='hover:text-[#FCD33B]'>Contact Us</Link>
                 <div className='md:h-[50px] md:w-[50px] 
                                 lg:h-[60px] lg:w-[60px]
                                 xl:h-[70px] xl:w-[70px]'>
-                    <Image
-                        src={logo}
-                        alt="Adex Logo"
-                        width={70}
-                        height={70}
-                        priority
-                    />
+                    <Link href="/">
+                        <Image
+                            src={logo}
+                            alt="Adex Logo"
+                            width={70}
+                            height={70}
+                            priority
+                        />  
+                    </Link>
                 </div>
-                <Link href="/hello">ADEX Market Place</Link>
-                <Link href="/hello">Listing</Link>
+                <Link href="/" className='hover:text-[#FCD33B]'>ADEX Market Place</Link>
+                <Link href="/" className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
-                    <div className='hidden 
+                    <div onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))}  className='hidden cursor-pointer  p-1
                             md:flex items-center 
                             lg:absolute lg:top-[30px] lg:right-[40px]
-                            xl:top-[30px] xl:right-[80px]'>
-                        <Image
+                            xl:top-[26px] xl:right-[80px]'>
+                        <Image 
+                        
                             src={nouser}
                             alt="user image"
                             width={30}
@@ -56,9 +95,25 @@ export default function NavBar() {
                             priority
                         />
                         <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
+                        <ArrowDropDownIcon />
+                        {user.showLoginOptions?                     
+                            <div  oonMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} className="absolute top-[38px] right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                    Profile
+                                </Link>
+                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                    Messages
+                                </Link>
+                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                <LogoutIcon fontSize='small' sx={{marginRight:'2px'}}/>
+                                    Logout
+                                </Link>
+                            </div>:
+                        ""}
+
                     </div>
                 )
-                :   pathname !=='/login' && pathname!=='/signup'?
+                :   pathname !=='/login' && pathname!=='/signup' && user.checkLogin?
                         ( <div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
                         <Link href='/login' className='hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-white ext-md'>

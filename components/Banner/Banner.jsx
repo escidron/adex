@@ -1,6 +1,26 @@
+"use client"
 import React from 'react'
-
+import axios from "axios"
 export default function Banner() {
+
+  const onSubmit = ()=>{
+    axios.get('http://localhost:8000/api/users/profile',
+          {
+
+        }, {
+            headers: {
+              'content-type': 'application/json'
+            }})
+          .then(function (response) {
+            console.log(response)
+            console.log('deu certo')
+            setUser({...user,isLogged:true,name:response.data.name})
+            // router.push('/')
+          })
+          .catch(function (error) {
+            console.log('errrr',error.response.data);
+          });
+  }
   return (
     <div className='w-full h-[100vh] mt-[-80px] md:mt-[-90px] relative'>
         <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-30'></div>
@@ -12,8 +32,8 @@ export default function Banner() {
                         md:text-3xl
                         lg:text-4xl'>Connects with your community and grow your business</h1>
           <p className='mt-4 lg:mt-6 text-lg z-10'>The platform with the largest network of people looking to help your business grow to a whole new level</p>
-          <button className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
-                                 lg:py-[15px] lg:px-[40px] lg:mt-10 '><p className='style_banner_button_text font-medium'>Sign Up</p>
+          <button onClick={()=>onSubmit()} className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
+                                 lg:py-[15px] lg:px-[40px] lg:mt-10 '><p className='style_banner_button_text font-medium'>Create Listing</p>
           </button>
         </div>
     </div>
