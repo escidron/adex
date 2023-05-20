@@ -77,7 +77,7 @@ export default function NavBar() {
                         />  
                     </Link>
                 </div>
-                <Link href="/" className='hover:text-[#FCD33B]'>ADEX Market Place</Link>
+                <Link href="/market-place" className='hover:text-[#FCD33B]'>ADEX Market Place</Link>
                 <Link href="/" className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
