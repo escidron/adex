@@ -7,6 +7,8 @@
   font-weight: 300;
   font-size: 16px;
   z-index: 99;
+  position: fixed;
+  top: 0;
 }
 
 .style_banner{
@@ -40,4 +42,86 @@
   background-position-x: center;
   font-family: 'Roboto', sans-serif;
 
+}
+
+.style_market_place_button_text{
+  font-family: 'Roboto', sans-serif;
+
+}
+.style_search_bar{
+  font-family: 'Roboto', sans-serif;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+@keyframes noDataAnimation{
+  0% {
+      opacity: 0;
+  }
+  100% {
+  }
+}
+.no-data{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px; 
+  animation: noDataAnimation 2s linear 0s  normal none;
+  
+}
+.no-data-title{
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+}
+
+
+.market-place-footer{
+  width: 100%;
+  background-color: #252525;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  box-sizing: border-box;
+  bottom: 0;
+}
+
+.market-place-footer-logo{
+  height: 60px;
+  aspect-ratio: 1;
+
+}
+.market-place-footer-icons{
+  display: flex;
+  width: 100px;
+  justify-content: space-around;
+  align-items: center;
+}
+.market-place-footer-copy{
+  margin-top: 10px;
+}
+.market-place-footer-icon{
+  color: whitesmoke;
+}
+.cards-grid{
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  padding: 20px;
+  margin-bottom: 200px;
+}
+
+.styled_map_cards{
+  background-color: rgb(255, 255, 255);
+  height: 400px;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-family: 'Roboto', sans-serif;
 }

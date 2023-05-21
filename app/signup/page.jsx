@@ -83,7 +83,7 @@ export default function LoginPage() {
   });
 
   return (
-    <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 mt-[-90px] relative">
+    <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  relative">
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
 
       <form className=" z-[91] flex flex-col justify-center items-center  w-[400px] h-auto mt-[95px]"  onSubmit={formik.handleSubmit}>
