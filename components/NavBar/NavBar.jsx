@@ -27,12 +27,19 @@ export default function NavBar() {
             const user = await response.json()
             setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false}));
         } else {
-            console.log('sin usuario');
         }
         }
         autoLogin();
     }, []);
     
+    const handleRoute = ()=>{
+        if(user.isLogged){
+            router.push('/market-place') 
+        }else{
+
+            router.push('/login')
+        }
+    }
     const logout = ()=>{
         axios.post('http://localhost:8000/api/users/logout',
         {
@@ -48,7 +55,6 @@ export default function NavBar() {
             router.push('/login')
         })
         .catch(function (error) {
-          console.log('errrr',error.response);
         });
     }
 
@@ -77,7 +83,7 @@ export default function NavBar() {
                         />  
                     </Link>
                 </div>
-                <Link href="/market-place" className='hover:text-[#FCD33B]'>ADEX Market Place</Link>
+                <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
                 <Link href="/" className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged

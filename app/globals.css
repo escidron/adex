@@ -113,7 +113,7 @@
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   padding: 20px;
-  margin-bottom: 200px;
+  margin-bottom: 280px;
 }
 
 .styled_map_cards{
@@ -124,4 +124,11 @@
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   font-family: 'Roboto', sans-serif;
+}
+
+.style_combobox{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-family: 'Roboto', sans-serif;
+
+
 }

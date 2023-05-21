@@ -12,13 +12,11 @@ export default function Banner() {
               'content-type': 'application/json'
             }})
           .then(function (response) {
-            console.log(response)
-            console.log('deu certo')
+
             setUser({...user,isLogged:true,name:response.data.name})
             // router.push('/')
           })
           .catch(function (error) {
-            console.log('errrr',error.response.data);
           });
   }
   return (

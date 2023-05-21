@@ -48,15 +48,13 @@ export default function LoginPage() {
               'content-type': 'application/json'
             }})
           .then(function (response) {
-            console.log('sucess login')
-            console.log(response.data.name)
+
             setUser({...user,isLogged:true,name:response.data.name,checkLogin:false,showLoginOptions:false})
              router.push('/')
 
           })
           .catch(function (error) {
-            console.log('errrr',error.response.data);
-            console.log(error.response.status)
+
             if(error.response.status === 400){
               setEmailError(error.response.data.message)
             }else{
@@ -65,7 +63,6 @@ export default function LoginPage() {
           });
     },
   });
-  console.log('login',user)
 
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 relative">

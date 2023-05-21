@@ -56,8 +56,6 @@ export default function LoginPage() {
     },
     validate,
     onSubmit:  values =>  {
-      console.log('entrouuu')
-      console.log(values)
        axios.post('http://localhost:8000/api/users',
           {
             name:`${values.firstName} ${values.lastName}`,
@@ -71,13 +69,10 @@ export default function LoginPage() {
               'content-type': 'application/json'
             }})
           .then(function (response) {
-            console.log(response)
-            console.log('deu certo')
             setUser({...user,isLogged:true,name:values.firstName,showLoginOptions:false})
             router.push('/')
           })
           .catch(function (error) {
-            console.log(error);
           });
     },
   });
