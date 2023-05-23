@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import haversine_distance from '@/utils/haversine_distance';
 
 export const MapCoordinatesContext = createContext();
+export const FilterContext = createContext();
 
 
 export default function MarketPlace() {
@@ -16,6 +17,14 @@ export default function MarketPlace() {
     lat: -3.745,
     lng: -38.523
   });
+  const [adFilter, setAdFilter] = useState({
+    radius:50,
+    type:'',
+    adGroup:'',
+    priceMin:0,
+    priceMax:1000000
+  });
+  console.log('mudou o filtro',adFilter)
   const router = useRouter();
   console.log('altercord',coords)
   useEffect(() => {
@@ -59,7 +68,9 @@ export default function MarketPlace() {
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <MapCoordinatesContext.Provider value={[coords,setCoords]}>
-        <Map newData = {newData} isDataLoaded={isDataLoaded}/>
+        <FilterContext.Provider value={[adFilter,setAdFilter]}>
+          <Map newData = {newData} isDataLoaded={isDataLoaded}/>
+        </FilterContext.Provider>
       </MapCoordinatesContext.Provider>
 
     </div>

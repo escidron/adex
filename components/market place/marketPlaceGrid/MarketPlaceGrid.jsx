@@ -1,5 +1,5 @@
 "use client"
-import {useState} from 'react'
+import {useState,useContext} from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -10,22 +10,64 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
 import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
+import { FilterContext } from '@/app/market-place/page';
+import PropTypes from 'prop-types';
+import Slider, { SliderThumb } from '@mui/material/Slider';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import PriceSlider from '@/components/slider/PriceSlider';
 
 export default function MarketPlaceGrid({newData,isLoaded}) {
     const [data, setData] = useState(newData);
     const [selected, setSelected] = useState(null);
-    console.log('selected',selected)
-  return (
+    const [openFilter, setOpenFilter] = useState(false);
+    const [adFilter,setAdFilter] = useContext(FilterContext)
+
+    const  handleRadius =  (e)=>{
+        const id = e.id
+        switch (id) {
+            case '1':
+                 setAdFilter({...adFilter,radius:100});
+              break;
+            case '2':
+                setAdFilter({...adFilter,radius:500});
+              break;
+            case '3':
+                setAdFilter({...adFilter,radius:1000});
+              break;
+            default:
+                setAdFilter({...adFilter,radius:4000});
+                 break;
+                }
+            }
+
+    const  handleType =  (e)=>{
+        const id = e.id
+        setAdFilter({...adFilter,type:id});
+    }
+    const  handleGroup =  (e)=>{
+        const id = e.currentTarget.id
+        if (id==adFilter.adGroup){
+
+            setAdFilter({...adFilter,adGroup:''});
+        }else{
+
+            setAdFilter({...adFilter,adGroup:id});
+        }
+    }
+    return (
     <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]   pt-[100px] flex flex-col ${newData.length===0?'':'relative'}`}> 
         <div className='flex mt-6 mx-auto'>
-            <Link href='/login' className='flex items-center justify-center ml-4 h-10 px-[15px] bg-black  rounded-md  text-white   hover:text-black hover:bg-[#FCD33B]'>
+            <button onClick={(e)=>handleGroup(e)} id={1} href='/login' className={`flex items-center justify-center ml-4 h-10 px-[15px]   rounded-md ${adFilter.adGroup=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B]`}>
                 <p className='style_market_place_button_text text-[16px] flex items-center'>Business</p>
-            </Link>     
-            <Link href='/login' className='flex items-center ml-4 h-10 bg-black py-[4px] px-[15px] rounded-md  text-white   hover:text-black hover:bg-[#FCD33B]'>
+            </button>     
+            <button onClick={(e)=>handleGroup(e)} id={2} href='/login' className={`flex items-center justify-center ml-4 h-10 px-[15px]   rounded-md ${adFilter.adGroup=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B]`}>
                 <p className='style_market_place_button_text  text-[16px] flex items-center'>Individual</p>
-            </Link>     
+            </button>     
         </div>
-        <form className="flex items-center px-[20px] mt-4 ">   
+        <div className="flex items-center px-[20px] mt-4 ">   
             <label className="sr-only">Search</label>
             <div className="relative w-[75%]">
                 {/* google map search input */}
@@ -36,10 +78,40 @@ export default function MarketPlaceGrid({newData,isLoaded}) {
                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </button>
             </div>
-            <Link href='/login' className='flex items-center ml-4 h-10 bg-black py-[4px] px-[15px] rounded-md  text-white   hover:text-black hover:bg-[#FCD33B]'>
-                More filters<ArrowDropDownIcon/>
-            </Link>  
-        </form>
+            <button onClick={()=>setOpenFilter(!openFilter)} className='flex items-center ml-4 h-10 bg-black py-[4px] px-[15px] rounded-md  text-white hover:text-black hover:bg-[#FCD33B]'>
+                More filters<ArrowDropDownIcon />
+            </button>  
+        </div>
+        {openFilter?
+        (<div>
+            <div className='px-[20px] mt-4 flex style_filter'>
+           
+                <div className='w-1/2 '>    
+                    <label>Search radius (in miles)</label>
+                    <div className='mt-2'>
+                        <button onClick={(e)=>handleRadius(e.target)} id={1} className={`${adFilter.radius==100?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>100</button>
+                        <button onClick={(e)=>handleRadius(e.target)} id={2} className={`${adFilter.radius==500?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>500</button>
+                        <button onClick={(e)=>handleRadius(e.target)} id={3} className={`${adFilter.radius==1000?'text-black bg-[#FCD33B]':'text-white bg-black'} hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>1000</button>
+                        <button onClick={(e)=>handleRadius(e.target)} id={4} className={`${adFilter.radius==4000?'text-black bg-[#FCD33B]':'text-white bg-black'} hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>+2000</button>
+
+                    </div>
+                </div>
+                <div className='w-1/2 '>
+                    <label>Avertisement type</label>
+                    <div className='mt-2'>
+                        <button type="button" onClick={(e)=>handleType(e.target)} id={1} className={`${adFilter.type=='1'?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>Person</button>
+                        <button type="button" onClick={(e)=>handleType(e.target)} id={2} className={`${adFilter.type=='2'?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>Place</button>
+                        <button type="button" onClick={(e)=>handleType(e.target)} id={3} className={`${adFilter.type=='3'?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>Thing</button>
+                    </div> 
+                </div>
+            </div>
+            <div className='px-[20px] mt-4  style_filter'>
+                <label>Price range</label>
+                <PriceSlider/>
+            </div>
+
+        </div>):''
+        }
         {newData.length===0 && isLoaded?
         <div className="no-data">
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

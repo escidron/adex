@@ -129,6 +129,9 @@
 .style_combobox{
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   font-family: 'Roboto', sans-serif;
+}
 
+.style_filter{
+  font-family: 'Roboto', sans-serif;
 
 }
