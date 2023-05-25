@@ -49,8 +49,6 @@ function Map({ newData,isDataLoaded }) {
               }}/>
 
           {newData.map((marker)=>{
-            console.log('marker',marker)
-            console.log('coords',{lat:parseFloat(marker.lat),lng:parseFloat(marker.long)})
 
             return(
               <Marker key={marker.id } 
