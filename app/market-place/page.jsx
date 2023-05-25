@@ -22,27 +22,34 @@ export default function MarketPlace() {
     type:'',
     adGroup:'',
     priceMin:0,
-    priceMax:1000000
+    priceMax:1000
   });
-  console.log('mudou o filtro',adFilter)
   const router = useRouter();
-  console.log('altercord',coords)
   useEffect(() => {
     if (located){
       async function getAds() {
-        const response = await axios("http://localhost:8000/api/advertisements", 
-          {
+        console.log('fez o post')
+        setNewData([])
+        const response = await axios.post("http://localhost:8000/api/advertisements", 
+        {
+          radius:adFilter.radius,
+          type:adFilter.type,
+          adGroup:adFilter.adGroup,
+          priceMin:adFilter.priceMin,
+          priceMax:adFilter.priceMax,
+      },{
             withCredentials: true,
             headers: {
               'content-type': 'application/json'
             }}
         );
         if (response.status === 200) {
-          // console.log(response.data)
+           console.log('data',response.data)
           response.data.data.map((ad)=>{
             // Calculate  the distance between markers
             var distance = haversine_distance(coords, {lat:ad.lat,lng:ad.long});
-            if (distance < 50){
+
+            if (distance < adFilter.radius){
               setNewData((prevData)=>[...prevData,ad])
             }
           })
@@ -62,7 +69,7 @@ export default function MarketPlace() {
     }
       
 
-  }, [located,coords]);
+  }, [located,coords,adFilter]);
   
   return (
 
