@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .style_navbar{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   font-weight: 300;
   font-size: 16px;
   z-index: 99;
@@ -21,7 +21,7 @@
 
 }
 .style_banner_box{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   background-color: rgb(255, 255, 255, 40%);
   
 }
@@ -40,16 +40,12 @@
   background-image: url('../public/property-123.png');
   background-size: cover;
   background-position-x: center;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
 
 }
 
-.style_market_place_button_text{
-  font-family: 'Roboto', sans-serif;
-
-}
 .style_search_bar{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 
@@ -69,41 +65,8 @@
   
 }
 .no-data-title{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   font-size: 30px;
-}
-
-
-.market-place-footer{
-  width: 100%;
-  background-color: #252525;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  box-sizing: border-box;
-  bottom: 0;
-}
-
-.market-place-footer-logo{
-  height: 60px;
-  aspect-ratio: 1;
-
-}
-.market-place-footer-icons{
-  display: flex;
-  width: 100px;
-  justify-content: space-around;
-  align-items: center;
-}
-.market-place-footer-copy{
-  margin-top: 10px;
-}
-.market-place-footer-icon{
-  color: whitesmoke;
 }
 .cards-grid{
   height: auto;
@@ -123,15 +86,16 @@
   padding: 10px;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
 }
 
 .style_combobox{
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
 }
 
-.style_filter{
-  font-family: 'Roboto', sans-serif;
-
+.slick-dots li.slick-active button:before {
+  opacity: .75;
+  color: #FCD33B;
 }
+

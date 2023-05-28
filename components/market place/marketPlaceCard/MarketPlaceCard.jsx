@@ -1,30 +1,40 @@
-import React from 'react'
+'use client'
+import React,{useState} from 'react'
 import Image from 'next/image'
 import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
 import Link from 'next/link';
+
+
+
 export default function MarketPlaceCard({ad}) {
+  const [src, setSrc] = useState('/ad_images/'+ad.image);
+
   const path = '/ad_images/'
   //duration type
   // '1'=>'Daily',
   // '2'=>'Weekly',
   // '3'=>'Monthly',
   // '4'=>'Unit',
-  // '5'=>'Year'
+  // '5'=>'Year'  
+ console.log(src)
   return (
     <div className='styled_map_cards'>
       <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">
         <Image
-            src={path+ad.image}
+            src={src}
             alt="Adex Logo"
             width={0}
             height={0}
             sizes="100%"
             className='w-full h-full rounded-[5px] object-cover'
+            onError={() => {
+              console.log('errorrr')
+              setSrc('/no-image.png')}}
         />
-        <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-red-600"} py-[1px] px-[4px] text-[12px] font-[700] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
+        <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-red-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
           <div className="style_title_row w-full flex items-center justify-between">
-            <p className="style_card_title font-[800]">{ad.title}</p>
+            <p className="style_card_title ">{ad.title}</p>
             <div className="style_rating">
               <StarRoundedIcon fontSize='small' sx={{color:'#FCD33B'}}/>
               <StarRoundedIcon fontSize='small' sx={{color:'#FCD33B'}}/>

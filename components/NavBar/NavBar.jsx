@@ -11,6 +11,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/navigation';
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export default function NavBar() {
     const pathname = usePathname();
@@ -59,16 +62,16 @@ export default function NavBar() {
     }
 
     return (
-        <div className='bg-black w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
+        <div className={`bg-black w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
                         md:h-[90px]
-                        lg:justify-center'>
+                        lg:justify-center ${inter.className}`}>
 
             {/* web screen */}
             <section className='hidden 
                                 md:flex  md:justify-between md:items-center w-[500px]
                                 lg:w-[600px]
                                 xl:max-w-[50%]'>
-                <Link href="/" className='hover:text-[#FCD33B]'>How it Work</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B]'>How it Work</Link>
                 <Link href="/" className='hover:text-[#FCD33B]'>Contact Us</Link>
                 <div className='md:h-[50px] md:w-[50px] 
                                 lg:h-[60px] lg:w-[60px]

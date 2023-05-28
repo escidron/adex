@@ -1,12 +1,18 @@
 import Image from 'next/image'
 import banner from '../public/adex-home-banner.png'
-import Banner from '../components/Banner/Banner.jsx'
-import HaveSpace from '@/components/haveSpace/HaveSpace'
+import Banner from '../sections/banner/Banner.jsx'
+import HaveSpace from '@/sections/haveSpace/HaveSpace'
+import AnyPerson from '@/sections/anyPerson/AnyPerson'
+import CustomerComents from '@/sections/customerComments/CustomerComments'
+import Footer from '@/components/footer/Footer'
 export default function Home() {
   return (
     <main>
       <Banner />
-      {/* <HaveSpace /> */}
+      <HaveSpace />
+      <AnyPerson />
+      <CustomerComents />
+      <Footer />
     </main>
   )
 }

@@ -24,23 +24,46 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         const id = e.id
         switch (id) {
             case '1':
-                 setAdFilter({...adFilter,radius:100});
+                if (adFilter.radius===100){
+                    setAdFilter({...adFilter,radius:50});
+                    
+                }else{
+                    setAdFilter({...adFilter,radius:100});
+                }
               break;
             case '2':
-                setAdFilter({...adFilter,radius:500});
-              break;
+                if (adFilter.radius===500){
+                    setAdFilter({...adFilter,radius:50});
+                    
+                }else{
+                    setAdFilter({...adFilter,radius:500});
+                }              break;
             case '3':
-                setAdFilter({...adFilter,radius:1000});
-              break;
+                if (adFilter.radius===1000){
+                    setAdFilter({...adFilter,radius:50});
+                    
+                }else{
+                    setAdFilter({...adFilter,radius:1000});
+                }              break;
             default:
-                setAdFilter({...adFilter,radius:6000});
-                 break;
+                if (adFilter.radius===6000){
+                    setAdFilter({...adFilter,radius:50});
+                    
+                }else{
+                    setAdFilter({...adFilter,radius:6000});
+                }                 break;
                 }
             }
 
     const  handleType =  (e)=>{
         const id = e.id
-        setAdFilter({...adFilter,type:id});
+        if(adFilter.type==id){
+
+            setAdFilter({...adFilter,type:''});
+        }else{
+
+            setAdFilter({...adFilter,type:id});
+        }
     }
     const  handleGroup =  (e)=>{
         const id = e.currentTarget.id
@@ -56,10 +79,10 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
     <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]   pt-[100px] flex flex-col ${newData.length===0?'':'relative'}`}> 
         <div className='flex mt-6 mx-auto'>
             <button onClick={(e)=>handleGroup(e)} id={1} href='/login' className={`flex items-center justify-center ml-4 h-10 px-[15px]   rounded-md ${adFilter.adGroup=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B]`}>
-                <p className='style_market_place_button_text text-[16px] flex items-center'>Business</p>
+                <p className=' text-[16px] flex items-center'>Business</p>
             </button>     
             <button onClick={(e)=>handleGroup(e)} id={2} href='/login' className={`flex items-center justify-center ml-4 h-10 px-[15px]   rounded-md ${adFilter.adGroup=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B]`}>
-                <p className='style_market_place_button_text  text-[16px] flex items-center'>Individual</p>
+                <p className='  text-[16px] flex items-center'>Individual</p>
             </button>     
         </div>
         <div className="flex items-center px-[20px] mt-4 ">   
@@ -79,7 +102,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         </div>
         {openFilter?
         (<div>
-            <div className='px-[20px] mt-4 flex justify-between style_filter'>
+            <div className='px-[20px] mt-4 flex justify-between '>
            
                 <div className='w-1/2 flex flex-col items-center'>    
                     <label>Search radius (in miles)</label>
@@ -101,7 +124,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
                 </div>
             </div>
             <div className='flex justify-center'>
-                <div className='px-[20px] mt-4  style_filter '>
+                <div className='px-[20px] mt-4   '>
                     <PriceSlider/>
                 </div>
             </div>

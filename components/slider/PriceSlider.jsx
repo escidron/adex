@@ -72,14 +72,20 @@ export default function PriceSlider() {
     }, 200)
   
   const handleScale =(e)=>{
+    console.log(e.target.value)
   if (e.target.id=='min'){
     setScale((prev)=>[e.target.value,prev[1]])
+    setAdFilter((prev)=>({...prev,priceMin:e.target.value}))
   }else{
     if (e.target.value!=999){
       setScale((prev)=>[prev[0],e.target.value])
+      setAdFilter((prev)=>({...prev,priceMax:e.target.value}))
+
     }else{
       if(changed){ 
         setScale((prev)=>[prev[0],e.target.value])
+        setAdFilter((prev)=>({...prev,priceMax:e.target.value}))
+
       }else{
 
         setChanged(true)
