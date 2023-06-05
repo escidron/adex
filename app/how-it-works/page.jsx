@@ -16,42 +16,43 @@ export default function page() {
         <p className='text-[25px]'>Advertising Reimagined</p>
         <VideoComponent />
         <GetPaid />
-        <div className='bg-black p-5 w-full flex justify-center'>
-          <p className={`text-white text-[25px] font-[400] ${inter.className}`}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
+        <div className='bg-black p-5 w-full flex justify-center mt-8'>
+          <p className={`text-white text-[16px]  lg:text-[25px] font-[400] ${inter.className}`}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
         </div>
         <div className=' w-full flex'>
           <Image
               src='/rectangle 101.png'
               alt="Adex Logo"
               priority
-              style={{width:'25%',height:'288px',aspectRatio:1}}
               width={300}
               height={300}
+              className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
           />
           <Image
               src='/rectangle 100.png'
               alt="Adex Logo"
               priority
-              style={{width:'25%',height:'288px',aspectRatio:1}}
               width={300}
               height={300}
+              className='w-1/2 md:w-[33.3%] lg:w-[30%] h-[288px]'
 
           />
           <Image
               src='/rectangle 105.png'
               alt="Adex Logo"
               priority
-              style={{width:'25%',height:'288px',aspectRatio:1}}
               width={300}
               height={300}
+              className='hidden md:flex w-[33.3%] lg:w-[30%] h-[288px]'
+
           />
           <Image
               src='/rectangle 104.png'
               alt="Adex Logo"
               priority
-              style={{width:'25%',height:'288px',aspectRatio:1}}
               width={300}
               height={300}
+              className='hidden lg:flex w-1/5 h-[288px]'
           />
         </div>
         <Faq />

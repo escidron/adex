@@ -12,53 +12,50 @@ export default function HaveSpace() {
   return (
     
     <div className='w-full h-auto'>
-        <div className='w-full flex'>
-            <div className={`bg-[#FCD33B] w-[40%] flex flex-col justify-center items-center ${inter.className}`}>
+        <div className='w-full flex flex-col lg:flex-row'>
+            <div className={`bg-[#FCD33B] h-[288px] lg:w-[40%] flex flex-col justify-center items-center ${inter.className}`}>
                 <h1 className='text-5xl'>Have AD space?</h1>
                 <p className='text-lg mt-3'>Transform your world into a billboard</p>
                 <button className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:scale-[1.1] hover:text-white text-lg
                                  lg:py-[10px] lg:px-[40px] lg:mt-5 '><p className=' font-medium'>Sign Up</p>
                 </button>
             </div>
-            <div className=' w-[60%] flex'>
+            <div className=' lg:w-[60%] flex md:h-[288px]'>
                 <Image
                     src={properties2}
                     alt="Adex Logo"
                     priority
-                    style={{width:'33.3%',aspectRatio:1}}
+                    className='w-1/2 md:w-[33.3%] '
                 />
                 <Image
                     src={properties1}
                     alt="Adex Logo"
                     priority
-                    style={{width:'33.3%',aspectRatio:1}}
-
+                    className='w-1/2 md:w-[33.3%]'
                 />
                 <Image
                     src={properties3}
                     alt="Adex Logo"
                     priority
                     style={{width:'33.4%',aspectRatio:1}}
+                    className='hidden md:flex md:w-[33.3%]'
 
                 />
             </div>
         </div>
 
-         <div className='style_earn_extra flex justify-around  w-full mx-auto p-[80px] '>
-            <div className='w-[80%] flex justify-around items-center '>
-
-                <div className='w-[40%]'>
-                    <p className='flex text-[51px]'>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
+        <div className='style_earn_extra flex justify-around  w-full mx-auto p-[40px] lg:px-[20px] xl:p-[80px] '>
+            <div className='xl:w-[80%] gap-4 flex flex-col lg:flex-row justify-around lg:justify-between items-center '>
+                <div className='w-full flex flex-col items-center lg:items-start lg:w-[50%] '>
+                    <p className=' text-[32px] lg:text-[35px] xl:text-[51px] '>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
                     <p className='mt-5 text-[18px]'>Whether you’re looking for short term gig income or seeking to earn long term passive income, you can do it with ADEX. Our self-service marketplace listing platform empowers people and local businesses alike, allowing you to create conventional and unique advertising opportunities.</p>
                 </div>
-                <div className='w-[50%] bg-white rounded-md'>
+                <div className='lg:w-[50%] bg-white rounded-md flex items-center'>
                     <Image
-                        className='rounded-md max-w-[600px]'
                         src={properties4}
                         alt="Adex Logo"
                         priority
-                        style={{width:'100%',height:'300px',aspectRatio:1}}
-                        
+                        className='rounded-md xl:max-w-[600px] w-full lg:h-[250px] xl:h-[300px] mt-4'
                         />
                 </div>
             </div>

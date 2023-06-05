@@ -13,6 +13,7 @@ import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
 import { FilterContext } from '@/app/market-place/page';
 
 import PriceSlider from '@/components/slider/PriceSlider';
+import Footer from '@/components/footer/Footer';
 
 export default function MarketPlaceGrid({newData,isDataLoaded}) {
     const [data, setData] = useState(newData);
@@ -76,7 +77,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         }
     }
     return (
-    <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]   pt-[100px] flex flex-col ${newData.length===0?'':'relative'}`}> 
+    <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length===0?'':'relative'}`}> 
         <div className='flex mt-6 mx-auto'>
             <button onClick={(e)=>handleGroup(e)} id={1} href='/login' className={`flex items-center justify-center ml-4 h-10 px-[15px]   rounded-md ${adFilter.adGroup=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B]`}>
                 <p className=' text-[16px] flex items-center'>Business</p>
@@ -87,11 +88,9 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         </div>
         <div className="flex items-center px-[20px] mt-4 ">   
             <label className="sr-only">Search</label>
-            <div className="relative w-[75%]">
+            <div className="relative w-[60%] lg:w-[75%]">
                 {/* google map search input */}
-                {/* <div className="style_search_ba text-sm rounded-lg outline-none  w-full  p-2.5  bg-white  placeholder-gray-400 placeholder- text-black"> */}
                     <PlacesAutocomplete setSelected={setSelected} />
-                {/* </div> */}
                 <button onClick={()=>alert('click')} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </button>
@@ -142,7 +141,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
             <h1 className="no-data-title">No data found within 50 miles</h1>
             <p>Please choose another location or adjust the filter parameters</p>
         </div>:
-        <div className="cards-grid mb-[400px]">
+        <div className=" justify-between mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px]">
             {newData.map((ad)=>(
                 <MarketPlaceCard key={ad.id} ad={ad}/>
             ))}
@@ -180,6 +179,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
             <p className="market-place-footer-copy text-white">Copyright © 2022 ADEX CONNECT</p>
  
         </div>
+        {/* <Footer /> */}
     </div>
   )
 }

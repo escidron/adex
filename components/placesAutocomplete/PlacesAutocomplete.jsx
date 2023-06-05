@@ -15,7 +15,7 @@ import usePlacesAutocomplete, {
 
   
 const PlacesAutocomplete = ({ setSelected }) => {
-  const [coords,setCoords] = useContext(MapCoordinatesContext)
+  // const [coords,setCoords] = useContext(MapCoordinatesContext)
 
     const {
       ready,

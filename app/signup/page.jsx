@@ -6,10 +6,14 @@ import { useFormik } from 'formik';
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
+import { Inter } from 'next/font/google'
+import { Autocomplete } from "@mui/material";
+import PlacesAutocomplete from "@/components/placesAutocomplete/PlacesAutocomplete";
+
+const inter = Inter({ subsets: ['latin'] })
 
 const validate = values => {
   const errors = {};
-  
   if (!values.firstName) {
     errors.firstName = 'Required';
   } 
@@ -24,6 +28,9 @@ const validate = values => {
 
   if (!values.password) {
     errors.password = 'Required';
+  }
+  if (!values.accountType) {
+    errors.accountType = 'Required';
   }
   
   if (!values.password2) {
@@ -43,6 +50,9 @@ const validate = values => {
 
 export default function LoginPage() {
   const [user,setUser] = useContext(UserContext)
+  const [accountType, setAccountType] = useState('');
+  const [selected, setSelected] = useState(null);
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -53,9 +63,11 @@ export default function LoginPage() {
       phone: '',
       password: '',
       password2: '',
+      accountType:''
     },
     validate,
     onSubmit:  values =>  {
+      console.log('entrou')
        axios.post('http://localhost:8000/api/users',
           {
             name:`${values.firstName} ${values.lastName}`,
@@ -63,7 +75,8 @@ export default function LoginPage() {
             lastName:values.lastName,
             phone:values.phone,
             email:values.email,
-            password:values.password
+            password:values.password,
+            accountType:accountType
         }, {
             headers: {
               'content-type': 'application/json'
@@ -77,6 +90,18 @@ export default function LoginPage() {
     },
   });
 
+  const  handleAccountType =  (e)=>{
+    const id = e.currentTarget.id
+    if (id==accountType){
+      
+      formik.values.accountType = ''
+      setAccountType('');
+    }else{
+      
+      formik.values.accountType = id
+      setAccountType(id);
+    }
+}
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  relative">
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
@@ -86,25 +111,30 @@ export default function LoginPage() {
         <p className="text-white text-[18px] font-normal mb-6">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
         
         <div className=" w-full relative">
-          <label htmlFor="firstName" className="block text-white  mb-1">
-            First Name
-          </label>
+          <div className="flex">
+            <label htmlFor="firstName" className="block text-white  mb-1">
+              First Name
+            </label>
+            {formik.touched.firstName && formik.errors.firstName ? <div className="ml-4 text-red-600 font-bold">{formik.errors.firstName}</div> : null}
+
+          </div>
           <input
             id="firstName"
             name="firstName"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.firstName}
-            className="w-full border  p-3 rounded-lg outline-none "
-            
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}            
           />
-          {formik.touched.firstName && formik.errors.firstName ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.firstName}</div> : null}
         </div>
         
-        <div className=" mt-6 w-full relative">
-          <label htmlFor="lastName" className="block text-white  mb-1">
-            Last Name
-          </label>
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="lastName" className="block text-white  mb-1">
+              Last Name
+            </label>
+            {formik.touched.lastName && formik.errors.lastName ? <div className="ml-4 text-red-600  font-bold">{formik.errors.lastName}</div> : null}
+          </div>
           <input
             type="text"
             id="lastName"
@@ -112,29 +142,16 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.lastName}
-            className="w-full border  p-3 rounded-lg outline-none"
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
           />
-          {formik.touched.lastName && formik.errors.lastName ? <div className="absolute top-[80px] text-red-600  font-bold">{formik.errors.lastName}</div> : null}
         </div>
-        <div className=" mt-6 w-full relative">
-          <label htmlFor="phone" className="block text-white  mb-1">
-            Phone Number
-          </label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-            className="w-full border  p-3 rounded-lg outline-none"
-          />
-          {formik.touched.phone && formik.errors.phone ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.phone}</div> : null}
-        </div>
-        <div className=" mt-6 w-full relative">
-          <label htmlFor="email" className="block text-white  mb-1">
-            Email
-          </label>
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="email" className="block text-white  mb-1">
+              Email
+            </label>
+            {formik.touched.email && formik.errors.email ? <div className="ml-4 text-red-600 font-bold">{formik.errors.email}</div> : null}
+          </div>
           <input
             type="text"
             id="email"
@@ -142,14 +159,33 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className="w-full border  p-3 rounded-lg outline-none"           
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}           
           />
-          {formik.touched.email && formik.errors.email ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.email}</div> : null}
+        </div>    
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="phone" className="block text-white  mb-1">
+              Phone Number
+            </label>
+            {formik.touched.phone && formik.errors.phone ? <div className="ml-4 text-red-600 font-bold">{formik.errors.phone}</div> : null}
+          </div>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.phone}
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+          />
         </div>
-        <div className=" mt-6 w-full relative">
-          <label htmlFor="password" className="block text-white  mb-1">
-            Password
-          </label>
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="password" className="block text-white  mb-1">
+              Password
+            </label>
+            {formik.touched.password && formik.errors.password ? <div className="ml-4 text-red-600 font-bold">{formik.errors.password}</div> : null}
+          </div>
           <input
             type="password"
             id="password"
@@ -157,14 +193,16 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
-            className="w-full border  p-3 rounded-lg outline-none" 
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`} 
           />
-          {formik.touched.password && formik.errors.password ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.password}</div> : null}
         </div>
-        <div className=" mt-6 w-full relative">
-          <label htmlFor="password2" className="block text-white  mb-1">
-            Confirm Password
-          </label>
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="password2" className="block text-white  mb-1">
+              Confirm Password
+            </label>
+            {formik.touched.password2 && formik.errors.password2 ? <div className="ml-4 text-red-600 font-bold">{formik.errors.password2}</div> : null}
+          </div>
           <input
             type="password"
             id="password2"
@@ -172,9 +210,40 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password2}
-            className="w-full border  p-3 rounded-lg outline-none"
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
           />
-          {formik.touched.password2 && formik.errors.password2 ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.password2}</div> : null}
+        </div>
+        <div className=" mt-2 w-full relative">
+          <div className="flex">
+            <label htmlFor="phone" className="block text-white  mb-1">
+              Account Type
+            </label>
+            {formik.touched.accountType && formik.errors.accountType ? <div className="ml-4 text-red-600 font-bold">{formik.errors.accountType}</div> : null}
+
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="text"
+              id="1"
+              name="account-1"
+              value={formik.values.accountType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              onClick={(e)=>handleAccountType(e)}
+              className={`w-[48%] p-2 rounded-lg outline-none ${accountType=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              >Business
+            </button>
+            <button
+              type="text"
+              id="2"
+              name="account-2"
+              value={formik.values.accountType}
+
+              onClick={(e)=>handleAccountType(e)}
+              className={`w-[48%]  p-2 rounded-lg outline-none ${accountType=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              >Individual
+            </button>
+          </div>
         </div>
         <button type="submit" className='z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-black hover:text-[#FCD33B] text-lg'>
             <p className='style_banner_button_text font-semibold text-[18px]'>Sign Up</p>

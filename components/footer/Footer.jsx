@@ -11,14 +11,15 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Footer() {
   return (
-    <div className="h-[400px] bg-[#252525] flex flex-col justify-center items-center">
+    <div className="h-[320px] lg:h-[400px] bg-[#252525] flex flex-col justify-center items-center">
         <Link className="h-[180px] flex items-center justify-center" href="/">
             <Image
                 src='/adex-logo-white-yellow.png'
                 alt="Adex Logo"
                 width={180}
                 height={180}
-                priority
+
+                className='w-[100px] xl:w-[180px] lg:w-[140px]'
             />
         </Link>
         <div className="flex items-center w-[120px] justify-around">                           

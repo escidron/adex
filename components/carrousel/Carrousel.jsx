@@ -37,17 +37,17 @@ export default function Carrousel() {
         slidesToScroll: 2,
         responsive: [
         {
-            breakpoint: 780,
-            settings: {
-            
-            slidesToShow: 3
-            }
-        },
-        {
-            breakpoint: 600,
+            breakpoint: 1024,
             settings: {
             
             slidesToShow: 2
+            }
+        },
+        {
+            breakpoint: 780,
+            settings: {
+            
+            slidesToShow: 1
             }
         },
         {

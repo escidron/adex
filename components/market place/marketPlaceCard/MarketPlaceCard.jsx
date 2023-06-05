@@ -3,7 +3,9 @@ import React,{useState} from 'react'
 import Image from 'next/image'
 import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
 import Link from 'next/link';
+import { Inter } from 'next/font/google'
 
+const inter = Inter({ subsets: ['latin'] })
 
 
 export default function MarketPlaceCard({ad}) {
@@ -18,7 +20,7 @@ export default function MarketPlaceCard({ad}) {
   // '5'=>'Year'  
  console.log(src)
   return (
-    <div className='styled_map_cards'>
+    <div className={`styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
       <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">
         <Image
             src={src}
