@@ -6,7 +6,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path fro
 
 export default function ProfileHeader() {
   return (
-    <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start'>
+    <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99]'>
         <div className='w-[140px] h-[140px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
             <Image
                     src='/nouser.png'

@@ -88,7 +88,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
-                <Link href="/" className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href="/listing" className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
