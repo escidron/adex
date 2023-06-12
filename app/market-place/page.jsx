@@ -28,7 +28,6 @@ export default function MarketPlace() {
   useEffect(() => {
     if (located){
       async function getAds() {
-        console.log('fez o post')
         setNewData([])
         const response = await axios.post("http://localhost:8000/api/advertisements", 
         {
@@ -44,7 +43,6 @@ export default function MarketPlace() {
             }}
         );
         if (response.status === 200) {
-           console.log('data',response.data)
           response.data.data.map((ad)=>{
             // Calculate  the distance between markers
             var distance = haversine_distance(coords, {lat:ad.lat,lng:ad.long});

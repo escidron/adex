@@ -18,7 +18,6 @@ export default function FolderComponent() {
             <button onClick={()=>setFolder(3)} className={`border-l-[1px] border-r-[1px] ${folder===3?'bg-[#FCD33B]':'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>Notifications</button>
             <button onClick={()=>setFolder(4)} className={`border-l-[1px] border-r-[1px] ${folder===4?'bg-[#FCD33B]':'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My Wallet</button>
             <button onClick={()=>setFolder(5)} className={`border-l-[1px] border-r-[1px] ${folder===5?'bg-[#FCD33B]':'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My ADEX</button>
-            <button onClick={()=>setFolder(6)} className={`border-l-[1px] border-r-[1px] ${folder===5?'bg-[#FCD33B]':'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My Contracts</button>
         </div>
         {folder===1?(<GeneralInfo/>):''}
         {folder===2?(<Security/>):''}

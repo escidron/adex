@@ -12,9 +12,9 @@ export default function ProfileHeader() {
                     src='/nouser.png'
                     alt="Adex Logo"
                     priority
-                    width={300}
-                    height={300}
-                    className='rounded-full'
+                    width={2000}
+                    height={2000}
+                    className='rounded-full w-full h-full object-cover'
                 />
             <div className='absolute right-[8px] bottom-[8px]'>
                 <Image

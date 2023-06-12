@@ -18,7 +18,6 @@ export default function MarketPlaceCard({ad}) {
   // '3'=>'Monthly',
   // '4'=>'Unit',
   // '5'=>'Year'  
- console.log(src)
   return (
     <div className={`styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
       <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">

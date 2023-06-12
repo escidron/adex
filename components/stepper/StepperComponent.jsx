@@ -1,41 +1,53 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import { Divider } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import { Inter } from 'next/font/google'
 
-const steps = [
-    'Select master blaster campaign settings',
-    'Create an ad group',
-    'Create an ad',
-];
+const inter = Inter({ subsets: ['latin'] })
 
-export default function StepperComponent() {
+export default function StepperComponent({ selectedStep }) {
     return (
-        <div className='flex mx-auto w-[600px] items-center justify-center flex-col'>
-            <div className='w-full flex justify-between items-center'>
+        <div className={`flex mx-auto mt-4 w-[600px] items-center justify-center flex-col ${inter.className}`}>
+            <div className='w-full flex justify-evenly px-2 items-center'>
                 <div>
-                    <div className='bg-green-600 rounded-full w-[30px] h-[30px] flex justify-center items-center'>1</div>
+                    <div className={`${selectedStep === 1 ? ' bg-black text-[#FCD33B]' : ' bg-[#FCD33B] text-black'} font-[600] w-[40px] h-[40px] rounded-full  flex justify-center items-center`}>
+                        {selectedStep > 1 ? (
+                            <CheckIcon />
+                        ) : (
+                            <p>1</p>
+                        )}
+                    </div>
                 </div>
                 <Divider variant="middle" sx={{ color: 'black', width: '30%', marginTop: '20px', marginBottom: '20px' }} />
                 <div>
-                    <div className='bg-green-600 rounded-full w-[30px] h-[30px] flex justify-center items-center'>2</div>
+                    <div className={`${selectedStep === 1 ? ' bg-black text-white' : selectedStep === 2 ? ' bg-black text-[#FCD33B]' : 'bg-[#FCD33B] text-black'} font-[600] w-[40px] h-[40px] rounded-full  flex justify-center items-center`}>
+                        {selectedStep < 3 ? (
+                            <p>2</p>
+                        ) : (
+                            <CheckIcon />
+                        )}
+                    </div>
                 </div>
                 <Divider variant="middle" sx={{ color: 'black', width: '30%', marginTop: '20px', marginBottom: '20px' }} />
                 <div>
-                    <div className='bg-green-600 rounded-full w-[30px] h-[30px] flex justify-center items-center'>3</div>
+                    <div className={`${selectedStep < 3 ? ' bg-black text-white' :selectedStep===3?'bg-black text-[#FCD33B]': ' bg-[#FCD33B] text-black'} font-[600] w-[40px] h-[40px] rounded-full  flex justify-center items-center`}>
+                        {selectedStep > 3 ? (
+                            <CheckIcon />
+                        ) : (
+                            <p>3</p>
+                        )}
+                    </div>
                 </div>
             </div>
             <div className='w-full flex justify-between items-center'>
                 <div>
-                    <p>label 1</p>
+                    <p className='text-[15px]'>Asset Category</p>
                 </div>
                 <div>
-                    <p>label 2</p>
+                    <p className='text-[15px]'>Asset Type</p>
                 </div>
                 <div>
-                    <p>label 3</p>
+                    <p className='text-[15px]'>Create Ad</p>
                 </div>
             </div>
         </div>

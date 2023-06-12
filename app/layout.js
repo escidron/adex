@@ -1,4 +1,6 @@
 "use client"
+import { Html, Head, Main, NextScript } from "next/document";
+
 import NavBar from '@/components/NavBar/NavBar'
 import { createContext,useState } from 'react';
 import { useEffect } from 'react';
@@ -42,6 +44,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
 
+      <head>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM&libraries=places" async />
+      </head>
       <body className={abel.className}>
       <UserContext.Provider value={[user,setUser]}>
         <NavBar/>

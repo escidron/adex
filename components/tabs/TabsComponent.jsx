@@ -20,7 +20,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -40,28 +40,30 @@ function a11yProps(index) {
   };
 }
 
-export default function TabsComponent() {
+export default function TabsComponent({children}) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
   return (
     
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider',width: '50%' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Payments" {...a11yProps(0)} />
-          <Tab label="Payouts" {...a11yProps(1)} />
+          {children.map((child,index)=>(
+          <Tab key={index} label={child.props.label} {...a11yProps(index)} />
+          ))}
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        <AddCard />
+      {children.map((child,index)=>(
+
+      <TabPanel key={index} value={value} index={index}>
+        {child}
       </TabPanel>
-      <TabPanel value={value} index={1}>
-       <AddAccount />
-      </TabPanel>
+      ))
+      }
+
     </Box>
   );
 }

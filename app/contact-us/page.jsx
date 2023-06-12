@@ -42,7 +42,6 @@ export default function ContactPage() {
         },
         validate,
         onSubmit:  values =>  {
-                console.log('contact ussss')
         //    axios.post('http://localhost:8000/api/users/auth',
         //       {
         //         email:values.email,

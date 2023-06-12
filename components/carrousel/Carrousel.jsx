@@ -78,7 +78,6 @@ export default function Carrousel() {
       </div>
     </li>
   );
-  console.log(listItems)
   return (
     <div className='w-[80%]'>
       <Slider {...settings}>

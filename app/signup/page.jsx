@@ -67,7 +67,6 @@ export default function LoginPage() {
     },
     validate,
     onSubmit:  values =>  {
-      console.log('entrou')
        axios.post('http://localhost:8000/api/users',
           {
             name:`${values.firstName} ${values.lastName}`,
