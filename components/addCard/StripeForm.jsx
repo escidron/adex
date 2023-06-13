@@ -1,6 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 import {
     CardElement,
     useStripe,
@@ -17,10 +17,9 @@ const inter = Inter({ subsets: ['latin'] })
 export default function StripeForm({ setShowModal }) {
     const stripe = useStripe();
     const elements = useElements();
-
+    const [nameOnCard, setNameOnCard] = useState('');
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log()
 
         if (elements == null) {
             return;
@@ -31,17 +30,43 @@ export default function StripeForm({ setShowModal }) {
             card: elements.getElement(CardNumberElement),
         });
 
-        console.log('paymentMethod',paymentMethod)
-        console.log('error',error)
-        if(!error){
-
+        console.log('paymentMethod', paymentMethod)
+        console.log('error', error)
+        if (!error) {
             setShowModal(false)
+            axios.post('http://localhost:8000/api/payments/customer',
+                {
+                    cardId: paymentMethod.id,
+                    cardNumber: paymentMethod.card.last4,
+                    exp_year: paymentMethod.card.exp_year,
+                    exp_month: paymentMethod.card.exp_month,
+                    nameOnCard: nameOnCard,
+                    brand: paymentMethod.card.brand,
+                }, {
+                withCredentials: true,
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+                .then(function (response) {
+
+                    console.log('response', response)
+
+                })
+                .catch(function (error) {
+
+                    console.log(error)
+                });
         }
     };
 
+    const handleName =(e)=>{
+        setNameOnCard(e.target.value)
+    }
+    console.log(nameOnCard)
     return (
         <form onSubmit={handleSubmit}>
-            <div className='bg-black w-full h-[100vh] absolute z-[90] top-0 left-0 opacity-30 flex justify-center items-center' onClick={() => setShowModal(false)}>
+            <div className='bg-black w-full h-[100vh] absolute z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setShowModal(false)}>
             </div>
             <div className='card-payment-modal px-[30px] py-[15px]  bg-white z-[99] left-[50%] rounded-xl w-[400px]'>
                 <div className='flex justify-between items-center flex-col mb-[20px] '>
@@ -61,7 +86,8 @@ export default function StripeForm({ setShowModal }) {
                             type="text"
                             id="lastName"
                             name="lastName"
-
+                            value={nameOnCard}
+                            onChange={(e)=>handleName(e)}
                             className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
                         />
                     </div>
