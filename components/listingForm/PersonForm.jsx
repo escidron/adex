@@ -184,7 +184,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
 
           <div className=" mt-2 w-full">
             <div className='flex'>
-              <label htmlFor="location" className="block   mb-1">
+              <label htmlFor="location" className="block mb-1">
                 Location
               </label>
               {formik.touched.location && formik.errors.location ? <div className="ml-2 text-red-600 font-bold">{formik.errors.location}</div> : null}

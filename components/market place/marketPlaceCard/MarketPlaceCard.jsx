@@ -60,7 +60,7 @@ export default function MarketPlaceCard({ad}) {
               ad.ad_duration_type=='1'?'Daily':ad.ad_duration_type=='2'?'Weekly':ad.ad_duration_type=='3'?'Monthly':ad.ad_duration_type=='4'?'Unit':'Year'
             }</p>
           <button className='z-10 bg-[#FCD33B] py-[8px] px-[20px] mr-2 rounded-md hover:bg-black hover:text-[#FCD33B] text-md flex items-center justify-center'>
-            <p className='style_banner_button_text font-semibold text-18px]'>View Details</p>
+            <Link href={`/market-place/details?id=${ad.id}`} className='style_banner_button_text font-semibold text-18px]'>View Details</Link>
           </button>
           </div>
 

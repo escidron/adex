@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 
-export default function DatePickerComponent({ setDate }) {
+export default function DatePickerComponent({ setDate,maxHeight }) {
   const date = new Date();
 
   let day = date.getDate()+ 1;
@@ -25,7 +25,7 @@ export default function DatePickerComponent({ setDate }) {
         }}
         sx={{
           width: '100%',
-          '.MuiInputBase-root': { maxHeight: '50px', width: '100%' },
+          '.MuiInputBase-root': { maxHeight:maxHeight? maxHeight: '50px', width: '100%' },
         }}
       />
 

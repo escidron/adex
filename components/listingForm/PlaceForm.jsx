@@ -89,17 +89,20 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
       price: '',
     },
     validate,
-    onSubmit: values => {
+    onSubmit: async values => {
 
-      const blobImage = base64ToBlob(images[0].data_url);
-      axios.post('http://localhost:8000/api/advertisements/new',
+      
+
+      //const blobImage = await base64ToBlob(images[0].data_url);
+      
+      await axios.post('http://localhost:8000/api/advertisements/new',
         {
           title: values.title,
           description: values.description,
           price: values.price,
           category_id: typeId,
           created_by: '',
-          image: blobImage,
+          image: images[0].data_url,
           address: address,
           lat: selected.lat,
           long: selected.lng,

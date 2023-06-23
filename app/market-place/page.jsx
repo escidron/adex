@@ -26,7 +26,9 @@ export default function MarketPlace() {
   });
   const router = useRouter();
   useEffect(() => {
+    console.log('use efectttttt')
     if (located){
+      console.log('located')
       async function getAds() {
         setNewData([])
         const response = await axios.post("http://localhost:8000/api/advertisements", 

@@ -221,7 +221,7 @@ export default function LoginPage() {
 
           </div>
           <div className="flex gap-2">
-            <button
+            <div
               type="text"
               id="1"
               name="account-1"
@@ -229,19 +229,19 @@ export default function LoginPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               onClick={(e)=>handleAccountType(e)}
-              className={`w-[48%] p-2 rounded-lg outline-none ${accountType=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none ${accountType=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
               >Business
-            </button>
-            <button
+            </div>
+            <div
               type="text"
               id="2"
               name="account-2"
               value={formik.values.accountType}
 
               onClick={(e)=>handleAccountType(e)}
-              className={`w-[48%]  p-2 rounded-lg outline-none ${accountType=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none ${accountType=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
               >Individual
-            </button>
+            </div>
           </div>
         </div>
         <button type="submit" className='z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-black hover:text-[#FCD33B] text-lg'>

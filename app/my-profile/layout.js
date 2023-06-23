@@ -1,4 +1,5 @@
 import NavBar from '@/components/NavBar/NavBar';
+import Footer from '@/components/footer/Footer';
 import ProfileHeader from '@/components/profileHeader/ProfileHeader';
 import { Abel } from 'next/font/google';
 
@@ -10,6 +11,7 @@ export default function userProfileLayout({ children }) {
         <div>
           <ProfileHeader/>
           {children}
+          <Footer />
         </div>
     )
   }

@@ -1,16 +1,17 @@
 import Image from 'next/image';
 import TabsComponent from '@/components/tabs/TabsComponent';
-import group from '../../public/group.png'
 import AddCard from '@/components/addCard/AddCard';
 import AddAccount from '@/components/addAccount/AddAccount';
+import { Inter } from 'next/font/google'
 
+const inter = Inter({ subsets: ['latin'] })
 
 
 export default function MyWallet() {
 
 
   return (
-    <div className='w-full flex flex-col items-center '>
+    <div className={`w-full flex flex-col items-center ${inter.className}`}>
       <div>
         <h1 className='text-[30px] mt-8'>Payments & payouts</h1>
       </div>

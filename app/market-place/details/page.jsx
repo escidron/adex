@@ -1,0 +1,198 @@
+"use client"
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation'
+import Image from 'next/image';
+import axios from 'axios';
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import { Inter } from 'next/font/google'
+import { Divider } from '@mui/material';
+import BlackButton from '@/components/buttons/BlackButton';
+import Footer from '@/components/footer/Footer';
+import SecondaryButton from '@/components/buttons/SecondaryButton';
+import {
+  Elements,
+} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import StripeForm from '@/components/addCard/StripeForm';
+import WarningIcon from '@mui/icons-material/Warning';
+
+const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
+
+
+const inter = Inter({ subsets: ['latin'] })
+export default function AdDetails() {
+  const [data, setData] = useState({});
+  const [accept, setAccept] = useState(false)
+  const [hasCard, setHasCard] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [refetch, setRefetch] = useState(false);
+
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+
+  useEffect(() => {
+
+    axios.post('http://localhost:8000/api/advertisements/details',
+      { id: id }, {
+      withCredentials: true,
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        console.log(response)
+        setData(response.data.data[0])
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.post('http://localhost:8000/api/payments/my-cards',
+      {}, {
+      withCredentials: true,
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        console.log(response)
+        if (response.data.data.length > 0) {
+          setHasCard(true)
+          setAccept(false)
+        } else {
+          setHasCard(false)
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }, [refetch]);
+
+  console.log('data', data)
+  const createPayment = () => {
+    //  const { productName,productPrice,interval } = req.body;
+    axios.post('http://localhost:8000/api/payments/create-payment-intent',
+      {
+        data: data
+      }, {
+      withCredentials: true,
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }
+  console.log(refetch)
+  return (
+    <>
+      <div className={`mt-[150px] w-full flex justify-center ${inter.className}`}>
+        <div className='flex flex-col w-1/2 '>
+          <div className='flex flex-col items-center justify-center  '>
+            <div className='w-[150px] h-[150px] '>
+              <Image
+                src='/nouser.png'
+                alt="Adex Logo"
+                priority
+                width={2000}
+                height={2000}
+                className='rounded-full w-full h-full object-cover'
+              />
+            </div>
+            <h1 className='text-[35px] min-w-[250px] text-center'>Hank Eng</h1>
+            <div className="flex items-center justify-center">
+              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+            </div>
+          </div>
+          <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+
+          <div className='flex items-center gap-3'>
+            <div className='w-[230px] h-[230px] shadow-image rounded-lg'>
+              <Image
+                src='/properties-3.jpg'
+                alt="Adex Logo"
+                priority
+                width={2000}
+                height={2000}
+                className='rounded-lg w-full h-full object-cover'
+              />
+            </div>
+
+            <div>
+              <h1 className='text-[20px] font-[500]'>Advertisement type:</h1>
+              <h1 className='text-[20px] font-[500]'>Advertisement Rating:</h1>
+              <h1 className='text-[20px] font-[500]'>General Information:</h1>
+            </div>
+          </div>
+          <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+
+          <div className='mt-6'>
+            <h1 className='text-[24px] font-[600]'>Contract Details</h1>
+            <div className='mt-4'>
+              <h1 className='text-[20px] font-[500]'>City and State:</h1>
+              <h1 className='text-[20px] font-[500]'>Requirements:</h1>
+            </div>
+          </div>
+          <div className='flex mx-auto mt-[40px] flex-col'>
+            <button onClick={() => setAccept(true)} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+              <p className='style_banner_button_text font-medium '>Accept Contract</p>
+            </button>
+            {accept ? (
+              <>
+                {hasCard ? (
+                  <>
+                    <div className='bg-black scroll-hidden w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAccept(false)}>
+                    </div>
+
+                    <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                      <h1 className='text-[22px] font-[400]'>Would you like to accept the contract proposal?</h1>
+                      <div className='w-full flex justify-between items-center mt-8'>
+                        <div onClick={() => setAccept(false)}>
+                          <SecondaryButton label='Close' dark={true} />
+                        </div>
+                        <button onClick={createPayment} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                          <p className='style_banner_button_text font-medium'>Accept</p>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className='flex gap-2 items-center mt-4'>
+                    <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
+                    <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
+                  </div>
+                  // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                  //   <div className='w-full flex justify-center items-center mt-8'>
+                  //     <button onClick={() => setShowModal(true)} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                  //       <p className='style_banner_button_text font-medium'>Add Payment Method</p>
+                  //     </button>
+                  //   </div>
+                  // </div>
+
+                )}
+              </>
+            ) : ''}
+
+          </div>
+        </div>
+      </div>
+
+      {showModal ? (
+        <Elements stripe={stripePromise}>
+          <StripeForm setShowModal={(show) => setShowModal(show)} setRefetch={(refetch) => setRefetch(refetch)} />
+        </Elements>
+      ) : ''}
+      <Footer />
+    </>
+  )
+}
