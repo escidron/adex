@@ -1,27 +1,21 @@
 "use client"
-import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios'
 import { useFormik } from 'formik';
-import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import LockIcon from '@mui/icons-material/Lock';
 import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
+import { ThreeDots } from  'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
-
-
 
 export default function PayoutForm({ setStripeAccount }) {
   // const [user,setUser] = useContext(UserContext)
   const [bod, setBod] = useState('');
   const [state, setState] = useState('AL');
-  // const [selected, setSelected] = useState(null);
-
-  const router = useRouter();
+  const [isPending, setIsPending] = useState(false)
 
   const validate = values => {
     const errors = {};
@@ -62,35 +56,39 @@ export default function PayoutForm({ setStripeAccount }) {
     },
     validate,
     onSubmit: values => {
-      axios.post('http://localhost:8000/api/users/update-address',
-        {
-          idNumber: values.idNumber,
-          bod: bod,
-          street: values.street,
-          city: values.city,
-          state: state,
-          zip: values.zip,
-        }, {
-        withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-        .then(function (response) {
-          console.log(response)
-          if(response.status==200){
-            setHasAccount(true)
-            setStripeAccount(response.data.account)
+
+      setIsPending(true)
+        axios.post('http://localhost:8000/api/users/update-address',
+          {
+            idNumber: values.idNumber,
+            bod: bod,
+            street: values.street,
+            city: values.city,
+            state: state,
+            zip: values.zip,
+          }, {
+          withCredentials: true,
+          headers: {
+            'content-type': 'application/json'
           }
         })
-        .catch(function (error) {
-        });
+          .then(function (response) {
+            console.log('response',response)
+            setIsPending(false)
+
+            if(response.status==200){
+              console.log('status',response.status)
+              setStripeAccount(response.data.account)
+            }
+          })
+          .catch(function (error) {
+          });
     },
   });
 
   console.log('state', state)
   return (
-    <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 border`}>
+    <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
       <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
         <p className=" text-[36px]">Address</p>
         <p className=" text-[18px] font-normal mb-6">Register your bill address</p>
@@ -107,7 +105,7 @@ export default function PayoutForm({ setStripeAccount }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.idNumber}
-              className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+              className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
             />
             {formik.touched.idNumber && formik.errors.idNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.idNumber}</div> : null}
 
@@ -142,7 +140,7 @@ export default function PayoutForm({ setStripeAccount }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.street}
-            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+            className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
           />
           {formik.touched.street && formik.errors.street ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.street}</div> : null}
         </div>
@@ -160,7 +158,7 @@ export default function PayoutForm({ setStripeAccount }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.city}
-            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+            className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
           />
           {formik.touched.city && formik.errors.city ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.city}</div> : null}
         </div>
@@ -174,19 +172,11 @@ export default function PayoutForm({ setStripeAccount }) {
             </div>
             <div >
               <SelectUSState
-                className={`dropdown w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                className={`dropdown w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
                 name="state"
                 value={state}
                 onChange={state => setState(state)} />
             </div>
-            {/* <input
-              id="state"
-              name="state"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.state}
-              className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
-            /> */}
             {formik.touched.state && formik.errors.state ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.state}</div> : null}
           </div>
           <div className="w-[30%] relative">
@@ -201,14 +191,25 @@ export default function PayoutForm({ setStripeAccount }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.zip}
-              className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+              className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
             />
             {formik.touched.zip && formik.errors.zip ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.zip}</div> : null}
           </div>
         </div>
-        <button type="submit" className='flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-[#FCD33B] hover:text-black text-lg'>
+        <button type="submit" className={`flex gap-2 justify-center min-h-[50px] items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 ${!isPending?'hover:bg-[#FCD33B] hover:text-black':''}  text-lg`}>
           <LockIcon sx={{ fontSize: '18px' }} />
-          <p className='style_banner_button_text font-semibold text-[18px]'>Continue</p>
+          <div className='style_banner_button_text font-semibold text-[18px]'>
+            {isPending?(
+              <ThreeDots 
+              height="30" 
+              width="40" 
+              radius="9"
+              color="#FCD33B" 
+              ariaLabel="three-dots-loading"
+              visible={true}
+               />
+            ):'Continue'}
+          </div>
         </button>
         <p className=" mt-5 text-[12px]">Afterwards, you will be redirected to a secure enviroment, where you can input your bank account information.</p>
       </form>

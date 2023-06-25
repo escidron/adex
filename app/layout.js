@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>ADEX Connect</title>
-        <link rel="shortcut icon" href={favicon.src} />
+        <link rel="icon" href={favicon.src} />
         <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM&libraries=places"
           async

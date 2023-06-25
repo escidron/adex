@@ -53,9 +53,10 @@ export default function NavBar() {
             'content-type': 'application/json'
           }})
         .then(function (response) {
-
+            console.log('antes de router')
             setUser({...user,isLogged:false,name:'',checkLogin:true})
             router.push('/login')
+            console.log('despues  de router')
         })
         .catch(function (error) {
         });
@@ -95,7 +96,11 @@ export default function NavBar() {
                     <div onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))}  className='hidden cursor-pointer  p-1
                             md:flex items-center 
                             lg:absolute lg:top-[26px] lg:right-[40px]
-                            xl:top-[26px] xl:right-[80px]'>
+                            xl:top-[26px] xl:right-[80px]
+                            transition
+                            duration-500
+                            ease-linear
+                            '>
                         <Image 
                         
                             src={nouser}
@@ -107,7 +112,8 @@ export default function NavBar() {
                         <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
                         <ArrowDropDownIcon />
                         {user.showLoginOptions?                     
-                            <div  onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} className="absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <div  onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} 
+                            className="absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <Link href="/my-profile" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:rounded-t-lg hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                                     Profile
                                 </Link>
@@ -123,13 +129,13 @@ export default function NavBar() {
 
                     </div>
                 )
-                :   pathname !=='/login' && pathname!=='/signup' && user.checkLogin?
+                :   pathname !=='/login' && pathname!=='/sign-up' && user.checkLogin?
                         ( <div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <Link href='/login' className='hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-white ext-md'>
+                        <Link href='/login' className='hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
                         </Link>
-                        <Link href='/signup' className='hidden xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
+                        <Link href='/sign-up' className='hidden xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
                         </Link>
                     </div>):''

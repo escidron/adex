@@ -1,3 +1,4 @@
+'use client'
 import VideoComponent from '@/components/video/VideoComponent'
 import GetPaid from '@/sections/getPaid/GetPaid'
 import React from 'react'

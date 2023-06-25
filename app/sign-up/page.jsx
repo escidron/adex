@@ -4,11 +4,10 @@ import { useState } from "react";
 import axios from 'axios'
 import { useFormik } from 'formik';
 import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
+import { UserContext } from '../layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
-import { Autocomplete } from "@mui/material";
-import PlacesAutocomplete from "@/components/placesAutocomplete/PlacesAutocomplete";
+import { ThreeDots } from 'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +15,7 @@ const validate = values => {
   const errors = {};
   if (!values.firstName) {
     errors.firstName = 'Required';
-  } 
+  }
 
   if (!values.lastName) {
     errors.lastName = 'Required';
@@ -32,11 +31,11 @@ const validate = values => {
   if (!values.accountType) {
     errors.accountType = 'Required';
   }
-  
+
   if (!values.password2) {
     errors.password2 = 'Required';
 
-  }else if(values.password2 !== values.password){
+  } else if (values.password2 !== values.password) {
     errors.password2 = 'passwords must be equal'
   }
   if (!values.email) {
@@ -49,9 +48,10 @@ const validate = values => {
 };
 
 export default function LoginPage() {
-  const [user,setUser] = useContext(UserContext)
+  const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
   const [selected, setSelected] = useState(null);
+  const [isPending, setIsPending] = useState(false)
 
   const router = useRouter();
 
@@ -63,52 +63,57 @@ export default function LoginPage() {
       phone: '',
       password: '',
       password2: '',
-      accountType:''
+      accountType: ''
     },
     validate,
-    onSubmit:  values =>  {
-       axios.post('http://localhost:8000/api/users',
-          {
-            name:`${values.firstName} ${values.lastName}`,
-            firstName:values.firstName,
-            lastName:values.lastName,
-            phone:values.phone,
-            email:values.email,
-            password:values.password,
-            accountType:accountType
+    onSubmit: values => {
+      setIsPending(true)
+
+      axios.post('http://localhost:8000/api/users',
+        {
+          name: `${values.firstName} ${values.lastName}`,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phone: values.phone,
+          email: values.email,
+          password: values.password,
+          accountType: accountType
         }, {
-            headers: {
-              'content-type': 'application/json'
-            }})
-          .then(function (response) {
-            setUser({...user,isLogged:true,name:values.firstName,showLoginOptions:false})
-            router.push('/')
-          })
-          .catch(function (error) {
-          });
+          withCredentials: true,
+          headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(function (response) {
+          setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false })
+          router.push('/')
+          setIsPending(false)
+        })
+        .catch(function (error) {
+        });
     },
   });
 
-  const  handleAccountType =  (e)=>{
+  const handleAccountType = (e) => {
     const id = e.currentTarget.id
-    if (id==accountType){
-      
+    if (id == accountType) {
+
       formik.values.accountType = ''
       setAccountType('');
-    }else{
-      
+    } else {
+
       formik.values.accountType = id
       setAccountType(id);
     }
-}
+  }
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  relative">
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
 
-      <form className=" z-[91] flex flex-col justify-center items-center  w-[400px] h-auto mt-[95px]"  onSubmit={formik.handleSubmit}>
+      <form className=" z-[91] flex flex-col justify-center items-center  w-[400px] h-auto mt-[95px]" onSubmit={formik.handleSubmit}>
         <p className="text-white text-[36px]">Register</p>
         <p className="text-white text-[18px] font-normal mb-6">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
-        
+
         <div className=" w-full relative">
           <div className="flex">
             <label htmlFor="firstName" className="block text-white  mb-1">
@@ -123,10 +128,10 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.firstName}
-            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}            
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
           />
         </div>
-        
+
         <div className=" mt-2 w-full relative">
           <div className="flex">
             <label htmlFor="lastName" className="block text-white  mb-1">
@@ -158,9 +163,9 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}           
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
           />
-        </div>    
+        </div>
         <div className=" mt-2 w-full relative">
           <div className="flex">
             <label htmlFor="phone" className="block text-white  mb-1">
@@ -192,7 +197,7 @@ export default function LoginPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
-            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`} 
+            className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
           />
         </div>
         <div className=" mt-2 w-full relative">
@@ -228,9 +233,21 @@ export default function LoginPage() {
               value={formik.values.accountType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              onClick={(e)=>handleAccountType(e)}
-              className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none ${accountType=='1'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
-              >Business
+              onClick={(e) => handleAccountType(e)}
+              className={`
+              w-[48%] 
+              flex 
+              justify-center 
+              items-center 
+              p-2 
+              rounded-lg 
+              outline-none 
+              cursor-pointer
+              hover:text-black 
+              hover:bg-[#FCD33B] 
+              ${accountType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'} 
+              ${inter.className}`}
+            >Business
             </div>
             <div
               type="text"
@@ -238,14 +255,36 @@ export default function LoginPage() {
               name="account-2"
               value={formik.values.accountType}
 
-              onClick={(e)=>handleAccountType(e)}
-              className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none ${accountType=='2'?'bg-[#FCD33B] text-black':'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
-              >Individual
+              onClick={(e) => handleAccountType(e)}
+              className={`
+                w-[48%] 
+                flex 
+                justify-center  
+                items-center 
+                p-2 rounded-lg 
+                outline-none 
+                hover:text-black hover:bg-[#FCD33B] 
+                cursor-pointer
+                ${accountType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}   
+                ${inter.className}`}
+            >Individual
             </div>
           </div>
         </div>
-        <button type="submit" className='z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-black hover:text-[#FCD33B] text-lg'>
-            <p className='style_banner_button_text font-semibold text-[18px]'>Sign Up</p>
+        <button type="submit" className={`z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8 w-full md:mt-7 ${!isPending?'hover:bg-black hover:text-[#FCD33B]':''}  text-lg`}>
+          <div className='style_banner_button_text font-semibold text-[18px] flex items-center justify-center'>
+            {isPending ? (
+              <ThreeDots
+                height="30"
+                width="40"
+                radius="9"
+                color="black"
+                ariaLabel="three-dots-loading"
+                visible={true}
+              />
+            ) : 'Sign Up'}
+          </div>
+
         </button>
         <p className="text-white mt-5">Have an account? <Link href='/login' className="text-[#FCD33B] hover:opacity-80">Login</Link></p>
       </form>

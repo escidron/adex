@@ -28,7 +28,7 @@ export default function LoginPage() {
   const [emailError,setEmailError] = useState('')
   const [passwordError,setPasswordError] = useState('')
   const router = useRouter();
-
+  console.log('entrou no login page')
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -112,7 +112,7 @@ export default function LoginPage() {
         <button className='z-10 bg-[#FCD33B] py-[8px] px-[30px] rounded-md mt-4  md:mt-5 hover:bg-black hover:text-[#FCD33B] text-lg
                                   lg:mt-10 '><p className='style_banner_button_text font-semibold text-18px]'>Login</p>
         </button>
-        <p className="text-white mt-5">Don&apos;t have an account? <Link href='/signup' className="text-[#FCD33B] hover:opacity-80">Sign Up</Link></p>
+        <p className="text-white mt-5">Don&apos;t have an account? <Link href='/sign-up' className="text-[#FCD33B] hover:opacity-80">Sign Up</Link></p>
       </form>
     </div>
   );

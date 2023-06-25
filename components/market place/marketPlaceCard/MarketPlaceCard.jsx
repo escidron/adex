@@ -4,13 +4,14 @@ import Image from 'next/image'
 import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
 import Link from 'next/link';
 import { Inter } from 'next/font/google'
+import CloseIcon from '@mui/icons-material/Close';
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 export default function MarketPlaceCard({ad}) {
   const [src, setSrc] = useState('/ad_images/'+ad.image);
-
+  const [showModal,setShowModal] = useState(false)
   const path = '/ad_images/'
   //duration type
   // '1'=>'Daily',
@@ -19,7 +20,7 @@ export default function MarketPlaceCard({ad}) {
   // '4'=>'Unit',
   // '5'=>'Year'  
   return (
-    <div className={`styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
+    <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
       <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">
         <Image
             src={src}
@@ -45,14 +46,24 @@ export default function MarketPlaceCard({ad}) {
             </div>
           </div>
 
-          <div className='style_card_description_box mt-2'>
+          <div className='style_card_description_box mt-2 '>
             <div className="style_card_description text-[14px] h-[20px] font-[400] text-[#838383]">
               <p>
               {ad.description.length>125?ad.description.replace(/^(.{125}[^\s]*).*/, "$1") + "..."
               :ad.description}
-              {ad.description.length>125?<Link href='#' className='text-black'><b>read more</b></Link>:''}
+              {ad.description.length>125?<label href='#' className='text-black cursor-pointer' onClick={()=>setShowModal(true)}><b>read more</b></label>:''}
               </p>
             </div>
+            {
+              showModal&&(
+                <div className='absolute top-0 left-0 w-full h-full bg-slate-200 z-[99] p-2'>
+                    <CloseIcon onClick={()=>setShowModal(false)} sx={{ "&:hover": { color: "#FCD33B",cursor:'pointer' } }} className='flex ml-auto'/>
+                    <div className='mt-2'>
+                      {ad.description}
+                    </div>
+                </div>
+              )
+            }
           </div>
 
           <div className='style_price_row flex w-[90%] justify-between items-center absolute bottom-[25px]'>

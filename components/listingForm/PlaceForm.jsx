@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
+import Link from 'next/link';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import { Inter } from 'next/font/google'
 import CounterComponent from '../counter/CounterComponent';
@@ -13,6 +14,7 @@ import axios from 'axios';
 import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
+import { ThreeDots } from 'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +24,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
   let currentDateDay = currentDate.getDate();
   let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
   let currentDateYear = currentDate.getFullYear()
+  const [isPending, setIsPending] = useState(false)
 
   const [durationType, setdurationType] = useState('1');
   const [subType, setSubType] = useState('1');
@@ -91,10 +94,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
     validate,
     onSubmit: async values => {
 
-      
+      setIsPending(true)
 
-      //const blobImage = await base64ToBlob(images[0].data_url);
-      
       await axios.post('http://localhost:8000/api/advertisements/new',
         {
           title: values.title,
@@ -109,9 +110,9 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
           ad_duration_type: isPeriodic ? durationType : 0,
           start_date: date,
           duration: counter,
-          sub_asset_type:typeId === 9 ? subType:0,
-          units:0,
-          per_unit_price:0
+          sub_asset_type: typeId === 9 ? subType : 0,
+          units: 0,
+          per_unit_price: 0
         }, {
         withCredentials: true,
         headers: {
@@ -123,10 +124,14 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
           console.log('response', response)
           setResponse(response.data.message)
           setSelectedStep(4)
+          setIsPending(false)
+
         })
         .catch(function (error) {
 
           console.log(error)
+          setIsPending(false)
+
         });
     },
   });
@@ -181,7 +186,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
                     value={formik.values.subType}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    onClick={(e)=>handleSubType(e)}
+                    onClick={(e) => handleSubType(e)}
                     className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
                   >Window
                   </div>
@@ -192,7 +197,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
                     value={formik.values.subType}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    onClick={(e)=>handleSubType(e)}
+                    onClick={(e) => handleSubType(e)}
                     className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
                   >Door
                   </div>
@@ -201,7 +206,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
                     id="3"
                     name="account-3"
                     value={formik.values.subType}
-                    onClick={(e)=>handleSubType(e)}
+                    onClick={(e) => handleSubType(e)}
                     className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 rounded-lg outline-none ${subType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
                   >Interior wall
                   </div>
@@ -210,7 +215,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
                     id="4"
                     name="account-4"
                     value={formik.values.subType}
-                    onClick={(e)=>handleSubType(e)}
+                    onClick={(e) => handleSubType(e)}
                     className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px]  p-2 rounded-lg outline-none ${subType == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
                   >Exterior wall
                   </div>
@@ -221,7 +226,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
             </div>
           ) : null}
 
-          { isPeriodic === 1 ? (
+          {isPeriodic === 1 ? (
             <div className=" mt-2 w-full flex gap-4">
               <div className={`w-[80%]`}>
                 <label htmlFor="emal" className="block   mb-1">
@@ -276,7 +281,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
                 <p className='absolute top-[11px] left-2 text-[18px] font-[400] '>$</p>
                 <input
                   id='price'
-                  onInput={(e)=>formatNumberInput(e)}
+                  onInput={(e) => formatNumberInput(e)}
                   placeholder='0'
                   type="text"
                   className='max-h-[50px] py-4 px-5 rounded-md w-full border outline-none flex items-center text-[18px]'
@@ -330,18 +335,42 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep }) {
           </div>
 
           <div className='col-start-2 w-full flex justify-end mt-4'>
-            <div className='ml-2'>
-              <BlackButton label='Submit' />
-            </div>
-            <div className='ml-1 mb-[200px]'>
-              <SecondaryButton dark={true} label='Save Draft' />
+          <div className='ml-2'>
+              <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
+                <div className='style_banner_button_text font-semibold text-[18px]'>
+                  {isPending ? (
+                    <ThreeDots
+                      height="30"
+                      width="40"
+                      radius="9"
+                      color="#FCD33B"
+                      ariaLabel="three-dots-loading"
+                      visible={true}
+                    />
+                  ) : 'Submit'}
+                </div>
+              </button>
+            
             </div>
           </div>
 
         </form>
       ) : (
         <div className='mt-200px min-w-[500px] flex mx-auto justify-center'>
-          <Success message={response} />
+          <Success>
+            <h1 className='text-[25px]'>Listing created</h1>
+            <p className='my-4'>For receiving your funds,you will need to add a payout method, if you want to do it later,you can find this option in your profile section.</p>
+
+            <div className='flex justify-between w-full'>
+
+              <Link href='/' className='mt-6'>
+                <SecondaryButton label='later' dark={true} />
+              </Link>
+              <Link href='/add-payout-method' className='mt-6'>
+                <BlackButton label='add now' />
+              </Link>
+            </div>
+          </Success>
         </div>
       )}
     </>

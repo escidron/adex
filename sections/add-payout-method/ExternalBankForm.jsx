@@ -1,20 +1,24 @@
 "use client"
-import Link from "next/link";
-import { useState } from "react";
+import { useState } from 'react'
 import axios from 'axios'
+import Link from 'next/link';
 import { useFormik } from 'formik';
 import { Inter } from 'next/font/google'
 import LockIcon from '@mui/icons-material/Lock';
+import CloseIcon from '@mui/icons-material/Close';
+import { ThreeDots } from 'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 
-export default function ExternalBankForm({ setAccount,stripeAccount,setFinish }) {
+export default function ExternalBankForm({ setAccount, stripeAccount, setFinish }) {
+    const [isPending, setIsPending] = useState(false)
 
     const validate = values => {
         const errors = {};
 
+        console.log(values.bankName)
         if (!values.bankName) {
             errors.bankName = 'Required';
         }
@@ -43,17 +47,20 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
             routingNumber: '',
             accountNumber: '',
             confirmAccount: '',
-            bankName:''
+            bankName: ''
         },
         validate,
         onSubmit: values => {
+            setIsPending(true)
 
             console.log('values', values)
+
             axios.post('http://localhost:8000/api/payments/external-bank',
                 {
                     routingNumber: values.routingNumber,
                     accountNumber: values.accountNumber,
-                    stripeAccount: stripeAccount
+                    stripeAccount: stripeAccount,
+                    bankAccountName: values.bankName
                 }, {
                 withCredentials: true,
                 headers: {
@@ -63,10 +70,12 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
                 .then(function (response) {
                     console.log(response)
                     if (response.status == 200) {
+                        setIsPending(false)
                         setFinish(true)
                     }
                 })
                 .catch(function (error) {
+                    setIsPending(false)
                     console.log(error)
                 });
         },
@@ -74,7 +83,10 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
 
     return (
         <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
-            <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
+            <form className="text-black z-[91] relative px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
+                <Link href='/my-profile' className='absolute top-4 right-4'>
+                    <CloseIcon sx={{ "&:hover": { color: "#FCD33B" } }} />
+                </Link>
                 <p className=" text-[36px]">Bank Account</p>
                 <p className=" text-[18px] font-normal mb-6">Enter your bank account details</p>
                 <div className=" w-full relative">
@@ -84,29 +96,31 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
                         </label>
                     </div>
                     <input
+                        type="text"
                         id="bankName"
                         name="bankName"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.bankName}
-                        className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
                     />
                     {formik.touched.bankName && formik.errors.bankName ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bankName}</div> : null}
                 </div>
 
-                <div className=" mt-4 w-full relative">
+                <div className=" mt-4 w-full relative ">
                     <div className="flex">
                         <label htmlFor="routingNumber" className="block  mb-1">
                             Routing number
                         </label>
                     </div>
                     <input
+                        type="text"
                         id="routingNumber"
                         name="routingNumber"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.routingNumber}
-                        className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
                     />
                     {formik.touched.routingNumber && formik.errors.routingNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.routingNumber}</div> : null}
                 </div>
@@ -124,7 +138,7 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.accountNumber}
-                        className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
                     />
                     {formik.touched.accountNumber && formik.errors.accountNumber ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.accountNumber}</div> : null}
                 </div>
@@ -142,14 +156,25 @@ export default function ExternalBankForm({ setAccount,stripeAccount,setFinish })
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.confirmAccount}
-                        className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
                     />
                     {formik.touched.confirmAccount && formik.errors.confirmAccount ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.confirmAccount}</div> : null}
                 </div>
 
-                <button type="submit" className='flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 hover:bg-[#FCD33B] hover:text-black text-lg'>
+                <button type="submit" className={`flex gap-2 relative justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
                     <LockIcon sx={{ fontSize: '18px' }} />
-                    <p className='style_banner_button_text font-semibold text-[18px]'>Submit</p>
+                    <div type="submit" className='style_banner_button_text font-semibold text-[18px] cursor-pointer'>
+                        {isPending ? (
+                            <ThreeDots
+                                height="30"
+                                width="40"
+                                radius="9"
+                                color="#FCD33B"
+                                ariaLabel="three-dots-loading"
+                                visible={true}
+                            />
+                        ) : 'Submit'}
+                    </div>
                 </button>
                 {/* <p className=" mt-5 text-[12px]">Afterwards, you will be redirected to a secure enviroment, where you can input your bank account information.</p> */}
             </form>
