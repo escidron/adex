@@ -18,7 +18,6 @@ export default function BankAccountList({ refetch,setRefetch }) {
             }
         })
             .then(function (response) {
-                 console.log(response)
                 setData(response.data.data)
                 setRefetch(false)
                 setCheckDefault(false)

@@ -21,7 +21,7 @@ import { ThreeDots } from 'react-loader-spinner'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
+export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout }) {
   const currentDate = new Date();
   let currentDateDay = currentDate.getDate();
   let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
@@ -87,8 +87,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
     validate,
     onSubmit: values => {
       setIsPending(true)
-
-      console.log('iamge', images[0].data_url)
       axios.post('http://localhost:8000/api/advertisements/new',
         {
           title: values.title,
@@ -114,7 +112,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
       })
         .then(function (response) {
 
-          console.log('response', response)
           setResponse(response.data.message)
           setSelectedStep(4)
           setIsPending(false)
@@ -292,7 +289,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
                   ) : 'Submit'}
                 </div>
               </button>
-            
+
             </div>
             {/* <div className='ml-1'>
               <SecondaryButton dark={true} label='Save Draft' />
@@ -302,22 +299,40 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep }) {
         </form>
       ) : (
         <div className='mt-250px min-w-[500px] flex mx-auto justify-center'>
-          <Success>
-            <h1 className='text-[25px]'>Listing created</h1>
-            <p className='my-4'>For receiving your funds,you will need to add a payout method, if you want to do it later,you can find this option in your profile section.</p>
+          {hasPayout ?
+            (< Success >
+              <h1 className='text-[25px]'>Listing created</h1>
 
-            <div className='flex justify-between w-full'>
+              <p className='my-4'>You will receive your funds in the default bank account registered.</p>
 
-              <Link href='/' className='mt-6'>
-                <SecondaryButton label='later' dark={true} />
-              </Link>
-              <Link href='/add-payout-method' className='mt-6'>
-                <BlackButton label='add now' />
-              </Link>
-            </div>
-          </Success>
-        </div>
-      )}
+              <div className='flex justify-center w-full'>
+                <Link href='/' className='mt-6'>
+                  <BlackButton label='Done' />
+                </Link>
+              </div>
+            </Success>
+            )
+            :
+
+            <Success>
+              <h1 className='text-[25px]'>Listing created</h1>
+
+              <p className='my-4'>For receiving your funds,you will need to add a payout method, if you want to do it later,you can find this option in your profile section.</p>
+
+              <div className='flex justify-between w-full'>
+
+                <Link href='/' className='mt-6'>
+                  <SecondaryButton label='later' dark={true} />
+                </Link>
+                <Link href='/add-payout-method' className='mt-6'>
+                  <BlackButton label='add now' />
+                </Link>
+              </div>
+            </Success>
+          }
+        </div >
+      )
+      }
     </>
   )
 }

@@ -28,7 +28,6 @@ export default function LoginPage() {
   const [emailError,setEmailError] = useState('')
   const [passwordError,setPasswordError] = useState('')
   const router = useRouter();
-  console.log('entrou no login page')
   const formik = useFormik({
     initialValues: {
       email: "",

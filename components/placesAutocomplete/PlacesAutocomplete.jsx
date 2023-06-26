@@ -29,7 +29,6 @@ const PlacesAutocomplete = ({ setSelected,setAddress }) => {
   const handleSelect = async (address) => {
     setValue(address, false);
     clearSuggestions();
-    console.log('handle select')
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
     setSelected({ lat, lng });

@@ -18,7 +18,6 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
     const validate = values => {
         const errors = {};
 
-        console.log(values.bankName)
         if (!values.bankName) {
             errors.bankName = 'Required';
         }
@@ -52,9 +51,6 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
         validate,
         onSubmit: values => {
             setIsPending(true)
-
-            console.log('values', values)
-
             axios.post('http://localhost:8000/api/payments/external-bank',
                 {
                     routingNumber: values.routingNumber,
@@ -68,7 +64,6 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                 }
             })
                 .then(function (response) {
-                    console.log(response)
                     if (response.status == 200) {
                         setIsPending(false)
                         setFinish(true)

@@ -25,6 +25,7 @@ const MockData = [
 ]
 export default function MyAdex() {
   const [listingData, setListingData] = useState([]);
+  const [bookingData, setBookingData] = useState([]);
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/my-advertisement',
       {}, {
@@ -34,12 +35,25 @@ export default function MyAdex() {
       }
     })
       .then(function (response) {
-
-        // console.log('response', response.data.data)
         setListingData(response.data.data)
       })
       .catch(function (error) {
-
+        console.log(error)
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.post('http://localhost:8000/api/advertisements/my-booking',
+      {}, {
+      withCredentials: true,
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        setBookingData(response.data.data)
+      })
+      .catch(function (error) {
         console.log(error)
       });
   }, []);
@@ -52,7 +66,7 @@ export default function MyAdex() {
         <div className='w-[60%]'>
           <TabsComponent>
             <MyListing label='My Listing' data={listingData} />
-            <MyBooking label='My Booking' />
+            <MyBooking label='My Booking' data={bookingData}/>
           </TabsComponent>
         </div>
       </div>

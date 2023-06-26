@@ -12,12 +12,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
-
+import LoginModal from '../modals/LoginModal';
+import SignUpModal from '../modals/SignUpModal';
 const inter = Inter({ subsets: ['latin'] })
 
-export default function NavBar() {
+export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModal,setShowSignUpModal }) {
     const pathname = usePathname();
-    // const [showLoginOptions, setShowLoginOptions] = useState(false);
     const [user,setUser] = useContext(UserContext)
     const router = useRouter();
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function NavBar() {
         });
         if (response.status === 200) {
             const user = await response.json()
-            setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false}));
+            setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false,image:user.image}));
         } else {
         }
         }
@@ -53,10 +53,8 @@ export default function NavBar() {
             'content-type': 'application/json'
           }})
         .then(function (response) {
-            console.log('antes de router')
             setUser({...user,isLogged:false,name:'',checkLogin:true})
-            router.push('/login')
-            console.log('despues  de router')
+            router.push('/')
         })
         .catch(function (error) {
         });
@@ -66,7 +64,8 @@ export default function NavBar() {
     return (
         <div className={`bg-black   w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
                         md:h-[90px]
-                        lg:justify-center ${inter.className}`}>
+                        lg:justify-center ${inter.className}
+                        `}>
 
             {/* web screen */}
             <section className='hidden 
@@ -103,7 +102,7 @@ export default function NavBar() {
                             '>
                         <Image 
                         
-                            src={nouser}
+                            src={user.image?user.image:nouser}
                             alt="user image"
                             width={30}
                             height={30}
@@ -132,12 +131,12 @@ export default function NavBar() {
                 :   pathname !=='/login' && pathname!=='/sign-up' && user.checkLogin?
                         ( <div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <Link href='/login' className='hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
+                        <div onClick={()=>setShowLoginModal(true)} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
-                        </Link>
-                        <Link href='/sign-up' className='hidden xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
+                        </div>
+                        <div onClick={()=>setShowSignUpModal(true)} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
-                        </Link>
+                        </div>
                     </div>):''
                     
             }
@@ -159,6 +158,12 @@ export default function NavBar() {
             </div>
             {user.showLoginOptions?                     
                             <div  onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} className="md:hidden absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <div onClick={()=>setShowLoginModal(true)} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                    Login
+                                </div>
+                                <div onClick={()=>setShowSignUpModal(true)} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                    Sign Up
+                                </div>
                                 <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                                     Profile
                                 </Link>
@@ -180,6 +185,17 @@ export default function NavBar() {
                                 </Link>
                             </div>:
                         ""}
+
+        {showLoginModal?(
+            <LoginModal setShowLoginModal={setShowLoginModal}/>
+        ):(
+            ''
+        )}                
+        {showSignUpModal?(
+            <SignUpModal setShowSignUpModal={setShowSignUpModal}/>
+        ):(
+            ''
+        )}                
         </div>
     )
 }

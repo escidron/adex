@@ -11,9 +11,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Banner() {
   const [isPending, startTransition] = useTransition()
   const [user,setUser] = useContext(UserContext)
-  console.log('user',user)
   const onSubmit = () => {
-    axios.get('http://localhost:8000/api/users/profile',
+    axios.get('http://localhost:8000/api/users/seller-profile',
       {
 
       }, {

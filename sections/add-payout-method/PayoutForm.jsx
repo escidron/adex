@@ -73,11 +73,9 @@ export default function PayoutForm({ setStripeAccount }) {
           }
         })
           .then(function (response) {
-            console.log('response',response)
             setIsPending(false)
 
             if(response.status==200){
-              console.log('status',response.status)
               setStripeAccount(response.data.account)
             }
           })
@@ -85,8 +83,6 @@ export default function PayoutForm({ setStripeAccount }) {
           });
     },
   });
-
-  console.log('state', state)
   return (
     <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
       <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>

@@ -8,6 +8,5 @@ export default function base64ToBlob  (base64Image){
     for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
-    console.log('Blobbbbbb',)
     return new Blob([ab], { type: mimeString });
   };

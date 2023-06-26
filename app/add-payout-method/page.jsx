@@ -17,12 +17,11 @@ export default function AddPayoutMethod() {
   const [hasBankAccount, setHasBankAccount] = useState(false);
   const [stripeAccount, setStripeAccount] = useState('');
   const [finish, setFinish] = useState(false);
-  console.log('stripeAccount', stripeAccount)
 
   useEffect(() => {
     async function GetAddress() {
       const response = await fetch(
-        "http://localhost:8000/api/users/profile",
+        "http://localhost:8000/api/users/seller-profile",
         {
           method: "GET",
           credentials: "include",
@@ -30,7 +29,6 @@ export default function AddPayoutMethod() {
       );
       if (response.status === 200) {
         const res = await response.json()
-        console.log(res)
         setStripeAccount((prev) => (res.account));
       }
     }

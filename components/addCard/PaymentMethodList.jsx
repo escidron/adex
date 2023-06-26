@@ -18,7 +18,6 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
             }
         })
             .then(function (response) {
-                // console.log(response)
                 setData(response.data.data)
                 setRefetch(false)
                 setCheckDefault(false)
@@ -27,7 +26,6 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
                 console.log(error)
             });
     }, [refetch,checkDefault]);
-    console.log(data)
     return (
         <div className={`mt-4 ${inter.className} flex flex-col gap-2`}>
             {data.map((item) => 

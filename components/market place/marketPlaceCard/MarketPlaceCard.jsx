@@ -23,17 +23,17 @@ export default function MarketPlaceCard({ad}) {
     <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
       <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">
         <Image
-            src={src}
+            src={ad.image}
             alt="Adex Logo"
-            width={0}
-            height={0}
+            width={2000}
+            height={2000}
             sizes="100%"
             className='w-full h-full rounded-[5px] object-cover'
             onError={() => {
               console.log('errorrr')
               setSrc('/no-image.png')}}
         />
-        <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-red-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
+        <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-orange-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
           <div className="style_title_row w-full flex items-center justify-between">
             <p className="style_card_title ">{ad.title}</p>

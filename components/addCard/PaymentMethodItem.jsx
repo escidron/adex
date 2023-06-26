@@ -4,7 +4,6 @@ import axios from 'axios'
 export default function PaymentMethodItem({ item,setCheckDefault }) {
 
     const handleSelected = (e) => {
-        console.log('e.target', e.target)
         axios.post('http://localhost:8000/api/payments/set-default-card',
         {cardId:e.target.id}, {
         withCredentials: true,
@@ -13,7 +12,6 @@ export default function PaymentMethodItem({ item,setCheckDefault }) {
         }
     })
         .then(function (response) {
-            console.log(response)
             setCheckDefault(true)
         })
         .catch(function (error) {

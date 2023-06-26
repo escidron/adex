@@ -103,7 +103,6 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         {openFilter?
         (<div>
             <div className='px-[20px] mt-4 flex justify-between '>
-           
                 <div className='w-1/2 flex flex-col items-center'>    
                     <label>Search radius (in miles)</label>
                     <div className='mt-2 '>

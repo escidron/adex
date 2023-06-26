@@ -12,6 +12,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { Inter } from 'next/font/google'
 import Footer from '../footer/Footer';
+import { ThreeDots } from 'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,8 +20,11 @@ export default function StripeForm({ setShowModal, setRefetch }) {
     const stripe = useStripe();
     const elements = useElements();
     const [nameOnCard, setNameOnCard] = useState('');
+    const [isPending, setIsPending] = useState(false)
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setIsPending(true)
 
         if (elements == null) {
             return;
@@ -31,7 +35,6 @@ export default function StripeForm({ setShowModal, setRefetch }) {
             card: elements.getElement(CardNumberElement),
         });
 
-        console.log('paymentMethod', paymentMethod)
         console.log('error', error)
         if (!error) {
             setShowModal(false)
@@ -51,8 +54,9 @@ export default function StripeForm({ setShowModal, setRefetch }) {
             })
                 .then(function (response) {
 
-                    console.log('response', response)
                     setRefetch(true)
+                    setIsPending(false)
+
                 })
                 .catch(function (error) {
 
@@ -64,7 +68,6 @@ export default function StripeForm({ setShowModal, setRefetch }) {
     const handleName = (e) => {
         setNameOnCard(e.target.value)
     }
-    console.log(nameOnCard)
     return (
         <>
             <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setShowModal(false)}>
@@ -138,8 +141,19 @@ export default function StripeForm({ setShowModal, setRefetch }) {
                         </div>
 
                         <div className='mt-8 flex justify-center items-center mx-auto w-full'>
-                            <button type="submit" disabled={!stripe || !elements} className='style_banner_button  mx-auto z-10 bg-black mb-4 w-full py-[6px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
-                                <p className='style_banner_button_text font-medium'>Done</p>
+                            <button type="submit" disabled={!stripe || !elements} className={`style_banner_button  mx-auto z-10 bg-black mb-4 w-full py-[6px] px-[20px] h-10 rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg `}>
+                                <div className='style_banner_button_text font-semibold text-[18px] text-[#FCD33B] flex items justify-center'>
+                                    {isPending ? (
+                                        <ThreeDots
+                                            height="30"
+                                            width="40"
+                                            radius="9"
+                                            color="#FCD33B"
+                                            ariaLabel="three-dots-loading"
+                                            visible={true}
+                                        />
+                                    ) : 'Submit'}
+                                </div>
                             </button>
                         </div>
                     </div>

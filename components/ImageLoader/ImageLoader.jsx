@@ -12,7 +12,6 @@ export default function ImageLoader({ images,setImages }) {
         setImages(imageList);
         setOnHover(false)
     };
-    console.log('images',images)
     return (
         <div className="w-full h-full">
             <ImageUploading

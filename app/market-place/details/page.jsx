@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image';
+import Link from 'next/link';
 import axios from 'axios';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { Inter } from 'next/font/google'
@@ -15,6 +16,8 @@ import {
 import { loadStripe } from '@stripe/stripe-js';
 import StripeForm from '@/components/addCard/StripeForm';
 import WarningIcon from '@mui/icons-material/Warning';
+import { ThreeDots } from 'react-loader-spinner'
+import Success from '@/components/messages/Success';
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
@@ -26,7 +29,8 @@ export default function AdDetails() {
   const [hasCard, setHasCard] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
-
+  const [isPending, setIsPending] = useState(false)
+  const [isDone, setIsDone] = useState(false)
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
 
@@ -40,7 +44,6 @@ export default function AdDetails() {
       }
     })
       .then(function (response) {
-        console.log(response)
         setData(response.data.data[0])
       })
       .catch(function (error) {
@@ -57,7 +60,6 @@ export default function AdDetails() {
       }
     })
       .then(function (response) {
-        console.log(response)
         if (response.data.data.length > 0) {
           setHasCard(true)
           setAccept(false)
@@ -70,9 +72,10 @@ export default function AdDetails() {
       });
   }, [refetch]);
 
-  console.log('data', data)
   const createPayment = () => {
     //  const { productName,productPrice,interval } = req.body;
+    setIsPending(true)
+
     axios.post('http://localhost:8000/api/payments/create-payment-intent',
       {
         data: data
@@ -83,108 +86,136 @@ export default function AdDetails() {
       }
     })
       .then(function (response) {
-        console.log(response)
+        setIsPending(false)
+        setIsDone(true)
       })
       .catch(function (error) {
         console.log(error)
       });
   }
-  console.log(refetch)
   return (
     <>
-      <div className={`mt-[150px] w-full flex justify-center ${inter.className}`}>
-        <div className='flex flex-col w-1/2 '>
-          <div className='flex flex-col items-center justify-center  '>
-            <div className='w-[150px] h-[150px] '>
-              <Image
-                src='/nouser.png'
-                alt="Adex Logo"
-                priority
-                width={2000}
-                height={2000}
-                className='rounded-full w-full h-full object-cover'
-              />
-            </div>
-            <h1 className='text-[35px] min-w-[250px] text-center'>Hank Eng</h1>
-            <div className="flex items-center justify-center">
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-            </div>
-          </div>
-          <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+      <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
 
-          <div className='flex items-center gap-3'>
-            <div className='w-[230px] h-[230px] shadow-image rounded-lg'>
-              <Image
-                src='/properties-3.jpg'
-                alt="Adex Logo"
-                priority
-                width={2000}
-                height={2000}
-                className='rounded-lg w-full h-full object-cover'
-              />
-            </div>
+        {isDone ? (
+          < Success >
+            <h1 className='text-[25px]'>Contract Accepted</h1>
 
-            <div>
-              <h1 className='text-[20px] font-[500]'>Advertisement type:</h1>
-              <h1 className='text-[20px] font-[500]'>Advertisement Rating:</h1>
-              <h1 className='text-[20px] font-[500]'>General Information:</h1>
-            </div>
-          </div>
-          <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+            <p className='my-4'>You will found the contract details in "my ADEX" section.</p>
 
-          <div className='mt-6'>
-            <h1 className='text-[24px] font-[600]'>Contract Details</h1>
-            <div className='mt-4'>
-              <h1 className='text-[20px] font-[500]'>City and State:</h1>
-              <h1 className='text-[20px] font-[500]'>Requirements:</h1>
+            <div className='flex justify-between w-full'>
+              <Link href='/' className='mt-6'>
+                <SecondaryButton label='later' dark={true} />
+              </Link>
+              <Link href='/my-profile' className='mt-6'>
+                <BlackButton label='view details' />
+              </Link>
             </div>
-          </div>
-          <div className='flex mx-auto mt-[40px] flex-col'>
-            <button onClick={() => setAccept(true)} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-              <p className='style_banner_button_text font-medium '>Accept Contract</p>
-            </button>
-            {accept ? (
-              <>
-                {hasCard ? (
-                  <>
-                    <div className='bg-black scroll-hidden w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAccept(false)}>
-                    </div>
+          </Success>
+        ) : (
+          <div className='flex flex-col w-1/2 '>
+            <div className='flex flex-col items-center justify-center  '>
+              <div className='w-[150px] h-[150px] '>
+                <Image
+                  src='/nouser.png'
+                  alt="Adex Logo"
+                  priority
+                  width={2000}
+                  height={2000}
+                  className='rounded-full w-full h-full object-cover'
+                />
+              </div>
+              <h1 className='text-[35px] min-w-[250px] text-center'>Hank Eng</h1>
+              <div className="flex items-center justify-center">
+                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+              </div>
+            </div>
+            <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
-                    <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
-                      <h1 className='text-[22px] font-[400]'>Would you like to accept the contract proposal?</h1>
-                      <div className='w-full flex justify-between items-center mt-8'>
-                        <div onClick={() => setAccept(false)}>
-                          <SecondaryButton label='Close' dark={true} />
-                        </div>
-                        <button onClick={createPayment} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
-                          <p className='style_banner_button_text font-medium'>Accept</p>
-                        </button>
+            <div className='flex items-center gap-3'>
+              <div className='w-[230px] h-[230px] shadow-image rounded-lg'>
+                <Image
+                  src='/properties-3.jpg'
+                  alt="Adex Logo"
+                  priority
+                  width={2000}
+                  height={2000}
+                  className='rounded-lg w-full h-full object-cover'
+                />
+              </div>
+
+              <div>
+                <h1 className='text-[20px] font-[500]'>Advertisement type:</h1>
+                <h1 className='text-[20px] font-[500]'>Advertisement Rating:</h1>
+                <h1 className='text-[20px] font-[500]'>General Information:</h1>
+              </div>
+            </div>
+            <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+
+            <div className='mt-6'>
+              <h1 className='text-[24px] font-[600]'>Contract Details</h1>
+              <div className='mt-4'>
+                <h1 className='text-[20px] font-[500]'>City and State:</h1>
+                <h1 className='text-[20px] font-[500]'>Requirements:</h1>
+              </div>
+            </div>
+            <div className='flex mx-auto mt-[40px] flex-col'>
+              <button onClick={() => setAccept(true)} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                <p className='style_banner_button_text font-medium '>Accept Contract</p>
+              </button>
+              {accept ? (
+                <>
+                  {hasCard ? (
+                    <>
+                      <div className='bg-black scroll-hidden w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAccept(false)}>
                       </div>
+
+                      <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                        <h1 className='text-[22px] font-[400]'>Would you like to accept the contract proposal?</h1>
+                        <div className='w-full flex justify-between items-center mt-8'>
+                          <div onClick={() => setAccept(false)}>
+                            <SecondaryButton label='Close' dark={true} />
+                          </div>
+                          <button onClick={createPayment} className={`style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
+                            <div className='style_banner_button_text font-semibold text-[18px]  flex items justify-center'>
+                              {isPending ? (
+                                <ThreeDots
+                                  height="30"
+                                  width="40"
+                                  radius="9"
+                                  color="#FCD33B"
+                                  ariaLabel="three-dots-loading"
+                                  visible={true}
+                                />
+                              ) : 'Accept'}
+                            </div>                        </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className='flex gap-2 items-center mt-4'>
+                      <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
+                      <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
                     </div>
-                  </>
-                ) : (
-                  <div className='flex gap-2 items-center mt-4'>
-                    <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
-                    <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
-                  </div>
-                  // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
-                  //   <div className='w-full flex justify-center items-center mt-8'>
-                  //     <button onClick={() => setShowModal(true)} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
-                  //       <p className='style_banner_button_text font-medium'>Add Payment Method</p>
-                  //     </button>
-                  //   </div>
-                  // </div>
+                    // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                    //   <div className='w-full flex justify-center items-center mt-8'>
+                    //     <button onClick={() => setShowModal(true)} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                    //       <p className='style_banner_button_text font-medium'>Add Payment Method</p>
+                    //     </button>
+                    //   </div>
+                    // </div>
 
-                )}
-              </>
-            ) : ''}
+                  )}
+                </>
+              ) : ''}
 
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {showModal ? (

@@ -26,7 +26,6 @@ export default function MarketPlace() {
   });
   const router = useRouter();
   useEffect(() => {
-    console.log('use efectttttt')
     if (located){
       console.log('located')
       async function getAds() {
@@ -60,11 +59,14 @@ export default function MarketPlace() {
       }
       getAds();
     }else{
+      console.log('not located',navigator.geolocation)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position)=>{
           setCoords({lat:position.coords.latitude,lng:position.coords.longitude})
           setLocated(true)
         });
+      }else{
+        console.log('not located')
       }
     }
       

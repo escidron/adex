@@ -8,7 +8,6 @@ import { Inter } from "next/font/google";
 import { Abel } from "next/font/google";
 import favicon from "../public/static/favicon.ico";
 
-console.log("favicon", favicon);
 const inter = Inter({ subsets: ["latin"] });
 const abel = Abel({ subsets: ["latin"], weight: ["400"] });
 
@@ -20,11 +19,15 @@ export const metadata = {
 export const UserContext = createContext();
 
 export default function RootLayout({ children }) {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+
   const [user, setUser] = useState({
     isLogged: false,
     checkLogin: false,
     showLoginOptions: false,
     name: "",
+    image:''
   });
   useEffect(() => {
     async function autoLogin() {
@@ -36,13 +39,14 @@ export default function RootLayout({ children }) {
         }
       );
       if (response.status === 200) {
-        setUser((prev) => ({ ...prev, user: user.name, isLogged: true }));
+        setUser((prev) => ({ ...prev, user: user.name, isLogged: true,image:user.image }));
       } else {
-        setUser((prev) => ({ ...prev, isLogged: false, checkLogin: true }));
+        setUser((prev) => ({ ...prev, isLogged: false, checkLogin: true,image:user.image }));
       }
     }
     autoLogin();
   }, []);
+
   return (
     <html lang="en">
       <head>
@@ -53,9 +57,14 @@ export default function RootLayout({ children }) {
           async
         />
       </head>
-      <body className={abel.className}>
+      <body className={`${abel.className} ${showLoginModal || showSignUpModal?'overflow-hidden':''}`} >
         <UserContext.Provider value={[user, setUser]}>
-          <NavBar />
+          <NavBar 
+          setShowLoginModal={(toggle)=>setShowLoginModal(toggle)} 
+          showLoginModal={showLoginModal}
+          setShowSignUpModal={(toggle)=>setShowSignUpModal(toggle)} 
+          showSignUpModal={showSignUpModal} 
+        />
           {children}
         </UserContext.Provider>
       </body>

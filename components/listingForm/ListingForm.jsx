@@ -17,7 +17,6 @@ export default function ListingForm({ categoryId, typeId,isPeriodic,setSelectedS
           );
           if (response.status === 200) {
             const res = await response.json()
-            console.log(res)
             if(res.data){
                 setHasPayout((prev) => (true));
             }
@@ -25,12 +24,11 @@ export default function ListingForm({ categoryId, typeId,isPeriodic,setSelectedS
         }
         hasPayoutMethod();
       }, []);
-      console.log('hasPayout',hasPayout)
     return (
         <div>
-            {categoryId === 1 ? (<PersonForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)}/> ) : null}
-            {categoryId === 2 ? (<PlaceForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)}/> ) : null}
-            {categoryId === 3 ? (<ThingForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)}/> ) : null}
+            {categoryId === 1 ? (<PersonForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)} hasPayout={hasPayout}/> ) : null}
+            {categoryId === 2 ? (<PlaceForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)} hasPayout={hasPayout}/> ) : null}
+            {categoryId === 3 ? (<ThingForm typeId={typeId} isPeriodic={isPeriodic} setSelectedStep={(step) => setSelectedStep(step)} hasPayout={hasPayout}/> ) : null}
         </div>
     )
 }
