@@ -9,8 +9,21 @@ import { UserContext } from "@/app/layout";
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
+import TextField from "../inputs/TextField";
+import TermsOfUseModal from "./TermsOfUseModal";
 
 const inter = Inter({ subsets: ['latin'] })
+
+
+
+export default function SignUpModal({ setShowSignUpModal }) {
+  const [user, setUser] = useContext(UserContext)
+  const [accountType, setAccountType] = useState('');
+  const [selected, setSelected] = useState(null);
+  const [isPending, setIsPending] = useState(false)
+  const [checkTerms, setCheckTerms] = useState(false)
+  const router = useRouter();
+console.log('termsss',checkTerms)
 
 const validate = values => {
   const errors = {};
@@ -44,17 +57,13 @@ const validate = values => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address';
   }
+  if (!checkTerms) {
+    errors.checkTerms = 'Required';
+  }
+  console.log(errors)
 
   return errors;
 };
-
-export default function SignUpModal({ setShowSignUpModal }) {
-  const [user, setUser] = useContext(UserContext)
-  const [accountType, setAccountType] = useState('');
-  const [selected, setSelected] = useState(null);
-  const [isPending, setIsPending] = useState(false)
-
-  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +73,8 @@ export default function SignUpModal({ setShowSignUpModal }) {
       phone: '',
       password: '',
       password2: '',
-      accountType: ''
+      accountType: '',
+      checkTerms:checkTerms
     },
     validate,
     onSubmit: values => {
@@ -80,8 +90,8 @@ export default function SignUpModal({ setShowSignUpModal }) {
           password: values.password,
           accountType: accountType
         }, {
-          withCredentials: true,
-          headers: {
+        withCredentials: true,
+        headers: {
           'content-type': 'application/json'
         }
       })
@@ -111,125 +121,96 @@ export default function SignUpModal({ setShowSignUpModal }) {
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  fixed z-[99] top-0 left-0">
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
-      <div onClick={()=>setShowSignUpModal(false)} className="z-[91] absolute top-[40px] cursor-pointer">
-                <Image
-                    src='/adex-logo-white-yellow.png'
-                    alt="Adex Logo"
-                    width={70}
-                    height={70}
-                    priority
-                />
-            </div>
-      <form className=" z-[91] flex flex-col justify-center items-center text-black font-[400] w-[400px] h-auto mt-[95px]" onSubmit={formik.handleSubmit}>
+      <div onClick={() => setShowSignUpModal(false)} className="z-[91] absolute top-[30px] cursor-pointer">
+        <Image
+          src='/adex-logo-white-yellow.png'
+          alt="Adex Logo"
+          width={70}
+          height={70}
+          priority
+        />
+      </div>
+      <form className=" z-[91] flex flex-col justify-center items-center text-black font-[400] w-[400px] h-auto mt-[55px]" onSubmit={formik.handleSubmit}>
         <p className="text-white text-[36px]">Register</p>
         <p className="text-white text-[18px] font-normal mb-6 mt-2">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
 
         <div className=" w-full relative">
-          <div className="flex">
-            <label htmlFor="firstName" className="block text-white  mb-1">
-              First Name
-            </label>
-            {formik.touched.firstName && formik.errors.firstName ? <div className="ml-4 text-red-600 font-bold">{formik.errors.firstName}</div> : null}
-
-          </div>
-          <input
+          <TextField
             id="firstName"
+            label='First Name'
             name="firstName"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.firstName}
-            className={`w-full border-2 focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.firstName}
           />
+          {formik.touched.firstName && formik.errors.firstName ? <div className="absolute top-[50px]  text-red-600 font-bold">{formik.errors.firstName}</div> : null}
         </div>
 
-        <div className=" mt-2 w-full relative">
-          <div className="flex">
-            <label htmlFor="lastName" className="block text-white  mb-1">
-              Last Name
-            </label>
-            {formik.touched.lastName && formik.errors.lastName ? <div className="ml-4 text-red-600  font-bold">{formik.errors.lastName}</div> : null}
-          </div>
-          <input
+        <div className=" mt-8 w-full relative">
+          <TextField
             type="text"
+            label='Last Name'
             id="lastName"
-            name="lastName"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.lastName}
-            className={`w-full border-2 focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.lastName}
           />
+          {formik.touched.lastName && formik.errors.lastName ? <div className="absolute top-[50px] text-red-600  font-bold">{formik.errors.lastName}</div> : null}
         </div>
-        <div className=" mt-2 w-full relative">
-          <div className="flex">
-            <label htmlFor="email" className="block text-white  mb-1">
-              Email
-            </label>
-            {formik.touched.email && formik.errors.email ? <div className="ml-4 text-red-600 font-bold">{formik.errors.email}</div> : null}
-          </div>
-          <input
+        <div className=" mt-8 w-full relative">
+          <TextField
             type="text"
+            label='Email'
             id="email"
-            name="email"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className={`w-full border-2 focus:border-black  p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.email}
           />
+          {formik.touched.email && formik.errors.email ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.email}</div> : null}
         </div>
-        <div className=" mt-2 w-full relative">
-          <div className="flex">
-            <label htmlFor="phone" className="block text-white  mb-1">
-              Phone Number
-            </label>
-            {formik.touched.phone && formik.errors.phone ? <div className="ml-4 text-red-600 font-bold">{formik.errors.phone}</div> : null}
-          </div>
-          <input
+        <div className=" mt-8 w-full relative">
+          <TextField
             type="text"
+            label='Phone Number'
             id="phone"
-            name="phone"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.phone}
-            className={`w-full border-2 focus:border-black  p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.phone}
           />
+          {formik.touched.phone && formik.errors.phone ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.phone}</div> : null}
         </div>
-        <div className=" mt-2 w-full relative">
-          <div className="flex">
-            <label htmlFor="password" className="block text-white  mb-1">
-              Password
-            </label>
-            {formik.touched.password && formik.errors.password ? <div className="ml-4 text-red-600 font-bold">{formik.errors.password}</div> : null}
-          </div>
-          <input
+        <div className=" mt-8 w-full relative">
+
+          <TextField
             type="password"
+            label='Password'
             id="password"
-            name="password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
-            className={`w-full border-2 focus:border-black  p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.password}
           />
+          {formik.touched.password && formik.errors.password ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password}</div> : null}
         </div>
-        <div className=" mt-2 w-full relative">
-          <div className="flex">
-            <label htmlFor="password2" className="block text-white  mb-1">
-              Confirm Password
-            </label>
-            {formik.touched.password2 && formik.errors.password2 ? <div className="ml-4 text-red-600 font-bold">{formik.errors.password2}</div> : null}
-          </div>
-          <input
+        <div className=" mt-8 w-full relative">
+          <TextField
             type="password"
+            label='Confirm Password'
             id="password2"
-            name="password2"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password2}
-            className={`w-full border-2 focus:border-black  p-2 rounded-lg outline-none ${inter.className}`}
+            erros={formik.errors.password2}
           />
+          {formik.touched.password2 && formik.errors.password2 ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password2}</div> : null}
         </div>
-        <div className=" mt-2 w-full relative">
+        <div className=" mt-4 w-full relative">
           <div className="flex">
-            <label htmlFor="phone" className="block text-white  mb-1">
+            <label htmlFor="account" className="block text-white  mb-1">
               Account Type
             </label>
             {formik.touched.accountType && formik.errors.accountType ? <div className="ml-4 text-red-600 font-bold">{formik.errors.accountType}</div> : null}
@@ -281,17 +262,21 @@ export default function SignUpModal({ setShowSignUpModal }) {
             </div>
           </div>
         </div>
-        <button type="submit" className={`z-10 bg-[#FCD33B] font-[600] py-[8px] text-black px-[30px] rounded-md mt-8 w-full md:mt-7 ${!isPending?'hover:bg-black hover:text-[#FCD33B]':''}  text-lg`}>
-            {isPending ? (
-              <ThreeDots
-                height="30"
-                width="40"
-                radius="9"
-                color="black"
-                ariaLabel="three-dots-loading"
-                visible={true}
-              />
-            ) : 'Sign Up'}
+        <div className={`flex rounded-lg items-center gap-4 mt-2 ${formik.errors.checkTerms && !checkTerms?'border p-1 border-red-600':''}`}>
+          <input type="checkbox" onClick={()=>setCheckTerms(!checkTerms)} />
+          <p className="text-white ">I have read and agree to the <Link href='/terms-of-use' target="_blank" className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms?' border-red-600':''}`}>Terms of service</Link> </p>
+        </div>
+        <button type="submit" className={`z-10 flex justify-center items-center bg-[#FCD33B] font-[600] py-[8px] text-black px-[30px] rounded-md mt-4 w-full ${!isPending ? 'hover:bg-black hover:text-[#FCD33B]' : ''}  text-lg`}>
+          {isPending ? (
+            <ThreeDots
+              height="30"
+              width="40"
+              radius="9"
+              color="black"
+              ariaLabel="three-dots-loading"
+              visible={true}
+            />
+          ) : 'Sign Up'}
 
         </button>
         <p className="text-white mt-5">Have an account? <Link href='/login' className="text-[#FCD33B] hover:opacity-80">Login</Link></p>

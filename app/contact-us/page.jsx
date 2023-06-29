@@ -136,7 +136,7 @@ export default function ContactPage() {
                     value={formik.values.message}
                     className={`w-full border  p-3 rounded-lg outline-none h-[140px] resize-none ${inter.className}`} 
                 />
-                {formik.touched.message && formik.errors.message ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.message}</div> : null}
+                {formik.touched.message && formik.errors.message ? <div className="absolute  top-[170px] text-red-600 font-bold">{formik.errors.message}</div> : null}
             </div>
 
             <button className='z-10 bg-[#FCD33B] py-[8px] px-[40px] rounded-md mt-4  md:mt-5 hover:bg-black hover:text-[#FCD33B] text-lg

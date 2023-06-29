@@ -8,12 +8,13 @@ import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
+import TextField from "../inputs/TextField";
 
 const inter = Inter({ subsets: ['latin'] })
 
 const validate = values => {
     const errors = {};
-
+console.log('erros',values)
     if (!values.password) {
         errors.password = 'Required';
     }
@@ -81,41 +82,38 @@ export default function LoginModal({ setShowLoginModal }) {
             <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto ${inter.className}`} onSubmit={formik.handleSubmit} >
                 <p className="text-white text-[36px]">Login</p>
                 <p className="text-white text-[18px] font-normal mt-2">Sign in to <span className="text-[#FCD33B]">continue.</span></p>
-                <div className=" mt-6 w-full relative">
-                    <label htmlFor="email" className="block text-white  mb-1">
-                        Email
-                    </label>
-                    <input
-                        type="text"
-                        id="email"
-                        name="email"
+                <div className=" mt-6 w-full relative text-black ">
+                    <TextField 
+                        id='email'
+                        label='Email'
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                        errors={formik.errors.email}
+                    />
+
+                    {/* <input
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
                         className="w-full border text-black p-3 rounded-lg outline-none"
-                    />
-                    {formik.touched.email && formik.errors.email ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.email}</div> : null}
-                    {emailError && !formik.errors.email ? <div className="absolute top-[80px]  text-red-600 font-bold ">{emailError}</div> : null}
+                    /> */}
+                    {formik.touched.email && formik.errors.email ? <div className="absolute  top-[50px] text-red-600 font-bold">{formik.errors.email}</div> : null}
+                    {emailError && !formik.errors.email ? <div className="absolute top-[50px]  text-red-600 font-bold ">{emailError}</div> : null}
 
                 </div>
 
-                <div className=" mt-6 w-full relative">
-                    <label htmlFor="password" className="block text-white  mb-1">
-                        Password
-                    </label>
-                    <input
+                <div className=" mt-8 w-full relative text-black">
+                    <TextField 
                         type="password"
+                        label='Pasword'
                         id="password"
-                        name="password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.password}
-                        className="w-full border text-black p-3 rounded-lg outline-none"
                     />
-                    {formik.touched.password && formik.errors.password ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.password}</div> : null}
-                    {passwordError && !formik.errors.password ? <div className="absolute top-[80px]  text-red-600 font-bold ">{passwordError}</div> : null}
-
-
+                    {formik.touched.password && formik.errors.password ? <div className="absolute  top-[50px] text-red-600 font-bold">{formik.errors.password}</div> : null}
+                    {passwordError && !formik.errors.password ? <div className="absolute top-[50px]  text-red-600 font-bold ">{passwordError}</div> : null}
                 </div>
 
                 <Link href='/hello' className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80">Forgot Password ?</Link>
