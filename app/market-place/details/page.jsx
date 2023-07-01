@@ -44,7 +44,8 @@ export default function AdDetails() {
       }
     })
       .then(function (response) {
-        setData(response.data.data[0])
+        setData(response.data.data)
+        console.log('ad details',response.data.data)
       })
       .catch(function (error) {
         console.log(error)
@@ -117,15 +118,15 @@ export default function AdDetails() {
             <div className='flex flex-col items-center justify-center  '>
               <div className='w-[150px] h-[150px] '>
                 <Image
-                  src='/nouser.png'
-                  alt="Adex Logo"
+                  src={data.seller_image?data.seller_image:'/nouser.png'}
+                  alt="Seller Logo"
                   priority
                   width={2000}
                   height={2000}
                   className='rounded-full w-full h-full object-cover'
                 />
               </div>
-              <h1 className='text-[35px] min-w-[250px] text-center'>Hank Eng</h1>
+              <h1 className='text-[35px] min-w-[250px] text-center'>{data.seller_name}</h1>
               <div className="flex items-center justify-center">
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
@@ -139,12 +140,12 @@ export default function AdDetails() {
             <div className='flex items-center gap-3'>
               <div className='w-[230px] h-[230px] shadow-image rounded-lg'>
                 <Image
-                  src='/properties-3.jpg'
+                  src={data.image}
                   alt="Adex Logo"
                   priority
                   width={2000}
                   height={2000}
-                  className='rounded-lg w-full h-full object-cover'
+                  className='rounded-lg w-full h-full object-contain'
                 />
               </div>
 

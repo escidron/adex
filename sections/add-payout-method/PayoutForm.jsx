@@ -8,6 +8,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
 import { ThreeDots } from  'react-loader-spinner'
+import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -56,6 +57,7 @@ export default function PayoutForm({ setStripeAccount }) {
     },
     validate,
     onSubmit: values => {
+      toast.dismiss()
 
       setIsPending(true)
         axios.post('http://localhost:8000/api/users/update-address',
@@ -80,11 +82,24 @@ export default function PayoutForm({ setStripeAccount }) {
             }
           })
           .catch(function (error) {
+            setIsPending(false)
+            console.log('addres error',error.response.data.error)
+            toast.error(error.response.data.error, {
+              duration: 20000,
+              style: {
+                  width: 'auto',
+                  padding: '16px',
+                  minWidth: '550px',
+                  fontWeight: 500
+
+              }
+          })
           });
     },
   });
   return (
     <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
+      <div><Toaster /></div>
       <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
         <p className=" text-[36px]">Address</p>
         <p className=" text-[18px] font-normal mb-6">Register your bill address</p>

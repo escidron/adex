@@ -24,7 +24,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout }) {
   const currentDate = new Date();
   let currentDateDay = currentDate.getDate();
-  let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
+  let currentDateMonth = currentDate.getMonth();
   let currentDateYear = currentDate.getFullYear()
   const [isPending, setIsPending] = useState(false)
   const [durationType, setdurationType] = useState('1');
@@ -64,7 +64,18 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
       errors.description = 'Required';
     }
 
-    if (currentDateDay >= date.$D || currentDateMonth > date.$M || currentDateYear > date.$y) {
+
+
+
+    console.log(`${currentDateMonth}/${currentDateDay}/${currentDateYear}`)
+    console.log(`${date.$D}/${date.$M}/${date.$y}`)
+
+    const currentDate = new Date(`${currentDateMonth}/${currentDateDay}/${currentDateYear}`);
+    const inputDate = new Date(`${date.$M}/${date.$D}/${date.$y}`);
+console.log(currentDate)
+console.log(inputDate)
+
+    if (currentDate >= inputDate) {
       errors.date = 'Must be higher';
     }
 

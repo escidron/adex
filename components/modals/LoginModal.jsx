@@ -9,12 +9,12 @@ import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import TextField from "../inputs/TextField";
+import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
 const validate = values => {
     const errors = {};
-console.log('erros',values)
     if (!values.password) {
         errors.password = 'Required';
     }
@@ -22,7 +22,7 @@ console.log('erros',values)
     if (!values.email) {
         errors.email = 'Required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
+        errors.email = 'Invalid email address, please enter a valid email';
     }
 
     return errors;
@@ -41,7 +41,7 @@ export default function LoginModal({ setShowLoginModal }) {
         },
         validate,
         onSubmit: values => {
-
+            toast.dismiss()
             axios.post('http://localhost:8000/api/users/auth',
                 {
                     email: values.email,
@@ -53,15 +53,31 @@ export default function LoginModal({ setShowLoginModal }) {
                 }
             })
                 .then(function (response) {
-                    setUser((prev)=>({ ...prev, isLogged: true, name: response.data.name, checkLogin: false, showLoginOptions: false,image:response.data.image }))
+                    setUser((prev) => ({ ...prev, isLogged: true, name: response.data.name, checkLogin: false, showLoginOptions: false, image: response.data.image }))
                     setShowLoginModal(false)
                 })
                 .catch(function (error) {
 
                     if (error.response.status === 400) {
-                        setEmailError(error.response.data.message)
+                        toast.error(error.response.data.message, {
+                            duration: 10000,
+                            style: {
+                                width: 'auto',
+                                padding: '16px',
+                                minWidth: '450px',
+                                fontWeight: 500
+
+                            }
+                        })
                     } else {
-                        setPasswordError(error.response.data.message)
+                        toast.error(error.response.data.message, {
+                            duration: 10000,
+                            style: {
+                                padding: '8px',
+                                fontWeight: 500
+
+                            }
+                        })
                     }
                 });
         },
@@ -69,7 +85,7 @@ export default function LoginModal({ setShowLoginModal }) {
     return (
         <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
-
+            <div><Toaster /></div>
             <div onClick={() => setShowLoginModal(false)} className="z-[91] absolute top-[40px] cursor-pointer">
                 <Image
                     src='/adex-logo-white-yellow.png'
@@ -83,7 +99,7 @@ export default function LoginModal({ setShowLoginModal }) {
                 <p className="text-white text-[36px]">Login</p>
                 <p className="text-white text-[18px] font-normal mt-2">Sign in to <span className="text-[#FCD33B]">continue.</span></p>
                 <div className=" mt-6 w-full relative text-black ">
-                    <TextField 
+                    <TextField
                         id='email'
                         label='Email'
                         onChange={formik.handleChange}
@@ -92,19 +108,12 @@ export default function LoginModal({ setShowLoginModal }) {
                         errors={formik.errors.email}
                     />
 
-                    {/* <input
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                        className="w-full border text-black p-3 rounded-lg outline-none"
-                    /> */}
                     {formik.touched.email && formik.errors.email ? <div className="absolute  top-[50px] text-red-600 font-bold">{formik.errors.email}</div> : null}
                     {emailError && !formik.errors.email ? <div className="absolute top-[50px]  text-red-600 font-bold ">{emailError}</div> : null}
-
                 </div>
 
                 <div className=" mt-8 w-full relative text-black">
-                    <TextField 
+                    <TextField
                         type="password"
                         label='Pasword'
                         id="password"

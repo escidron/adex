@@ -1,5 +1,5 @@
 "use client"
-import { useContext,useState,useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
@@ -14,50 +14,62 @@ import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import LoginModal from '../modals/LoginModal';
 import SignUpModal from '../modals/SignUpModal';
+import toast, { Toaster } from "react-hot-toast";
+
 const inter = Inter({ subsets: ['latin'] })
 
-export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModal,setShowSignUpModal }) {
+export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal }) {
     const pathname = usePathname();
-    const [user,setUser] = useContext(UserContext)
+    const [user, setUser] = useContext(UserContext)
     const router = useRouter();
     useEffect(() => {
         async function autoLogin() {
-        const response = await fetch("http://localhost:8000/api/users/autologin", {
-            method: "GET",
-            credentials: "include",
-        });
-        if (response.status === 200) {
-            const user = await response.json()
-            setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false,image:user.image}));
-        } else {
-        }
+            const response = await fetch("http://localhost:8000/api/users/autologin", {
+                method: "GET",
+                credentials: "include",
+            });
+            if (response.status === 200) {
+                const user = await response.json()
+                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image }));
+            } else {
+                console.log('response',response)
+            }
         }
         autoLogin();
     }, []);
-    
-    const handleRoute = ()=>{
-        if(user.isLogged){
-            router.push('/market-place') 
-        }else{
+
+    const handleRoute = () => {
+        if (user.isLogged) {
+            router.push('/market-place')
+        } else {
 
             router.push('/login')
         }
     }
-    const logout = ()=>{
-        axios.post('http://localhost:8000/api/users/logout',
-        {
+    const logout = () => {
+        toast.dismiss()
 
-      }, {
-          withCredentials: true,
-          headers: {
-            'content-type': 'application/json'
-          }})
-        .then(function (response) {
-            setUser({...user,isLogged:false,name:'',checkLogin:true})
-            router.push('/')
+        axios.post('http://localhost:8000/api/users/logout',
+            {
+
+            }, {
+            withCredentials: true,
+            headers: {
+                'content-type': 'application/json'
+            }
         })
-        .catch(function (error) {
-        });
+            .then(function (response) {
+                setUser({ ...user, isLogged: false, name: '', checkLogin: true })
+                router.push('/')
+                toast.success(response.data.message, {
+                    duration: 3000,
+                    style: {
+                        fontWeight: 500
+                    }
+                })
+            })
+            .catch(function (error) {
+            });
     }
 
     //sm:bg-red-700 md:bg-blue-700 lg:bg-green-700 xl:bg-gray-500 2xl:bg-yellow-500
@@ -67,6 +79,7 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                         lg:justify-center ${inter.className}
                         `}>
 
+            <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden 
                                 md:flex  md:justify-between md:items-center w-[500px]
@@ -84,7 +97,7 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                             width={70}
                             height={70}
                             priority
-                        />  
+                        />
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
@@ -92,7 +105,7 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
             </section>
             {user.isLogged
                 ? (
-                    <div onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))}  className='hidden cursor-pointer  p-1
+                    <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))} className='hidden cursor-pointer  p-1
                             md:flex items-center 
                             lg:absolute lg:top-[26px] lg:right-[40px]
                             xl:top-[26px] xl:right-[80px]
@@ -100,9 +113,9 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                             duration-500
                             ease-linear
                             '>
-                        <Image 
-                        
-                            src={user.image?user.image:nouser}
+                        <Image
+
+                            src={user.image ? user.image : nouser}
                             alt="user image"
                             width={30}
                             height={30}
@@ -110,9 +123,9 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                         />
                         <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
                         <ArrowDropDownIcon />
-                        {user.showLoginOptions?                     
-                            <div  onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} 
-                            className="absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        {user.showLoginOptions ?
+                            <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))}
+                                className="absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <Link href="/my-profile" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:rounded-t-lg hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                                     Profile
                                 </Link>
@@ -120,25 +133,25 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                                     Messages
                                 </Link>
                                 <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                <LogoutIcon fontSize='small' sx={{marginRight:'2px'}}/>
+                                    <LogoutIcon fontSize='small' sx={{ marginRight: '2px' }} />
                                     Logout
                                 </Link>
-                            </div>:
-                        ""}
+                            </div> :
+                            ""}
 
                     </div>
                 )
-                :   pathname !=='/login' && pathname!=='/sign-up' && user.checkLogin?
-                        ( <div className='hidden h-[90px]
+                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin ?
+                    (<div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <div onClick={()=>setShowLoginModal(true)} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
+                        <div onClick={() => setShowLoginModal(true)} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
                         </div>
-                        <div onClick={()=>setShowSignUpModal(true)} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
+                        <div onClick={() => setShowSignUpModal(true)} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
                         </div>
-                    </div>):''
-                    
+                    </div>) : ''
+
             }
 
             {/* mobile screen */}
@@ -153,49 +166,49 @@ export default function NavBar({ setShowLoginModal,showLoginModal,showSignUpModa
                     />
                 </Link>
             </div>
-            <div className='cursor-pointer md:hidden flex items-center justify-self-end' onClick={()=> setUser((prev)=>({...prev,showLoginOptions:!prev.showLoginOptions}))} >
+            <div className='cursor-pointer md:hidden flex items-center justify-self-end' onClick={() => setUser((prev) => ({ ...prev, showLoginOptions: !prev.showLoginOptions }))} >
                 <MenuIcon fontSize='large' />
             </div>
-            {user.showLoginOptions?                     
-                            <div  onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} className="md:hidden absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <div onClick={()=>setShowLoginModal(true)} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    Login
-                                </div>
-                                <div onClick={()=>setShowSignUpModal(true)} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    Sign Up
-                                </div>
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    Profile
-                                </Link>
-                                <Link href="/how-it-works" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    How it Works
-                                </Link>
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    Contact us
-                                </Link>
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    Create a Listing
-                                </Link>
-                                <Link href="/market-place" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    ADEX market Place
-                                </Link>
-                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                <LogoutIcon fontSize='small' sx={{marginRight:'2px'}}/>
-                                    Logout
-                                </Link>
-                            </div>:
-                        ""}
+            {user.showLoginOptions ?
+                <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))} className="md:hidden absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <div onClick={() => setShowLoginModal(true)} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Login
+                    </div>
+                    <div onClick={() => setShowSignUpModal(true)} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Sign Up
+                    </div>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Profile
+                    </Link>
+                    <Link href="/how-it-works" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        How it Works
+                    </Link>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Contact us
+                    </Link>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Create a Listing
+                    </Link>
+                    <Link href="/market-place" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        ADEX market Place
+                    </Link>
+                    <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        <LogoutIcon fontSize='small' sx={{ marginRight: '2px' }} />
+                        Logout
+                    </Link>
+                </div> :
+                ""}
 
-        {showLoginModal?(
-            <LoginModal setShowLoginModal={setShowLoginModal}/>
-        ):(
-            ''
-        )}                
-        {showSignUpModal?(
-            <SignUpModal setShowSignUpModal={setShowSignUpModal}/>
-        ):(
-            ''
-        )}                
+            {showLoginModal ? (
+                <LoginModal setShowLoginModal={setShowLoginModal} />
+            ) : (
+                ''
+            )}
+            {showSignUpModal ? (
+                <SignUpModal setShowSignUpModal={setShowSignUpModal} />
+            ) : (
+                ''
+            )}
         </div>
     )
 }

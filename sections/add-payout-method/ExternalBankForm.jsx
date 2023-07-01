@@ -7,6 +7,7 @@ import { Inter } from 'next/font/google'
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 import { ThreeDots } from 'react-loader-spinner'
+import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,6 +52,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
         validate,
         onSubmit: values => {
             setIsPending(true)
+            toast.dismiss()
             axios.post('http://localhost:8000/api/payments/external-bank',
                 {
                     routingNumber: values.routingNumber,
@@ -72,12 +74,23 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                 .catch(function (error) {
                     setIsPending(false)
                     console.log(error)
+                    toast.error(error.response.data.error, {
+                        duration: 20000,
+                        style: {
+                            width: 'auto',
+                            padding: '16px',
+                            minWidth: '550px',
+                            fontWeight: 500
+          
+                        }
+                    })
                 });
         },
     });
 
     return (
         <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
+            <div><Toaster /></div>
             <form className="text-black z-[91] relative px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
                 <Link href='/my-profile' className='absolute top-4 right-4'>
                     <CloseIcon sx={{ "&:hover": { color: "#FCD33B" } }} />

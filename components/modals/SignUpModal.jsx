@@ -11,6 +11,8 @@ import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
 import TextField from "../inputs/TextField";
 import TermsOfUseModal from "./TermsOfUseModal";
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,47 +25,42 @@ export default function SignUpModal({ setShowSignUpModal }) {
   const [isPending, setIsPending] = useState(false)
   const [checkTerms, setCheckTerms] = useState(false)
   const router = useRouter();
-console.log('termsss',checkTerms)
 
-const validate = values => {
-  const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'Required';
-  }
+  const validate = values => {
+    const errors = {};
+    if (!values.firstName) {
+      errors.firstName = 'Required';
+    }
 
-  if (!values.lastName) {
-    errors.lastName = 'Required';
-  }
+    if (!values.lastName) {
+      errors.lastName = 'Required';
+    }
 
-  if (!values.phone) {
-    errors.phone = 'Required';
-  }
+    if (!values.phone) {
+      errors.phone = 'Required';
+    }
 
-  if (!values.password) {
-    errors.password = 'Required';
-  }
-  if (!values.accountType) {
-    errors.accountType = 'Required';
-  }
+    if (!values.password) {
+      errors.password = 'Required';
+    }
+    if (!values.accountType) {
+      errors.accountType = 'Required';
+    }
 
-  if (!values.password2) {
-    errors.password2 = 'Required';
+    if (!values.password2) {
+      errors.password2 = 'Required';
 
-  } else if (values.password2 !== values.password) {
-    errors.password2 = 'passwords must be equal'
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-  if (!checkTerms) {
-    errors.checkTerms = 'Required';
-  }
-  console.log(errors)
+    } else if (values.password2 !== values.password) {
+      errors.password2 = 'passwords must be equal'
+    }
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = 'Invalid email address';
+    }
 
-  return errors;
-};
+    return errors;
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -74,35 +71,67 @@ const validate = values => {
       password: '',
       password2: '',
       accountType: '',
-      checkTerms:checkTerms
+      checkTerms: checkTerms
     },
     validate,
     onSubmit: values => {
       setIsPending(true)
-
-      axios.post('http://localhost:8000/api/users',
-        {
-          name: `${values.firstName} ${values.lastName}`,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          phone: values.phone,
-          email: values.email,
-          password: values.password,
-          accountType: accountType
-        }, {
-        withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-        .then(function (response) {
-          setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false })
-          router.push('/')
-          setIsPending(false)
-          setShowSignUpModal(false)
+      toast.dismiss()
+      if(checkTerms){
+        console.log('entrou no axios')
+        axios.post('http://localhost:8000/api/users',
+          {
+            name: `${values.firstName} ${values.lastName}`,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phone: values.phone,
+            email: values.email,
+            password: values.password,
+            accountType: accountType
+          }, {
+          withCredentials: true,
+          headers: {
+            'content-type': 'application/json'
+          }
         })
-        .catch(function (error) {
-        });
+          .then(function (response) {
+            if (response.status === 200) {
+              console.log(response)
+              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false })
+              router.push('/')
+              setIsPending(false)
+              setShowSignUpModal(false)
+            } else if (response.status === 401) {
+              console.log(response.data.error)
+            }
+          })
+          .catch(function (error) {
+            console.log(' sign up', error.response.data.error)
+            setIsPending(false)
+            toast.error(error.response.data.error, {
+              duration: 10000,
+              style: {
+                width: 'auto',
+                padding: '16px',
+                minWidth: '450px',
+                fontWeight:500
+  
+              }
+            })
+          });
+      }else{
+        setIsPending(false)
+        toast.error('Accept the terms of service before continue.', {
+          duration: 10000,
+          style: {
+            width: 'auto',
+            padding: '16px',
+            minWidth: '450px',
+            fontWeight:500
+
+          }
+        })
+      }
     },
   });
 
@@ -120,8 +149,13 @@ const validate = values => {
   }
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  fixed z-[99] top-0 left-0">
+      <div><Toaster />
+      </div>
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
-      <div onClick={() => setShowSignUpModal(false)} className="z-[91] absolute top-[30px] cursor-pointer">
+      <div onClick={() => {
+        toast.dismiss()
+        setShowSignUpModal(false)
+      }} className="z-[91] absolute top-[30px] cursor-pointer">
         <Image
           src='/adex-logo-white-yellow.png'
           alt="Adex Logo"
@@ -262,9 +296,9 @@ const validate = values => {
             </div>
           </div>
         </div>
-        <div className={`flex rounded-lg items-center gap-4 mt-2 ${formik.errors.checkTerms && !checkTerms?'border p-1 border-red-600':''}`}>
-          <input type="checkbox" onClick={()=>setCheckTerms(!checkTerms)} />
-          <p className="text-white ">I have read and agree to the <Link href='/terms-of-use' target="_blank" className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms?' border-red-600':''}`}>Terms of service</Link> </p>
+        <div className={`flex rounded-lg items-center gap-4 mt-2`}>
+          <input type="checkbox" onClick={() => setCheckTerms(!checkTerms)} />
+          <p className="text-white ">I have read and agree to the <Link href='/terms-of-use' target="_blank" className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</Link> </p>
         </div>
         <button type="submit" className={`z-10 flex justify-center items-center bg-[#FCD33B] font-[600] py-[8px] text-black px-[30px] rounded-md mt-4 w-full ${!isPending ? 'hover:bg-black hover:text-[#FCD33B]' : ''}  text-lg`}>
           {isPending ? (
