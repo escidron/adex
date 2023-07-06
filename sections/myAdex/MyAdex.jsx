@@ -3,6 +3,7 @@ import TabsComponent from '@/components/tabs/TabsComponent'
 import MyListing from './MyListing'
 import MyBooking from './MyBooking'
 import axios from 'axios'
+
 const MockData = [
   {
     id: 1,
@@ -26,6 +27,13 @@ const MockData = [
 export default function MyAdex() {
   const [listingData, setListingData] = useState([]);
   const [bookingData, setBookingData] = useState([]);
+  const [counted,setCounted] = useState(false)
+  const [status, setStatus] = useState({
+    available:0,
+    running:0,
+    finished:0,
+    pending:0
+  });
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/my-advertisement',
       {}, {
@@ -36,12 +44,14 @@ export default function MyAdex() {
     })
       .then(function (response) {
         setListingData(response.data.data)
+        setStatus(response.data.status)
       })
       .catch(function (error) {
         console.log(error)
       });
   }, []);
-  
+  console.log('status',status)
+
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/my-booking',
       {}, {
@@ -60,12 +70,12 @@ export default function MyAdex() {
   return (
     <div className='w-full flex flex-col items-center '>
       <div>
-        <h1 className='text-[30px] mt-8'>My ADEX</h1>
+        <h1 className='text-[30px] mt-4'>My ADEX</h1>
       </div>
-      <div className='flex mt-4 w-[80%] items-center'>
-        <div className='w-[60%]'>
+      <div className='flex w-[80%] items-center'>
+        <div className='w-[40%]'>
           <TabsComponent>
-            <MyListing label='My Listing' data={listingData} />
+            <MyListing label='My Listing' data={listingData} status={status}  />
             <MyBooking label='My Booking' data={bookingData}/>
           </TabsComponent>
         </div>

@@ -4,7 +4,6 @@ import { useSearchParams } from 'next/navigation'
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { Inter } from 'next/font/google'
 import { Divider } from '@mui/material';
 import BlackButton from '@/components/buttons/BlackButton';
@@ -18,11 +17,15 @@ import StripeForm from '@/components/addCard/StripeForm';
 import WarningIcon from '@mui/icons-material/Warning';
 import { ThreeDots } from 'react-loader-spinner'
 import Success from '@/components/messages/Success';
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import Reservation from '@/components/reservation/Reservation';
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
 
 const inter = Inter({ subsets: ['latin'] })
+
 export default function AdDetails() {
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
@@ -35,7 +38,6 @@ export default function AdDetails() {
   const id = searchParams.get('id')
 
   useEffect(() => {
-
     axios.post('http://localhost:8000/api/advertisements/details',
       { id: id }, {
       withCredentials: true,
@@ -45,7 +47,7 @@ export default function AdDetails() {
     })
       .then(function (response) {
         setData(response.data.data)
-        console.log('ad details',response.data.data)
+        console.log('ad details', response.data.data)
       })
       .catch(function (error) {
         console.log(error)
@@ -73,34 +75,13 @@ export default function AdDetails() {
       });
   }, [refetch]);
 
-  const createPayment = () => {
-    //  const { productName,productPrice,interval } = req.body;
-    setIsPending(true)
-
-    axios.post('http://localhost:8000/api/payments/create-payment-intent',
-      {
-        data: data
-      }, {
-      withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
-      .then(function (response) {
-        setIsPending(false)
-        setIsDone(true)
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
-  }
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
 
         {isDone ? (
           < Success >
-            <h1 className='text-[25px]'>Contract Accepted</h1>
+            <h1 className='text-[25px]'>Booking created</h1>
 
             <p className='my-4'>You will found the contract details in "my ADEX" section.</p>
 
@@ -118,7 +99,7 @@ export default function AdDetails() {
             <div className='flex flex-col items-center justify-center  '>
               <div className='w-[150px] h-[150px] '>
                 <Image
-                  src={data.seller_image?data.seller_image:'/nouser.png'}
+                  src={data.seller_image ? data.seller_image : '/nouser.png'}
                   alt="Seller Logo"
                   priority
                   width={2000}
@@ -137,34 +118,56 @@ export default function AdDetails() {
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
-            <div className='flex items-center gap-3'>
-              <div className='w-[230px] h-[230px] shadow-image rounded-lg'>
-                <Image
-                  src={data.image}
-                  alt="Adex Logo"
-                  priority
-                  width={2000}
-                  height={2000}
-                  className='rounded-lg w-full h-full object-contain'
-                />
-              </div>
+            <div className='flex gap-3 justify-between '>
+              <div className='w-[50%]'>
+                <div className='w-full h-[300px] shadow-image rounded-lg'>
+                  <Image
+                    src={data.image ? data.image : '/nouser.png'}
+                    alt="Adex Logo"
+                    priority
+                    width={2000}
+                    height={2000}
+                    className='rounded-lg w-full h-full object-cover'
+                  />
+                </div>
 
-              <div>
-                <h1 className='text-[20px] font-[500]'>Advertisement type:</h1>
-                <h1 className='text-[20px] font-[500]'>Advertisement Rating:</h1>
-                <h1 className='text-[20px] font-[500]'>General Information:</h1>
+                <div className='mt-4 '>
+                  <div className='flex gap-4 items-center'>
+                    <h1 className='text-[20px] font-[500]'>{data.title}</h1>
+                    <div className="flex items-center justify-center">
+                      <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                      <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                      <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                      <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                      <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                    </div>
+                  </div>
+                  <div className='flex items-center  gap-1'>
+                    <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
+                    <h1 className='text-[15px] text-gray-500'>{data.address}</h1>
+                  </div>
+                  <h1 className='text-[15px] mt-4'>{data.description}</h1>
+                </div>
               </div>
+              <Reservation
+                data={data}
+                hasCard={hasCard}
+                setHasCard={(card) => setHasCard(card)}
+                setShowModal={(show) => setShowModal(show)}
+                setIsDone={(isDone) => setIsDone(isDone)}
+              />
+
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
-            <div className='mt-6'>
+            {/* <div className='mt-6'>
               <h1 className='text-[24px] font-[600]'>Contract Details</h1>
               <div className='mt-4'>
                 <h1 className='text-[20px] font-[500]'>City and State:</h1>
                 <h1 className='text-[20px] font-[500]'>Requirements:</h1>
               </div>
-            </div>
-            <div className='flex mx-auto mt-[40px] flex-col'>
+            </div> */}
+            {/* <div className='flex mx-auto mt-[40px] flex-col'>
               <button onClick={() => setAccept(true)} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
                 <p className='style_banner_button_text font-medium '>Accept Contract</p>
               </button>
@@ -193,7 +196,8 @@ export default function AdDetails() {
                                   visible={true}
                                 />
                               ) : 'Accept'}
-                            </div>                        </button>
+                            </div>
+                          </button>
                         </div>
                       </div>
                     </>
@@ -214,7 +218,7 @@ export default function AdDetails() {
                 </>
               ) : ''}
 
-            </div>
+            </div> */}
           </div>
         )}
       </div>

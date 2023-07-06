@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddCard from '../addCard/AddCard';
 import AddAccount from '../addAccount/AddAccount';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import TabIcon from './TabIcon';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,10 +51,10 @@ export default function TabsComponent({children}) {
   return (
     
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider',width: '50%' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      <Box sx={{ borderBottom: 1, borderColor: 'divider',width: '100%' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" >
           {children.map((child,index)=>(
-          <Tab key={index} label={child.props.label} {...a11yProps(index)} />
+          <Tab key={index} label={child.props.label} {...a11yProps(index)}  iconPosition="end"/>
           ))}
         </Tabs>
       </Box>

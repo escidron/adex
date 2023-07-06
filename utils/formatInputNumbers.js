@@ -1,10 +1,13 @@
-export default function formatNumberInput(event) {
-    let rawValue = event.target.value.replace(/,/g, '');
+export default function formatNumberInput(value) {
+    let rawValue = value.replace(/,/g, '');
     const formattedNumber = formatNumber(rawValue);
-    event.target.value = formattedNumber;
+    return formattedNumber;
   };
 
-  const formatNumber = (value) => {
+  export const formatNumber = (value) => {
     const numberPattern = /\B(?=(\d{3})+(?!\d))/g;
-    return value.replace(numberPattern, ',');
+    if(value != undefined){
+      return value.replace(numberPattern, ',');
+    }
+    return ''
   };

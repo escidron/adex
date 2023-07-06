@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 
-export default function DatePickerComponent({ setDate,maxHeight }) {
+export default function DatePickerComponent({ setDate,maxHeight,disabled,currentValue }) {
   const date = new Date();
 
   let day = date.getDate()+ 1;
@@ -17,7 +17,8 @@ export default function DatePickerComponent({ setDate,maxHeight }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
 
       <DatePicker
-        value={value}
+        disabled={disabled?disabled:false} 
+        value={currentValue?currentValue:value}
         onChange={(newValue) => {
           setValue(newValue)
           setDate(newValue)

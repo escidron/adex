@@ -1,7 +1,8 @@
+'use client'
+import { useState } from 'react'
 import Card from './Card'
 
 export default function MyBooking({data}) {
-
   if(data.length === 0){
     return(
       <>

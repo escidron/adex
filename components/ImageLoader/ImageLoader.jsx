@@ -34,12 +34,12 @@ export default function ImageLoader({ images,setImages }) {
                     <div
                         onMouseOver={() => { images.length > 0 ? setOnHover(true) : null }}
                         onMouseOut={() => { images.length > 0 ? setOnHover(false) : null }}
-                        className={`bg-gray-100  h-full rounded-lg flex justify-center items-center cursor-pointer hover:bg-gray-200 ${isDragging ? 'bg-gray-200' : ''}`}
+                        className={`  h-full rounded-lg flex justify-center items-center cursor-pointer hover:bg-gray-200 ${isDragging ? 'bg-gray-200' : ''}`}
                         onClick={onImageUpload}
                         {...dragProps}
                     >
                         {images.length === 0 ? (
-                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] " />
+                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60"  />
                         ) : (null)}
                         {imageList.map((image, index) => (
                             <div key={index} className="w-full h-full relative">
