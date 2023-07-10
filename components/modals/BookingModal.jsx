@@ -43,7 +43,7 @@ export default function BookingModal({ setBookingModalOpen, item }) {
                             <h1 className='text-[15px] mt-4'>{item.description}</h1>
                         </div>
                     </div>
-                    <ApproveReservation item={item} />
+                    <ApproveReservation item={item} setBookingModalOpen={(isOpen)=>setBookingModalOpen(isOpen)}/>
                 </div>
             </div>
         </>

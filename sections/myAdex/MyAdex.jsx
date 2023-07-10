@@ -1,38 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, createContext } from 'react'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import MyListing from './MyListing'
 import MyBooking from './MyBooking'
 import axios from 'axios'
 
-const MockData = [
-  {
-    id: 1,
-    name: 'Property A',
-    address: '456 Elm Street, Townsville',
-    createdDate: ' 2023-05-20',
-    image: '/get-paid4.png',
-    days: 10,
-    price: 100000
-  },
-  {
-    id: 2,
-    name: 'Property B',
-    address: '456 Elm Street, Townsville',
-    createdDate: ' 2023-05-20',
-    image: '/get-paid4.png',
-    days: 10,
-    price: 1000
-  }
-]
+export const RefreshContext = createContext();
+
 export default function MyAdex() {
   const [listingData, setListingData] = useState([]);
   const [bookingData, setBookingData] = useState([]);
-  const [counted,setCounted] = useState(false)
+  const [refresh, setRefresh] = useState(false)
   const [status, setStatus] = useState({
-    available:0,
-    running:0,
-    finished:0,
-    pending:0
+    available: 0,
+    running: 0,
+    finished: 0,
+    pending: 0
   });
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/my-advertisement',
@@ -49,8 +31,8 @@ export default function MyAdex() {
       .catch(function (error) {
         console.log(error)
       });
-  }, []);
-  console.log('status',status)
+  }, [refresh]);
+  console.log('status', status)
 
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/my-booking',
@@ -74,10 +56,13 @@ export default function MyAdex() {
       </div>
       <div className='flex w-[80%] items-center'>
         <div className='w-[40%]'>
-          <TabsComponent>
-            <MyListing label='My Listing' data={listingData} status={status}  />
-            <MyBooking label='My Booking' data={bookingData}/>
-          </TabsComponent>
+          <RefreshContext.Provider value={[refresh, setRefresh]}>
+            <TabsComponent>
+              <MyListing label='My Listing' data={listingData} status={status} />
+              <MyBooking label='My Booking' data={bookingData} />
+            </TabsComponent>
+          </RefreshContext.Provider>
+
         </div>
       </div>
     </div>

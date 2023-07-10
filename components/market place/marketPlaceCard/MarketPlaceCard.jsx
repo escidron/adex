@@ -49,8 +49,8 @@ export default function MarketPlaceCard({ad}) {
           <div className='style_card_description_box mt-2 '>
             <div className="style_card_description text-[14px] h-[20px] font-[400] text-[#838383]">
               <p>
-              {ad.description.length>125?ad.description.replace(/^(.{125}[^\s]*).*/, "$1") + "..."
-              :ad.description}
+              {ad.description.length > 125 ? ad.description.split(' ').slice(0,15).join(' ') + "..."
+                                : ad.description}
               {ad.description.length>125?<label href='#' className='text-black cursor-pointer' onClick={()=>setShowModal(true)}><b>read more</b></label>:''}
               </p>
             </div>
@@ -68,7 +68,7 @@ export default function MarketPlaceCard({ad}) {
 
           <div className='style_price_row flex w-[90%] justify-between items-center absolute bottom-[25px]'>
             <p className='font-[400px] text-[#838383] text-[14px]'><b className="style_price_text text-[18px] text-black">${ad.price} / </b>{
-              ad.ad_duration_type=='1'?'Daily':ad.ad_duration_type=='2'?'Weekly':ad.ad_duration_type=='3'?'Monthly':ad.ad_duration_type=='4'?'Unit':'Year'
+              ad.ad_duration_type=='1'?'Monthly':ad.ad_duration_type=='2'?'Weekly':ad.ad_duration_type=='3'?'Monthly':ad.ad_duration_type=='4'?'Unit':'Year'
             }</p>
           <button className='z-10 bg-[#FCD33B] py-[8px] px-[20px] mr-2 rounded-md hover:bg-black hover:text-[#FCD33B] text-md flex items-center justify-center'>
             <Link href={`/market-place/details?id=${ad.id}`} className='style_banner_button_text font-semibold text-18px]'>View Details</Link>

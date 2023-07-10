@@ -97,7 +97,7 @@ export default function SignUpModal({ setShowSignUpModal }) {
           .then(function (response) {
             if (response.status === 200) {
               console.log(response)
-              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false })
+              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false,userId:values.userId })
               router.push('/')
               setIsPending(false)
               setShowSignUpModal(false)

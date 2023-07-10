@@ -26,7 +26,8 @@ export default function RootLayout({ children }) {
     checkLogin: false,
     showLoginOptions: false,
     name: "",
-    image:''
+    image:'',
+    userId:null
   });
   useEffect(() => {
     async function autoLogin() {
@@ -38,7 +39,8 @@ export default function RootLayout({ children }) {
         }
       );
       if (response.status === 200) {
-        setUser((prev) => ({ ...prev, user: user.name, isLogged: true,image:user.image }));
+        
+        setUser((prev) => ({ ...prev, name: user.name, isLogged: true,image:user.image,userId:user.userId }));
       } else {
         setUser((prev) => ({ ...prev, isLogged: false, checkLogin: true,image:user.image }));
       }
@@ -64,6 +66,7 @@ export default function RootLayout({ children }) {
           setShowSignUpModal={(toggle)=>setShowSignUpModal(toggle)} 
           showSignUpModal={showSignUpModal} 
         />
+        
           {children}
         </UserContext.Provider>
       </body>

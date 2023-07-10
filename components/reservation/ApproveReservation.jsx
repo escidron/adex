@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import HelpIcon from '@mui/icons-material/Help';
 import { ThreeDots } from 'react-loader-spinner'
@@ -9,11 +9,14 @@ import { Inter } from 'next/font/google'
 import formatNumberInput from '@/utils/formatInputNumbers';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import { RefreshContext } from '@/sections/myAdex/MyAdex';
 const inter = Inter({ subsets: ['latin'] })
 
-export default function ApproveReservation({ item }) {
+export default function ApproveReservation({ item ,setBookingModalOpen}) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
+    const [refresh, setRefresh] = useContext(RefreshContext)
+
     console.log('item', item)
     const discount = 20
 
@@ -32,6 +35,33 @@ export default function ApproveReservation({ item }) {
             })
                 .then(function (response) {
                     setIsPending1(false)
+                    setBookingModalOpen(false)
+                    setRefresh(prev=>!prev)
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        
+
+    }
+
+    const Decline = () => {
+            setIsPending2(true)
+            axios.post('http://localhost:8000/api/payments/decline-request',
+                {
+                    id: item.id,
+
+                }, {
+                withCredentials: true,
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    setIsPending2(false)
+                    setBookingModalOpen(false)
+                    setRefresh(prev=>!prev)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -91,7 +121,7 @@ export default function ApproveReservation({ item }) {
                     <p>{`$${item?.price ? formatNumberInput((item.price * item.duration - discount).toString()) : ''}`}</p>
                 </div>
             </div>
-            <button disabled={isPending1 ? true : false} onClick={Booking} className={`z-10 flex item justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+            <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10 flex item justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
                 {
                     isPending1 ? (
                         <ThreeDots
@@ -105,7 +135,7 @@ export default function ApproveReservation({ item }) {
                     ) : 'Accept'
                 }
             </button>
-            <button disabled={isPending2 ? true : false} onClick={() => { }} className={`z-10 flex item justify-center border border-black text-black mt-2 py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+            <button disabled={isPending2 || isPending1 ? true : false} onClick={Decline} className={`z-10 flex item justify-center border border-black text-black mt-2 py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
                 {
                     isPending2 ? (
                         <ThreeDots

@@ -30,7 +30,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
             });
             if (response.status === 200) {
                 const user = await response.json()
-                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image }));
+                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image,userId:user.userId }));
             } else {
                 console.log('response',response)
             }

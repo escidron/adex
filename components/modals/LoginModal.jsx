@@ -33,6 +33,7 @@ export default function LoginModal({ setShowLoginModal }) {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const router = useRouter();
+    console.log('user login params',user)
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -53,7 +54,15 @@ export default function LoginModal({ setShowLoginModal }) {
                 }
             })
                 .then(function (response) {
-                    setUser((prev) => ({ ...prev, isLogged: true, name: response.data.name, checkLogin: false, showLoginOptions: false, image: response.data.image }))
+                    console.log(  'response',response  )
+                    setUser((prev) => (
+                        { ...prev, isLogged: true, 
+                            name: response.data.name, 
+                            checkLogin: false, 
+                            showLoginOptions: false, 
+                            image: response.data.image ,
+                            userId:response.data.userId
+                        }))
                     setShowLoginModal(false)
                 })
                 .catch(function (error) {

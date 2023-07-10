@@ -20,22 +20,44 @@ import Success from '@/components/messages/Success';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Reservation from '@/components/reservation/Reservation';
+import { useContext } from 'react';
+import { UserContext } from "@/app/layout";
+import { io } from "socket.io-client";
+import Chat from '@/components/chat/Chat';
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
+// const socket = io('http://localhost:8000')
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function AdDetails() {
+  var socket = io.connect('http://localhost:4000')
+  const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
   const [hasCard, setHasCard] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
   const [isPending, setIsPending] = useState(false)
+  const [isPending2, setIsPending2] = useState(false)
   const [isDone, setIsDone] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(false)
   const searchParams = useSearchParams()
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
   const id = searchParams.get('id')
+
+  // useEffect(() => {
+  //   socket.on('resend-data', (data) => {
+  //     console.log('dddddddddddddddddddd',data)
+  //     console.log('messages',messages)
+  //     setMessages(prev=>[...prev,data])
+  //   })
+  // }, [socket]);
+
+  console.log(user)
+
 
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/details',
@@ -47,7 +69,6 @@ export default function AdDetails() {
     })
       .then(function (response) {
         setData(response.data.data)
-        console.log('ad details', response.data.data)
       })
       .catch(function (error) {
         console.log(error)
@@ -75,6 +96,44 @@ export default function AdDetails() {
       });
   }, [refetch]);
 
+  useEffect(() => {
+    console.log('refectcccc')
+    if (data.id) {
+      axios.post('http://localhost:8000/api/advertisements/messages',
+        {}, {
+        withCredentials: true,
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(function (response) {
+
+          const allMessages = response.data.messages
+
+          const privateMessages = allMessages.filter(message => message.buyer_id == user.userId && message.seller_id == data.created_by && message.advertisement_id == data.id);
+          setMessages(privateMessages)
+          if (privateMessages.length > 0) {
+            setIsChatOpen(true)
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    }
+  }, [data, user,refetch]);
+
+  const sendMessage = () => {
+
+    socket.emit('send-message',
+      {
+        sended_by: user.userId,
+        seller_id: data.created_by,
+        buyer_id: user.userId,
+        advertisement_id: data.id,
+        message: message
+      })
+
+  }
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
@@ -159,6 +218,49 @@ export default function AdDetails() {
 
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+
+            {
+              isChatOpen ? (
+                <div className='w-[600px] flex mx-auto'>
+                  <Chat
+                    messages={messages}
+                    isSellerChat={false}
+                    userId={user.userId}
+                    data={data} socket={socket}
+                    setRefetch={(refetch) => setRefetch(refetch)} />
+                </div>
+
+              ) : (
+                <div className='w-[600px]'>
+                  <h1 className='text-[20px] font-[500]'>Need further clarification?</h1>
+                  <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${data.seller_name} via a message.`}</p>
+                  <textarea
+                    onChange={(e) => setMessage(e.target.value)}
+                    type="textarea"
+                    id="message"
+                    name="message"
+                    className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none ${inter.className} focus:border-black`}
+                  />
+                  <div className='max-w-[100px] flex ml-auto'>
+                    <button disabled={isPending2 ? true : false} onClick={sendMessage} className={`z-10 flex item justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-2 font-[600]  ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                      {
+                        isPending ? (
+                          <ThreeDots
+                            height="30"
+                            width="40"
+                            radius="9"
+                            color="#FCD33B"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        ) : 'Send'
+                      }
+                    </button>
+                  </div>
+                </div>
+              )
+
+            }
 
             {/* <div className='mt-6'>
               <h1 className='text-[24px] font-[600]'>Contract Details</h1>

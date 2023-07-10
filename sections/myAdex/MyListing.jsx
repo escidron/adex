@@ -27,7 +27,7 @@ export default function MyListing({ data, status }) {
     }
   }
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex flex-col items-center '>
       <div className=" mt-2 w-full flex gap-4">
         <div className={`w-full`}>
           <div className="flex gap-2">
@@ -82,24 +82,37 @@ export default function MyListing({ data, status }) {
         </div>
       </div>
       {
-        data.map((item) => {
+        data.map((item,index) => {
           console.log(item)
           if (item.status == currentStatus) {
             return (
               <>
-                <section key={item.id} className='w-full justify-center'>
-                  <Card item={item} setBookingModalOpen={(isOpen)=>setBookingModalOpen(isOpen)}/>
+                <section key={item.id+index} className='w-full justify-center'>
+                  <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} />
                 </section>
                 {/* <div className='w-[100%] h-[1px] mx-auto bg-gray-200 mt-8 mb-8'></div> */}
                 {
                   bookingModalOpen && (
-                    <BookingModal setBookingModalOpen={(isOpen)=>setBookingModalOpen(isOpen)} item={item}/>
+                    <BookingModal setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} item={item} key={item.id+index} />
                   )
                 }
               </>
             )
           }
-          return null
+          return (
+            // <div key={item.id} className='mt-8 w-full'>
+            //   <p className='text-[20px] text-center'>No data found</p>
+            //   <p className='text-[16px] text-center font-thin'>
+            //     {
+            //      currentStatus == 1?'No Available Listing found':
+            //      currentStatus == 2?'No Running   Listing found':
+            //      currentStatus == 3?'No Finished  Listing found':
+            //      currentStatus == 4?'No Pending   Listing found':''
+            //     }
+            //   </p>
+            // </div>
+            null
+          )
         })
       }
     </div>
