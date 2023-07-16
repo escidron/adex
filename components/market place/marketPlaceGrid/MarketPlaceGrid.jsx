@@ -48,11 +48,11 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
                     setAdFilter({...adFilter,radius:1000});
                 }              break;
             default:
-                if (adFilter.radius===6000){
+                if (adFilter.radius===60000){
                     setAdFilter({...adFilter,radius:50});
                     
                 }else{
-                    setAdFilter({...adFilter,radius:6000});
+                    setAdFilter({...adFilter,radius:60000});
                 }                 break;
                 }
             }
@@ -109,7 +109,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
                         <button onClick={(e)=>handleRadius(e.target)} id={1} className={`${adFilter.radius==100?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>100</button>
                         <button onClick={(e)=>handleRadius(e.target)} id={2} className={`${adFilter.radius==500?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>500</button>
                         <button onClick={(e)=>handleRadius(e.target)} id={3} className={`${adFilter.radius==1000?'text-black bg-[#FCD33B]':'text-white bg-black'} hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>1000</button>
-                        <button onClick={(e)=>handleRadius(e.target)} id={4} className={`${adFilter.radius==6000?'text-black bg-[#FCD33B]':'text-white bg-black'} hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>+2000</button>
+                        <button onClick={(e)=>handleRadius(e.target)} id={4} className={`${adFilter.radius==60000?'text-black bg-[#FCD33B]':'text-white bg-black'} hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>+2000</button>
 
                     </div>
                 </div>

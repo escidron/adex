@@ -1,5 +1,5 @@
 "use client"
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
@@ -10,18 +10,65 @@ import logo from '../../public/adex-logo-white-yellow.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MessageRoundedIcon from '@mui/icons-material/MessageRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import LoginModal from '../modals/LoginModal';
 import SignUpModal from '../modals/SignUpModal';
 import toast, { Toaster } from "react-hot-toast";
+import Notifications from '../notification/Notifications';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal }) {
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
+    const [showNotifications, setshowNotifications] = useState(false)
+    const [notificationsQtd, setNotificationsQtd] = useState(0)
+    const [notifications, setNotifications] = useState([])
     const router = useRouter();
+
+  
+    useEffect(() => {
+        axios.post('http://localhost:8000/api/users/notifications',
+        {}, {
+        withCredentials: true,
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(function (response) {
+            
+          console.log('allMessages',response.data.notifications)
+          setNotifications(response.data.notifications)
+          setNotificationsQtd(response.data.notifications.length)
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+
+
+    }, []);
+    useEffect(() => {
+        const handleClick = (event) => {
+
+            // Handle your click logic here
+            setshowNotifications(false)
+            if (user.showLoginOptions) {
+
+                setUser((prev) => ({ ...prev, showLoginOptions: false }))
+            }
+        };
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+            document.removeEventListener("click", handleClick);
+        };
+    }, [showNotifications, user]);
+
     useEffect(() => {
         async function autoLogin() {
             const response = await fetch("http://localhost:8000/api/users/autologin", {
@@ -30,9 +77,9 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
             });
             if (response.status === 200) {
                 const user = await response.json()
-                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image,userId:user.userId }));
+                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image, userId: user.userId }));
             } else {
-                console.log('response',response)
+                console.log('response', response)
             }
         }
         autoLogin();
@@ -105,40 +152,71 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
             </section>
             {user.isLogged
                 ? (
-                    <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))} className='hidden cursor-pointer  p-1
+                    <div className='hidden cursor-pointer 
                             md:flex items-center 
-                            lg:absolute lg:top-[26px] lg:right-[40px]
-                            xl:top-[26px] xl:right-[80px]
+                            lg:absolute t0p-0 lg:right-[40px]
+                            xl:top-0 xl:right-[80px]
                             transition
                             duration-500
                             ease-linear
+                            h-full
                             '>
-                        <Image
+                        <div className='ml-4 relative flex justify-end items-center h-full'
+                            onClick={() => {
+                                setUser((prev) => ({ ...prev, showLoginOptions: false }))
+                                setshowNotifications(true)
+                            }}
 
-                            src={user.image ? user.image : nouser}
-                            alt="user image"
-                            width={30}
-                            height={30}
-                            priority
-                        />
-                        <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
-                        <ArrowDropDownIcon />
+                        >
+                            <NotificationsRoundedIcon sx={{ fontSize: '24px', marginRight: '10px' }} />
+                            {notificationsQtd > 0 ? (
+                                <p className='absolute top-8 right-[10px] flex justify-center items-center w-[13px] h-[13px] bg-red-600 rounded-full text-[11px]'>{notificationsQtd}</p>
+                            ) : ('')}
+                        </div>
+                        <div className='flex items-center h-full ml-4'
+                            onClick={() => {
+                                setshowNotifications(false)
+                                setUser((prev) => ({ ...prev, showLoginOptions: true }))
+                            }}
+                        >
+                            <Image
+                                src={user.image ? user.image : nouser}
+                                alt="user image"
+                                width={30}
+                                height={30}
+                                priority
+                            />
+                            <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
+                            <ArrowDropDownIcon />
+                        </div>
+
+
                         {user.showLoginOptions ?
-                            <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))}
-                                className="absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <Link href="/my-profile" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:rounded-t-lg hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                            <div
+                                className="absolute top-[95px] lg:top-[38px] xl:top-[90px] right-[-45px] w-[200px] text-sm font-medium text-white bg-black rounded-b-lg"
+                            >
+                                <Link href="/my-profile" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '18px' }} />
                                     Profile
                                 </Link>
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100  hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                <Link href="/messages" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     Messages
                                 </Link>
-                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                    <LogoutIcon fontSize='small' sx={{ marginRight: '2px' }} />
+                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <LogoutIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     Logout
                                 </Link>
                             </div> :
                             ""}
 
+                        {showNotifications ?
+                            <div className="absolute top-[95px] lg:top-[38px] xl:top-[90px]  w-[350px] right-0 text-sm font-medium text-white bg-black rounded-b-lg "
+                                onClick={() => setshowNotifications(true)}
+                            >
+                                <Notifications notifications={notifications} notificationsQtd={notificationsQtd}/>
+                            </div> :
+                            ""}
                     </div>
                 )
                 : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin ?

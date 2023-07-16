@@ -48,17 +48,6 @@ export default function AdDetails() {
   const [message, setMessage] = useState('');
   const id = searchParams.get('id')
 
-  // useEffect(() => {
-  //   socket.on('resend-data', (data) => {
-  //     console.log('dddddddddddddddddddd',data)
-  //     console.log('messages',messages)
-  //     setMessages(prev=>[...prev,data])
-  //   })
-  // }, [socket]);
-
-  console.log(user)
-
-
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/details',
       { id: id }, {
@@ -97,7 +86,6 @@ export default function AdDetails() {
   }, [refetch]);
 
   useEffect(() => {
-    console.log('refectcccc')
     if (data.id) {
       axios.post('http://localhost:8000/api/advertisements/messages',
         {}, {
@@ -109,7 +97,7 @@ export default function AdDetails() {
         .then(function (response) {
 
           const allMessages = response.data.messages
-
+          console.log('allMessages',allMessages)
           const privateMessages = allMessages.filter(message => message.buyer_id == user.userId && message.seller_id == data.created_by && message.advertisement_id == data.id);
           setMessages(privateMessages)
           if (privateMessages.length > 0) {
@@ -124,7 +112,7 @@ export default function AdDetails() {
 
   const sendMessage = () => {
 
-    socket.emit('send-message',
+    socket.emit('send-buyer-message',
       {
         sended_by: user.userId,
         seller_id: data.created_by,
@@ -132,6 +120,8 @@ export default function AdDetails() {
         advertisement_id: data.id,
         message: message
       })
+      setIsChatOpen(true)
+      setRefetch(prev=>!prev)
 
   }
   return (
@@ -218,15 +208,16 @@ export default function AdDetails() {
 
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
-
             {
               isChatOpen ? (
                 <div className='w-[600px] flex mx-auto'>
                   <Chat
                     messages={messages}
-                    isSellerChat={false}
+                    isChatPage={false}
                     userId={user.userId}
-                    data={data} socket={socket}
+                    createdBy={data.created_by} 
+                    advertisementId={data.id} 
+                    socket={socket}
                     setRefetch={(refetch) => setRefetch(refetch)} />
                 </div>
 

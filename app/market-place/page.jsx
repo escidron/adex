@@ -22,7 +22,7 @@ export default function MarketPlace() {
     type:'',
     adGroup:'',
     priceMin:0,
-    priceMax:1000
+    priceMax:1000000
   });
   const router = useRouter();
   useEffect(() => {
@@ -47,7 +47,8 @@ export default function MarketPlace() {
           response.data.data.map((ad)=>{
             // Calculate  the distance between markers
             var distance = haversine_distance(coords, {lat:ad.lat,lng:ad.long});
-
+            console.log(  'filter radius',adFilter.radius)
+            console.log(  'distance',distance)
             if (distance < adFilter.radius){
               setNewData((prevData)=>[...prevData,ad])
             }

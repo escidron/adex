@@ -1,6 +1,5 @@
 'use client'
 export default function ChatBox({ text, currentUser, time }) {
-  console.log('currentUser', currentUser)
 
   return (
     <div className={`w-full ${currentUser ? 'text-right' : 'text-left'}`}>

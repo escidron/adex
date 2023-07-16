@@ -37,14 +37,14 @@ const PlacesAutocomplete = ({ setSelected,setAddress }) => {
   };
   let cont = 0
   return (
-    <Combobox onSelect={handleSelect}>
+    <Combobox onSelect={handleSelect} className='w-full'>
       <ComboboxInput
         value={value}
         onChange={(e) => setValue(e.target.value)}
         //   disabled={!ready}
         // className="outline-none w=full"
         placeholder="Search an address"
-        className="style_search_ba text-sm rounded-lg outline-none  w-full  p-3  bg-white  placeholder-gray-400 placeholder- text-black"
+        className="style_search_ba text-sm rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
       />
       <ComboboxPopover className='w-auto'>
         <ComboboxList className='bg-white mt-4 rounded-md w-[400px] style_combobox'>

@@ -91,38 +91,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     onSubmit: values => {
       setIsPending(true)
 
-      //
-      // fetch('http://localhost:8000/api/advertisements/new', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     title: values.title,
-      //     description: values.description,
-      //     price: values.price,
-      //     category_id: typeId,
-      //     created_by: '',
-      //     image: images[0].data_url,
-      //     address: address,
-      //     lat: selected.lat,
-      //     long: selected.lng,
-      //     ad_duration_type: isPeriodic ? durationType : '0',
-      //     sub_asset_type: typeId === 9 ? subType : '0',
-      //     units: 0,
-      //     per_unit_price: 0,
-      //     is_automatic:checked?'1':'0'
-
-      //   }),
-      //   withCredentials: true,
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Access-Control-Allow-Origin': 'http://localhost:3000'
-      //   }
-      // })
-      // .then(response => response.json())
-      // .then(data => console.log(data))
-      // .catch(error => console.error(error))
-
-
-      //
+      console.log('images[0].data_url',images[0].data_url)
       axios.post('http://localhost:8000/api/advertisements/new',
         {
           title: values.title,
@@ -144,7 +113,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
         withCredentials: true,
         headers: {
           'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
         }
       })
         .then(function (response) {

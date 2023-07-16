@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import CategoryCard from './CategoryCard'
 
-export default function Categories({ selectedStep,setSelectedStep,categoryId,setCategoryId,typeId,setTypeId,setIsPeriodic  }) {
+export default function Categories({ selectedStep, setSelectedStep, categoryId, setCategoryId, typeId, setTypeId, setIsPeriodic }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
@@ -28,10 +28,10 @@ export default function Categories({ selectedStep,setSelectedStep,categoryId,set
           if (item.parent_id === 0) {
             return (
               <div key={item.id}>
-                <CategoryCard 
-                  item={item} 
-                  setCategoryId={setCategoryId} 
-                  selectedStep ={selectedStep} 
+                <CategoryCard
+                  item={item}
+                  setCategoryId={setCategoryId}
+                  selectedStep={selectedStep}
                   setSelectedStep={setSelectedStep}
                   typeId={typeId}
                   setTypeId={setTypeId}
@@ -45,14 +45,14 @@ export default function Categories({ selectedStep,setSelectedStep,categoryId,set
           if (item.parent_id === categoryId) {
             return (
               <div key={item.id}  >
-                <CategoryCard 
-                item={item} 
-                setCategoryId={(id)=>setCategoryId(id)} 
-                selectedStep ={selectedStep} 
-                setSelectedStep={setSelectedStep}
-                typeId={typeId}
-                setTypeId={setTypeId}
-                setIsPeriodic={setIsPeriodic}
+                <CategoryCard
+                  item={item}
+                  setCategoryId={(id) => setCategoryId(id)}
+                  selectedStep={selectedStep}
+                  setSelectedStep={setSelectedStep}
+                  typeId={typeId}
+                  setTypeId={setTypeId}
+                  setIsPeriodic={setIsPeriodic}
 
                 />
               </div>

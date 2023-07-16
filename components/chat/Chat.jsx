@@ -5,7 +5,7 @@ import ChatBox from './chatBox';
 import { useEffect, useRef } from "react";
 import { Divider } from '@mui/material';
 
-export default function Chat({ messages, userId, data, socket, setRefetch }) {
+export default function Chat({ messages, userId,socket, setRefetch,advertisementId,createdBy,isChatPage }) {
   const [message, setMessage] = useState('');
   const messageRef = useRef(null);
 
@@ -20,17 +20,16 @@ export default function Chat({ messages, userId, data, socket, setRefetch }) {
     }
   }, [messages])
 
-
   const sendMessage = (e) => {
     e.preventDefault()
     setMessage('')
-    socket.emit('send-message',
+    socket.emit(isChatPage?'send-message':'send-buyer-message',
 
       {
         sended_by: userId,
-        seller_id: data.created_by,
-        buyer_id: userId,
-        advertisement_id: data.id,
+        seller_id: createdBy,
+        buyer_id: messages[0].buyer_id,
+        advertisement_id: advertisementId,
         message: message
       })
     setRefetch(prev => !prev)
@@ -39,7 +38,7 @@ export default function Chat({ messages, userId, data, socket, setRefetch }) {
 
   return (
     <div className='flex-col w-full'>
-      <div className='border shadow-sm w-full h-[600px] bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >
+      <div className='border shadow-sm w-full h-[540px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >
 
         {
           messages.map((message, index) => {
@@ -50,17 +49,17 @@ export default function Chat({ messages, userId, data, socket, setRefetch }) {
               const year = date.getUTCFullYear();
               dates = message.created_at
               return (
-                <>
+                <div key={message.id}>
                   <div className='flex flex-col items-center h-[40px] mt-[20px]'>
                     <Divider variant="" sx={{ color: 'black', width: '100%' }} />
                     <p className='mt-[-10px] bg-slate-100 px-2 text-[12px] font-semibold'>{`${month} ${day},${year}`}</p>
                   </div>
-                  <ChatBox key={message.id + index} text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
-                </>
+                  <ChatBox text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
+                </div>
               )
             }
             return (
-              <ChatBox key={message.id + index} text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
+              <ChatBox key={message.id} text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
             )
           })
         }
