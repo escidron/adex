@@ -27,7 +27,9 @@ export default function RootLayout({ children }) {
     showLoginOptions: false,
     name: "",
     image:'',
-    userId:null
+    userId:null,
+    notificationQuantity:0,
+    notifications:[]
   });
   useEffect(() => {
     async function autoLogin() {

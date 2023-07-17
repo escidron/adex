@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import BlackButton from '@/components/buttons/BlackButton'
 import { Inter } from 'next/font/google'

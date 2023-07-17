@@ -1,14 +1,19 @@
-import React from 'react'
+'use client'
+
+import {useContext} from 'react'
+import { UserContext } from '../../app/layout';
+
 import NotificationCard from './NotificationCard';
 
 export default function Notifications({ notifications,notificationsQtd }) {
+    const [user, setUser] = useContext(UserContext)
 
-    console.log('notifications',notifications)
+    console.log(user)
     return (
         <div className='w-full py-2'>
             <div className='mt-4 border-b py-2 w-[90%] flex mx-auto items-center'>
                 {
-                    notificationsQtd > 0 ? (
+                    user.notificationQuantity > 0 ? (
 
                         <p className='flex  ml-auto text-[#FCD33B] text-[12px]'>Mark all as read</p>
                     ) : (
@@ -19,7 +24,7 @@ export default function Notifications({ notifications,notificationsQtd }) {
             </div>
             <div className='notifications_list overflow-y-scroll max-h-[300px] w-full'>
 
-                {notifications.map((notification) => (
+                {user.notifications.map((notification) => (
                     <div key={notification.id} className='w-full'>
                         <NotificationCard notification={notification} />
                     </div>

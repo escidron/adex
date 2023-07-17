@@ -26,8 +26,6 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
     const [showNotifications, setshowNotifications] = useState(false)
-    const [notificationsQtd, setNotificationsQtd] = useState(0)
-    const [notifications, setNotifications] = useState([])
     const router = useRouter();
 
   
@@ -41,9 +39,9 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
       })
         .then(function (response) {
             
-          console.log('allMessages',response.data.notifications)
-          setNotifications(response.data.notifications)
-          setNotificationsQtd(response.data.notifications.length)
+          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
+          setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+        //   setNotificationsQtd(response.data.notifications.length)
         })
         .catch(function (error) {
           console.log(error)
@@ -169,8 +167,8 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
 
                         >
                             <NotificationsRoundedIcon sx={{ fontSize: '24px', marginRight: '10px' }} />
-                            {notificationsQtd > 0 ? (
-                                <p className='absolute top-8 right-[10px] flex justify-center items-center w-[13px] h-[13px] bg-red-600 rounded-full text-[11px]'>{notificationsQtd}</p>
+                            {user.notificationQuantity > 0 ? (
+                                <p className='absolute top-8 right-[10px] flex justify-center items-center w-[13px] h-[13px] bg-red-600 rounded-full text-[11px]'>{user.notificationQuantity}</p>
                             ) : ('')}
                         </div>
                         <div className='flex items-center h-full ml-4'
@@ -214,7 +212,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                             <div className="absolute top-[95px] lg:top-[38px] xl:top-[90px]  w-[350px] right-0 text-sm font-medium text-white bg-black rounded-b-lg "
                                 onClick={() => setshowNotifications(true)}
                             >
-                                <Notifications notifications={notifications} notificationsQtd={notificationsQtd}/>
+                                <Notifications />
                             </div> :
                             ""}
                     </div>

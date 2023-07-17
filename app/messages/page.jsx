@@ -32,20 +32,23 @@ export default function MessagesPage() {
     });
     const [user, setUser] = useContext(UserContext)
     const searchParams = useSearchParams()
+    const key = searchParams.get('key')
     const router = useRouter()
     socket.on('resend-data', () => {
         setRefetch(!refetch)
     })
     useEffect(() => {
         axios.post('http://localhost:8000/api/advertisements/chat-info',
-            {}, {
+            {key:key}, {
             withCredentials: true,
             headers: {
                 'content-type': 'application/json'
             }
         })
             .then(function (response) {
-                const key = searchParams.get('key')
+                console.log('response',response)
+                GetNotifications()
+
                 const allMessages = response.data.messages
                 setallChats(allMessages)
                 const privateMessages = allMessages.filter(message => message.advertisement_id + message.seller_id + message.buyer_id == key);
@@ -70,6 +73,24 @@ export default function MessagesPage() {
             });
     }, [refetch]);
 
+    async function GetNotifications() {
+        axios.post('http://localhost:8000/api/users/notifications',
+        {}, {
+        withCredentials: true,
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(function (response) {
+            
+          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
+          setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+        //   setNotificationsQtd(response.data.notifications.length)
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    }
     const selectChat = (advertisementId, sellerId, buyerId) => {
         const privateMessages = allChats.filter(message => message.advertisement_id == advertisementId && message.seller_id == sellerId && message.buyer_id == buyerId);
         setMessages(privateMessages)
