@@ -276,12 +276,12 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                 ""}
 
             {showLoginModal ? (
-                <LoginModal setShowLoginModal={setShowLoginModal} />
+                <LoginModal setShowLoginModal={setShowLoginModal} setShowSignUpModal={setShowSignUpModal}/>
             ) : (
                 ''
             )}
             {showSignUpModal ? (
-                <SignUpModal setShowSignUpModal={setShowSignUpModal} />
+                <SignUpModal setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal}/>
             ) : (
                 ''
             )}

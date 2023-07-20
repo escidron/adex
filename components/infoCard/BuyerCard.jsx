@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function InfoCard({ advertisement, buyer }) {
-    const [showModal,setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
     return (
         <div className={`relative flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 ${inter.className}`}>
@@ -30,16 +30,15 @@ export default function InfoCard({ advertisement, buyer }) {
                 <div>
                     <div className='flex justify-between advertisements-center'>
                         <h1 className='text-[24px] font-[600]'>{`${buyer.name} ${buyer.lastName}`}</h1>
-                        <div className="flex advertisements-center justify-start">
-                            <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                            <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                            <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                            <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                            <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                        </div>
-
                     </div>
-                    <div className='flex gap-2'>
+                    <div className="flex advertisements-center justify-start ">
+                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                    </div>
+                    <div className='flex gap-2 mt-2'>
                         <EmailIcon sx={{ fontSize: '18px', color: 'gray' }} />
                         <p className='text-[14px] mt-[-3px] text-gray-600'>{buyer.email}</p>
                     </div>

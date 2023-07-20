@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Card from './Card'
 
-export default function MyBooking({data}) {
+export default function MyBookings({data}) {
   if(data.length === 0){
     return(
       <>

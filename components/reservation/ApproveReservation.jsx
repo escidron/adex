@@ -69,7 +69,7 @@ export default function ApproveReservation({ advertisement }) {
 
     return (
         <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
-            {advertisement.price && (
+            {advertisement?.price && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
                     <p className='flex advertisements-center text-gray-500 '>
@@ -84,7 +84,7 @@ export default function ApproveReservation({ advertisement }) {
                         id='date'
                         setDate={(date) => setDate(date)}
                         disabled={true}
-                        currentValue={dayjs(`${advertisement.start_date}`)}
+                        currentValue={dayjs(`${advertisement?.start_date}`)}
                     />
                 </div>
                 <div className='w-[50%]'>
@@ -93,15 +93,15 @@ export default function ApproveReservation({ advertisement }) {
                         id='date'
                         setDate={(date) => setDate(date)}
                         disabled={true}
-                        currentValue={dayjs(`${advertisement.end_date}`)}
+                        currentValue={dayjs(`${advertisement?.end_date}`)}
                     />
 
                 </div>
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between advertisements-center'>
-                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''} x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'month' : advertisement.ad_duration_type === '2' ? 'quarter' : 'year'}`}</p>
-                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement.duration).toString()) : ''}`}</p>
+                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} x ${advertisement?.duration} ${advertisement?.ad_duration_type === '1' ? 'month' : advertisement?.ad_duration_type === '2' ? 'quarter' : 'year'}`}</p>
+                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
                 </div>
                 <div className='mt-2 flex justify-between advertisements-center'>
                     <div className='flex advertisements-center gap-1'>
@@ -115,11 +115,11 @@ export default function ApproveReservation({ advertisement }) {
 
                 <div className='mt-2 flex justify-between advertisements-center'>
                     <p className='text-[20px] font-[600]'>Total</p>
-                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement.duration - discount).toString()) : ''}`}</p>
+                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement?.price * advertisement?.duration - discount).toString()) : ''}`}</p>
                 </div>
             </div>
             {
-                advertisement.status == 4 ? (
+                advertisement?.status == 4 ? (
                     <>
                         <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10 flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
                             {

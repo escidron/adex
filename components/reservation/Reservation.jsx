@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
@@ -25,6 +27,11 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal,se
     const [isPending, setIsPending] = useState(false)
 
     const discount = 20
+
+    const searchParams = useSearchParams()
+
+    const rejectedId = searchParams.get('rejected')
+    console.log('rejectedId',!rejectedId)
 
     const Booking = () => {
         if (hasCard) {

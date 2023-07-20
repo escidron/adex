@@ -5,7 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Image from "next/image";
 
 export default function ImageLoader({ images,setImages }) {
-    const [onHover, setOnHover] = useState(true);
+    const [onHover, setOnHover] = useState(false);
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit

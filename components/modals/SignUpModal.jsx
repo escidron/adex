@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 
 
-export default function SignUpModal({ setShowSignUpModal }) {
+export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
   const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
   const [selected, setSelected] = useState(null);
@@ -313,7 +313,12 @@ export default function SignUpModal({ setShowSignUpModal }) {
           ) : 'Sign Up'}
 
         </button>
-        <p className="text-white mt-5">Have an account? <Link href='/login' className="text-[#FCD33B] hover:opacity-80">Login</Link></p>
+        <p className="text-white mt-5 ">Have an account? 
+        <label href='/login' className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={()=>{
+          setShowSignUpModal(false)
+          setShowLoginModal(true)
+        }}>Login</label>
+        </p>
       </form>
     </div>
   );

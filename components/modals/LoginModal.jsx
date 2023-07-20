@@ -28,17 +28,15 @@ const validate = values => {
     return errors;
 };
 
-export default function LoginModal({ setShowLoginModal }) {
+export default function LoginModal({ setShowLoginModal,setShowSignUpModal }) {
     const [user, setUser] = useContext(UserContext)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const router = useRouter();
-    console.log('user login params',user)
     const formik = useFormik({
         initialValues: {
             email: "",
             password: ''
-
         },
         validate,
         onSubmit: values => {
@@ -54,14 +52,15 @@ export default function LoginModal({ setShowLoginModal }) {
                 }
             })
                 .then(function (response) {
-                    console.log(  'response',response  )
+                    console.log('response', response)
                     setUser((prev) => (
-                        { ...prev, isLogged: true, 
-                            name: response.data.name, 
-                            checkLogin: false, 
-                            showLoginOptions: false, 
-                            image: response.data.image ,
-                            userId:response.data.userId
+                        {
+                            ...prev, isLogged: true,
+                            name: response.data.name,
+                            checkLogin: false,
+                            showLoginOptions: false,
+                            image: response.data.image,
+                            userId: response.data.userId
                         }))
                     setShowLoginModal(false)
                 })
@@ -138,7 +137,13 @@ export default function LoginModal({ setShowLoginModal }) {
                 <button className='z-10 bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                   lg:mt-10 '>Login
                 </button>
-                <p className="text-white mt-5">Don&apos;t have an account? <Link href='/sign-up' className="text-[#FCD33B] hover:opacity-80">Sign Up</Link></p>
+                <p className="text-white mt-5">Don&apos;t have an account?
+                    <label  className="text-[#FCD33B] hover:opacity-80 cursor-pointer" 
+                    onClick={()=>{
+                        setShowLoginModal(false)
+                        setShowSignUpModal(true)
+                    }}>Sign Up</label>
+                </p>
             </form>
         </div>
     );

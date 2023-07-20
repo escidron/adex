@@ -47,16 +47,18 @@ export default function AdDetails() {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const id = searchParams.get('id')
-
+  const rejectedId = searchParams.get('rejected')
+  const notificationId = searchParams.get('notification_id')
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/details',
-      { id: id }, {
+      {
+        id: id,
+        notificationId: notificationId
+      }, {
       withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
     })
       .then(function (response) {
+        GetNotifications()
         setData(response.data.data)
       })
       .catch(function (error) {
@@ -68,9 +70,6 @@ export default function AdDetails() {
     axios.post('http://localhost:8000/api/payments/my-cards',
       {}, {
       withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
     })
       .then(function (response) {
         if (response.data.data.length > 0) {
@@ -90,14 +89,11 @@ export default function AdDetails() {
       axios.post('http://localhost:8000/api/advertisements/messages',
         {}, {
         withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
       })
         .then(function (response) {
 
           const allMessages = response.data.messages
-          console.log('allMessages',allMessages)
+          console.log('allMessages', allMessages)
           const privateMessages = allMessages.filter(message => message.buyer_id == user.userId && message.seller_id == data.created_by && message.advertisement_id == data.id);
           setMessages(privateMessages)
           if (privateMessages.length > 0) {
@@ -108,8 +104,26 @@ export default function AdDetails() {
           console.log(error)
         });
     }
-  }, [data, user,refetch]);
+  }, [data, user, refetch]);
 
+  async function GetNotifications() {
+    axios.post('http://localhost:8000/api/users/notifications',
+        {}, {
+        withCredentials: true,
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+
+            setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
+            setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+            //   setNotificationsQtd(response.data.notifications.length)
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
+}
   const sendMessage = () => {
 
     socket.emit('send-buyer-message',
@@ -120,8 +134,8 @@ export default function AdDetails() {
         advertisement_id: data.id,
         message: message
       })
-      setIsChatOpen(true)
-      setRefetch(prev=>!prev)
+    setIsChatOpen(true)
+    setRefetch(prev => !prev)
 
   }
   return (
@@ -145,7 +159,7 @@ export default function AdDetails() {
           </Success>
         ) : (
           <div className='flex flex-col w-1/2 '>
-            <div className='flex flex-col items-center justify-center  '>
+            <div className={`flex flex-col items-center justify-center`}>
               <div className='w-[150px] h-[150px] '>
                 <Image
                   src={data.seller_image ? data.seller_image : '/nouser.png'}
@@ -167,7 +181,7 @@ export default function AdDetails() {
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
-            <div className='flex gap-3 justify-between '>
+            <div className={`flex gap-3  ${rejectedId ? 'justify-center' : 'justify-between'}`}>
               <div className='w-[50%]'>
                 <div className='w-full h-[300px] shadow-image rounded-lg'>
                   <Image
@@ -198,13 +212,16 @@ export default function AdDetails() {
                   <h1 className='text-[15px] mt-4'>{data.description}</h1>
                 </div>
               </div>
-              <Reservation
-                data={data}
-                hasCard={hasCard}
-                setHasCard={(card) => setHasCard(card)}
-                setShowModal={(show) => setShowModal(show)}
-                setIsDone={(isDone) => setIsDone(isDone)}
-              />
+              {!rejectedId ? (
+
+                <Reservation
+                  data={data}
+                  hasCard={hasCard}
+                  setHasCard={(card) => setHasCard(card)}
+                  setShowModal={(show) => setShowModal(show)}
+                  setIsDone={(isDone) => setIsDone(isDone)}
+                />
+              ) : ('')}
 
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
@@ -215,15 +232,15 @@ export default function AdDetails() {
                     messages={messages}
                     isChatPage={false}
                     userId={user.userId}
-                    createdBy={data.created_by} 
-                    advertisementId={data.id} 
+                    createdBy={data.created_by}
+                    advertisementId={data.id}
                     socket={socket}
                     setRefetch={(refetch) => setRefetch(refetch)} />
                 </div>
 
               ) : (
                 <div className='w-[600px]'>
-                  <h1 className='text-[20px] font-[500]'>Need further clarification?</h1>
+                  <h1 className='text-[20px] font-[500]'>{rejectedId ? 'Any question about the rejected booking request?' : 'Need further clarification?'}</h1>
                   <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${data.seller_name} via a message.`}</p>
                   <textarea
                     onChange={(e) => setMessage(e.target.value)}

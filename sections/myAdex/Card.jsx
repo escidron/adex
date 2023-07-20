@@ -6,7 +6,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Card({ item, setBookingModalOpen }) {
+export default function Card({ item, setBookingModalOpen ,edit}) {
     console.log(item)
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
@@ -16,7 +16,7 @@ export default function Card({ item, setBookingModalOpen }) {
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
     return (
-        <div className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 ${inter.className}`}>
+        <div className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
             <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-md relative'>
                 <Image
                     src={item.image}
@@ -81,7 +81,7 @@ export default function Card({ item, setBookingModalOpen }) {
                             setBookingModalOpen(true)
                         }
                     }}>
-                        <BlackButton label='view details' />
+                        {/* <BlackButton label='view details' /> */}
                     </div>
                 </div>
             </div>

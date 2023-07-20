@@ -57,7 +57,7 @@ export default function PersonalInfo() {
     });
   }
   return (
-    <div className={` flex flex-col items-center  min-h-screen py-2 mt-4 ${inter.className}`}>
+    <div className={` flex flex-col items-center  min-h-screen py-2 `}>
       <div className="
           flex 
           flex-col
@@ -68,8 +68,8 @@ export default function PersonalInfo() {
           max-w-[600px]
           min-w-[400px]
         ">
-        <h1 className="text-[25px]">Personal Informations</h1>
-        <div className="mt-2 w-full flex flex-col gap-3">
+        <h1 className="text-[30px]">Personal Informations</h1>
+        <div className={`mt-2 w-full flex flex-col gap-3 ${inter.className}`}>
 
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
             {

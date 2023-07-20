@@ -31,11 +31,11 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout }) {
+export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout,advertisement,edit }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [isPending, setIsPending] = useState(false)
   const [durationType, setdurationType] = useState('1');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(edit?[{data_url:advertisement.image,file:{name:'test.png'}}]:[]);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
@@ -52,6 +52,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
       setdurationType(id);
     }
   }
+  console.log('form advertisement',advertisement)
   const validate = values => {
     const errors = {};
 
@@ -62,11 +63,13 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     if (selected === null) {
       errors.location = 'Required';
     }
+    console.log('values',values)
     if (values.price === 0 || !values.price) {
       errors.price = 'Must be higher than 0';
-    } else if (isNaN(values.price.replace(',',""))) {
+    } else if (typeof(values.price) == 'string'){
+      if(isNaN(values.price.replace(',',""))) {
       errors.price = 'Must be a number'
-    }
+    }}
 
     if (!values.description) {
       errors.description = 'Required';
@@ -79,26 +82,28 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     return errors;
   };
 
+  console.log('images',images)
   const formik = useFormik({
     initialValues: {
-      title: "",
-      location: '',
-      description: '',
-      image: images,
-      price: '',
+      title: edit?advertisement.title:"",
+      location: edit?advertisement.location:"",
+      description: edit?advertisement.description:"",
+      image: edit?[{data_url:advertisement.image}]:images,
+      price: edit?advertisement.price:"",
     },
     validate,
     onSubmit: values => {
       setIsPending(true)
 
       console.log('images[0].data_url',images[0].data_url)
-      axios.post('http://localhost:8000/api/advertisements/new',
+      axios.post(`http://localhost:8000/api/advertisements/${edit?'update':'new'}`,
         {
+          id:edit?advertisement.id:'',
           title: values.title,
           description: values.description,
           price: values.price,
           category_id: typeId,
-          created_by: '',
+          created_by: edit?advertisement.created_by:'',
           image: images[0].data_url,
           address: address,
           lat: selected.lat,
@@ -131,7 +136,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   });
   return (
     <>
-      {!response ? (
+      {!response  ? (
 
         <form className='grid grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
           <div className=" w-full relative flex gap-2">
@@ -226,7 +231,11 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
 
           <div className=" mt-2 w-full relative">
             <div className={`w-full border-2 border-dashed  rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
-              <ImageLoader images={images} setImages={(image) => setImages(image)} />
+              {/* <ImageLoader images={images} setImages={(image) => setImages(image)} /> */}
+              <ImageLoader 
+              images={images} 
+              setImages={(image) => setImages(image)} 
+              />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
           </div>
@@ -243,6 +252,8 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           </div>
           <div className='col-start-2 w-full flex justify-end mt-4'>
             <div className='ml-2'>
+              {advertisement.status == 1?(
+
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
                 <div className='style_banner_button_text font-semibold text-[18px]'>
                   {isPending ? (
@@ -257,11 +268,8 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                   ) : 'Submit'}
                 </div>
               </button>
-
+              ):('')}
             </div>
-            {/* <div className='ml-1'>
-              <SecondaryButton dark={true} label='Save Draft' />
-            </div> */}
           </div>
 
         </form>

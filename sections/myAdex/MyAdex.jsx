@@ -1,7 +1,7 @@
 import { useEffect, useState, createContext } from 'react'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import MyListing from './MyListing'
-import MyBooking from './MyBooking'
+import MyBookings from './MyBookings'
 import axios from 'axios'
 
 export const RefreshContext = createContext();
@@ -38,11 +38,9 @@ export default function MyAdex() {
     axios.post('http://localhost:8000/api/advertisements/my-booking',
       {}, {
       withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
     })
       .then(function (response) {
+        console.log(response)
         setBookingData(response.data.data)
       })
       .catch(function (error) {
@@ -52,14 +50,14 @@ export default function MyAdex() {
   return (
     <div className='w-full flex flex-col items-center '>
       <div>
-        <h1 className='text-[30px] mt-4'>My ADEX</h1>
+        <h1 className='text-[30px] mt-8'>My ADEX</h1>
       </div>
       <div className='flex w-[80%] items-center'>
         <div className='w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent>
               <MyListing label='My Listing' data={listingData} status={status} />
-              <MyBooking label='My Booking' data={bookingData} />
+              <MyBookings label='My Booking' data={bookingData} />
             </TabsComponent>
           </RefreshContext.Provider>
 

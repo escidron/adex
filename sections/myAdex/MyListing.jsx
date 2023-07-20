@@ -1,16 +1,24 @@
 
 'use client'
 import Card from './Card'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Inter } from 'next/font/google'
 import BookingModal from '@/components/modals/BookingModal';
-
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import SecondaryButton from '@/components/buttons/SecondaryButton';
+import BlackButton from '@/components/buttons/BlackButton';
+import axios from 'axios';
+import { RefreshContext } from './MyAdex';
+import Link from 'next/link';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function MyListing({ data, status }) {
   const [currentStatus, setCurrentStatus] = useState('1');
+  const [advertisementId, setAdvertisementId] = useState('');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [refresh, setRefresh] = useContext(RefreshContext)
 
   if (data.length === 0) {
     return (
@@ -26,8 +34,25 @@ export default function MyListing({ data, status }) {
       setCurrentStatus(id);
     }
   }
+  const deleteAdvertisement = () => {
+    console.log('advertisementId', advertisementId)
+    axios.post('http://localhost:8000/api/advertisements/delete-advertisement',
+      { id: advertisementId }, {
+      withCredentials: true,
+    })
+      .then(function (response) {
+        console.log(response)
+        setAdvertisementId('')
+        setRefresh(prev => (!prev))
+        toast.success('Advertisement deleted successfully')
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }
   return (
     <div className='flex flex-col items-center '>
+      <div><Toaster /></div>
       <div className=" mt-2 w-full flex gap-4">
         <div className={`w-full`}>
           <div className="flex gap-2">
@@ -82,18 +107,27 @@ export default function MyListing({ data, status }) {
         </div>
       </div>
       {
-        data.map((item,index) => {
+        data.map((item, index) => {
           console.log(item)
           if (item.status == currentStatus) {
+            console.log('item status',item.status+item.id)
             return (
               <>
-                <section key={item.id+index} className='w-full justify-center'>
-                  <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} />
+                <section key={item.id + index} className='w-full flex gap-4 items-center'>
+                  <Link href={`/my-listing/edit-advertisement?id=${item.id}`} className='cursor-pointer'>
+                    <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} />
+                  </Link>
+                  {
+                    item.status == 1 ? (
+                      <div onClick={() => setAdvertisementId(item.id)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
+                        <DeleteIcon sx={{ fontSize: '25px', "&:hover": { color: "black" } }} />
+                      </div>
+                    ) : ('')
+                  }
                 </section>
-                {/* <div className='w-[100%] h-[1px] mx-auto bg-gray-200 mt-8 mb-8'></div> */}
                 {
                   bookingModalOpen && (
-                    <BookingModal setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} item={item} key={item.id+index} />
+                    <BookingModal setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} item={item} key={item.id + index} />
                   )
                 }
               </>
@@ -114,6 +148,28 @@ export default function MyListing({ data, status }) {
             null
           )
         })
+      }
+
+      {
+        advertisementId != '' && (
+          <>
+            <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAdvertisementId('')}>
+            </div>
+            <div className='card-payment-modal px-[60px] py-[30px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[400px]'>
+              <h1 className='text-[25px]'>
+                Are you sure you want to delete this listing?
+              </h1>
+              <div className='flex items-center justify-between mt-2 w-full'>
+                <div onClick={() => setAdvertisementId('')}>
+                  <SecondaryButton label='Cancel' dark={true} />
+                </div>
+                <div onClick={deleteAdvertisement}>
+                  <BlackButton label='Delete' />
+                </div>
+              </div>
+            </div>
+          </>
+        )
       }
     </div>
   )
