@@ -18,8 +18,11 @@ import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
 import TextField from '../inputs/TextField';
 import Switch from '@mui/material/Switch';
-import { styled } from '@mui/material/styles';
-
+import { duration, styled } from '@mui/material/styles';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import { Divider } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] })
 const PinkSwitch = styled(Switch)(({ theme }) => ({
@@ -31,15 +34,20 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout,advertisement,edit }) {
+export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout, advertisement, edit }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [isPending, setIsPending] = useState(false)
   const [durationType, setdurationType] = useState('1');
-  const [images, setImages] = useState(edit?[{data_url:advertisement.image,file:{name:'test.png'}}]:[]);
+  const [images, setImages] = useState(edit ? [{ data_url: advertisement.image, file: { name: 'test.png' } }] : []);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
   const [checked, setChecked] = useState(true);
+  const [showDiscounts, setShowDiscounts] = useState(false);
+  const [showDiscountsList, setShowDiscountsList] = useState(false);
+  const [discountDuration, setDiscountDuration] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [discounts, setDiscounts] = useState([]);
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -52,7 +60,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
       setdurationType(id);
     }
   }
-  console.log('form advertisement',advertisement)
   const validate = values => {
     const errors = {};
 
@@ -63,13 +70,13 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     if (selected === null) {
       errors.location = 'Required';
     }
-    console.log('values',values)
     if (values.price === 0 || !values.price) {
       errors.price = 'Must be higher than 0';
-    } else if (typeof(values.price) == 'string'){
-      if(isNaN(values.price.replace(',',""))) {
-      errors.price = 'Must be a number'
-    }}
+    } else if (typeof (values.price) == 'string') {
+      if (isNaN(values.price.replace(',', ""))) {
+        errors.price = 'Must be a number'
+      }
+    }
 
     if (!values.description) {
       errors.description = 'Required';
@@ -82,28 +89,26 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     return errors;
   };
 
-  console.log('images',images)
   const formik = useFormik({
     initialValues: {
-      title: edit?advertisement.title:"",
-      location: edit?advertisement.location:"",
-      description: edit?advertisement.description:"",
-      image: edit?[{data_url:advertisement.image}]:images,
-      price: edit?advertisement.price:"",
+      title: edit ? advertisement.title : "",
+      location: edit ? advertisement.location : "",
+      description: edit ? advertisement.description : "",
+      image: edit ? [{ data_url: advertisement.image }] : images,
+      price: edit ? advertisement.price : "",
     },
     validate,
     onSubmit: values => {
       setIsPending(true)
 
-      console.log('images[0].data_url',images[0].data_url)
-      axios.post(`http://localhost:8000/api/advertisements/${edit?'update':'new'}`,
+      axios.post(`http://localhost:8000/api/advertisements/${edit ? 'update' : 'new'}`,
         {
-          id:edit?advertisement.id:'',
+          id: edit ? advertisement.id : '',
           title: values.title,
           description: values.description,
           price: values.price,
           category_id: typeId,
-          created_by: edit?advertisement.created_by:'',
+          created_by: edit ? advertisement.created_by : '',
           image: images[0].data_url,
           address: address,
           lat: selected.lat,
@@ -112,7 +117,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           sub_asset_type: typeId === 9 ? subType : '0',
           units: 0,
           per_unit_price: 0,
-          is_automatic:checked?'1':'0'
+          is_automatic: checked ? '1' : '0'
 
         }, {
         withCredentials: true,
@@ -134,9 +139,30 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
         });
     },
   });
+
+  const handleDiscountDuration = (value) => {
+    setDiscountDuration(value)
+  }
+  const handleDiscount = (value) => {
+    setDiscount(value)
+  }
+  const saveDiscount = () => {
+    setDiscounts((prev) => ([...prev, { duration: discountDuration, discount: discount }]))
+    setDiscountDuration('')
+    setDiscount('')
+    setShowDiscounts(false)
+
+  }
+  const removeDiscount = (id) => {
+    console.log('id',id)
+    const newDiscounts = discounts.filter((item,index) => index != id);
+    console.log(newDiscounts)
+    setDiscounts(newDiscounts)
+  }
+
   return (
     <>
-      {!response  ? (
+      {!response ? (
 
         <form className='grid grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
           <div className=" w-full relative flex gap-2">
@@ -177,42 +203,148 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           </div>
 
           {isPeriodic === 1 ? (
-            <div className=" mt-2 w-full flex gap-4">
-              <div className={`w-full`}>
-                <label htmlFor="emal" className="block   mb-1">
-                  Duration Type
-                </label>
-                <div className="flex gap-2">
-                  <div
-                    type="text"
-                    id="1"
-                    name="account-1"
-                    onClick={(e) => handleDurationType(e)}
-                    className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
-                  >Monthly
+            <>
+              <div className=" mt-2 w-full flex gap-4">
+                <div className={`w-full`}>
+                  <label htmlFor="emal" className="block   mb-1">
+                    Duration Type
+                  </label>
+                  <div className="flex gap-2">
+                    <div
+                      type="text"
+                      id="1"
+                      name="account-1"
+                      onClick={(e) => handleDurationType(e)}
+                      className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    >Monthly
+                    </div>
+                    <div
+                      type="text"
+                      id="2"
+                      name="account-2"
+                      value={formik.values.durationType}
+                      onClick={(e) => handleDurationType(e)}
+                      className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    >Quarterly
+                    </div>
+                    <div
+                      type="text"
+                      id="3"
+                      name="account-2"
+                      value={formik.values.durationType}
+                      onClick={(e) => handleDurationType(e)}
+                      className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    >Annually
+                    </div>
                   </div>
-                  <div
-                    type="text"
-                    id="2"
-                    name="account-2"
-                    value={formik.values.durationType}
-                    onClick={(e) => handleDurationType(e)}
-                    className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
-                  >Quarterly
-                  </div>
-                  <div
-                    type="text"
-                    id="3"
-                    name="account-2"
-                    value={formik.values.durationType}
-                    onClick={(e) => handleDurationType(e)}
-                    className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
-                  >Annually
-                  </div>
+                  {formik.touched.email && formik.errors.email ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.email}</div> : null}
                 </div>
-                {formik.touched.email && formik.errors.email ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.email}</div> : null}
               </div>
-            </div>
+              <div className=" mt-2 w-full flex gap-4">
+                <div className={`w-full`}>
+                  {discounts.length > 0 ? (
+                    <div className='flex gap-2 w-full mt-[28px] '>
+                      <div onClick={() => setShowDiscounts(true)} className='bg-black text-white w-[50px] h-[50px] rounded-lg flex justify-center items-center hover:bg-[#FCD33B] hover:text-black cursor-pointer'>
+                        <AddRoundedIcon />
+                      </div>
+                      <div onClick={() => setShowDiscountsList(!showDiscountsList)} className="relative flex w-full items-center gap-4 justify-center h-[50px] bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black cursor-pointer">
+                        <h1>See my discounts</h1>
+                        <div className='absolute right-4'>
+                          <ArrowDropDownIcon />
+                        </div>
+                      </div>
+                      {
+                        showDiscountsList && (
+                          <>
+                            <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
+                            </div>
+                            <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[600px] h-[300px] p-4'>
+                              <div className=' w-full flex flex-col items-center'>
+                                <h1 className='text-[25px]'>Listing discounts</h1>
+                                <div className='w-full mt-4 h-[170px] p-2 overflow-y-scroll'>
+                                  {discounts.map((discount, index) => (
+                                    <div key={index}>
+                                      <div  className='flex justify-between px-2'>
+                                        <div className='flex'>
+                                          <h1>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${durationType === '1' ? 'months' : durationType === '2' ? 'quarters' : durationType === '3' ? 'years' : ''} `}</label>have a </h1>
+                                          <h1 className='font-semibold ml-1'>{` ${discount.discount}% discount`}</h1>
+                                        </div>
+                                        <div className='cursor-pointer' onClick={()=>removeDiscount(index)}> 
+                                          <ClearRoundedIcon />
+                                        </div>
+                                      </div>
+                                      <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '10px', marginBottom: '10px' }} />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="w-full flex justify-around items-center">
+                                <div onClick={() => setShowDiscountsList(false)}>
+                                  <SecondaryButton label='Close' dark={true} />
+                                </div>
+                                <div onClick={()=>{
+                                  setShowDiscountsList(false)
+                                  setShowDiscounts(true)
+                                }}>
+                                  <BlackButton label='New' />
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )
+                      }
+                    </div>
+                  ) : (
+
+                    <div onClick={() => setShowDiscounts(true)} className="flex mt-[28px] items-center justify-center h-[50px] bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black cursor-pointer">
+                      <h1>Add discounts<label className='text-[11px] ml-1'>(optional)</label></h1>
+                    </div>
+
+                  )}
+                </div>
+              </div>
+              {
+                showDiscounts && (
+                  <>
+                    <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
+                    </div>
+                    <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[400px] h-[280px] p-4'>
+                      <div className=' w-full flex flex-col items-center'>
+                        <h1 className='text-[25px]'>Create a discount</h1>
+                        <div className='w-full flex  gap-3 mt-4'>
+                          <TextField
+                            id="duration"
+                            label={`Duration from (${durationType === '1' ? 'months' : durationType === '2' ? 'quarters' : durationType === '3' ? 'years' : ''})`}
+                            name="duration"
+                            value={discountDuration}
+                            onChange={(e) => handleDiscountDuration(e.target.value)}
+                            onBlur={() => { }}
+                          />
+                        </div>
+                        <div className='w-full flex  gap-3 mt-4'>
+                          <TextField
+                            id="discount"
+                            label='Discount(%)'
+                            name="discount"
+                            value={discount}
+                            onChange={(e) => handleDiscount(e.target.value)}
+                            onBlur={() => { }}
+
+                          />                        </div>
+                      </div>
+                      <div className="w-full flex justify-around items-center mt-6">
+                        <div onClick={() => setShowDiscounts(false)}>
+                          <SecondaryButton label='Cancel' dark={true} />
+                        </div>
+                        <div onClick={saveDiscount}>
+                          <BlackButton label='Save' />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )
+              }
+            </>
           ) : null}
 
           <div className="col-start-1 mt-2 w-full relative">
@@ -232,9 +364,9 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           <div className=" mt-2 w-full relative">
             <div className={`w-full border-2 border-dashed  rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
               {/* <ImageLoader images={images} setImages={(image) => setImages(image)} /> */}
-              <ImageLoader 
-              images={images} 
-              setImages={(image) => setImages(image)} 
+              <ImageLoader
+                images={images}
+                setImages={(image) => setImages(image)}
               />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
@@ -244,7 +376,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
               <PinkSwitch
                 {...label}
                 checked={checked}
-                onChange={()=>setChecked(!checked)}
+                onChange={() => setChecked(!checked)}
                 sx={{ marginLeft: '10px' }} />
               <p className='flex items-center'>Accept automatic Booking</p>
             </div>
@@ -252,23 +384,43 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           </div>
           <div className='col-start-2 w-full flex justify-end mt-4'>
             <div className='ml-2'>
-              {advertisement.status == 1?(
+              {
+                edit ? (
 
-              <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
-                <div className='style_banner_button_text font-semibold text-[18px]'>
-                  {isPending ? (
-                    <ThreeDots
-                      height="30"
-                      width="40"
-                      radius="9"
-                      color="#FCD33B"
-                      ariaLabel="three-dots-loading"
-                      visible={true}
-                    />
-                  ) : 'Submit'}
-                </div>
-              </button>
-              ):('')}
+                  advertisement.status == 1 ? (
+
+                    <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
+                      <div className='style_banner_button_text font-semibold text-[18px]'>
+                        {isPending ? (
+                          <ThreeDots
+                            height="30"
+                            width="40"
+                            radius="9"
+                            color="#FCD33B"
+                            ariaLabel="three-dots-loading"
+                            visible={true}
+                          />
+                        ) : 'Submit'}
+                      </div>
+                    </button>
+                  ) : ('')
+                ) : (
+                  <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
+                    <div className='style_banner_button_text font-semibold text-[18px]'>
+                      {isPending ? (
+                        <ThreeDots
+                          height="30"
+                          width="40"
+                          radius="9"
+                          color="#FCD33B"
+                          ariaLabel="three-dots-loading"
+                          visible={true}
+                        />
+                      ) : 'Submit'}
+                    </div>
+                  </button>
+                )
+              }
             </div>
           </div>
 

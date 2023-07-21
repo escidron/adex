@@ -13,15 +13,17 @@ import TextField from "../inputs/TextField";
 import TermsOfUseModal from "./TermsOfUseModal";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
+import BlackButton from "../buttons/BlackButton";
+import SecondaryButton from "../buttons/SecondaryButton";
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 
-export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
+export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
   const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
-  const [selected, setSelected] = useState(null);
+  const [showTerms, setShowterms] = useState(false);
   const [isPending, setIsPending] = useState(false)
   const [checkTerms, setCheckTerms] = useState(false)
   const router = useRouter();
@@ -77,7 +79,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
     onSubmit: values => {
       setIsPending(true)
       toast.dismiss()
-      if(checkTerms){
+      if (checkTerms) {
         console.log('entrou no axios')
         axios.post('http://localhost:8000/api/users',
           {
@@ -97,7 +99,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           .then(function (response) {
             if (response.status === 200) {
               console.log(response)
-              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false,userId:response.data.userId })
+              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false, userId: response.data.userId })
               router.push('/')
               setIsPending(false)
               setShowSignUpModal(false)
@@ -114,12 +116,12 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
                 width: 'auto',
                 padding: '16px',
                 minWidth: '450px',
-                fontWeight:500
-  
+                fontWeight: 500
+
               }
             })
           });
-      }else{
+      } else {
         setIsPending(false)
         toast.error('Accept the terms of service before continue.', {
           duration: 10000,
@@ -127,7 +129,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
             width: 'auto',
             padding: '16px',
             minWidth: '450px',
-            fontWeight:500
+            fontWeight: 500
 
           }
         })
@@ -147,6 +149,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
       setAccountType(id);
     }
   }
+  console.log('checkTerms',checkTerms)
   return (
     <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  fixed z-[99] top-0 left-0">
       <div><Toaster />
@@ -193,6 +196,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           />
           {formik.touched.lastName && formik.errors.lastName ? <div className="absolute top-[50px] text-red-600  font-bold">{formik.errors.lastName}</div> : null}
         </div>
+
         <div className=" mt-8 w-full relative">
           <TextField
             type="text"
@@ -205,6 +209,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           />
           {formik.touched.email && formik.errors.email ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.email}</div> : null}
         </div>
+
         <div className=" mt-8 w-full relative">
           <TextField
             type="text"
@@ -217,8 +222,8 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           />
           {formik.touched.phone && formik.errors.phone ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.phone}</div> : null}
         </div>
-        <div className=" mt-8 w-full relative">
 
+        <div className=" mt-8 w-full relative">
           <TextField
             type="password"
             label='Password'
@@ -230,6 +235,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           />
           {formik.touched.password && formik.errors.password ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password}</div> : null}
         </div>
+
         <div className=" mt-8 w-full relative">
           <TextField
             type="password"
@@ -242,6 +248,7 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           />
           {formik.touched.password2 && formik.errors.password2 ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password2}</div> : null}
         </div>
+
         <div className=" mt-4 w-full relative">
           <div className="flex">
             <label htmlFor="account" className="block text-white  mb-1">
@@ -296,10 +303,38 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
             </div>
           </div>
         </div>
+
         <div className={`flex rounded-lg items-center gap-4 mt-2`}>
-          <input type="checkbox" onClick={() => setCheckTerms(!checkTerms)} />
-          <p className="text-white ">I have read and agree to the <Link href='/terms-of-use' target="_blank" className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</Link> </p>
+          <input type="checkbox" onClick={() => setCheckTerms(!checkTerms)} checked={checkTerms?true:false}/>
+          <p className="text-white ">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
         </div>
+        {
+          showTerms && (
+            <>
+              <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
+              </div>
+              <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[800px] h-[80vh]'>
+                <div className=' w-full h-[90%] flex flex-col justify-center items-center'>
+                  <object width="100%" height="100%"
+                    data="/ADEX_Terms of Use.pdf"
+                    type="application/pdf">
+                  </object>
+                </div>
+                <div className="w-full h-[10%] flex justify-around items-center">
+                  <div onClick={()=>setShowterms(false)}>
+                    <SecondaryButton label='Cancel' dark={true}/>
+                  </div>
+                  <div onClick={()=>{
+                    setCheckTerms(true)
+                    setShowterms(false)
+                  }}>
+                    <BlackButton label='I agree' />
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        }
         <button type="submit" className={`z-10 flex justify-center items-center bg-[#FCD33B] font-[600] py-[8px] text-black px-[30px] rounded-md mt-4 w-full ${!isPending ? 'hover:bg-black hover:text-[#FCD33B]' : ''}  text-lg`}>
           {isPending ? (
             <ThreeDots
@@ -313,11 +348,11 @@ export default function SignUpModal({ setShowSignUpModal,setShowLoginModal }) {
           ) : 'Sign Up'}
 
         </button>
-        <p className="text-white mt-5 ">Have an account? 
-        <label href='/login' className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={()=>{
-          setShowSignUpModal(false)
-          setShowLoginModal(true)
-        }}>Login</label>
+        <p className="text-white mt-5 ">Have an account?
+          <label href='/login' className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
+            setShowSignUpModal(false)
+            setShowLoginModal(true)
+          }}>Login</label>
         </p>
       </form>
     </div>

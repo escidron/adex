@@ -15,11 +15,22 @@ import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
+import Switch from '@mui/material/Switch';
+import { styled } from '@mui/material/styles';
 
 const inter = Inter({ subsets: ['latin'] })
-
+const PinkSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: '#FCD33B',
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: 'black',
+  },
+}));
 
 export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout }) {
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
   const currentDate = new Date();
   let currentDateDay = currentDate.getDate();
   let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
@@ -34,6 +45,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
+  const [checked, setChecked] = useState(true);
+
   const [coords, setCoords] = useState({
     lat: -3.745,
     lng: -38.523
@@ -112,7 +125,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           duration: counter,
           sub_asset_type: typeId === 9 ? subType : 0,
           units: 0,
-          per_unit_price: 0
+          per_unit_price: 0,
+          is_automatic:checked?'1':'0'
         }, {
         withCredentials: true,
         headers: {
@@ -329,7 +343,17 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[190px] text-red-600 font-bold">{formik.errors.image}</div> : null}
           </div>
-
+          <div className=''>
+            <div className='flex ite gap-4'>
+              <PinkSwitch
+                {...label}
+                checked={checked}
+                onChange={()=>setChecked(!checked)}
+                sx={{ marginLeft: '10px' }} />
+              <p className='flex items-center'>Accept automatic Booking</p>
+            </div>
+            <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
+          </div>
           <div className='col-start-2 w-full flex justify-end mt-4'>
             <div className='ml-2'>
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
