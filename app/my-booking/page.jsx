@@ -11,6 +11,7 @@ import BuyerCard from '@/components/infoCard/BuyerCard'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ApproveReservation from '@/components/reservation/ApproveReservation'
 import { Inter } from 'next/font/google'
+import MultiImage from '@/components/multiImage/MultiImage';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,7 +30,7 @@ export default function MyBooking() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
-    console.log('notificationId',notificationId)
+    console.log('notificationId', notificationId)
     useEffect(() => {
         axios.post('http://localhost:8000/api/advertisements/my-booking',
             {
@@ -94,16 +95,8 @@ export default function MyBooking() {
                 <div className={`flex gap-3 justify-between mt-8 ${inter.className}`}>
                     <div className='w-1/2 max-w-[450px]'>
                         <div className='w-full h-[300px] shadow-image rounded-lg'>
-                            <Image
-                                src={advertisement.image ? advertisement.image : '/nouser.png'}
-                                alt="Adex Logo"
-                                priority
-                                width={2000}
-                                height={2000}
-                                className='rounded-lg w-full h-full object-cover'
-                            />
+                            <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} />
                         </div>
-
                         <div className='mt-4'>
                             <div className='flex justify-between advertisements-center'>
                                 <h1 className='text-[20px] font-[500]'>{advertisement.title}</h1>
@@ -124,14 +117,14 @@ export default function MyBooking() {
                     </div>
                     <ApproveReservation advertisement={advertisement} />
                 </div>
-                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+                {/* <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
                 <div className='flex flex-col mx-auto'>
                     <h1 className='text-[35px]'>
                         {advertisement.status == 2 ? 'Owned by' : ''}
                     </h1>
                     <BuyerCard buyer={buyer} />
-                </div>
+                </div> */}
             </div>
         </>
     )

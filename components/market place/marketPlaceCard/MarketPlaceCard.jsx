@@ -5,6 +5,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path fro
 import Link from 'next/link';
 import { Inter } from 'next/font/google'
 import CloseIcon from '@mui/icons-material/Close';
+import MultiImage from '@/components/multiImage/MultiImage';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,18 +22,8 @@ export default function MarketPlaceCard({ad}) {
   // '5'=>'Year'  
   return (
     <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
-      <div className="style_image_box w-full h-1/2 rounded-[5px] bg-slate-600">
-        <Image
-            src={ad.image}
-            alt="Adex Logo"
-            width={2000}
-            height={2000}
-            sizes="100%"
-            className='w-full h-full rounded-[5px] object-cover'
-            onError={() => {
-              console.log('errorrr')
-              setSrc('/no-image.png')}}
-        />
+      <div className="style_image_box w-full rounded-lg bg-slate-600 h-[200px]">
+        <MultiImage images={ad.image} height={'200px'} remove={false}/>
         <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-orange-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
           <div className="style_title_row w-full flex items-center justify-between">
@@ -67,8 +58,8 @@ export default function MarketPlaceCard({ad}) {
           </div>
 
           <div className='style_price_row flex w-[90%] justify-between items-center absolute bottom-[25px]'>
-            <p className='font-[400px] text-[#838383] text-[14px]'><b className="style_price_text text-[18px] text-black">${ad.price} / </b>{
-              ad.ad_duration_type=='1'?'Monthly':ad.ad_duration_type=='2'?'Weekly':ad.ad_duration_type=='3'?'Monthly':ad.ad_duration_type=='4'?'Unit':'Year'
+            <p className='font-[400px] text-[#838383] text-[14px]'><b className="style_price_text text-[18px] text-black">${ad.price}</b>{
+              ad.ad_duration_type=='1'?'/ Month':ad.ad_duration_type=='2'?'/ Quarter':ad.ad_duration_type=='3'?'/ Year':''
             }</p>
           <button className='z-10 bg-[#FCD33B] py-[8px] px-[20px] mr-2 rounded-md hover:bg-black hover:text-[#FCD33B] text-md flex items-center justify-center'>
             <Link href={`/market-place/details?id=${ad.id}`} className='style_banner_button_text font-semibold text-18px]'>View Details</Link>

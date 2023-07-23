@@ -28,7 +28,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout }) {
+export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout,advertisement, edit }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const currentDate = new Date();
@@ -41,12 +41,17 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const [boxesQtd, setBoxesQtd] = useState(100);
   const [counter, setCounter] = useState(1);
   const [date, setDate] = useState(dayjs(`${currentDateYear}-${currentDate.getMonth()}-${currentDateDay + 1}`));
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(edit ? advertisement.image : []);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
   const [checked, setChecked] = useState(true);
-
+  const [showDiscounts, setShowDiscounts] = useState(false);
+  const [showDiscountsList, setShowDiscountsList] = useState(false);
+  const [discountDuration, setDiscountDuration] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [discounts, setDiscounts] = useState([]);
+  
   const [coords, setCoords] = useState({
     lat: -3.745,
     lng: -38.523
@@ -109,26 +114,25 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      location: '',
-      description: '',
+      title:  edit ? advertisement.title : "",
+      location: edit ? advertisement.location : "",
+      description: edit ? advertisement.description : "",
       date: date,
-      image: images,
-      price: '',
+      image: edit ? advertisement.image : images,
+      price: edit ? advertisement.price : "",
     },
     validate,
     onSubmit: values => {
       setIsPending(true)
 
-      const blobImage = base64ToBlob(images[0].data_url);
-      axios.post('http://localhost:8000/api/advertisements/new',
+      axios.post(`http://localhost:8000/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           title: values.title,
           description: values.description,
           price: typeId === 17 ? values.price * boxesQtd : values.price,
           category_id: typeId,
           created_by: '',
-          image: blobImage,
+          images: images,
           address: address,
           lat: selected.lat,
           long: selected.lng,
@@ -138,13 +142,12 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           sub_asset_type: typeId === 9 ? subType : 0,
           units: typeId === 17 ? boxesQtd : 0,
           per_unit_price: typeId === 17 ? values.price : 0,
-          is_automatic:checked?'1':'0'
+          is_automatic:checked?'1':'0',
+          discounts: discounts
+
 
         }, {
         withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
       })
         .then(function (response) {
           setResponse(response.data.message)

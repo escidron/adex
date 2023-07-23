@@ -24,6 +24,7 @@ import { useContext } from 'react';
 import { UserContext } from "@/app/layout";
 import { io } from "socket.io-client";
 import Chat from '@/components/chat/Chat';
+import MultiImage from '@/components/multiImage/MultiImage';
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
@@ -46,9 +47,11 @@ export default function AdDetails() {
   const searchParams = useSearchParams()
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const [discounts, setDiscounts] = useState([]);
   const id = searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
+  
   useEffect(() => {
     axios.post('http://localhost:8000/api/advertisements/details',
       {
@@ -60,6 +63,22 @@ export default function AdDetails() {
       .then(function (response) {
         GetNotifications()
         setData(response.data.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.post('http://localhost:8000/api/advertisements/discounts',
+      {
+        id: id,
+      }, {
+      withCredentials: true,
+    })
+      .then(function (response) {
+        console.log(response)
+        setDiscounts(response.data.discounts)
       })
       .catch(function (error) {
         console.log(error)
@@ -184,14 +203,15 @@ export default function AdDetails() {
             <div className={`flex gap-3  ${rejectedId ? 'justify-center' : 'justify-between'}`}>
               <div className='w-[50%]'>
                 <div className='w-full h-[300px] shadow-image rounded-lg'>
-                  <Image
+                  {/* <Image
                     src={data.image ? data.image : '/nouser.png'}
                     alt="Adex Logo"
                     priority
                     width={2000}
                     height={2000}
                     className='rounded-lg w-full h-full object-cover'
-                  />
+                  /> */}
+                  <MultiImage images={data.image ? data.image : [{data_url:'/nouser.png'}]} height={'300px'} remove={false}/>
                 </div>
 
                 <div className='mt-4 '>
@@ -220,6 +240,7 @@ export default function AdDetails() {
                   setHasCard={(card) => setHasCard(card)}
                   setShowModal={(show) => setShowModal(show)}
                   setIsDone={(isDone) => setIsDone(isDone)}
+                  discounts={discounts}
                 />
               ) : ('')}
 

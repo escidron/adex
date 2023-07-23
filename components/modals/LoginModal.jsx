@@ -28,7 +28,7 @@ const validate = values => {
     return errors;
 };
 
-export default function LoginModal({ setShowLoginModal,setShowSignUpModal }) {
+export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setShowForgotPasswordModal }) {
     const [user, setUser] = useContext(UserContext)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
@@ -133,7 +133,7 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal }) {
                     {passwordError && !formik.errors.password ? <div className="absolute top-[50px]  text-red-600 font-bold ">{passwordError}</div> : null}
                 </div>
 
-                <Link href='/hello' className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80">Forgot Password ?</Link>
+                <label onClick={()=>setShowForgotPasswordModal(true)} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80">Forgot Password ?</label>
                 <button className='z-10 bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                   lg:mt-10 '>Login
                 </button>

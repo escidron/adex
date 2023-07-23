@@ -38,14 +38,14 @@ export default function InfoCard({ advertisement, buyer }) {
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                     </div>
-                    <div className='flex gap-2 mt-2'>
+                    {/* <div className='flex gap-2 mt-2'>
                         <EmailIcon sx={{ fontSize: '18px', color: 'gray' }} />
                         <p className='text-[14px] mt-[-3px] text-gray-600'>{buyer.email}</p>
                     </div>
                     <div className='flex gap-2 mt-2'>
                         <LocalPhoneIcon sx={{ fontSize: '18px', color: 'gray' }} />
                         <p className='text-[14px] mt-[-3px] text-gray-600'>{buyer.phone}</p>
-                    </div>
+                    </div> */}
 
                     <div className='flex gap-2 advertisements-center '>
                         <p className='text-[14px] mt-2 w-full'>

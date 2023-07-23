@@ -3,6 +3,7 @@ import BlackButton from '@/components/buttons/BlackButton'
 import { Inter } from 'next/font/google'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MultiImage from '@/components/multiImage/MultiImage';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,15 +18,8 @@ export default function Card({ item, setBookingModalOpen ,edit}) {
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
     return (
         <div className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
-            <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-md relative'>
-                <Image
-                    src={item.image}
-                    alt={item.image}
-                    priority
-                    width={2100}
-                    height={2100}
-                    className='h-full w-full rounded-md'
-                />
+            <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
+                <MultiImage images={item.image} height={'210px'} remove={false}/>
                 {
                     item.status === 2 && (
 
@@ -76,7 +70,7 @@ export default function Card({ item, setBookingModalOpen ,edit}) {
                         ${item.price}/{item.ad_duration_type === '1' ? (<p className='text-[15px] text-gray-600 flex items-center'>Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>Quarter</p>) : (<p className='text-[15px] text-gray-600 flex items-center'>Year</p>)}
                     </div>
                     <div className='flex mt-auto' onClick={() => {
-                        if (item.status === 4) {
+                        if (item.status == 4) {
 
                             setBookingModalOpen(true)
                         }

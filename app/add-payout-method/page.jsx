@@ -36,7 +36,7 @@ export default function AddPayoutMethod() {
   }, []);
 
   return (
-    <div className={`w-full h-[100vh] flex justify-center items-center ${inter.className}`}>
+    <div className={`w-full h-[100vh] flex flex-col justify-center items-center ${inter.className}`}>
       {finish ? (
         <Success >
           <h1 className='text-[25px]'>Bank Account registered</h1>
@@ -44,13 +44,23 @@ export default function AddPayoutMethod() {
 
           <div className='flex justify-center w-full'>
 
-            <Link href='/' className='mt-6' >
+            {/* <Link href='/' className='mt-6' >
               <BlackButton label='Done' />
-            </Link>
+            </Link> */}
+            <div className='flex justify-between w-full'>
+              <Link href='/' className='mt-6'>
+                <SecondaryButton label='Back home' dark={true} />
+              </Link>
+              <Link href='/listing' className='mt-6'>
+                <BlackButton label='Create Listing' />
+              </Link>
+            </div>
           </div>
         </Success>
       ) : (
         <>
+          <h1 className='text-[35px]'>Create a payout Method</h1>
+          <p className='text-[16px] mb-4'>Before create your listing, you need to fill some important informations</p>
           {stripeAccount === ''
             ? (
 

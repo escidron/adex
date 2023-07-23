@@ -27,8 +27,8 @@ export default function EditAdvertisement() {
     }, []);
     return (
         <div className={`w-full mt-[120px] h-[100vh] flex flex-col items-center mx-auto`}>
-            <h1 className='text-[30px] mt-8'>Edit your Listing</h1>
-            <div className={`flex justify-center mx-auto  mt-8 min-h-[400px] ${inter.className}`}>
+            <h1 className='text-[30px] mt-8'>{`${advertisement.status == '1'?'Edit your Listing':advertisement.status == '2' || advertisement.status == '3'?'See your listing details':advertisement.status == '4'?'See the booking request details':''}`}</h1>
+            <div className={`flex justify-center max-w-[50%] mx-auto  mt-8 min-h-[400px] ${inter.className}`}>
                 {
                     advertisement.id ? (
                         <PersonForm typeId={advertisement.category_id} isPeriodic={advertisement.is_periodic} hasPayout={true} edit={true} advertisement={advertisement} />

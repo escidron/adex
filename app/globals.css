@@ -116,10 +116,29 @@ input[type=number] {
 }
 
 .slick-dots li.slick-active button:before {
-  opacity: .75;
+  opacity: 1;
   color: #FCD33B;
+
+}
+.slick-dots{
+  bottom: 25px!important;
+}
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .75;
+  color:  black;
+  -webkit-font-smoothing: antialiased;
+  display: none;
 }
 
+/* .slick-prev:before{
+  margin-right: -25px;
+}
+.slick-next:before{
+  margin-left: -25px;
+} */
 
 .market-place-footer{
   width: 100%;

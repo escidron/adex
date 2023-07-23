@@ -1,5 +1,7 @@
 "use client"
-import { useState } from 'react'
+import { useState,useContext } from 'react'
+import { UserContext } from '../../app/layout';
+
 import axios from 'axios'
 import Link from 'next/link';
 import { useFormik } from 'formik';
@@ -15,6 +17,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function ExternalBankForm({ setAccount, stripeAccount, setFinish }) {
     const [isPending, setIsPending] = useState(false)
+    const [user, setUser] = useContext(UserContext)
 
     const validate = values => {
         const errors = {};
@@ -69,6 +72,8 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                     if (response.status == 200) {
                         setIsPending(false)
                         setFinish(true)
+                        setUser((prev) => ({ ...prev, hasPayout:true }))
+
                     }
                 })
                 .catch(function (error) {

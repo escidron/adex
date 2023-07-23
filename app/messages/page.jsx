@@ -10,6 +10,7 @@ import Chat from '@/components/chat/Chat';
 import { io } from "socket.io-client";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSearchParams,useRouter } from 'next/navigation'
+import MultiImage from '@/components/multiImage/MultiImage';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -143,15 +144,8 @@ export default function MessagesPage() {
                         {
                             selectedChat.advertisementImage ? (
                                 <>
-                                    <div className='h-full aspect-square'>
-                                        <Image
-                                            src={selectedChat.advertisementImage}
-                                            alt='ad image'
-                                            priority
-                                            width={2100}
-                                            height={2100}
-                                            className='h-full w-full rounded-md'
-                                        />
+                                    <div className='h-full w-[40%]'>
+                                        <MultiImage images={selectedChat.advertisementImage} height={'180px'} remove={false}/>
                                     </div>
                                     <div className='relative hidden xl:block '>
                                         <h1 className='text-[24px] font-[600]'>{selectedChat.advertisementTitle}</h1>

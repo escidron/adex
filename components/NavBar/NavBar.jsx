@@ -17,18 +17,39 @@ import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import LoginModal from '../modals/LoginModal';
 import SignUpModal from '../modals/SignUpModal';
+import ForgotPassword from '../modals/ForgotPassword';
 import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal }) {
+export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal,showForgotPasswordModal ,setShowForgotPasswordModal}) {
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
     const [showNotifications, setshowNotifications] = useState(false)
     const router = useRouter();
 
-  
+    useEffect(() => {
+        async function hasPayoutMethod() {
+          const response = await fetch(
+            "http://localhost:8000/api/users/external-account",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+          if (response.status === 200) {
+            const res = await response.json()
+            if(res.data){
+                // setHasPayout((prev) => (true));
+                setUser((prev) => ({ ...prev, hasPayout:true }))
+
+            }
+          }
+        }
+        hasPayoutMethod();
+      }, []);
+  console.log('user',user)
     useEffect(() => {
         axios.post('http://localhost:8000/api/users/notifications',
         {}, {
@@ -146,7 +167,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
-                <Link href="/listing" className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href={user.hasPayout?'/listing':'/add-payout-method'} className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
@@ -276,12 +297,17 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                 ""}
 
             {showLoginModal ? (
-                <LoginModal setShowLoginModal={setShowLoginModal} setShowSignUpModal={setShowSignUpModal}/>
+                <LoginModal setShowLoginModal={setShowLoginModal} setShowSignUpModal={setShowSignUpModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
             ) : (
                 ''
             )}
             {showSignUpModal ? (
                 <SignUpModal setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal}/>
+            ) : (
+                ''
+            )}
+            {showForgotPasswordModal ? (
+                <ForgotPassword setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
             ) : (
                 ''
             )}

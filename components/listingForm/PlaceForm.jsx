@@ -17,6 +17,7 @@ import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
+import TextField from '../inputs/TextField';
 
 const inter = Inter({ subsets: ['latin'] })
 const PinkSwitch = styled(Switch)(({ theme }) => ({
@@ -28,7 +29,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout }) {
+export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayout, advertisement, edit }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const currentDate = new Date();
@@ -41,11 +42,16 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const [subType, setSubType] = useState('1');
   const [counter, setCounter] = useState(1);
   const [date, setDate] = useState(dayjs(`${currentDateYear}-${currentDate.getMonth()}-${currentDateDay + 1}`));
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(edit ? advertisement.image : []);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
   const [checked, setChecked] = useState(true);
+  const [showDiscounts, setShowDiscounts] = useState(false);
+  const [showDiscountsList, setShowDiscountsList] = useState(false);
+  const [discountDuration, setDiscountDuration] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [discounts, setDiscounts] = useState([]);
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -97,26 +103,26 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      location: '',
-      description: '',
+      title: edit ? advertisement.title : "",
+      location: edit ? advertisement.location : "",
+      description: edit ? advertisement.description : "",
       date: date,
-      image: images,
-      price: '',
+      image: edit ? advertisement.image : images,
+      price: edit ? advertisement.price : "",
     },
     validate,
     onSubmit: async values => {
 
       setIsPending(true)
 
-      await axios.post('http://localhost:8000/api/advertisements/new',
+      axios.post(`http://localhost:8000/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           title: values.title,
           description: values.description,
           price: values.price,
           category_id: typeId,
           created_by: '',
-          image: images[0].data_url,
+          images: images,
           address: address,
           lat: selected.lat,
           long: selected.lng,
@@ -126,12 +132,11 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           sub_asset_type: typeId === 9 ? subType : 0,
           units: 0,
           per_unit_price: 0,
-          is_automatic:checked?'1':'0'
+          is_automatic: checked ? '1' : '0',
+          discounts: discounts
+
         }, {
         withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
       })
         .then(function (response) {
           setResponse(response.data.message)
@@ -276,7 +281,9 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                 <label htmlFor="emal" className="block   mb-1">
                   Duration
                 </label>
-                <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
+                <div className='mt-3'>
+                  <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
+                </div>
                 {formik.touched.email && formik.errors.email ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.email}</div> : null}
               </div>
             </div>
@@ -284,24 +291,16 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
 
           <div className=" mt-2 w-full flex gap-4 relative">
             <div className={`w-[40%]`}>
-              <label htmlFor="price" className="block   mb-1">
-                Price
-              </label>
-              <div className='relative flex-col '>
-                <p className='absolute top-[11px] left-2 text-[18px] font-[400] '>$</p>
-                <input
-                  id='price'
-                  onInput={(e) => formatNumberInput(e)}
-                  placeholder='0'
-                  type="text"
-                  className='max-h-[50px] py-4 px-5 rounded-md w-full border outline-none flex items-center text-[18px]'
-                  // value={price}
-                  // onChange={(e) => setPrice(e.target.value ? parseInt(e.target.value) : 0)}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.price}
-                />
-              </div>
+            <TextField
+                id='price'
+                label='Price'
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                onInput={(e) => formatNumberInput(e.target.value)}
+                value={formik.values.price}
+                errors={formik.errors.price}
+                formatPrice={true}
+              />
               {formik.touched.price && formik.errors.price ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.price}</div> : null}
             </div>
             <div className={`w-[60%]`}>
@@ -348,7 +347,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               <PinkSwitch
                 {...label}
                 checked={checked}
-                onChange={()=>setChecked(!checked)}
+                onChange={() => setChecked(!checked)}
                 sx={{ marginLeft: '10px' }} />
               <p className='flex items-center'>Accept automatic Booking</p>
             </div>
@@ -377,7 +376,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
         </form>
       ) : (
         <div className='mt-200px min-w-[500px] flex mx-auto justify-center'>
-          {hasPayout ?
+          {hasPayout &&
             (< Success >
               <h1 className='text-[25px]'>Listing created</h1>
 
@@ -390,23 +389,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               </div>
             </Success>
             )
-            :
-
-            <Success>
-              <h1 className='text-[25px]'>Listing created</h1>
-
-              <p className='my-4'>For receiving your funds,you will need to add a payout method, if you want to do it later,you can find this option in your profile section.</p>
-
-              <div className='flex justify-between w-full'>
-
-                <Link href='/' className='mt-6'>
-                  <SecondaryButton label='later' dark={true} />
-                </Link>
-                <Link href='/add-payout-method' className='mt-6'>
-                  <BlackButton label='add now' />
-                </Link>
-              </div>
-            </Success>
           }
         </div>
       )}

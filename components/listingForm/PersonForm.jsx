@@ -38,7 +38,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [isPending, setIsPending] = useState(false)
   const [durationType, setdurationType] = useState('1');
-  const [images, setImages] = useState(edit ? [{ data_url: advertisement.image, file: { name: 'test.png' } }] : []);
+  const [images, setImages] = useState(edit ? advertisement.image : []);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
@@ -94,7 +94,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
       title: edit ? advertisement.title : "",
       location: edit ? advertisement.location : "",
       description: edit ? advertisement.description : "",
-      image: edit ? [{ data_url: advertisement.image }] : images,
+      image: edit ? advertisement.image : images,
       price: edit ? advertisement.price : "",
     },
     validate,
@@ -109,7 +109,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           price: values.price,
           category_id: typeId,
           created_by: edit ? advertisement.created_by : '',
-          image: images[0].data_url,
+          images: images,
           address: address,
           lat: selected.lat,
           long: selected.lng,
@@ -117,13 +117,11 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           sub_asset_type: typeId === 9 ? subType : '0',
           units: 0,
           per_unit_price: 0,
-          is_automatic: checked ? '1' : '0'
+          is_automatic: checked ? '1' : '0',
+          discounts: discounts
 
         }, {
         withCredentials: true,
-        headers: {
-          'content-type': 'application/json',
-        }
       })
         .then(function (response) {
 
@@ -154,9 +152,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
 
   }
   const removeDiscount = (id) => {
-    console.log('id',id)
-    const newDiscounts = discounts.filter((item,index) => index != id);
-    console.log(newDiscounts)
+    const newDiscounts = discounts.filter((item, index) => index != id);
     setDiscounts(newDiscounts)
   }
 
@@ -264,12 +260,12 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                                 <div className='w-full mt-4 h-[170px] p-2 overflow-y-scroll'>
                                   {discounts.map((discount, index) => (
                                     <div key={index}>
-                                      <div  className='flex justify-between px-2'>
+                                      <div className='flex justify-between px-2'>
                                         <div className='flex'>
                                           <h1>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${durationType === '1' ? 'months' : durationType === '2' ? 'quarters' : durationType === '3' ? 'years' : ''} `}</label>have a </h1>
                                           <h1 className='font-semibold ml-1'>{` ${discount.discount}% discount`}</h1>
                                         </div>
-                                        <div className='cursor-pointer' onClick={()=>removeDiscount(index)}> 
+                                        <div className='cursor-pointer' onClick={() => removeDiscount(index)}>
                                           <ClearRoundedIcon />
                                         </div>
                                       </div>
@@ -282,7 +278,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                                 <div onClick={() => setShowDiscountsList(false)}>
                                   <SecondaryButton label='Close' dark={true} />
                                 </div>
-                                <div onClick={()=>{
+                                <div onClick={() => {
                                   setShowDiscountsList(false)
                                   setShowDiscounts(true)
                                 }}>
@@ -362,8 +358,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           </div>
 
           <div className=" mt-2 w-full relative">
-            <div className={`w-full border-2 border-dashed  rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
-              {/* <ImageLoader images={images} setImages={(image) => setImages(image)} /> */}
+            <div className={`w-full ${images.length == 0 ? 'border-2 border-dashed ' : ''} rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
               <ImageLoader
                 images={images}
                 setImages={(image) => setImages(image)}
@@ -427,7 +422,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
         </form>
       ) : (
         <div className='mt-250px min-w-[500px] flex mx-auto justify-center'>
-          {hasPayout ?
+          {hasPayout &&
             (< Success >
               <h1 className='text-[25px]'>Listing created</h1>
 
@@ -440,23 +435,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
               </div>
             </Success>
             )
-            :
-
-            <Success>
-              <h1 className='text-[25px]'>Listing created</h1>
-
-              <p className='my-4'>For receiving your funds,you will need to add a payout method, if you want to do it later,you can find this option in your profile section.</p>
-
-              <div className='flex justify-between w-full'>
-
-                <Link href='/' className='mt-6'>
-                  <SecondaryButton label='later' dark={true} />
-                </Link>
-                <Link href='/add-payout-method' className='mt-6'>
-                  <BlackButton label='add now' />
-                </Link>
-              </div>
-            </Success>
           }
         </div >
       )

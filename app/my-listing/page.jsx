@@ -10,6 +10,7 @@ import { Divider } from '@mui/material';
 import { Inter } from 'next/font/google'
 import BuyerCard from '@/components/infoCard/BuyerCard'
 import { UserContext } from "@/app/layout";
+import MultiImage from '@/components/multiImage/MultiImage'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -85,14 +86,7 @@ export default function MyListing() {
                 <div className={`flex gap-3 justify-between mt-8 ${inter.className}`}>
                     <div className='w-1/2 max-w-[450px]'>
                         <div className='w-full h-[300px] shadow-image rounded-lg'>
-                            <Image
-                                src={advertisement.image ? advertisement.image : '/nouser.png'}
-                                alt="Adex Logo"
-                                priority
-                                width={2000}
-                                height={2000}
-                                className='rounded-lg w-full h-full object-cover'
-                            />
+                            <MultiImage images={advertisement.image ? advertisement.image : [{data_url:'/nouser.png'}]} height={'300px'} remove={false}/>
                         </div>
 
                         <div className='mt-4'>

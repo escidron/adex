@@ -20,6 +20,7 @@ export const UserContext = createContext();
 export default function RootLayout({ children }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(true);
 
   const [user, setUser] = useState({
     isLogged: false,
@@ -29,7 +30,8 @@ export default function RootLayout({ children }) {
     image:'',
     userId:null,
     notificationQuantity:0,
-    notifications:[]
+    notifications:[],
+    hasPayout:false
   });
   useEffect(() => {
     async function autoLogin() {
@@ -67,6 +69,8 @@ export default function RootLayout({ children }) {
           showLoginModal={showLoginModal}
           setShowSignUpModal={(toggle)=>setShowSignUpModal(toggle)} 
           showSignUpModal={showSignUpModal} 
+          showForgotPasswordModal={showForgotPasswordModal}
+          setShowForgotPasswordModal={(toggle)=>setShowForgotPasswordModal(toggle)}
         />
         
           {children}

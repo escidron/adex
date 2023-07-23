@@ -98,10 +98,10 @@ export default function PayoutForm({ setStripeAccount }) {
     },
   });
   return (
-    <div className={` flex flex-col items-center justify-center min-h-screen py-2  ${inter.className} p-2 `}>
+    <div className={` flex flex-col items-center justify-center  py-2  ${inter.className} p-2 `}>
       <div><Toaster /></div>
       <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
-        <p className=" text-[36px]">Address</p>
+        <p className=" text-[30px]">Address</p>
         <p className=" text-[18px] font-normal mb-6">Register your bill address</p>
         <div className=" w-full  flex gap-[20px]">
           <div className="w-[60%] relative ">
