@@ -133,7 +133,7 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setSho
                     {passwordError && !formik.errors.password ? <div className="absolute top-[50px]  text-red-600 font-bold ">{passwordError}</div> : null}
                 </div>
 
-                <label onClick={()=>setShowForgotPasswordModal(true)} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80">Forgot Password ?</label>
+                <label onClick={()=>setShowForgotPasswordModal(true)} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
                 <button className='z-10 bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                   lg:mt-10 '>Login
                 </button>

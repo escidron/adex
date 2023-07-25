@@ -20,7 +20,7 @@ export const UserContext = createContext();
 export default function RootLayout({ children }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
-  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(true);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
   const [user, setUser] = useState({
     isLogged: false,
