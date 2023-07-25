@@ -2,11 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .style_navbar{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   font-weight: 300;
   font-size: 16px;
   z-index: 99;
+  position: fixed;
+  top: 0;
 }
 
 .style_banner{
@@ -19,7 +33,7 @@
 
 }
 .style_banner_box{
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
   background-color: rgb(255, 255, 255, 40%);
   
 }
@@ -38,6 +52,160 @@
   background-image: url('../public/property-123.png');
   background-size: cover;
   background-position-x: center;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
 
+}
+
+.style_contact_us{
+  height: 100%;
+  width: 100%;
+  background-image: url('../public/property-123.png');
+  background-size: cover;
+  background-position-x: center;
+  /* font-family: 'Roboto', sans-serif; */
+
+}
+.style_search_bar{
+  /* font-family: 'Roboto', sans-serif; */
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+@keyframes noDataAnimation{
+  0% {
+      opacity: 0;
+  }
+  100% {
+  }
+}
+.no-data{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px; 
+  animation: noDataAnimation 2s linear 0s  normal none;
+  
+}
+.no-data-title{
+  /* font-family: 'Roboto', sans-serif; */
+  font-size: 30px;
+}
+.cards-grid{
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  padding: 20px;
+  margin-bottom: 280px;
+}
+
+.styled_map_cards{
+  background-color: rgb(255, 255, 255);
+  height: 420px;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* font-family: 'Roboto', sans-serif; */
+}
+
+.style_combobox{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* font-family: 'Roboto', sans-serif; */
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: #FCD33B;
+
+}
+.slick-dots{
+  bottom: 25px!important;
+}
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .75;
+  color:  black;
+  -webkit-font-smoothing: antialiased;
+  display: none;
+}
+
+/* .slick-prev:before{
+  margin-right: -25px;
+}
+.slick-next:before{
+  margin-left: -25px;
+} */
+
+.market-place-footer{
+  width: 100%;
+  background-color: #252525;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  box-sizing: border-box;
+  bottom: 0;
+}
+
+.market-place-footer-logo{
+  height: 60px;
+  aspect-ratio: 1;
+
+}
+.market-place-footer-icons{
+  display: flex;
+  width: 100px;
+  justify-content: space-around;
+  align-items: center;
+}
+.market-place-footer-copy{
+  margin-top: 10px;
+}
+.market-place-footer-icon{
+  color: whitesmoke;
+}
+
+.card-payment-modal{
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%)
+}
+
+.InputElement{
+  background-color: #252525;
+}
+
+.StripeElement {
+  display: block;
+  padding: 10px 14px;
+  font-size: 1em;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  height: 42px;
+}
+
+.shadow-image{
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+
+.notifications_list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.notifications_list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notifications_list::-webkit-scrollbar-thumb {
+  background-color: rgb(121, 119, 119);
+  border-radius: 20px;
+  opacity: 0.1;
 }

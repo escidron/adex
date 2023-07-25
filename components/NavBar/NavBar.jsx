@@ -1,5 +1,5 @@
 "use client"
-import { useContext,useState,useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
@@ -10,60 +10,149 @@ import logo from '../../public/adex-logo-white-yellow.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MessageRoundedIcon from '@mui/icons-material/MessageRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/navigation';
+import { Inter } from 'next/font/google'
+import LoginModal from '../modals/LoginModal';
+import SignUpModal from '../modals/SignUpModal';
+import ForgotPassword from '../modals/ForgotPassword';
+import toast, { Toaster } from "react-hot-toast";
+import Notifications from '../notification/Notifications';
 
-export default function NavBar() {
+const inter = Inter({ subsets: ['latin'] })
+
+export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal,showForgotPasswordModal ,setShowForgotPasswordModal}) {
     const pathname = usePathname();
-    // const [showLoginOptions, setShowLoginOptions] = useState(false);
-    const [user,setUser] = useContext(UserContext)
+    const [user, setUser] = useContext(UserContext)
+    const [showNotifications, setshowNotifications] = useState(false)
     const router = useRouter();
+
+    useEffect(() => {
+        async function hasPayoutMethod() {
+          const response = await fetch(
+            "http://localhost:8000/api/users/external-account",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+          if (response.status === 200) {
+            const res = await response.json()
+            if(res.data){
+                // setHasPayout((prev) => (true));
+                setUser((prev) => ({ ...prev, hasPayout:true }))
+
+            }
+          }
+        }
+        hasPayoutMethod();
+      }, []);
+  console.log('user',user)
+    useEffect(() => {
+        axios.post('http://localhost:8000/api/users/notifications',
+        {}, {
+        withCredentials: true,
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(function (response) {
+            
+          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
+          setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+        //   setNotificationsQtd(response.data.notifications.length)
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+
+
+    }, []);
+    useEffect(() => {
+        const handleClick = (event) => {
+
+            // Handle your click logic here
+            setshowNotifications(false)
+            if (user.showLoginOptions) {
+
+                setUser((prev) => ({ ...prev, showLoginOptions: false }))
+            }
+        };
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+            document.removeEventListener("click", handleClick);
+        };
+    }, [showNotifications, user]);
+
     useEffect(() => {
         async function autoLogin() {
-        const response = await fetch("http://localhost:8000/api/users/autologin", {
-            method: "GET",
-            credentials: "include",
-        });
-        if (response.status === 200) {
-            const user = await response.json()
-            setUser((prev)=>({...prev,name:user.name,isLogged:true,checkLogin:false,showLoginOptions:false}));
-        } else {
-            console.log('sin usuario');
-        }
+            const response = await fetch("http://localhost:8000/api/users/autologin", {
+                method: "GET",
+                credentials: "include",
+            });
+            if (response.status === 200) {
+                const user = await response.json()
+                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image, userId: user.userId }));
+            } else {
+                console.log('response', response)
+            }
         }
         autoLogin();
     }, []);
-    
-    const logout = ()=>{
-        axios.post('http://localhost:8000/api/users/logout',
-        {
 
-      }, {
-          withCredentials: true,
-          headers: {
-            'content-type': 'application/json'
-          }})
-        .then(function (response) {
+    const handleRoute = () => {
+        if (user.isLogged) {
+            router.push('/market-place')
+        } else {
 
-          setUser({...user,isLogged:false,name:'',checkLogin:true})
             router.push('/login')
+        }
+    }
+    const logout = () => {
+        toast.dismiss()
+
+        axios.post('http://localhost:8000/api/users/logout',
+            {
+
+            }, {
+            withCredentials: true,
+            headers: {
+                'content-type': 'application/json'
+            }
         })
-        .catch(function (error) {
-          console.log('errrr',error.response);
-        });
+            .then(function (response) {
+                setUser({ ...user, isLogged: false, name: '', checkLogin: true })
+                router.push('/')
+                toast.success(response.data.message, {
+                    duration: 3000,
+                    style: {
+                        fontWeight: 500
+                    }
+                })
+            })
+            .catch(function (error) {
+            });
     }
 
+    //sm:bg-red-700 md:bg-blue-700 lg:bg-green-700 xl:bg-gray-500 2xl:bg-yellow-500
     return (
-        <div className='bg-black w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
+        <div className={`bg-black   w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
                         md:h-[90px]
-                        lg:justify-center'>
+                        lg:justify-center ${inter.className}
+                        `}>
 
+            <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden 
                                 md:flex  md:justify-between md:items-center w-[500px]
                                 lg:w-[600px]
                                 xl:max-w-[50%]'>
-                <Link href="/" className='hover:text-[#FCD33B]'>How it Work</Link>
-                <Link href="/" className='hover:text-[#FCD33B]'>Contact Us</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How it Work</Link>
+                <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
                 <div className='md:h-[50px] md:w-[50px] 
                                 lg:h-[60px] lg:w-[60px]
                                 xl:h-[70px] xl:w-[70px]'>
@@ -74,72 +163,154 @@ export default function NavBar() {
                             width={70}
                             height={70}
                             priority
-                        />  
+                        />
                     </Link>
                 </div>
-                <Link href="/market-place" className='hover:text-[#FCD33B]'>ADEX Market Place</Link>
-                <Link href="/" className='hover:text-[#FCD33B]'>Listing</Link>
+                <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
+                <Link href={user.hasPayout?'/listing':'/add-payout-method'} className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
-                    <div onMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))}  className='hidden cursor-pointer  p-1
+                    <div className='hidden cursor-pointer 
                             md:flex items-center 
-                            lg:absolute lg:top-[30px] lg:right-[40px]
-                            xl:top-[26px] xl:right-[80px]'>
-                        <Image 
-                        
-                            src={nouser}
-                            alt="user image"
-                            width={30}
-                            height={30}
-                            priority
-                        />
-                        <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
-                        <ArrowDropDownIcon />
-                        {user.showLoginOptions?                     
-                            <div  oonMouseOver={()=> setUser((prev)=>({...prev,showLoginOptions:true}))} onMouseLeave={()=> setUser((prev)=>({...prev,showLoginOptions:false}))} className="absolute top-[38px] right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                            lg:absolute t0p-0 lg:right-[40px]
+                            xl:top-0 xl:right-[80px]
+                            transition
+                            duration-500
+                            ease-linear
+                            h-full
+                            '>
+                        <div className='ml-4 relative flex justify-end items-center h-full'
+                            onClick={() => {
+                                setUser((prev) => ({ ...prev, showLoginOptions: false }))
+                                setshowNotifications(true)
+                            }}
+
+                        >
+                            <NotificationsRoundedIcon sx={{ fontSize: '24px', marginRight: '10px' }} />
+                            {user.notificationQuantity > 0 ? (
+                                <p className='absolute top-8 right-[10px] flex justify-center items-center w-[13px] h-[13px] bg-red-600 rounded-full text-[11px]'>{user.notificationQuantity}</p>
+                            ) : ('')}
+                        </div>
+                        <div className='flex items-center h-full ml-4'
+                            onClick={() => {
+                                setshowNotifications(false)
+                                setUser((prev) => ({ ...prev, showLoginOptions: true }))
+                            }}
+                        >
+                            <Image
+                                src={user.image ? user.image : nouser}
+                                alt="user image"
+                                width={30}
+                                height={30}
+                                priority
+                            />
+                            <p className='ml-2 md:text-sm lg:text-base'>Hi, {user.name}</p>
+                            <ArrowDropDownIcon />
+                        </div>
+
+
+                        {user.showLoginOptions ?
+                            <div
+                                className="absolute top-[95px] lg:top-[38px] xl:top-[90px] right-[-45px] w-[200px] text-sm font-medium text-white bg-black rounded-b-lg"
+                            >
+                                <Link href="/my-profile" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '18px' }} />
                                     Profile
                                 </Link>
-                                <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                <Link href="/messages" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     Messages
                                 </Link>
-                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                <LogoutIcon fontSize='small' sx={{marginRight:'2px'}}/>
+                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <LogoutIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     Logout
                                 </Link>
-                            </div>:
-                        ""}
+                            </div> :
+                            ""}
 
+                        {showNotifications ?
+                            <div className="absolute top-[95px] lg:top-[38px] xl:top-[90px]  w-[350px] right-0 text-sm font-medium text-white bg-black rounded-b-lg "
+                                onClick={() => setshowNotifications(true)}
+                            >
+                                <Notifications />
+                            </div> :
+                            ""}
                     </div>
                 )
-                :   pathname !=='/login' && pathname!=='/signup' && user.checkLogin?
-                        ( <div className='hidden h-[90px]
+                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin ?
+                    (<div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <Link href='/login' className='hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-white ext-md'>
+                        <div onClick={() => setShowLoginModal(true)} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
-                        </Link>
-                        <Link href='/signup' className='hidden xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
+                        </div>
+                        <div onClick={() => setShowSignUpModal(true)} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
-                        </Link>
-                    </div>):''
-                    
+                        </div>
+                    </div>) : ''
+
             }
 
             {/* mobile screen */}
             <div className='md:hidden'>
-                <Image
-                    src={logo}
-                    alt="Adex Logo"
-                    width={50}
-                    height={50}
-                    priority
-                />
+                <Link href='/'>
+                    <Image
+                        src={logo}
+                        alt="Adex Logo"
+                        width={50}
+                        height={50}
+                        priority
+                    />
+                </Link>
             </div>
-            <div className=' md:hidden flex items-center justify-self-end'>
+            <div className='cursor-pointer md:hidden flex items-center justify-self-end' onClick={() => setUser((prev) => ({ ...prev, showLoginOptions: !prev.showLoginOptions }))} >
                 <MenuIcon fontSize='large' />
             </div>
+            {user.showLoginOptions ?
+                <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))} className="md:hidden absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <div onClick={() => setShowLoginModal(true)} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Login
+                    </div>
+                    <div onClick={() => setShowSignUpModal(true)} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Sign Up
+                    </div>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Profile
+                    </Link>
+                    <Link href="/how-it-works" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        How it Works
+                    </Link>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Contact us
+                    </Link>
+                    <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        Create a Listing
+                    </Link>
+                    <Link href="/market-place" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        ADEX market Place
+                    </Link>
+                    <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        <LogoutIcon fontSize='small' sx={{ marginRight: '2px' }} />
+                        Logout
+                    </Link>
+                </div> :
+                ""}
 
+            {showLoginModal ? (
+                <LoginModal setShowLoginModal={setShowLoginModal} setShowSignUpModal={setShowSignUpModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
+            ) : (
+                ''
+            )}
+            {showSignUpModal ? (
+                <SignUpModal setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal}/>
+            ) : (
+                ''
+            )}
+            {showForgotPasswordModal ? (
+                <ForgotPassword setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
+            ) : (
+                ''
+            )}
         </div>
     )
 }
