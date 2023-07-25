@@ -1,33 +1,17 @@
 "use client"
-import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios'
 import { useFormik } from 'formik';
-import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
-import { useRouter } from 'next/navigation';
 import Divider from '@mui/material/Divider';
-import { alpha, styled } from '@mui/material/styles';
-import { pink } from '@mui/material/colors';
 import Switch from '@mui/material/Switch';
+import TextField from "@/components/inputs/TextField";
+import { ThreeDots } from "react-loader-spinner";
+import { styled } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
-const validate = values => {
-  const errors = {};
-  
-  if (!values.password) {
-    errors.password = 'Required';
-  }
-  
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
 
-  return errors;
-};
 
-const PinkSwitch = styled(Switch)(({ theme }) => ({
+const PinkSwitch =styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked': {
     color: '#FCD33B',
   },
@@ -37,51 +21,94 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function Security() {
+ const [isPending, setIsPending] = useState();
+  
+  const validate = values => {
+    const errors = {};
+  
+    if (!values.current) {
+      errors.current = 'Required';
+    }
+    if (!values.password) {
+      errors.password = 'Required';
+    }else if (values.password.length < 8){
+      errors.password = 'The password must have more than 8 caracters.';
+
+    }
+
+    if (!values.password2) {
+      errors.password2 = 'Required';
+  
+    } else if (values.password2 !== values.password) {
+      errors.password2 = 'passwords must be equal'
+    }
+  
+    return errors;
+  };
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: ''
-      
+      current:'',
+      password: '',
+      password2: ''
+
     },
     validate,
-    onSubmit:  values =>  {
+    onSubmit: values => {
+      setIsPending(true)
+      console.log(          {
+        newPassword:values.password,
+        current:values.current
+    })
+       axios.post('http://localhost:8000/api/users/change-password',
+          {
+            newPassword:values.password,
+            current:values.current
+        }, {
+            withCredentials: true,
+          })
+          .then(function (response) {
+            console.log('response',response)
+            setIsPending(false)
+            toast.success(response.data.message)
 
-      //  axios.post('http://localhost:8000/api/users/auth',
-      //     {
-      //       email:values.email,
-      //       password:values.password
-      //   }, {
-      //       withCredentials: true,
-      //       headers: {
-      //         'content-type': 'application/json'
-      //       }})
-      //     .then(function (response) {
+          })
+          .catch(function (error) {
+            setIsPending(false)
+            if (error.response.status === 401) {
+              toast.error(error.response.data.error, {
+                  duration: 5000,
+                  style: {
+                      width: 'auto',
+                      padding: '16px',
+                      minWidth: '450px',
+                      fontWeight: 500
+                  }
+              })
+          } else {
+              toast.error(error.response.data.error, {
+                  duration: 5000,
+                  style: {
+                      padding: '8px',
+                      fontWeight: 500
 
-      //       setUser({...user,isLogged:true,name:response.data.name,checkLogin:false,showLoginOptions:false})
-      //        router.push('/')
-
-      //     })
-      //     .catch(function (error) {
-
-      //       if(error.response.status === 400){
-      //         setEmailError(error.response.data.message)
-      //       }else{
-      //         setPasswordError(error.response.data.message)
-      //       }
-      //     });
+                  }
+              })
+          }
+          });
     },
   });
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
     <div className="flex flex-col items-center max-w-[40%] mx-auto ">
+      <div><Toaster /></div>
       <label htmlFor="privacy" className="text-[30px] mt-8">Privacy</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">
           <h1 className="text-[18px] font-bold ">Public Profile</h1>
           <p>Making your profile public means anyone can see your information</p>
         </div>
-        <PinkSwitch {...label} defaultChecked sx={{marginLeft:'10px'}}/>
+        <PinkSwitch {...label} defaultChecked sx={{ marginLeft: '10px' }} />
       </div>
 
       <div className="flex justify-between items-center w-full mt-8">
@@ -89,17 +116,17 @@ export default function Security() {
           <h1 className="text-[18px] font-bold ">Show email</h1>
           <p>This lets users find you by your email address</p>
         </div>
-        <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
+        <PinkSwitch {...label} sx={{ marginLeft: '10px' }} />
       </div>
 
-      <Divider variant="middle" sx={{color:'black',width:'100%',marginTop:'20px',marginBottom:'20px'}} />
+      <Divider variant="middle" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
       <label htmlFor="privacy" className="text-[30px]">Two Fact Authentication</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">
           <h1 className="text-[18px] font-bold ">Authenticator App</h1>
           <p>Google auth or 1Password</p>
         </div>
-        <PinkSwitch {...label} defaultChecked sx={{marginLeft:'10px'}}/>
+        <PinkSwitch {...label} defaultChecked sx={{ marginLeft: '10px' }} />
       </div>
 
       <div className="flex justify-between items-center w-full mt-8">
@@ -107,60 +134,62 @@ export default function Security() {
           <h1 className="text-[18px] font-bold ">SMS Recovery</h1>
           <p>Standard messaging rates apply</p>
         </div>
-        <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
+        <PinkSwitch {...label} sx={{ marginLeft: '10px' }} />
       </div>
-      <Divider variant="middle" sx={{color:'black',width:'100%',marginTop:'20px',marginBottom:'20px'}} />
+      <Divider variant="middle" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
       <h1 className="text-[30px]">Change Password</h1>
-      <form className="flex flex-col mb-[250px] w-[400px]">
-        <div className=" mt-2 w-full relative">
-          <label htmlFor="current" className="block   mb-1">
-            Current Password
-          </label>
-          <input
-              type="text"
-              id="number"
-              name="number"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.number}
-              className="w-full border  p-3 rounded-lg outline-none" 
+      <form className="flex flex-col mb-[250px] w-[400px]" onSubmit={formik.handleSubmit}>
+        <div className=" mt-8 w-full relative">
+          <TextField
+            type="current"
+            label='Current Password'
+            id="current"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.current}
+            erros={formik.errors.current}
+          />
+          {formik.touched.current && formik.errors.current ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.current}</div> : null}
+        </div>
+        <div className=" mt-8 w-full relative">
+          <TextField
+            type="password"
+            label='Password'
+            id="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            erros={formik.errors.password}
+          />
+          {formik.touched.password && formik.errors.password ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password}</div> : null}
+        </div>
+
+        <div className=" mt-8 w-full relative">
+          <TextField
+            type="password"
+            label='Confirm Password'
+            id="password2"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password2}
+            erros={formik.errors.password2}
+          />
+          {formik.touched.password2 && formik.errors.password2 ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password2}</div> : null}
+        </div>
+        <button disabled={isPending? true : false} type="submit" className={`flex justify-center items-center bg-black font-[600] py-[8px] text-[#FCD33B] px-[30px] rounded-md mt-6 w-full ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+          {isPending ? (
+            <ThreeDots
+              height="30"
+              width="40"
+              radius="9"
+              color="#FCD33B"
+              ariaLabel="three-dots-loading"
+              visible={true}
             />
-            {formik.touched.number && formik.errors.number ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.number}</div> : null}
-          </div>
-        <div className=" mt-2 w-full relative">
-          <label htmlFor="current" className="block   mb-1">
-            New Password
-          </label>
-          <input
-              type="text"
-              id="number"
-              name="number"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.number}
-              className="w-full border  p-3 rounded-lg outline-none" 
-            />
-            {formik.touched.number && formik.errors.number ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.number}</div> : null}
-          </div>
-        <div className=" mt-2 w-full relative">
-          <label htmlFor="current" className="block   mb-1">
-          Confirm Password
-          </label>
-          <input
-              type="text"
-              id="number"
-              name="number"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.number}
-              className="w-full border  p-3 rounded-lg outline-none" 
-            />
-            {formik.touched.number && formik.errors.number ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.number}</div> : null}
-          </div>
-          <button onClick={()=>onSubmit()} className='style_banner_button max-w-[200px] mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
-                                 lg:py-[10px] lg:px-[30px] lg:mt-10 '><p className='style_banner_button_text font-medium'>Save</p>
-          </button>
+          ) : 'Change password'}
+
+        </button>
       </form>
     </div>
   )

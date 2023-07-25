@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import TextField from "../inputs/TextField";
 import toast, { Toaster } from "react-hot-toast";
+import { Password } from "@mui/icons-material";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +35,9 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
     const [code5, setCode5] = useState('');
     const [code6, setCode6] = useState('');
     const [codeOTP, setCodeOTP] = useState('123456');
+    const [email, setEmail] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmpassword] = useState('');
     const router = useRouter();
     const [user, setUser] = useState({
         name: '',
@@ -49,63 +53,107 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
         validate,
         onSubmit: values => {
             toast.dismiss()
-            setSteps(2)
-            // axios.post('http://localhost:8000/api/users/auth',
-            //     {
-            //         email: values.email,
-            //         password: values.password
-            //     }, {
-            //     withCredentials: true,
+            // Generate a random number between 100000 and 999999 (inclusive)
+            const min = 100000;
+            const max = 999999;
+            const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            setCodeOTP(randomNumber)
+            setEmail(values.email)
+            console.log(randomNumber)
+            // send email
+            axios.post('http://localhost:8000/api/users/send-reset-password-email',
+                {
+                    email: values.email,
+                    codeOTP: randomNumber
+                }, {
+                withCredentials: true,
 
-            // })
-            //     .then(function (response) {
-            //         console.log('response', response)
-            //         setUser((prev) => (
-            //             {
-            //                 ...prev, isLogged: true,
-            //                 name: response.data.name,
-            //                 checkLogin: false,
-            //                 showLoginOptions: false,
-            //                 image: response.data.image,
-            //                 userId: response.data.userId
-            //             }))
-            //         setShowLoginModal(false)
-            //     })
-            //     .catch(function (error) {
+            })
+                .then(function (response) {
+                    console.log('response', response)
+                    setSteps(2)
+                    toast.success(response.data.message)
 
-            //         if (error.response.status === 400) {
-            //             toast.error(error.response.data.message, {
-            //                 duration: 10000,
-            //                 style: {
-            //                     width: 'auto',
-            //                     padding: '16px',
-            //                     minWidth: '450px',
-            //                     fontWeight: 500
+                })
+                .catch(function (error) {
+                    if (error.response.status === 400) {
+                        toast.error(error.response.data.message, {
+                            duration: 10000,
+                            style: {
+                                width: 'auto',
+                                padding: '16px',
+                                minWidth: '450px',
+                                fontWeight: 500
 
-            //                 }
-            //             })
-            //         } else {
-            //             toast.error(error.response.data.message, {
-            //                 duration: 10000,
-            //                 style: {
-            //                     padding: '8px',
-            //                     fontWeight: 500
+                            }
+                        })
+                    } else {
+                        toast.error(error.response.data.message, {
+                            duration: 10000,
+                            style: {
+                                padding: '8px',
+                                fontWeight: 500
 
-            //                 }
-            //             })
-            //         }
-            //     });
+                            }
+                        })
+                    }
+                });
         },
     });
+
     const handleConfirm = () => {
-        if (codeOTP === code1 + code2 + code3 + code4 + code5 + code6) {
+        if (codeOTP == code1 + code2 + code3 + code4 + code5 + code6) {
             setSteps(3)
         } else {
-            alert('wrong code')
+            toast.error('Wrong code, try again.')
         }
     }
     const handleReset = () => {
-            setSteps(4)
+        if (newPassword == '') {
+            toast.error('Provide a password.')
+        } else if (newPassword.length < 8) {
+            toast.error('The password must have more than 8 caracters.')
+        } else if (newPassword !== confirmPassword) {
+            toast.error('The password do not match.')
+        } else {
+
+            axios.post('http://localhost:8000/api/users/reset-password',
+                {
+                    email: email,
+                    password: newPassword
+                }, {
+                withCredentials: true,
+
+            })
+                .then(function (response) {
+                    console.log('response', response)
+                    setSteps(4)
+                    toast.success(response.data.message)
+
+                })
+                .catch(function (error) {
+                    if (error.response.status === 401) {
+                        toast.error(error.response.data.error, {
+                            duration: 10000,
+                            style: {
+                                width: 'auto',
+                                padding: '16px',
+                                minWidth: '450px',
+                                fontWeight: 500
+                            }
+                        })
+                    } else {
+                        toast.error(error.response.data.error, {
+                            duration: 10000,
+                            style: {
+                                padding: '8px',
+                                fontWeight: 500
+
+                            }
+                        })
+                    }
+                });
+        }
 
     }
     const inputRefs = [
@@ -127,7 +175,6 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
             }
         }
     };
-    console.log(code1 + code2 + code3 + code4 + code5 + code6)
     return (
         <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
@@ -178,15 +225,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                 steps === 2 && (
                     <div className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto ${inter.className}`}>
                         <p className="text-white text-[30px]">Enter the verification code</p>
-                        <p className="text-white text-[16px] mt-2">We have sent you a code to xxxxxxxx</p>
-                        {/* <div className="w-full max-w-[400px] flex gap-2 mt-2">
-                            <input type="text" value={code1} onChange={(e) => setCode1(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                            <input id="input2" type="text" value={code2} onChange={(e) => setCode2(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                            <input type="text" value={code3} onChange={(e) => setCode3(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                            <input type="text" value={code4} onChange={(e) => setCode4(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                            <input type="text" value={code5} onChange={(e) => setCode5(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                            <input type="text" value={code6} onChange={(e) => setCode6(e.target.value)} className="w-[16%] h-[70px] rounded-lg text-black text-center text-[30px]" />
-                        </div> */}
+                        <p className="text-white text-[14px] mt-2 w-[120%] text-center">{`We have sent you a code to ${email}`}</p>
                         <div className="w-full max-w-[400px] flex gap-2 mt-2">
                             <input
                                 type="text"
@@ -278,12 +317,10 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                                 type="password"
                                 label='Password'
                                 id="password"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.password}
-                                erros={formik.errors.password}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                onBlur={() => { }}
+                                value={newPassword}
                             />
-                            {formik.touched.password && formik.errors.password ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password}</div> : null}
                         </div>
 
                         <div className=" mt-8 w-full relative">
@@ -291,12 +328,10 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                                 type="password"
                                 label='Confirm Password'
                                 id="password2"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.password2}
-                                erros={formik.errors.password2}
+                                onChange={(e) => { setConfirmpassword(e.target.value) }}
+                                onBlur={() => { }}
+                                value={confirmPassword}
                             />
-                            {formik.touched.password2 && formik.errors.password2 ? <div className="absolute top-[50px] text-red-600 font-bold">{formik.errors.password2}</div> : null}
                         </div>
                         <div onClick={handleReset} className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                    '>Reset password
@@ -307,16 +342,16 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
             {
                 steps === 4 && (
                     <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto ${inter.className}`} >
-                    <p className="text-white text-[30px]">Well done!</p>
-                    <p className="text-white text-[16px] mt-2">Your new password was reseted successfuly</p>
+                        <p className="text-white text-[30px]">Well done!</p>
+                        <p className="text-white text-[16px] mt-2">Your new password was reseted successfuly</p>
 
-                    <div onClick={()=>{
-                        setShowForgotPasswordModal(false)
-                        setShowLoginModal(true)
-                    }} className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-black text-lg
+                        <div onClick={() => {
+                            setShowForgotPasswordModal(false)
+                            setShowLoginModal(true)
+                        }} className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                '>Go to Login
+                        </div>
                     </div>
-                </div>
                 )
             }
         </div>
