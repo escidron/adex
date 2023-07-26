@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import ChatBox from './chatBox';
+import ChatBox from './ChatBox';
 import { useEffect, useRef } from "react";
 import { Divider } from '@mui/material';
 
