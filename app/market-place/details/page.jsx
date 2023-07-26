@@ -165,7 +165,7 @@ export default function AdDetails() {
           < Success >
             <h1 className='text-[25px]'>Booking created</h1>
 
-            <p className='my-4'>You will found the contract details in "my ADEX" section.</p>
+            <p className='my-4'>You will found the contract details in my &ldquo;ADEX&ldquo; section.</p>
 
             <div className='flex justify-between w-full'>
               <Link href='/' className='mt-6'>
