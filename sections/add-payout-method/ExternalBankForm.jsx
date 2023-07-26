@@ -56,7 +56,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
         onSubmit: values => {
             setIsPending(true)
             toast.dismiss()
-            axios.post('http://localhost:8000/api/payments/external-bank',
+            axios.post('http://3.132.48.54:5000/api/payments/external-bank',
                 {
                     routingNumber: values.routingNumber,
                     accountNumber: values.accountNumber,

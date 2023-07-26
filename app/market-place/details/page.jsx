@@ -28,7 +28,7 @@ import MultiImage from '@/components/multiImage/MultiImage';
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
-// const socket = io('http://localhost:8000')
+// const socket = io('http://3.132.48.54:5000')
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -53,7 +53,7 @@ export default function AdDetails() {
   const notificationId = searchParams.get('notification_id')
   
   useEffect(() => {
-    axios.post('http://localhost:8000/api/advertisements/details',
+    axios.post('http://3.132.48.54:5000/api/advertisements/details',
       {
         id: id,
         notificationId: notificationId
@@ -70,7 +70,7 @@ export default function AdDetails() {
   }, []);
 
   useEffect(() => {
-    axios.post('http://localhost:8000/api/advertisements/discounts',
+    axios.post('http://3.132.48.54:5000/api/advertisements/discounts',
       {
         id: id,
       }, {
@@ -86,7 +86,7 @@ export default function AdDetails() {
   }, []);
 
   useEffect(() => {
-    axios.post('http://localhost:8000/api/payments/my-cards',
+    axios.post('http://3.132.48.54:5000/api/payments/my-cards',
       {}, {
       withCredentials: true,
     })
@@ -105,7 +105,7 @@ export default function AdDetails() {
 
   useEffect(() => {
     if (data.id) {
-      axios.post('http://localhost:8000/api/advertisements/messages',
+      axios.post('http://3.132.48.54:5000/api/advertisements/messages',
         {}, {
         withCredentials: true,
       })
@@ -126,7 +126,7 @@ export default function AdDetails() {
   }, [data, user, refetch]);
 
   async function GetNotifications() {
-    axios.post('http://localhost:8000/api/users/notifications',
+    axios.post('http://3.132.48.54:5000/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {

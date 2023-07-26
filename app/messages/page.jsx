@@ -39,7 +39,7 @@ export default function MessagesPage() {
         setRefetch(!refetch)
     })
     useEffect(() => {
-        axios.post('http://localhost:8000/api/advertisements/chat-info',
+        axios.post('http://3.132.48.54:5000/api/advertisements/chat-info',
             {key:key}, {
             withCredentials: true,
             headers: {
@@ -75,7 +75,7 @@ export default function MessagesPage() {
     }, [refetch]);
 
     async function GetNotifications() {
-        axios.post('http://localhost:8000/api/users/notifications',
+        axios.post('http://3.132.48.54:5000/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {

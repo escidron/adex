@@ -21,7 +21,7 @@ export default function AddPayoutMethod() {
   useEffect(() => {
     async function GetAddress() {
       const response = await fetch(
-        "http://localhost:8000/api/users/seller-profile",
+        "http://3.132.48.54:5000/api/users/seller-profile",
         {
           method: "GET",
           credentials: "include",

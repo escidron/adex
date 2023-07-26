@@ -32,7 +32,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     useEffect(() => {
         async function hasPayoutMethod() {
           const response = await fetch(
-            "http://localhost:8000/api/users/external-account",
+            "http://3.132.48.54:5000/api/users/external-account",
             {
               method: "GET",
               credentials: "include",
@@ -51,7 +51,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
       }, []);
   console.log('user',user)
     useEffect(() => {
-        axios.post('http://localhost:8000/api/users/notifications',
+        axios.post('http://3.132.48.54:5000/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {
@@ -90,7 +90,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
 
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("http://localhost:8000/api/users/autologin", {
+            const response = await fetch("http://3.132.48.54:5000/api/users/autologin", {
                 method: "GET",
                 credentials: "include",
             });
@@ -115,7 +115,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     const logout = () => {
         toast.dismiss()
 
-        axios.post('http://localhost:8000/api/users/logout',
+        axios.post('http://3.132.48.54:5000/api/users/logout',
             {
 
             }, {

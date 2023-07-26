@@ -12,7 +12,7 @@ export default function Banner() {
   const [isPending, startTransition] = useTransition()
   const [user,setUser] = useContext(UserContext)
   const onSubmit = () => {
-    axios.get('http://localhost:8000/api/users/seller-profile',
+    axios.get('http://3.132.48.54:5000/api/users/seller-profile',
       {
 
       }, {

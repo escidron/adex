@@ -101,7 +101,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     onSubmit: values => {
       setIsPending(true)
 
-      axios.post(`http://localhost:8000/api/advertisements/${edit ? 'update' : 'new'}`,
+      axios.post(`http://3.132.48.54:5000/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           id: edit ? advertisement.id : '',
           title: values.title,

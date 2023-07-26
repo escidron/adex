@@ -9,7 +9,7 @@ export default function ListingForm({ categoryId, typeId,isPeriodic,setSelectedS
     useEffect(() => {
         async function hasPayoutMethod() {
           const response = await fetch(
-            "http://localhost:8000/api/users/external-account",
+            "http://3.132.48.54:5000/api/users/external-account",
             {
               method: "GET",
               credentials: "include",

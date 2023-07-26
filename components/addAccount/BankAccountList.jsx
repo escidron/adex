@@ -10,7 +10,7 @@ export default function BankAccountList({ refetch,setRefetch }) {
     const [checkDefault, setCheckDefault] = useState(false);
     useEffect(() => {
 
-        axios.post('http://localhost:8000/api/payments/my-bank-accounts',
+        axios.post('http://3.132.48.54:5000/api/payments/my-bank-accounts',
             {}, {
             withCredentials: true,
             headers: {
