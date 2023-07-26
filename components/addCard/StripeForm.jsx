@@ -38,7 +38,7 @@ export default function StripeForm({ setShowModal, setRefetch }) {
         console.log('error', error)
         if (!error) {
             setShowModal(false)
-            axios.post('http://3.132.48.54:5000/api/payments/customer',
+            axios.post('https://3.132.48.54:5000/api/payments/customer',
                 {
                     cardId: paymentMethod.id,
                     cardNumber: paymentMethod.card.last4,

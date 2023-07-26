@@ -41,7 +41,7 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setSho
         validate,
         onSubmit: values => {
             toast.dismiss()
-            axios.post('http://3.132.48.54:5000/api/users/auth',
+            axios.post('https://3.132.48.54:5000/api/users/auth',
                 {
                     email: values.email,
                     password: values.password

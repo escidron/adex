@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     async function autoLogin() {
       const response = await fetch(
-        "http://3.132.48.54:5000/api/users/autologin",
+        "https://3.132.48.54:5000/api/users/autologin",
         {
           method: "GET",
           credentials: "include",

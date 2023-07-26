@@ -10,7 +10,7 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
     const [checkDefault, setCheckDefault] = useState(false);
     useEffect(() => {
 
-        axios.post('http://3.132.48.54:5000/api/payments/my-cards',
+        axios.post('https://3.132.48.54:5000/api/payments/my-cards',
             {}, {
             withCredentials: true,
             headers: {

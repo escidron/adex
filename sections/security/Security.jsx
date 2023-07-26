@@ -59,7 +59,7 @@ export default function Security() {
         newPassword:values.password,
         current:values.current
     })
-       axios.post('http://3.132.48.54:5000/api/users/change-password',
+       axios.post('https://3.132.48.54:5000/api/users/change-password',
           {
             newPassword:values.password,
             current:values.current

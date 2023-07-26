@@ -12,7 +12,7 @@ export default function Banner() {
   const [isPending, startTransition] = useTransition()
   const [user,setUser] = useContext(UserContext)
   const onSubmit = () => {
-    axios.get('http://3.132.48.54:5000/api/users/seller-profile',
+    axios.get('https://3.132.48.54:5000/api/users/seller-profile',
       {
 
       }, {
@@ -37,7 +37,7 @@ export default function Banner() {
                         lg:max-w-[550px] lg:h-[450px] lg:top-[30%] lg:left-[10%] lg:translate-x-0 lg:translate-y-0' >
         <h1 className='text-2xl font-bold z-10
                         md:text-3xl
-                        lg:text-[34px]'>Connects with your community and grow your business</h1>
+                        lg:text-[34px]'>Connects with your Community and grow your business</h1>
         <p className='mt-4 lg:mt-6 text-lg z-10'>The platform with the largest network of people looking to help your business grow to a whole new level</p>
         <Link href={user.isLogged?'/market-place':'/login'} onClick={() => startTransition(() => onSubmit())} className="mt-10 ">
           <button className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md   hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200

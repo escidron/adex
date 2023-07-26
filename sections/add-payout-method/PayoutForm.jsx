@@ -60,7 +60,7 @@ export default function PayoutForm({ setStripeAccount }) {
       toast.dismiss()
 
       setIsPending(true)
-        axios.post('http://3.132.48.54:5000/api/users/update-address',
+        axios.post('https://3.132.48.54:5000/api/users/update-address',
           {
             idNumber: values.idNumber,
             bod: bod,

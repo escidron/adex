@@ -18,7 +18,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
-        "http://3.132.48.54:5000/api/users/user-profile",
+        "https://3.132.48.54:5000/api/users/user-profile",
         {
           method: "GET",
           credentials: "include",
@@ -36,7 +36,7 @@ export default function PersonalInfo() {
 
   const submit = ()=>{
     setCurrentInfo('')
-    axios.post('http://3.132.48.54:5000/api/users/update-user-profile',
+    axios.post('https://3.132.48.54:5000/api/users/update-user-profile',
     { name: user.name,
       lastName:user.lastName,
       email:user.email,

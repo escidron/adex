@@ -81,7 +81,7 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
       toast.dismiss()
       if (checkTerms) {
         console.log('entrou no axios')
-        axios.post('http://3.132.48.54:5000/api/users',
+        axios.post('https://3.132.48.54:5000/api/users',
           {
             name: `${values.firstName} ${values.lastName}`,
             firstName: values.firstName,
