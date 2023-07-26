@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async function GetMessages() {
     
-    axios.post('http://3.132.48.54:5000/api/advertisements/messages',
+    axios.post('https://3.132.48.54:5000/api/advertisements/messages',
       { }, {
       withCredentials: true,
       headers: {
