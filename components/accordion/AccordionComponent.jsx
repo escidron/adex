@@ -1,5 +1,5 @@
 "use client"
-import  React,{useRef} from 'react';
+import React, { useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
@@ -7,6 +7,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
+import { faqArray } from '@/utils/faq';
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -56,45 +57,22 @@ export default function AccordionComponent() {
 
   return (
     <div>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} className='rounded-t-[10px] '>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" className='px-[40px]'>
-          <Typography className={`text-[20px] ml-8 ${inter.className}`}>How to create a listing</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography className={`text-[15px] ${inter.className}`}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" className='px-[40px]'>
-          <Typography className={`text-[20px] ml-8 ${inter.className}`}>Collapsible Group Item #2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography className={`text-[15px] ${inter.className}`}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')} className='rounded-b-[10px]'>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header" className='px-[40px]'>
-          <Typography className={`text-[20px] ml-8 ${inter.className}`}>Collapsible Group Item #3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography className={`text-[15px] ${inter.className}`}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {
+        faqArray.map((item) => (
+          <div key={item.id}>
+            <Accordion expanded={expanded === `panel${item.id}`} onChange={handleChange(`panel${item.id}`)} className='rounded-t-[10px] '>
+              <AccordionSummary aria-controls={`panel${item.id}d-content`} id={`panel${item.id}d-header`} className='px-[40px]'>
+                <Typography className={`text-[20px] ml-8 ${inter.className}`}>{item.question}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography className={`text-[15px] ${inter.className}`}>
+                  {item.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        ))
+      }
     </div>
   );
 }
