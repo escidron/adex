@@ -16,7 +16,7 @@ import MultiImage from '@/components/multiImage/MultiImage';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function MessagesPage() {
-    var socket = io.connect('http://localhost:4000')
+    var socket = io.connect('http://localhost:4400')
     const [messages, setMessages] = useState([]);
     const [allChats, setallChats] = useState([]);
     const [message, setMessage] = useState('');

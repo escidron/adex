@@ -33,7 +33,7 @@ const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwP
 const inter = Inter({ subsets: ['latin'] })
 
 export default function AdDetails() {
-  var socket = io.connect('http://localhost:4000')
+  var socket = io.connect('http://localhost:4400')
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
