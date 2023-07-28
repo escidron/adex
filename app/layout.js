@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
 
   const [user, setUser] = useState({
     isLogged: false,
-    checkLogin: false,
+    checkLogin: true,
     showLoginOptions: false,
     name: "",
     image:'',

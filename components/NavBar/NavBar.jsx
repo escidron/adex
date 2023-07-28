@@ -15,15 +15,12 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
-import LoginModal from '../modals/LoginModal';
-import SignUpModal from '../modals/SignUpModal';
-import ForgotPassword from '../modals/ForgotPassword';
 import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpModal, setShowSignUpModal,showForgotPasswordModal ,setShowForgotPasswordModal}) {
+export default function NavBar() {
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
     const [showNotifications, setshowNotifications] = useState(false)
