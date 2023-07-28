@@ -22,16 +22,16 @@ export default function page() {
         </div>
         <div className=' w-full flex'>
           <Image
-              src='/rectangle 101.png'
-              alt="Adex Logo"
+              src='/Rectangle 101.png'
+              alt="image of people"
               priority
               width={300}
               height={300}
               className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
           />
           <Image
-              src='/rectangle 100.png'
-              alt="Adex Logo"
+              src='/Rectangle 100.png'
+              alt="image of people"
               priority
               width={300}
               height={300}
@@ -39,8 +39,8 @@ export default function page() {
 
           />
           <Image
-              src='/rectangle 105.png'
-              alt="Adex Logo"
+              src='/Rectangle 105.png'
+              alt="image of people"
               priority
               width={300}
               height={300}
@@ -48,8 +48,8 @@ export default function page() {
 
           />
           <Image
-              src='/rectangle 104.png'
-              alt="Adex Logo"
+              src='/Rectangle 104.png'
+              alt="image of people"
               priority
               width={300}
               height={300}
