@@ -13,7 +13,7 @@ export default function EditAdvertisement() {
 
     const id = searchParams.get('id')
     useEffect(() => {
-        axios.post('https://3.132.48.54:5000/api/advertisements/my-advertisement',
+        axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
             { id: id }, {
             withCredentials: true,
         })

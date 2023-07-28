@@ -36,7 +36,7 @@ export default function MyListing({ data, status }) {
   }
   const deleteAdvertisement = () => {
     console.log('advertisementId', advertisementId)
-    axios.post('https://3.132.48.54:5000/api/advertisements/delete-advertisement',
+    axios.post('https://test.adexconnect.com/api/advertisements/delete-advertisement',
       { id: advertisementId }, {
       withCredentials: true,
     })

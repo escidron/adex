@@ -32,7 +32,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     useEffect(() => {
         async function hasPayoutMethod() {
           const response = await fetch(
-            "https://3.132.48.54:5000/api/users/external-account",
+            "https://test.adexconnect.com/api/users/external-account",
             {
               method: "GET",
               credentials: "include",
@@ -51,7 +51,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
       }, []);
   console.log('user',user)
     useEffect(() => {
-        axios.post('https://3.132.48.54:5000/api/users/notifications',
+        axios.post('https://test.adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {
@@ -90,7 +90,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
 
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("https://3.132.48.54:5000/api/users/autologin", {
+            const response = await fetch("https://test.adexconnect.com/api/users/autologin", {
                 method: "GET",
                 credentials: "include",
             });
@@ -115,7 +115,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     const logout = () => {
         toast.dismiss()
 
-        axios.post('https://3.132.48.54:5000/api/users/logout',
+        axios.post('https://test.adexconnect.com/api/users/logout',
             {
 
             }, {

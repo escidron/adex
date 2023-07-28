@@ -29,7 +29,7 @@ export default function MyListing() {
     const id = searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
     useEffect(() => {
-        axios.post('https://3.132.48.54:5000/api/advertisements/my-advertisement',
+        axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
             { id: id,
             notificationId:notificationId }, {
             withCredentials: true,
@@ -45,7 +45,7 @@ export default function MyListing() {
     }, []);
 
     async function GetUserProfile(id) {
-        axios.post('https://3.132.48.54:5000/api/users/user-profile',
+        axios.post('https://test.adexconnect.com/api/users/user-profile',
             { id: id }, {
             withCredentials: true,
             headers: {
@@ -61,7 +61,7 @@ export default function MyListing() {
             });
     }
     async function GetNotifications() {
-        axios.post('https://3.132.48.54:5000/api/users/notifications',
+        axios.post('https://test.adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {

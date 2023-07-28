@@ -22,7 +22,7 @@ export default function ApproveReservation({ advertisement }) {
 
     const Booking = () => {
         setIsPending1(true)
-        axios.post('https://3.132.48.54:5000/api/payments/create-payment-intent',
+        axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
             {
                 data: advertisement,
                 duration: advertisement.duration,
@@ -44,7 +44,7 @@ export default function ApproveReservation({ advertisement }) {
 
     const Decline = () => {
         setIsPending2(true)
-        axios.post('https://3.132.48.54:5000/api/payments/decline-request',
+        axios.post('https://test.adexconnect.com/api/payments/decline-request',
             {
                 id: advertisement.id,
                 requestedBy:advertisement.requested_by

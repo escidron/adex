@@ -6,7 +6,7 @@ export default function Categories({ selectedStep, setSelectedStep, categoryId, 
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch('https://3.132.48.54:5000/api/list-property')
+      const response = await fetch('https://test.adexconnect.com/api/list-property')
         .then(function (response) {
           return response.json();
         }).then(function (data) {

@@ -46,7 +46,7 @@ export default function Notifications() {
     validate,
     onSubmit:  values =>  {
 
-      //  axios.post('https://3.132.48.54:5000/api/users/auth',
+      //  axios.post('https://test.adexconnect.com/api/users/auth',
       //     {
       //       email:values.email,
       //       password:values.password
