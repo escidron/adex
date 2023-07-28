@@ -33,24 +33,22 @@ export default function RootLayout({ children }) {
     notifications:[],
     hasPayout:false
   });
-  useEffect(() => {
-    async function autoLogin() {
-      const response = await fetch(
-        "https://test.adexconnect.com/api/users/autologin",
-        {
-          method: "GET",
-          credentials: "include",
+    useEffect(() => {
+        async function autoLogin() {
+            const response = await fetch("https://adexconnect.com/api/users/autologin", {
+                method: "GET",
+                credentials: "include",
+            });
+            if (response.status === 200) {
+                const currentUser = await response.json()
+                console.log('autologin',user)
+                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
+            } else {
+                console.log('response error', response)
+            }
         }
-      );
-      if (response.status === 200) {
-        
-        setUser((prev) => ({ ...prev, name: user.name, isLogged: true,image:user.image,userId:user.userId }));
-      } else {
-        setUser((prev) => ({ ...prev, isLogged: false, checkLogin: true,image:user.image }));
-      }
-    }
-    autoLogin();
-  }, []);
+        autoLogin();
+    }, [])
 
   return (
     <html lang="en">

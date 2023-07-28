@@ -17,7 +17,7 @@ export default function MyAdex() {
     pending: 0
   });
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
+    axios.post('https://adexconnect.com/api/advertisements/my-advertisement',
       {}, {
       withCredentials: true,
       headers: {
@@ -35,7 +35,7 @@ export default function MyAdex() {
   console.log('status', status)
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/my-booking',
+    axios.post('https://adexconnect.com/api/advertisements/my-booking',
       {}, {
       withCredentials: true,
     })

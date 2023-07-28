@@ -32,7 +32,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
     useEffect(() => {
         async function hasPayoutMethod() {
           const response = await fetch(
-            "https://test.adexconnect.com/api/users/external-account",
+            "https://adexconnect.com/api/users/external-account",
             {
               method: "GET",
               credentials: "include",
@@ -49,9 +49,9 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
         }
         hasPayoutMethod();
       }, []);
-  console.log('user',user)
+
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+        axios.post('https://adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {
@@ -59,10 +59,8 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
         }
       })
         .then(function (response) {
-            
-          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-          setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-        //   setNotificationsQtd(response.data.notifications.length)
+          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length ,notifications: response.data.notifications}))
+        //   setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
         })
         .catch(function (error) {
           console.log(error)
@@ -76,7 +74,6 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
             // Handle your click logic here
             setshowNotifications(false)
             if (user.showLoginOptions) {
-
                 setUser((prev) => ({ ...prev, showLoginOptions: false }))
             }
         };
@@ -90,15 +87,15 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
 
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("https://test.adexconnect.com/api/users/autologin", {
+            const response = await fetch("https://adexconnect.com/api/users/autologin", {
                 method: "GET",
                 credentials: "include",
             });
             if (response.status === 200) {
-                const user = await response.json()
-                setUser((prev) => ({ ...prev, name: user.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: user.image, userId: user.userId }));
+                const currentUser = await response.json()
+                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
             } else {
-                console.log('response', response)
+                console.log('response error', response)
             }
         }
         autoLogin();
@@ -108,14 +105,13 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
         if (user.isLogged) {
             router.push('/market-place')
         } else {
-
             router.push('/login')
         }
     }
     const logout = () => {
         toast.dismiss()
 
-        axios.post('https://test.adexconnect.com/api/users/logout',
+        axios.post('https://adexconnect.com/api/users/logout',
             {
 
             }, {
@@ -167,7 +163,7 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
-                <Link href={user.hasPayout?'/listing':'/add-payout-method'} className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href={user.hasPayout && user.isLogged ? '/listing' : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ?'/add-payout-method':''} className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
@@ -241,10 +237,10 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                 : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin ?
                     (<div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <div onClick={() => setShowLoginModal(true)} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
+                        <div onClick={() => router.push('/login')} className=' cursor-pointer hidden xl:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
                         </div>
-                        <div onClick={() => setShowSignUpModal(true)} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
+                        <div onClick={() => router.push('/sign-up')} className='hidden cursor-pointer xl:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
                             <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
                         </div>
                     </div>) : ''
@@ -263,15 +259,15 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                     />
                 </Link>
             </div>
-            <div className='cursor-pointer md:hidden flex items-center justify-self-end' onClick={() => setUser((prev) => ({ ...prev, showLoginOptions: !prev.showLoginOptions }))} >
+            <div className='cursor-pointer lg:hidden flex items-center justify-self-end' onClick={() => setUser((prev) => ({ ...prev, showLoginOptions: !prev.showLoginOptions }))} >
                 <MenuIcon fontSize='large' />
             </div>
             {user.showLoginOptions ?
                 <div onMouseOver={() => setUser((prev) => ({ ...prev, showLoginOptions: true }))} onMouseLeave={() => setUser((prev) => ({ ...prev, showLoginOptions: false }))} className="md:hidden absolute top-[65px] lg:top-[38px] xl:top-[38px] right-[1px] md:right-[5px] lg:right-[1px] w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <div onClick={() => setShowLoginModal(true)} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                    <div onClick={() => router.push('/login')} className="block rounded-t-lg w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                         Login
                     </div>
-                    <div onClick={() => setShowSignUpModal(true)} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                    <div onClick={() => router.push('/sign-up')} className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                         Sign Up
                     </div>
                     <Link href="/" className="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
@@ -295,22 +291,6 @@ export default function NavBar({ setShowLoginModal, showLoginModal, showSignUpMo
                     </Link>
                 </div> :
                 ""}
-
-            {showLoginModal ? (
-                <LoginModal setShowLoginModal={setShowLoginModal} setShowSignUpModal={setShowSignUpModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
-            ) : (
-                ''
-            )}
-            {showSignUpModal ? (
-                <SignUpModal setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal}/>
-            ) : (
-                ''
-            )}
-            {showForgotPasswordModal ? (
-                <ForgotPassword setShowSignUpModal={setShowSignUpModal} setShowLoginModal={setShowLoginModal} setShowForgotPasswordModal={setShowForgotPasswordModal}/>
-            ) : (
-                ''
-            )}
         </div>
     )
 }

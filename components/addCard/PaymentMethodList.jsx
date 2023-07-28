@@ -10,7 +10,7 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
     const [checkDefault, setCheckDefault] = useState(false);
     useEffect(() => {
 
-        axios.post('https://test.adexconnect.com/api/payments/my-cards',
+        axios.post('https://adexconnect.com/api/payments/my-cards',
             {}, {
             withCredentials: true,
             headers: {

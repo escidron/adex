@@ -25,10 +25,11 @@ import { UserContext } from "@/app/layout";
 import { io } from "socket.io-client";
 import Chat from '@/components/chat/Chat';
 import MultiImage from '@/components/multiImage/MultiImage';
+import toast, { Toaster } from "react-hot-toast";
 
 const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
 
-// const socket = io('https://test.adexconnect.com')
+// const socket = io('https://adexconnect.com')
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -53,7 +54,7 @@ export default function AdDetails() {
   const notificationId = searchParams.get('notification_id')
   
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/details',
+    axios.post('https://adexconnect.com/api/advertisements/details',
       {
         id: id,
         notificationId: notificationId
@@ -70,7 +71,7 @@ export default function AdDetails() {
   }, []);
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/discounts',
+    axios.post('https://adexconnect.com/api/advertisements/discounts',
       {
         id: id,
       }, {
@@ -86,7 +87,7 @@ export default function AdDetails() {
   }, []);
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/payments/my-cards',
+    axios.post('https://adexconnect.com/api/payments/my-cards',
       {}, {
       withCredentials: true,
     })
@@ -105,7 +106,7 @@ export default function AdDetails() {
 
   useEffect(() => {
     if (data.id) {
-      axios.post('https://test.adexconnect.com/api/advertisements/messages',
+      axios.post('https://adexconnect.com/api/advertisements/messages',
         {}, {
         withCredentials: true,
       })
@@ -126,7 +127,7 @@ export default function AdDetails() {
   }, [data, user, refetch]);
 
   async function GetNotifications() {
-    axios.post('https://test.adexconnect.com/api/users/notifications',
+    axios.post('https://adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {
@@ -160,6 +161,7 @@ export default function AdDetails() {
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
+      <div><Toaster /></div>
 
         {isDone ? (
           < Success >

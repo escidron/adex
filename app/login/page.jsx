@@ -8,8 +8,8 @@ import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
-import TextField from "../inputs/TextField";
 import toast, { Toaster } from "react-hot-toast";
+import TextField from "@/components/inputs/TextField";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +28,7 @@ const validate = values => {
     return errors;
 };
 
-export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setShowForgotPasswordModal }) {
+export default function LoginPage() {
     const [user, setUser] = useContext(UserContext)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
@@ -62,8 +62,9 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setSho
                             image: response.data.image,
                             userId: response.data.userId
                         }))
-                    setShowLoginModal(false)
+                    router.push('/')
                 })
+
                 .catch(function (error) {
 
                     if (error.response.status === 400) {
@@ -94,7 +95,7 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setSho
         <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
             <div><Toaster /></div>
-            <div onClick={() => setShowLoginModal(false)} className="z-[91] absolute top-[40px] cursor-pointer">
+            <div onClick={() => router.push('/')} className="z-[91] absolute top-[40px] cursor-pointer">
                 <Image
                     src='/adex-logo-white-yellow.png'
                     alt="Adex Logo"
@@ -133,15 +134,14 @@ export default function LoginModal({ setShowLoginModal,setShowSignUpModal,setSho
                     {passwordError && !formik.errors.password ? <div className="absolute top-[50px]  text-red-600 font-bold ">{passwordError}</div> : null}
                 </div>
 
-                <label onClick={()=>setShowForgotPasswordModal(true)} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
+                <label onClick={()=>router.push('/forgot-password')} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
                 <button className='z-10 bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                   lg:mt-10 '>Login
                 </button>
                 <p className="text-white mt-5">Don&apos;t have an account?
                     <label  className="text-[#FCD33B] hover:opacity-80 cursor-pointer" 
                     onClick={()=>{
-                        setShowLoginModal(false)
-                        setShowSignUpModal(true)
+                        router.push('/sign-up')
                     }}>Sign Up</label>
                 </p>
             </form>

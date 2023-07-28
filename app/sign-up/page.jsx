@@ -9,18 +9,17 @@ import { UserContext } from "@/app/layout";
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
-import TextField from "../inputs/TextField";
-import TermsOfUseModal from "./TermsOfUseModal";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-import BlackButton from "../buttons/BlackButton";
-import SecondaryButton from "../buttons/SecondaryButton";
+import BlackButton from "@/components/buttons/BlackButton";
+import SecondaryButton from "@/components/buttons/SecondaryButton";
+import TextField from "@/components/inputs/TextField";
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 
-export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
+export default function SignUppage() {
   const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
   const [showTerms, setShowterms] = useState(false);
@@ -80,7 +79,6 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
       setIsPending(true)
       toast.dismiss()
       if (checkTerms) {
-        console.log('entrou no axios')
         axios.post('https://adexconnect.com/api/users',
           {
             name: `${values.firstName} ${values.lastName}`,
@@ -98,17 +96,14 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
         })
           .then(function (response) {
             if (response.status === 200) {
-              console.log(response)
               setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false, userId: response.data.userId,hasPayout:false })
               router.push('/')
               setIsPending(false)
-              setShowSignUpModal(false)
             } else if (response.status === 401) {
               console.log(response.data.error)
             }
           })
           .catch(function (error) {
-            console.log(' sign up', error.response.data.error)
             setIsPending(false)
             toast.error(error.response.data.error, {
               duration: 10000,
@@ -149,15 +144,14 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
       setAccountType(id);
     }
   }
-  console.log('checkTerms',checkTerms)
   return (
-    <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2  fixed z-[99] top-0 left-0">
+    <div className={` style_login flex flex-col items-center justify-center min-h-screen py-2  fixed z-[99] top-0 left-0 ${inter.className}`}>
       <div><Toaster />
       </div>
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
       <div onClick={() => {
         toast.dismiss()
-        setShowSignUpModal(false)
+        router.push('/')
       }} className="z-[91] absolute top-[30px] cursor-pointer">
         <Image
           src='/adex-logo-white-yellow.png'
@@ -305,7 +299,7 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
         </div>
 
         <div className={`flex rounded-lg items-center gap-4 mt-2`}>
-          <input type="checkbox" onClick={() => setCheckTerms(!checkTerms)} checked={checkTerms?true:false}/>
+          <input type="checkbox" onChange={() => setCheckTerms(!checkTerms)} checked={checkTerms?true:false}/>
           <p className="text-white ">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
         </div>
         {
@@ -350,8 +344,7 @@ export default function SignUpModal({ setShowSignUpModal, setShowLoginModal }) {
         </button>
         <p className="text-white mt-5 ">Have an account?
           <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
-            setShowSignUpModal(false)
-            setShowLoginModal(true)
+            router.push('/login')
           }}>Login</label>
         </p>
       </form>

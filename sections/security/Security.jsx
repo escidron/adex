@@ -59,7 +59,7 @@ export default function Security() {
         newPassword:values.password,
         current:values.current
     })
-       axios.post('https://test.adexconnect.com/api/users/change-password',
+       axios.post('https://adexconnect.com/api/users/change-password',
           {
             newPassword:values.password,
             current:values.current

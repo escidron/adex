@@ -8,9 +8,9 @@ import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google'
-import TextField from "../inputs/TextField";
 import toast, { Toaster } from "react-hot-toast";
 import { Password } from "@mui/icons-material";
+import TextField from "@/components/inputs/TextField";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +25,7 @@ const validate = values => {
     return errors;
 };
 
-export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, setShowForgotPasswordModal }) {
+export default function ForgotPasswordPage() {
     const [emailError, setEmailError] = useState('')
     const [steps, setSteps] = useState(1);
     const [code1, setCode1] = useState('');
@@ -61,46 +61,59 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
             setEmail(values.email)
             console.log(randomNumber)
             // send email
-            axios.post('https://adexconnect.com/api/users/send-reset-password-email',
-                {
-                    email: values.email,
-                    codeOTP: randomNumber
-                }, {
-                withCredentials: true,
-
-            })
-                .then(function (response) {
-                    console.log('response', response)
-                    setSteps(2)
-                    toast.success(response.data.message)
-
-                })
-                .catch(function (error) {
-                    if (error.response.status === 400) {
-                        toast.error(error.response.data.message, {
-                            duration: 10000,
-                            style: {
-                                width: 'auto',
-                                padding: '16px',
-                                minWidth: '450px',
-                                fontWeight: 500
-
-                            }
-                        })
-                    } else {
-                        toast.error(error.response.data.message, {
-                            duration: 10000,
-                            style: {
-                                padding: '8px',
-                                fontWeight: 500
-
-                            }
-                        })
-                    }
-                });
+            resendEmail(values)
         },
     });
 
+    const resendEmail = (values,resend) => {
+        const min = 100000;
+        const max = 999999;
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        setCodeOTP(randomNumber)
+
+        if(!resend){
+            setEmail(values.email)
+        }
+        console.log(randomNumber)
+        // send email
+        axios.post('https://adexconnect.com/api/users/send-reset-password-email',
+            {
+                email: resend?email:values.email,
+                codeOTP: randomNumber
+            }, {
+            withCredentials: true,
+
+        })
+            .then(function (response) {
+                console.log('response', response)
+                setSteps(2)
+                toast.success(response.data.message)
+
+            })
+            .catch(function (error) {
+                if (error.response.status === 400) {
+                    toast.error(error.response.data.message, {
+                        duration: 10000,
+                        style: {
+                            width: 'auto',
+                            padding: '16px',
+                            minWidth: '450px',
+                            fontWeight: 500
+
+                        }
+                    })
+                } else {
+                    toast.error(error.response.data.message, {
+                        duration: 10000,
+                        style: {
+                            padding: '8px',
+                            fontWeight: 500
+
+                        }
+                    })
+                }
+            });
+    }
     const handleConfirm = () => {
         if (codeOTP == code1 + code2 + code3 + code4 + code5 + code6) {
             setSteps(3)
@@ -168,7 +181,6 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
     const handleInputChange = (event, index) => {
         const input = event.target;
         const maxLength = parseInt(input.getAttribute('maxlength'));
-        console.log('sssss')
         if (input.value.length >= maxLength) {
             if (index < inputRefs.length - 1) {
                 inputRefs[index + 1].current.focus();
@@ -179,7 +191,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
         <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
             <div><Toaster /></div>
-            <div onClick={() => setShowLoginModal(false)} className="z-[91] absolute top-[40px] cursor-pointer">
+            <div onClick={() => router.push('/')} className="z-[91] absolute top-[40px] cursor-pointer">
                 <Image
                     src='/adex-logo-white-yellow.png'
                     alt="Adex Logo"
@@ -212,8 +224,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                                    '>Send email
                         </button>
                         <div onClick={() => {
-                            setShowForgotPasswordModal(false)
-                            setShowLoginModal(true)
+                            router.push('/login')
                         }} className='mt-3 cursor-pointer border-2 flex justify-center items-center border-[#FCD33B] text-[#FCD33B]  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-lg'>
                             Back to Login
                         </div>
@@ -299,8 +310,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                         </div>
                         <p className="text-white mt-4 ">Did not receive the email?
                             <label href='/login' className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
-                                setShowSignUpModal(false)
-                                setShowLoginModal(true)
+                                resendEmail({},true)
                             }}>Click to resend</label>
                         </p>
                     </div>
@@ -346,8 +356,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
                         <p className="text-white text-[16px] mt-2">Your new password was reseted successfuly</p>
 
                         <div onClick={() => {
-                            setShowForgotPasswordModal(false)
-                            setShowLoginModal(true)
+                            router.push('/login')
                         }} className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-black text-lg
                                '>Go to Login
                         </div>

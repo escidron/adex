@@ -39,7 +39,7 @@ export default function MessagesPage() {
         setRefetch(!refetch)
     })
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/advertisements/chat-info',
+        axios.post('https://adexconnect.com/api/advertisements/chat-info',
             {key:key}, {
             withCredentials: true,
             headers: {
@@ -75,7 +75,7 @@ export default function MessagesPage() {
     }, [refetch]);
 
     async function GetNotifications() {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+        axios.post('https://adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
         headers: {

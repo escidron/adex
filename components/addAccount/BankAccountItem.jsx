@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 export default function BankAccountItem({ item, setCheckDefault }) {
 
     const handleSelected = (e) => {
-        axios.post('https://test.adexconnect.com/api/payments/set-default-bank',
+        axios.post('https://adexconnect.com/api/payments/set-default-bank',
             { bankId: e.target.id }, {
             withCredentials: true,
             headers: {

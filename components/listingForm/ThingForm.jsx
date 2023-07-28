@@ -125,7 +125,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
     onSubmit: values => {
       setIsPending(true)
 
-      axios.post(`https://test.adexconnect.com/api/advertisements/${edit ? 'update' : 'new'}`,
+      axios.post(`https://adexconnect.com/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           title: values.title,
           description: values.description,

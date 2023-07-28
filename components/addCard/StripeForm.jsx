@@ -38,7 +38,7 @@ export default function StripeForm({ setShowModal, setRefetch }) {
         console.log('error', error)
         if (!error) {
             setShowModal(false)
-            axios.post('https://test.adexconnect.com/api/payments/customer',
+            axios.post('https://adexconnect.com/api/payments/customer',
                 {
                     cardId: paymentMethod.id,
                     cardNumber: paymentMethod.card.last4,

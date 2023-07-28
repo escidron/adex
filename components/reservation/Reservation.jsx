@@ -13,6 +13,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import { ThreeDots } from 'react-loader-spinner'
 import axios from 'axios';
 import formatNumberInput from '@/utils/formatInputNumbers';
+import toast, { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -52,7 +53,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
         if (hasCard) {
             setIsPending(true)
             if (data.is_automatic === '1') {
-                axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+                axios.post('https://adexconnect.com/api/payments/create-payment-intent',
                     {
                         data: data,
                         duration: counter,
@@ -66,11 +67,14 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                         setIsDone(true)
                     })
                     .catch(function (error) {
-                        console.log(error)
+                        console.log('error',error.response.data.message)
+                        toast.error(error.response.data.message)
+                        setIsPending(false)
+
                     });
                 return
             }
-            axios.post('https://test.adexconnect.com/api/payments/request-reserve',
+            axios.post('https://adexconnect.com/api/payments/request-reserve',
                 {
                     data: data,
                     duration: counter,
@@ -86,14 +90,12 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                     setIsDone(true)
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    console.log('error',error)
                 });
             return
         }
         setIncomplete(true)
-        console.log('odes has card')
     }
-    console.log('discount', discountOptions)
     return (
         <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
             {data.price && (
