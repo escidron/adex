@@ -18,7 +18,7 @@ export default function ProfileHeader() {
         // data for submit
         setImages(imageList);
         setSrc(imageList[0].data_url)
-        axios.post('https://adexconnect.com/api/users/my-profile-image',
+        axios.post('https://test.adexconnect.com/api/users/my-profile-image',
             {
                 image: imageList[0].data_url,
             }, {
@@ -37,7 +37,7 @@ export default function ProfileHeader() {
     useEffect(() => {
         async function GetUserProfile() {
             const response = await fetch(
-                "https://adexconnect.com/api/users/user-profile",
+                "https://test.adexconnect.com/api/users/user-profile",
                 {
                     method: "GET",
                     credentials: "include",

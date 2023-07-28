@@ -53,7 +53,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
         if (hasCard) {
             setIsPending(true)
             if (data.is_automatic === '1') {
-                axios.post('https://adexconnect.com/api/payments/create-payment-intent',
+                axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
                     {
                         data: data,
                         duration: counter,
@@ -74,7 +74,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                     });
                 return
             }
-            axios.post('https://adexconnect.com/api/payments/request-reserve',
+            axios.post('https://test.adexconnect.com/api/payments/request-reserve',
                 {
                     data: data,
                     duration: counter,

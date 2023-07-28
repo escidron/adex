@@ -60,7 +60,7 @@ export default function PayoutForm({ setStripeAccount }) {
       toast.dismiss()
 
       setIsPending(true)
-        axios.post('https://adexconnect.com/api/users/update-address',
+        axios.post('https://test.adexconnect.com/api/users/update-address',
           {
             idNumber: values.idNumber,
             bod: bod,

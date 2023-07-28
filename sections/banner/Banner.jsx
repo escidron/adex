@@ -24,7 +24,7 @@ export default function Banner() {
 }
   
   // const onSubmit = () => {
-  //   axios.get('https://adexconnect.com/api/users/seller-profile',
+  //   axios.get('https://test.adexconnect.com/api/users/seller-profile',
   //     {
 
   //     }, {

@@ -21,7 +21,7 @@ export default function AddPayoutMethod() {
   useEffect(() => {
     async function GetAddress() {
       const response = await fetch(
-        "https://adexconnect.com/api/users/seller-profile",
+        "https://test.adexconnect.com/api/users/seller-profile",
         {
           method: "GET",
           credentials: "include",

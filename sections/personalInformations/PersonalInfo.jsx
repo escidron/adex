@@ -18,7 +18,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
-        "https://adexconnect.com/api/users/user-profile",
+        "https://test.adexconnect.com/api/users/user-profile",
         {
           method: "GET",
           credentials: "include",
@@ -36,7 +36,7 @@ export default function PersonalInfo() {
 
   const submit = ()=>{
     setCurrentInfo('')
-    axios.post('https://adexconnect.com/api/users/update-user-profile',
+    axios.post('https://test.adexconnect.com/api/users/update-user-profile',
     { name: user.name,
       lastName:user.lastName,
       email:user.email,

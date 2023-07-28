@@ -79,7 +79,7 @@ export default function SignUppage() {
       setIsPending(true)
       toast.dismiss()
       if (checkTerms) {
-        axios.post('https://adexconnect.com/api/users',
+        axios.post('https://test.adexconnect.com/api/users',
           {
             name: `${values.firstName} ${values.lastName}`,
             firstName: values.firstName,

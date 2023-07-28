@@ -61,7 +61,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
             setEmail(values.email)
             console.log(randomNumber)
             // send email
-            axios.post('https://adexconnect.com/api/users/send-reset-password-email',
+            axios.post('https://test.adexconnect.com/api/users/send-reset-password-email',
                 {
                     email: values.email,
                     codeOTP: randomNumber
@@ -117,7 +117,7 @@ export default function ForgotPassword({ setShowLoginModal, setShowSignUpModal, 
             toast.error('The password do not match.')
         } else {
 
-            axios.post('https://adexconnect.com/api/users/reset-password',
+            axios.post('https://test.adexconnect.com/api/users/reset-password',
                 {
                     email: email,
                     password: newPassword

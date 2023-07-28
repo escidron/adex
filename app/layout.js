@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
   });
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("https://adexconnect.com/api/users/autologin", {
+            const response = await fetch("https://test.adexconnect.com/api/users/autologin", {
                 method: "GET",
                 credentials: "include",
             });

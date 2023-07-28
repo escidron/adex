@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async function GetMessages() {
     
-    axios.post('https://adexconnect.com/api/advertisements/messages',
+    axios.post('https://test.adexconnect.com/api/advertisements/messages',
       { }, {
       withCredentials: true,
       headers: {

@@ -42,7 +42,7 @@ export default function ContactPage() {
         },
         validate,
         onSubmit:  values =>  {
-        //    axios.post('https://adexconnect.com/api/users/auth',
+        //    axios.post('https://test.adexconnect.com/api/users/auth',
         //       {
         //         email:values.email,
         //         password:values.password
