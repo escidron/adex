@@ -74,6 +74,7 @@ export default function MyListing() {
             withCredentials: true,
         })
             .then(function (response) {
+                console.log(  'discounts',response.data)
                 setDiscounts(response.data)
                 let hasDiscount = false
                 response.data.map((item) => {
