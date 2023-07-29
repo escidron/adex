@@ -72,7 +72,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
                     <p className='flex advertisements-center text-gray-500 '>
-                        {data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
+                        {advertisement.ad_duration_type === '1' ? '/months' : advertisement.ad_duration_type === '2' ? '/quarters' : advertisement.ad_duration_type === '3' ? '/years' : ''}
                     </p>
                 </div>
             )}
@@ -87,7 +87,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
                     />
                 </div>
                 {
-                    data.ad_duration_type !== '0' && (
+                    advertisement.ad_duration_type !== '0' && (
                         <div className='w-[50%]'>
                             <label htmlFor="date" className='mb-1'>End date</label>
                             <DatePickerComponent
@@ -103,7 +103,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between advertisements-center'>
-                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${data.ad_duration_type !== "0"? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
+                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0"? `x ${counter} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
                     <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
                 </div>
                 {/* <div className='mt-2 flex justify-between advertisements-center'>
