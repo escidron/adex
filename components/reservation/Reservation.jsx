@@ -1,8 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
-
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
@@ -18,7 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Reservation({ data, hasCard, setHasCard, setShowModal, setIsDone, discounts }) {
+export default function Reservation({ data, hasCard, setShowModal, setIsDone, discounts }) {
 
     const currentDate = new Date();
     let currentDateDay = currentDate.getDate();
@@ -30,11 +28,6 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
     const [isPending, setIsPending] = useState(false)
     const [currentDiscount, setCurrentDiscount] = useState(0);
     const [discountOptions, setDiscountOptions] = useState(false);
-
-
-    const searchParams = useSearchParams()
-
-
 
     useEffect(() => {
         let hasDiscount = false
@@ -102,7 +95,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
-                        ${data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
+                        {data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
                     </p>
                 </div>
             )}
@@ -126,7 +119,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between items-center'>
-                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} x ${counter} ${data.ad_duration_type === '1' ? 'month' : data.ad_duration_type === '2' ? 'quarter' : 'year'}`}</p>
+                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0"? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {

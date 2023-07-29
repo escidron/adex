@@ -17,6 +17,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function MyListing() {
     const [buyer, setBuyer] = useState({});
     const [user, setUser] = useContext(UserContext)
+    const [discounts, setDiscounts] = useState([])
+    const [currentDiscount, setCurrentDiscount] = useState(0)
 
     const [advertisement, setAdvertisement] = useState({
         image: '',
@@ -38,6 +40,7 @@ export default function MyListing() {
                 GetNotifications()
                 setAdvertisement(response.data.data[0])
                 GetUserProfile(response.data.data[0].requested_by)
+                GetDiscounts(id,response.data.data[0].duration)
             })
             .catch(function (error) {
                 console.log(error)
@@ -48,9 +51,6 @@ export default function MyListing() {
         axios.post('https://test.adexconnect.com/api/users/user-profile',
             { id: id }, {
             withCredentials: true,
-            headers: {
-                'content-type': 'application/json'
-            }
         })
             .then(function (response) {
                 console.log('buyer info', response)
@@ -60,19 +60,38 @@ export default function MyListing() {
                 console.log(error)
             });
     }
+
+    async function GetDiscounts(id,duration) {
+        axios.post('https://test.adexconnect.com/api/advertisements/discounts',
+            { id: id }, {
+            withCredentials: true,
+        })
+            .then(function (response) {
+                setDiscounts(response.data)
+                let hasDiscount = false
+                response.data.map((item) => {
+                    if (duration >= item.duration) {
+                        hasDiscount = true
+                        setCurrentDiscount(item.discount)
+                    }
+                })
+                if (!hasDiscount) {
+                    setCurrentDiscount(0)
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+    }
+
     async function GetNotifications() {
         axios.post('https://test.adexconnect.com/api/users/notifications',
         {}, {
         withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
       })
         .then(function (response) {
             
-          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-          setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-        //   setNotificationsQtd(response.data.notifications.length)
+          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length,notifications: response.data.notifications  }))
         })
         .catch(function (error) {
           console.log(error)
@@ -107,7 +126,7 @@ export default function MyListing() {
                             <h1 className='text-[15px] mt-4'>{advertisement.description}</h1>
                         </div>
                     </div>
-                    <ApproveReservation advertisement={advertisement} />
+                    <ApproveReservation advertisement={advertisement} discounts={discounts} currentDiscount={currentDiscount}/>
                 </div>
                 <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
