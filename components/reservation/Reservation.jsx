@@ -58,7 +58,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                         data: data,
                         duration: counter,
                         start_date: date,
-                        current_discount:currentDiscount
+                        current_discount: currentDiscount
                     }, {
                     withCredentials: true,
                 })
@@ -67,7 +67,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                         setIsDone(true)
                     })
                     .catch(function (error) {
-                        console.log('error',error.response.data.message)
+                        console.log('error', error.response.data.message)
                         toast.error(error.response.data.message)
                         setIsPending(false)
 
@@ -90,7 +90,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                     setIsDone(true)
                 })
                 .catch(function (error) {
-                    console.log('error',error)
+                    console.log('error', error)
                 });
             return
         }
@@ -102,7 +102,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
-                        {data.ad_duration_type === '1' ? '/month' : data.ad_duration_type === '2' ? '/quarter' : data.ad_duration_type === '0' ? '/year' : ''}
+                        ${data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
                     </p>
                 </div>
             )}
@@ -112,14 +112,17 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                     <DatePickerComponent
                         id='date'
                         setDate={(date) => setDate(date)}
+                        disabled={data.ad_duration_type !== '0'?false:true}
                     />
                 </div>
-                <div className='w-[40%] flex flex-col items-center'>
-                    <label htmlFor="date" className='mb-1'>Duration</label>
-
-                    <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
-
-                </div>
+                {
+                    data.ad_duration_type !== '0' && (
+                        <div className='w-[40%] flex flex-col items-center'>
+                            <label htmlFor="date" className='mb-1'>Duration</label>
+                            <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
+                        </div>
+                    )
+                }
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between items-center'>
@@ -131,7 +134,7 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
 
                         <div className='relative mt-2 flex justify-between items-center'>
                             <div className='flex items-center gap-1'>
-                                <div onMouseOver={()=>setDiscountOptions(true)} onMouseLeave={()=>setDiscountOptions(false)}>
+                                <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
                                     <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' />
                                 </div>
                                 <p className='font-[600]'>Long contract discount</p>
@@ -140,17 +143,17 @@ export default function Reservation({ data, hasCard, setHasCard, setShowModal, s
                             {
                                 discountOptions && (
                                     <div className='absolute bg-black top-10 py-2 left-0 w-[360px] rounded-lg  text-white'>
-                                    {discounts.map((discount, index) => (
-                                    <div key={index}>
-                                      <div  className='flex justify-between px-2'>
-                                        <div className='flex'>
-                                          <h1 className='text-[12px]'>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''} `}</label>have a </h1>
-                                          <h1 className='text-[12px] font-bold ml-1'>{` ${discount.discount}% discount`}</h1>
-                                        </div>
-                                      </div>
-                                      <Divider variant="" sx={{ color: 'white', width: '100%', marginTop: '5px', marginBottom: '5px' }} />
-                                    </div>
-                                  ))}
+                                        {discounts.map((discount, index) => (
+                                            <div key={index}>
+                                                <div className='flex justify-between px-2'>
+                                                    <div className='flex'>
+                                                        <h1 className='text-[12px]'>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''} `}</label>have a </h1>
+                                                        <h1 className='text-[12px] font-bold ml-1'>{` ${discount.discount}% discount`}</h1>
+                                                    </div>
+                                                </div>
+                                                <Divider variant="" sx={{ color: 'white', width: '100%', marginTop: '5px', marginBottom: '5px' }} />
+                                            </div>
+                                        ))}
                                     </div>
                                 )
                             }
