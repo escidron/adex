@@ -43,7 +43,8 @@ export default function AdDetails() {
   const [refetch, setRefetch] = useState(false);
   const [isPending, setIsPending] = useState(false)
   const [isPending2, setIsPending2] = useState(false)
-  const [isDone, setIsDone] = useState(false)
+  const [isBooked, setIsBooked] = useState(false)
+  const [isRequested, setIsRequested] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const searchParams = useSearchParams()
   const [messages, setMessages] = useState([]);
@@ -52,7 +53,7 @@ export default function AdDetails() {
   const id = searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
-  
+
   useEffect(() => {
     axios.post('https://test.adexconnect.com/api/advertisements/details',
       {
@@ -128,22 +129,22 @@ export default function AdDetails() {
 
   async function GetNotifications() {
     axios.post('https://test.adexconnect.com/api/users/notifications',
-        {}, {
-        withCredentials: true,
-        headers: {
-            'content-type': 'application/json'
-        }
+      {}, {
+      withCredentials: true,
+      headers: {
+        'content-type': 'application/json'
+      }
     })
-        .then(function (response) {
+      .then(function (response) {
 
-            setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-            setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-            //   setNotificationsQtd(response.data.notifications.length)
-        })
-        .catch(function (error) {
-            console.log(error)
-        });
-}
+        setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
+        setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+        //   setNotificationsQtd(response.data.notifications.length)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }
   const sendMessage = () => {
 
     socket.emit('send-buyer-message',
@@ -161,9 +162,9 @@ export default function AdDetails() {
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
-      <div><Toaster /></div>
+        <div><Toaster /></div>
 
-        {isDone ? (
+        {isBooked ? (
           < Success >
             <h1 className='text-[25px]'>Booking created</h1>
 
@@ -175,6 +176,16 @@ export default function AdDetails() {
               </Link>
               <Link href='/my-profile' className='mt-6'>
                 <BlackButton label='view details' />
+              </Link>
+            </div>
+          </Success>
+        ) : isRequested ? (
+          < Success >
+            <h1 className='text-[25px]'>Booking requested</h1>
+            <p className='my-4'>Your booking request will be answered soon. Thank you for your patience!</p>
+            <div className='flex justify-between w-full'>
+              <Link href='/' className='mt-6'>
+                <BlackButton label='Done' />
               </Link>
             </div>
           </Success>
@@ -213,7 +224,7 @@ export default function AdDetails() {
                     height={2000}
                     className='rounded-lg w-full h-full object-cover'
                   /> */}
-                  <MultiImage images={data.image ? data.image : [{data_url:'/nouser.png'}]} height={'300px'} remove={false}/>
+                  <MultiImage images={data.image ? data.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
                 </div>
 
                 <div className='mt-4 '>
@@ -241,7 +252,8 @@ export default function AdDetails() {
                   hasCard={hasCard}
                   setHasCard={(card) => setHasCard(card)}
                   setShowModal={(show) => setShowModal(show)}
-                  setIsDone={(isDone) => setIsDone(isDone)}
+                  setIsBooked={(booked) => setIsBooked(booked)}
+                  setIsRequested={(requested) => setIsRequested(requested)}
                   discounts={discounts}
                 />
               ) : ('')}

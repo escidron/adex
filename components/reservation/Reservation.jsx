@@ -16,7 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Reservation({ data, hasCard, setShowModal, setIsDone, discounts }) {
+export default function Reservation({ data, hasCard, setShowModal, setIsBooked,setIsRequested, discounts }) {
 
     const currentDate = new Date();
     let currentDateDay = currentDate.getDate();
@@ -57,7 +57,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsDone, di
                 })
                     .then(function (response) {
                         setIsPending(false)
-                        setIsDone(true)
+                        setIsBooked(true)
                     })
                     .catch(function (error) {
                         console.log('error', error.response.data.message)
@@ -80,7 +80,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsDone, di
             })
                 .then(function (response) {
                     setIsPending(false)
-                    setIsDone(true)
+                    setIsRequested(true)
                 })
                 .catch(function (error) {
                     console.log('error', error)
