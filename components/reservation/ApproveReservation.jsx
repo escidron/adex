@@ -103,7 +103,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between advertisements-center'>
-                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0"? `x ${counter} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
+                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0"? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
                     <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
                 </div>
                 {/* <div className='mt-2 flex justify-between advertisements-center'>
@@ -123,7 +123,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
                                 </div>
                                 <p className='font-[600]'>Long contract discount</p>
                             </div>
-                            <p className='text-green-700'>{`-$${advertisement.price * counter * currentDiscount / 100}`}</p>
+                            <p className='text-green-700'>{`-$${advertisement.price * advertisement.duration * currentDiscount / 100}`}</p>
                             {
                                 discountOptions && (
                                     <div className='absolute bg-black top-10 py-2 left-0 w-[360px] rounded-lg  text-white'>
