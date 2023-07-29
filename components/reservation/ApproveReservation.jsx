@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 const inter = Inter({ subsets: ['latin'] })
 
-export default function ApproveReservation({ advertisement,discounts,currentDiscount }) {
+export default function ApproveReservation({ advertisement, discounts, currentDiscount }) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
     const [discountOptions, setDiscountOptions] = useState(false);
@@ -102,18 +102,16 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
 
             </div>
             <div className='w-[90%] '>
-                <div className='mt-8 flex justify-between advertisements-center'>
-                    <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0"? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
-                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
-                </div>
-                {/* <div className='mt-2 flex justify-between advertisements-center'>
-                    <div className='flex advertisements-center gap-1'>
-                        <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' />
-                        <p className='font-[600]'>Long contract discount</p>
+
+                {
+                    advertisement.ad_duration_type !== '0' && (
+                        <div className='mt-8 flex justify-between advertisements-center'>
+                        <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0" ? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
+                        <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
                     </div>
-                    <p className='text-green-700'>{`-$${discount}`}</p>
-                </div> */}
-                                {
+                    )
+                }
+                {
                     currentDiscount > 0 && (
 
                         <div className='relative mt-2 flex justify-between items-center'>
