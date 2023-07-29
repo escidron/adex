@@ -140,7 +140,7 @@ export default function MyListing() {
                                 discounts={discounts} 
                                 currentDiscount={currentDiscount} 
                                 setBookingAccepted={(accepted)=>setBookingAccepted(accepted)}
-                                setBookingRejected={(rejected)=>setBookingRejected(accepted)}
+                                setBookingRejected={(rejected)=>setBookingRejected(rejected)}
                                 />
                             </div>
                             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
