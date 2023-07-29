@@ -79,7 +79,6 @@ export default function AdDetails() {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response)
         setDiscounts(response.data.discounts)
       })
       .catch(function (error) {
@@ -131,15 +130,10 @@ export default function AdDetails() {
     axios.post('https://test.adexconnect.com/api/users/notifications',
       {}, {
       withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
     })
       .then(function (response) {
 
-        setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-        setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-        //   setNotificationsQtd(response.data.notifications.length)
+        setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length,notifications: response.data.notifications  }))
       })
       .catch(function (error) {
         console.log(error)
@@ -159,6 +153,9 @@ export default function AdDetails() {
     setRefetch(prev => !prev)
 
   }
+
+  console.log('bokekd',isBooked)
+  console.log('reuqested',isRequested)
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>

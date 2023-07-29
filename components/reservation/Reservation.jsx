@@ -58,6 +58,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
                     .then(function (response) {
                         setIsPending(false)
                         setIsBooked(true)
+                        console.log('set is booked')
+
                     })
                     .catch(function (error) {
                         console.log('error', error.response.data.message)
@@ -74,12 +76,10 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
                     start_date: date
                 }, {
                 withCredentials: true,
-                headers: {
-                    'content-type': 'application/json'
-                }
             })
                 .then(function (response) {
                     setIsPending(false)
+                    console.log('set is requested')
                     setIsRequested(true)
                 })
                 .catch(function (error) {
