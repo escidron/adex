@@ -149,7 +149,7 @@ export default function ApproveReservation({ advertisement,discounts,currentDisc
 
                 <div className='mt-2 flex justify-between advertisements-center'>
                     <p className='text-[20px] font-[600]'>Total</p>
-                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement?.price * advertisement?.duration - discount).toString()) : ''}`}</p>
+                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * counter - (advertisement.price * duration) * (currentDiscount / 100)).toString()) : ''}`}</p>
                 </div>
             </div>
             {
