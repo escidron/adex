@@ -136,7 +136,12 @@ export default function MyListing() {
                                         <h1 className='text-[15px] mt-4'>{advertisement.description}</h1>
                                     </div>
                                 </div>
-                                <ApproveReservation advertisement={advertisement} discounts={discounts} currentDiscount={currentDiscount} />
+                                <ApproveReservation advertisement={advertisement} 
+                                discounts={discounts} 
+                                currentDiscount={currentDiscount} 
+                                setBookingAccepted={(accepted)=>setBookingAccepted(accepted)}
+                                setBookingRejected={(rejected)=>setBookingRejected(accepted)}
+                                />
                             </div>
                             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 

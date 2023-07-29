@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 const inter = Inter({ subsets: ['latin'] })
 
-export default function ApproveReservation({ advertisement, discounts, currentDiscount }) {
+export default function ApproveReservation({ advertisement, discounts, currentDiscount,setBookingAccepted,setBookingRejected }) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
     const [discountOptions, setDiscountOptions] = useState(false);
@@ -31,6 +31,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         })
             .then(function (response) {
                 setIsPending1(false)
+                setBookingAccepted(true)
                 // setBookingModalOpen(false)
                 // setRefresh(prev=>!prev)
 
@@ -56,6 +57,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         })
             .then(function (response) {
                 setIsPending2(false)
+                setBookingRejected(true)
                 // setBookingModalOpen(false)
                 // setRefresh(prev=>!prev)
             })
