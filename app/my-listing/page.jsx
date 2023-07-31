@@ -108,7 +108,7 @@ export default function MyListing() {
 
     return (
         <>
-            <div className='mt-[120px] px-[60px] py-[30px] w-full lg:w-[80%] flex flex-col items-center mx-auto'>
+            <div className='mt-[120px] px-[60px] py-[30px] w-full xl:w-[80%] flex flex-col items-center mx-auto'>
                 {
                     !bookingAccepted && !bookingRejected && (
                         <>
