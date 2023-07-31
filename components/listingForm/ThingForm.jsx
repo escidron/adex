@@ -17,6 +17,7 @@ import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
+import TextField from '../inputs/TextField';
 
 const inter = Inter({ subsets: ['latin'] })
 const PinkSwitch = styled(Switch)(({ theme }) => ({
@@ -166,37 +167,41 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
     <>
       {!response ? (
 
-        <form className='grid grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
-          <div className=" mt-2 w-full ">
-            <div className='flex'>
-              <label htmlFor="title" className="block   mb-1 ">
-                Ad Title
-              </label>
-              {formik.touched.title && formik.errors.title ? <div className="ml-2 text-red-600 font-bold">{formik.errors.title}</div> : null}
+        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
+          <div className=" w-full relative flex gap-2">
+            <div className='w-[70%]'>
+              <TextField
+                id='title'
+                label='Title'
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.title}
+                errors={formik.errors.title}
+              />
+              {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
             </div>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.title}
-              className="w-full border  p-3 rounded-lg outline-none"
-            />
+            <div className={`w-[30%] relative`}>
+              <TextField
+                id='price'
+                label='Price'
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                onInput={(e) => formatNumberInput(e.target.value)}
+                value={formik.values.price}
+                errors={formik.errors.price}
+                formatPrice={true}
+              />
+              {formik.touched.price && formik.errors.price ? <div className="absolute  top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.price}</div> : null}
+            </div>
           </div>
 
-          <div className=" mt-2 w-full">
-            <div className='flex'>
-              <label htmlFor="location" className="block   mb-1">
-                Location
-              </label>
-              {formik.touched.location && formik.errors.location ? <div className="ml-2 text-red-600 font-bold">{formik.errors.location}</div> : null}
-            </div >
+          <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-              <div className="w-full border rounded-lg outline-none min-h-[50px] flex items-center">
+              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
                 <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
               </div>
             </MapCoordinatesContext.Provider>
+            {formik.touched.location && formik.errors.location ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.location}</div> : null}
           </div>
           {typeId === 17 ? (
             <div className="col-span-2 mt-2 w-full flex gap-4">
@@ -276,26 +281,10 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
             </div>
           ) : null}
           <div className=" mt-2 w-full flex gap-4 relative">
-            <div className={`w-[40%]`}>
-              <label htmlFor="price" className="block   mb-1">
-                Price per unit
-              </label>
-              <div className='relative flex-col '>
-                <p className='absolute top-[11px] left-2 text-[18px] font-[400] '>$</p>
-                <input
-                  onInput={(e) => formatNumberInput(e)}
-                  id='price'
-                  placeholder='0'
-                  type="text"
-                  className='max-h-[50px] py-4 px-5 rounded-md w-full border outline-none flex items-center text-[18px]'
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.price}
-                />
-              </div>
-              {formik.touched.price && formik.errors.price ? <div className="absolute  top-[80px] text-red-600 font-bold">{formik.errors.price}</div> : null}
-            </div>
-            <div className={`w-[60%]`}>
+            {
+              typeId !== 17 && (
+
+            <div className={`w-full`}>
               <label htmlFor="date" className="block   mb-1">
                 Start Date
               </label>
@@ -307,15 +296,15 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               />
               {formik.touched.date && formik.errors.date ? <div className="absolute  top-[80px] right-0 text-red-600 font-bold">{formik.errors.date}</div> : null}
             </div>
+              )
+            }
           </div>
 
           <div className="col-start-1 mt-2 w-full relative">
-            <label htmlFor="description" className="block   mb-1 ">
-              Description
-            </label>
             <textarea
               type="textarea"
               id="description"
+              placeholder='Description'
               name="description"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -326,9 +315,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           </div>
 
           <div className=" mt-2 w-full relative">
-            <label htmlFor="image" className="block  mb-1 ">
-              Image
-            </label>
             <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
               <ImageLoader images={images} setImages={(image) => setImages(image)} />
             </div>
@@ -346,7 +332,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
             <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
           </div>
           <div className='col-start-2 w-full flex justify-end mt-4'>
-            <div className='ml-2'>
+            <div className='w-full sm:max-w-[220px] sm:ml-2'>
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
                 <div className='style_banner_button_text font-semibold text-[18px]'>
                   {isPending ? (

@@ -67,7 +67,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
   }
   const handleSubType = (e) => {
     const id = e.currentTarget.id
-    if (id !== durationType) {
+    if (id !== subType) {
       //formik.values.durationType = id
       setSubType(id);
     }
@@ -155,37 +155,26 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
     <>
       {!response ? (
 
-        <form className='grid grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
-          <div className=" mt-2 w-full ">
-            <div className='flex'>
-              <label htmlFor="title" className="block   mb-1 ">
-                Ad Title
-              </label>
-              {formik.touched.title && formik.errors.title ? <div className="ml-2 text-red-600 font-bold">{formik.errors.title}</div> : null}
-            </div>
-            <input
-              type="text"
-              id="title"
-              name="title"
+        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
+          <div className="w-full relative">
+            <TextField
+              id='title'
+              label='Title'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.title}
-              className="w-full border  p-3 rounded-lg outline-none"
+              errors={formik.errors.title}
             />
+            {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
           </div>
 
-          <div className=" mt-2 w-full">
-            <div className='flex'>
-              <label htmlFor="location" className="block   mb-1">
-                Location
-              </label>
-              {formik.touched.location && formik.errors.location ? <div className="ml-2 text-red-600 font-bold">{formik.errors.location}</div> : null}
-            </div >
+          <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-              <div className="w-full border rounded-lg outline-none min-h-[50px] flex items-center">
+              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
                 <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
               </div>
             </MapCoordinatesContext.Provider>
+            {formik.touched.location && formik.errors.location ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.location}</div> : null}
           </div>
           {typeId === 9 ? (
             <div className=" mt-2 w-full flex gap-4">
@@ -289,9 +278,9 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
             </div>
           ) : null}
 
-          <div className=" mt-2 w-full flex gap-4 relative">
-            <div className={`w-[40%]`}>
-            <TextField
+          <div className=" mt-auto w-full flex gap-4 relative">
+            <div className={`w-[40%] flex items-end`}>
+              <TextField
                 id='price'
                 label='Price'
                 onChange={formik.handleChange}
@@ -318,13 +307,11 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
           </div>
 
           <div className="col-start-1 mt-2 w-full relative">
-            <label htmlFor="description" className="block   mb-1 ">
-              Description
-            </label>
             <textarea
               type="textarea"
               id="description"
               name="description"
+              placeholder='Description'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.description}
@@ -334,9 +321,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
           </div>
 
           <div className=" mt-2 w-full relative">
-            <label htmlFor="image" className="block  mb-1 ">
-              Image
-            </label>
             <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
               <ImageLoader images={images} setImages={(image) => setImages(image)} />
             </div>
@@ -354,7 +338,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
             <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
           </div>
           <div className='col-start-2 w-full flex justify-end mt-4'>
-            <div className='ml-2'>
+            <div className='w-full sm:max-w-[220px] sm:ml-2'>
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
                 <div className='style_banner_button_text font-semibold text-[18px]'>
                   {isPending ? (
