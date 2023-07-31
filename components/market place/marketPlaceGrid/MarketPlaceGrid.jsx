@@ -103,8 +103,8 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         </div>
         {openFilter?
         (<div>
-            <div className='px-[20px] mt-4 flex justify-between '>
-                <div className='w-1/2 flex flex-col items-center'>    
+            <div className='px-[20px] mt-4 flex flex-col items-center sm:flex-row sm:justify-between '>
+            <div className='w-full sm:w-1/2 flex flex-col items-start sm:items-center'>    
                     <label>Search radius (in miles)</label>
                     <div className='mt-2 '>
                         <button onClick={(e)=>handleRadius(e.target)} id={1} className={`${adFilter.radius==100?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>100</button>
@@ -114,7 +114,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
 
                     </div>
                 </div>
-                <div className='w-1/2 flex flex-col items-center'>
+                <div className='w-full sm:w-1/2 flex flex-col items-start sm:items-center'>
                     <label>Avertisement type</label>
                     <div className='mt-2 flex justify-end'>
                         <button type="button" onClick={(e)=>handleType(e.target)} id={1} className={`${adFilter.type=='1'?'text-black bg-[#FCD33B]':'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>Person</button>
