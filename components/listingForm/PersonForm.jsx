@@ -160,7 +160,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     <>
       {!response ? (
 
-        <form className='grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
+        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
           <div className=" w-full relative flex gap-2">
             <div className='w-[70%]'>
               <TextField
@@ -377,7 +377,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
             </div>
             <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
           </div>
-          <div className='col-start-2 w-full flex justify-end mt-4'>
+          <div className='w-full sm:max-w-[220px] sm:ml-2'>
             <div className='ml-2'>
               {
                 edit ? (
