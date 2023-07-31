@@ -29,37 +29,61 @@ export default function Listing() {
                     ) : selectedStep === 2 ? (
 
                         <div className='flex flex-col'>
-                            <h1 className='text-[30px]'>Type</h1>
+                            <div className='flex justify-between items-center w-full'>
+                                <h1 className='text-[30px]'>Type</h1>
+                                {
+                                    selectedStep > 1 ? (
+
+                                        <div className='' onClick={() => {
+                                            setSelectedStep(prev => (prev - 1))
+                                        }}>
+                                            {
+                                                selectedStep <= 3 ? (
+
+                                                    <BlackButton label='Back' />
+                                                ) : (
+                                                    ''
+                                                )
+                                            }
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )
+                                }
+                            </div>
                             <p className='text-[18px] text-gray-500'>Choose which type of asset will be most effective for your target audience or marketing goals. </p>
                         </div>
                     ) : selectedStep === 3 ? (
                         <div className='flex flex-col'>
-                            <h1 className='text-[30px]'>Create ad</h1>
+                            <div className='flex justify-between items-center w-full'>
+                                <h1 className='text-[30px]'>Create ad</h1>
+                                {
+                                    selectedStep > 1 ? (
+
+                                        <div className='' onClick={() => {
+                                            setSelectedStep(prev => (prev - 1))
+                                        }}>
+                                            {
+                                                selectedStep <= 3 ? (
+
+                                                    <BlackButton label='Back' />
+                                                ) : (
+                                                    ''
+                                                )
+                                            }
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )
+                                }
+                            </div>
                             <p className='text-[18px] text-gray-500'>Fill in the relevant information for the advertising </p>
                         </div>
                     ) : (
                         ''
                     )
                     }
-                    {
-                        selectedStep > 1 ? (
 
-                            <div className='' onClick={() => {
-                                setSelectedStep(prev => (prev - 1))
-                            }}>
-                                {
-                                    selectedStep <= 3 ? (
-
-                                        <BlackButton label='Back' />
-                                    ) : (
-                                        ''
-                                    )
-                                }
-                            </div>
-                        ) : (
-                            ''
-                        )
-                    }
                 </div>
                 <div className=' flex mt-10 mx-auto w-[90%] sm:w-1/2 flex-col'>
                     {selectedStep < 3 ? (
