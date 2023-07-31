@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function StepperComponent({ selectedStep }) {
     return (
-        <div className={`flex mx-auto mt-4 w-[600px] items-center justify-center flex-col ${inter.className}`}>
+        <div className={`flex mx-auto mt-4 w-full sm:w-[600px] items-center justify-center flex-col ${inter.className}`}>
             <div className='w-full flex justify-evenly px-2 items-center'>
                 <div>
                     <div className={`${selectedStep === 1 ? ' bg-black text-[#FCD33B]' : ' bg-[#FCD33B] text-black'} font-[600] w-[40px] h-[40px] rounded-full  flex justify-center items-center`}>

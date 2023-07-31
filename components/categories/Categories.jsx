@@ -22,7 +22,7 @@ export default function Categories({ selectedStep, setSelectedStep, categoryId, 
   }, [])
 
   return (
-    <div className='grid grid-cols-4 gap-4'>
+    <div className='grid grid-cols-1 sm:grid-cols-4 gap-4'>
       {selectedStep === 1 ? (
         data.map((item) => {
           if (item.parent_id === 0) {
