@@ -155,7 +155,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
         </div>
         )
         :
-        <div className=" justify-between mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px]">
+        <div className="flex flex-col items-center mb-[400px] mt-8 sm:grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px]">
             {newData.map((ad)=>(
                 <MarketPlaceCard key={ad.id} ad={ad}/>
             ))}
