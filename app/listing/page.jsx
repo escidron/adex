@@ -17,7 +17,7 @@ export default function Listing() {
     const [isPeriodic, setIsPeriodic] = useState('');
     return (
         <>
-            <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} h-[calc(100vh-90px)]`}>
+            <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} `}>
                 <h1 className='text-[42px]'>List your Ad</h1>
                 <StepperComponent selectedStep={selectedStep} />
                 <div className=' flex mt-10 mx-auto w-[90%] sm:w-1/2  justify-between items-center'>
@@ -61,7 +61,7 @@ export default function Listing() {
                         )
                     }
                 </div>
-                <div className=' flex mt-10 mx-auto w-1/2   flex-col'>
+                <div className=' flex mt-10 mx-auto w-[90%] sm:w-1/2 flex-col'>
                     {selectedStep < 3 ? (
                         <Categories
                             selectedStep={selectedStep}
