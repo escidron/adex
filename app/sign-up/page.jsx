@@ -148,7 +148,7 @@ export default function SignUppage() {
     <div className={` style_login flex flex-col h-full w-full items-center px-2 justify-center py-4 overflow-y-scroll fixed z-[99] top-0 left-0 ${inter.className}`}>
       <div><Toaster />
       </div>
-      <div className=' absolute top-0 left-0 w-full  h-[120%]  bg-black z-[90] opacity-70'></div>
+      <div className=' fixed top-0 left-0 w-full h-full   bg-black z-[90] opacity-70'></div>
       <div onClick={() => {
         toast.dismiss()
         router.push('/')
@@ -161,8 +161,9 @@ export default function SignUppage() {
           priority
         />
       </div>
-      <div className="flex justify-center bg-slate-400 w-full overflow-y-scroll z-[99]">
-        <form className=" z-[91] flex flex-col justify-center items-center text-black font-[400] w-[400px] absolute top-[60px] py-2  mt-[30px]" onSubmit={formik.handleSubmit}>
+      <form className=" z-[91] flex flex-col  justify-center items-center text-black font-[400] w-[100%] absolute top-[60px] py-2  mt-[30px]" onSubmit={formik.handleSubmit}>
+        <div className="w-[400px]">
+
           <p className="text-white text-[36px]">Register</p>
           <p className="text-white text-[18px] font-normal mb-6 mt-2">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
 
@@ -348,8 +349,9 @@ export default function SignUppage() {
               router.push('/login')
             }}>Login</label>
           </p>
-        </form>
-      </div>
+        </div>
+
+      </form>
     </div>
   );
 }
