@@ -108,12 +108,12 @@ export default function MyListing() {
 
     return (
         <>
-            <div className='mt-[120px] px-[60px] py-[30px] w-full xl:w-[80%] flex flex-col items-center mx-auto'>
+            <div className='mt-[120px] px-[60px] py-[30px] w-full  flex flex-col items-center mx-auto'>
                 {
                     !bookingAccepted && !bookingRejected && (
                         <>
                             <h1 className='text-[45px] flex mx-auto'>Advertisement Details</h1>
-                            <div className={`flex flex-col lg:flex-row gap-3 w-[80%] justify-between mt-8 ${inter.className}`}>
+                            <div className={`flex flex-col lg:flex-row gap-3  w-[70%] xl:w-[50%] justify-between mt-8 ${inter.className}`}>
                                 <div className='w-full md:w-[50%] max-w-[500px]'>
                                     <div className='w-full h-[300px] shadow-image rounded-lg'>
                                         <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
