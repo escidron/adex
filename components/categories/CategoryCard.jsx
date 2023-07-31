@@ -13,7 +13,7 @@ export default function CategoryCard({ item,setCategoryId,selectedStep,setSelect
                 }
                 setSelectedStep(selectedStep+1)
             }} 
-            className='flex flex-col items-center justify-center max-h-[150px] bg-black px-4 py-[24px] rounded-lg hover:scale-[1.1] cursor-pointer'>
+            className='flex flex-col items-center justify-center w-full sm:w-[195px] max-h-[150px] bg-black px-4 py-[24px] rounded-lg hover:scale-[1.1] cursor-pointer'>
             <div className='h-[74px] '>
                 <Image
                     src={'/'+item.image}

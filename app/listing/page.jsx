@@ -20,7 +20,7 @@ export default function Listing() {
             <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} h-[calc(100vh-90px)]`}>
                 <h1 className='text-[42px]'>List your Ad</h1>
                 <StepperComponent selectedStep={selectedStep} />
-                <div className=' flex mt-10 mx-auto w-1/2  justify-between items-center'>
+                <div className=' flex mt-10 mx-auto w-[90%] sm:w-1/2  justify-between items-center'>
                     {selectedStep === 1 ? (
                         <div className='flex flex-col'>
                             <h1 className='text-[30px]'>Category</h1>
