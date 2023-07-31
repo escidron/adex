@@ -187,7 +187,7 @@ export default function AdDetails() {
             </div>
           </Success>
         ) : (
-          <div className='flex flex-col w-1/2 '>
+          <div className='flex flex-col w-[80%] '>
             <div className={`flex flex-col items-center justify-center`}>
               <div className='w-[150px] h-[150px] '>
                 <Image
@@ -211,7 +211,7 @@ export default function AdDetails() {
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
             <div className={`flex flex-col lg:flex-row gap-3  ${rejectedId ? 'justify-center' : 'justify-between'}`}>
-              <div className='w-[80%] '>
+              <div className='w-[50%] '>
                 <div className='w-full h-[300px] shadow-image rounded-lg'>
                   <MultiImage images={data.image ? data.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
                 </div>
