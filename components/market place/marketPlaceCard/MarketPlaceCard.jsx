@@ -21,7 +21,7 @@ export default function MarketPlaceCard({ad}) {
   // '4'=>'Unit',
   // '5'=>'Year'  
   return (
-    <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  mx-auto ${inter.className}`}>
+    <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full  ${inter.className}`}>
       <div className="style_image_box w-full rounded-lg bg-slate-600 h-[200px]">
         <MultiImage images={ad.image} height={'200px'} remove={false}/>
         <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1"?'bg-green-600':"bg-orange-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1"?'Available':'Running'}</span></p>
