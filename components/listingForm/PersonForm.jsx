@@ -160,7 +160,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     <>
       {!response ? (
 
-        <form className='grid grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
+        <form className='grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4' onSubmit={formik.handleSubmit}>
           <div className=" w-full relative flex gap-2">
             <div className='w-[70%]'>
               <TextField
