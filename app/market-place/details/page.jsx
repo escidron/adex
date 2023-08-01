@@ -171,7 +171,7 @@ export default function AdDetails() {
               <Link href='/' className='mt-6'>
                 <SecondaryButton label='later' dark={true} />
               </Link>
-              <Link href='/my-profile' className='mt-6'>
+              <Link href='/my-profile?tab=1' className='mt-6'>
                 <BlackButton label='view details' />
               </Link>
             </div>
