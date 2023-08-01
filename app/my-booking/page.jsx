@@ -93,39 +93,32 @@ export default function MyBooking() {
             <div className='mt-[120px] px-[60px] py-[30px] w-[60%] flex flex-col mx-auto'>
                 <h1 className='text-[45px] flex mx-auto'>Advertisement Details</h1>
                 <div className={`flex gap-3 justify-between mt-8 ${inter.className}`}>
-                    <div className='w-full h-[300px] shadow-image rounded-lg'>
-                        <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
-                    </div>
+                    <div className='w-full md:w-[50%] max-w-[500px]'>
+                        <div className='w-full h-[300px] shadow-image rounded-lg'>
+                            <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
+                        </div>
 
-                    <div className='mt-4'>
-                        <div className='flex justify-between advertisements-center'>
-                            <h1 className='text-[20px] font-[500]'>{advertisement.title}</h1>
-                            <div className="flex advertisements-center justify-center">
-                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                        <div className='mt-4'>
+                            <div className='flex justify-between advertisements-center'>
+                                <h1 className='text-[20px] font-[500]'>{advertisement.title}</h1>
+                                <div className="flex advertisements-center justify-center">
+                                    <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                    <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                    <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                    <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                                    <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                                </div>
                             </div>
+                            <div className='flex advertisements-center  gap-1'>
+                                <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
+                                <h1 className='text-[15px] text-gray-500'>{advertisement.address}</h1>
+                            </div>
+                            <h1 className='text-[15px] mt-4'>{advertisement.description}</h1>
                         </div>
-                        <div className='flex advertisements-center  gap-1'>
-                            <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                            <h1 className='text-[15px] text-gray-500'>{advertisement.address}</h1>
-                        </div>
-                        <h1 className='text-[15px] mt-4'>{advertisement.description}</h1>
                     </div>
+                    <ApproveReservation advertisement={advertisement} />
                 </div>
-                <ApproveReservation advertisement={advertisement} />
             </div>
-            {/* <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
-
-                <div className='flex flex-col mx-auto'>
-                    <h1 className='text-[35px]'>
-                        {advertisement.status == 2 ? 'Owned by' : ''}
-                    </h1>
-                    <BuyerCard buyer={buyer} />
-                </div> */}
-        </div >
         </>
     )
 }
