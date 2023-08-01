@@ -80,9 +80,7 @@ export default function MyBooking() {
         })
             .then(function (response) {
 
-                setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-                setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-                //   setNotificationsQtd(response.data.notifications.length)
+                setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length,notifications: response.data.notifications }))
             })
             .catch(function (error) {
                 console.log(error)
