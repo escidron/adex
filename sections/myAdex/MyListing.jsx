@@ -114,7 +114,7 @@ export default function MyListing({ data, status }) {
             return (
               <>
                 <section key={item.id + index} className='w-full flex gap-4 items-center'>
-                  <Link href={`/my-listing${item.status == 4?'':'/edit-advertisement'}/?id=${item.id}`} 
+                <Link href={`/my-listing${item.status == 1?'/edit-advertisement':''}/?id=${item.id}`} 
                       className='cursor-pointer'>
                     <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} />
                   </Link>
