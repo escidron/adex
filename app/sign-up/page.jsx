@@ -41,11 +41,14 @@ export default function SignUppage() {
       errors.phone = 'Required';
     }
 
-    if (!values.password) {
-      errors.password = 'Required';
-    }
     if (!values.accountType) {
       errors.accountType = 'Required';
+    }
+
+    if (!values.password) {
+      errors.password = 'Required';
+    }else if (values.password.length < 8){
+      errors.password = 'The password must have more than 8 caracters.';
     }
 
     if (!values.password2) {
