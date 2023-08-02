@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link';
 import axios from 'axios';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
 import ImageUploading from "react-images-uploading";
+import RatingComponent from '../rating/RatingComponent';
 
 export default function ProfileHeader() {
+    const [rating, setRating] = useState(0);
+
     const [userData, setUserData] = useState({
         name: '',
         lastName: '',
@@ -14,7 +16,7 @@ export default function ProfileHeader() {
     });
     const [images, setImages] = useState([]);
     const [src, setSrc] = useState('');
-    const onChange = (imageList,addUpdateIndex) => {
+    const onChange = (imageList, addUpdateIndex) => {
         // data for submit
         setImages(imageList);
         setSrc(imageList[0].data_url)
@@ -55,7 +57,7 @@ export default function ProfileHeader() {
         <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99]'>
             <div className='w-[140px] h-[140px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
                 <Image
-                    src={src?src:'/nouser.png'}
+                    src={src ? src : '/nouser.png'}
                     alt="Adex Logo"
                     priority
                     width={2000}
@@ -93,14 +95,11 @@ export default function ProfileHeader() {
                 </div>
                 <div className='flex gap-2 items-center'>
                     <p className='text-white text-[15px]'>{userData.email}</p>
-
-                    <div className="ml-4 flex items-center">
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                    </div>
+                    <RatingComponent
+                        readOnly={true}
+                        rating={rating}
+                        setRating={(rating) => setRating(rating)}
+                    />
                 </div>
                 <button className=' bg-[#FCD33B] mt-3 py-[4px] px-[20px] rounded-md  hover:bg-black hover:text-[#FCD33B] text-lg'>
                     <Link href='/dashboard' className='style_banner_button_text font-semibold text-18px]'>View Dashboard</Link>
