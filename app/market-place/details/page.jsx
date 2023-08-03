@@ -27,7 +27,7 @@ import Chat from '@/components/chat/Chat';
 import MultiImage from '@/components/multiImage/MultiImage';
 import toast, { Toaster } from "react-hot-toast";
 
-const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
+const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
 // const socket = io('https://test.adexconnect.com')
 

@@ -11,7 +11,7 @@ import {loadStripe} from '@stripe/stripe-js';
 import PaymentMethodList from './PaymentMethodList';
 
 const inter = Inter({ subsets: ['latin'] })
-const stripePromise = loadStripe('pk_test_51NHvGXEPsNRBDePl4YPHJVK6F4AcdLwpcrPwPn7XB1oipDVod3QsFxMw7bBL1eadUeI9O4UorIUS02J1GBOI0g7200jtC5Uh6v');
+const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
 export default function AddCard() {
   const [showModal, setShowModal] = useState(false);
