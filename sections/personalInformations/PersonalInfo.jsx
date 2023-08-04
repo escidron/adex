@@ -12,9 +12,11 @@ export default function PersonalInfo() {
     name: '',
     lastName: '',
     email: '',
-    phone:'',
-    bio:''
-});
+    phone: '',
+    bio: '',
+    profession: '',
+    sex: ''
+  });
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
@@ -33,15 +35,26 @@ export default function PersonalInfo() {
     GetUserProfile();
   }, []);
 
+  const handleSex = (e) => {
+    const id = e.currentTarget.id
+    if (id !== user.sex) {
+      setUser({...user,sex:id})
+    } else {
+      setUser({...user,sex:''})
+    }
+  }
 
   const submit = ()=>{
     setCurrentInfo('')
     axios.post('https://test.adexconnect.com/api/users/update-user-profile',
-    { name: user.name,
-      lastName:user.lastName,
-      email:user.email,
-      phone:user.phone,
-      bio:user.bio 
+    { 
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      bio: user.bio,
+      profession: user.profession,
+      sex: user.sex
     
     }, {
     withCredentials: true,
@@ -195,16 +208,17 @@ export default function PersonalInfo() {
             }
           </div>
 
-          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {
-              currentInfo === 'bio' ? (
+              currentInfo === 'profession' ? (
                 <>
                   <input
                     type="text"
-                    id="bio"
-                    name="bio"
-                    value={user.bio != 'null'?user.bio:''}
-                    onChange={(e)=>setUser({...user,bio:e.target.value})}
+                    id="profession"
+                    name="profession"
+                    placeholder='Profession'
+                    value={user.profession != 'null' ? user.profession : ''}
+                    onChange={(e) => setUser({ ...user, profession: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
                   <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
@@ -214,8 +228,90 @@ export default function PersonalInfo() {
               ) : (
                 <>
                   <div>
-                    <p className='font-[600]'>Bio</p>
-                    <p className='font-[300] text-gray-600'>{user.bio != 'null' && user.bio?user.bio:'Not Provided'}</p>
+                    <p className='font-[600]'>Profession</p>
+                    <p className='font-[300] text-gray-600'>{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
+                  </div>
+                  <div onClick={() => setCurrentInfo('profession')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
+                    <p className='text-gray-600 '>Edit</p>
+                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                  </div>
+                </>
+              )
+            }
+          </div>
+
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
+            {
+              currentInfo === 'sex' ? (
+                <>
+                  <div
+                    type="text"
+                    id="male"
+                    name="sex-1"
+                    value={user.sex}
+                    onClick={(e) => handleSex(e)}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 'male' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                  >Male
+                  </div>
+                  <div
+                    type="text"
+                    id="female"
+                    name="sex-2"
+                    value={user.sex}
+                    onClick={(e) => handleSex(e)}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 'female' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                  >Female
+                  </div>
+                  <div
+                    type="text"
+                    id="others"
+                    name="sex-3"
+                    value={user.sex}
+                    onClick={(e) => handleSex(e)}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 'others' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                  >Others
+                  </div>
+                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                    <p className='style_banner_button_text font-medium '>Save</p>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className='font-[600]'>Sex</p>
+                    <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? user.sex : 'Not Provided'}</p>
+                  </div>
+                  <div onClick={() => setCurrentInfo('sex')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
+                    <p className='text-gray-600 '>Edit</p>
+                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                  </div>
+                </>
+              )
+            }
+          </div>
+
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
+            {
+              currentInfo === 'bio' ? (
+                <>
+                  <input
+                    type="text"
+                    id="bio"
+                    name="bio"
+                    placeholder='About you'
+                    value={user.bio != 'null' ? user.bio : ''}
+                    onChange={(e) => setUser({ ...user, bio: e.target.value })}
+                    className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
+                  />
+                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                    <p className='style_banner_button_text font-medium '>Save</p>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className='font-[600]'>Who I Am</p>
+                    <p className='font-[300] text-gray-600'>{user.bio != 'null' && user.bio ? user.bio : 'Not Provided'}</p>
                   </div>
                   <div onClick={() => setCurrentInfo('bio')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
