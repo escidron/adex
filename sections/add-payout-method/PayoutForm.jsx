@@ -107,7 +107,7 @@ export default function PayoutForm({ setStripeAccount }) {
           <div className="w-[60%] relative ">
             <div className="flex">
               <label htmlFor="idNumber" className="block  mb-1">
-                Social Security Number
+                ID number
               </label>
             </div>
             <input
