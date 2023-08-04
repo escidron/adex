@@ -63,7 +63,7 @@ export default function ImageLoader({ images, setImages }) {
                         {...dragProps}
                     >
                         {images.length === 0 ? (
-                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" />
+                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={()=>onImageUpload()}/>
                         ) : (
                             <MultiImage images={imageList.length >0?imageList:images} setImageName={(name)=>setImageName(name)} height={'160px'} remove={true}/>
                         )}
