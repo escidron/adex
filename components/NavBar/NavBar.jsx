@@ -26,26 +26,23 @@ export default function NavBar() {
     const [showNotifications, setshowNotifications] = useState(false)
     const router = useRouter();
 
-    useEffect(() => {
-        async function hasPayoutMethod() {
-          const response = await fetch(
-            "https://test.adexconnect.com/api/users/external-account",
-            {
-              method: "GET",
-              credentials: "include",
-            }
-          );
-          if (response.status === 200) {
-            const res = await response.json()
-            if(res.data){
-                // setHasPayout((prev) => (true));
-                setUser((prev) => ({ ...prev, hasPayout:true }))
-
-            }
-          }
+    async function hasPayoutMethod() {
+      const response = await fetch(
+        "https://test.adexconnect.com/api/users/external-account",
+        {
+          method: "GET",
+          credentials: "include",
         }
-        hasPayoutMethod();
-      }, []);
+      );
+      if (response.status === 200) {
+        const res = await response.json()
+        if(res.data){
+            // setHasPayout((prev) => (true));
+            setUser((prev) => ({ ...prev, hasPayout:true }))
+
+        }
+      }
+    }
 
     useEffect(() => {
         axios.post('https://test.adexconnect.com/api/users/notifications',
@@ -91,6 +88,7 @@ export default function NavBar() {
             if (response.status === 200) {
                 const currentUser = await response.json()
                 setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
+                hasPayoutMethod()
             } else {
                 console.log('response error', response)
             }
@@ -132,6 +130,7 @@ export default function NavBar() {
     }
 
     //sm:bg-red-700 md:bg-blue-700 lg:bg-green-700 xl:bg-gray-500 2xl:bg-yellow-500
+    console.log('haspayout',user.hasPayout)
     return (
         <div className={`bg-black   w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
                         md:h-[90px]
