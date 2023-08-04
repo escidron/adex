@@ -179,7 +179,7 @@ export default function TermsOfUseModal() {
 
             <h1 className='font-bold mt-4'>Limitation, Suspension or Termination</h1>
             <p className='mt-4'>
-                AdEx reserves the right to change, suspend, limit or discontinue any of its Services, in whole or in part at any time for any reason, without notice (unless required by law). We may refuse service to anyone and may terminate or suspend your Account (and any related Accounts) and your access to the Service in whole or in part at any time, for any reason, without notice unless required by law. For example, AdEx will promptly terminate without notice the Accounts of Users who are determined by AdEx to be "repeat offenders." A repeat offender is a User who has been notified of a violation of our Terms, engages in infringing activity, or has had content removed from the Service at least twice.
+                AdEx reserves the right to change, suspend, limit or discontinue any of its Services, in whole or in part at any time for any reason, without notice (unless required by law). We may refuse service to anyone and may terminate or suspend your Account (and any related Accounts) and your access to the Service in whole or in part at any time, for any reason, without notice unless required by law. For example, AdEx will promptly terminate without notice the Accounts of Users who are determined by AdEx to be &quot;repeat offenders.&quot; A repeat offender is a User who has been notified of a violation of our Terms, engages in infringing activity, or has had content removed from the Service at least twice.
             </p>
 
             <h1 className='font-bold mt-4'>Sales Contract.
