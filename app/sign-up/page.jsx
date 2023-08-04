@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import BlackButton from "@/components/buttons/BlackButton";
 import SecondaryButton from "@/components/buttons/SecondaryButton";
 import TextField from "@/components/inputs/TextField";
+import TermsOfUseModal from "@/components/modals/TermsOfUseModal";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -313,11 +314,8 @@ export default function SignUppage() {
                 <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
                 </div>
                 <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[800px] h-[80vh]'>
-                  <div className=' w-full h-[90%] flex flex-col justify-center items-center'>
-                    <object width="100%" height="100%"
-                      data="/ADEX_Terms of Use.pdf"
-                      type="application/pdf">
-                    </object>
+                <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
+                    <TermsOfUseModal />
                   </div>
                   <div className="w-full h-[10%] flex justify-around items-center">
                     <div onClick={() => setShowterms(false)}>
