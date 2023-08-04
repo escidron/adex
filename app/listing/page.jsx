@@ -16,6 +16,8 @@ export default function Listing() {
     const [categoryId, setCategoryId] = useState(1);
     const [typeId, setTypeId] = useState(1);
     const [isPeriodic, setIsPeriodic] = useState('');
+    const [categoryList, setCategoryList] = useState([]);
+    const [path, setPath] = useState([]);
 
     useEffect(() => {
 
@@ -129,6 +131,8 @@ export default function Listing() {
                             typeId={typeId}
                             setTypeId={(id) => setTypeId(id)}
                             setIsPeriodic={(res) => setIsPeriodic(res)}
+                            setCategoryList={(categories) => setCategoryList(categories)}
+
                         />
                     ) : (
 
