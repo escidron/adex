@@ -310,7 +310,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                         <div className='w-full flex  gap-3 mt-4'>
                           <TextField
                             id="duration"
-                            label={`Duration from (${durationType === '1' ? 'months' : durationType === '2' ? 'quarters' : durationType === '3' ? 'years' : ''})`}
+                            label={`Minimum number of ${durationType === '1' ? 'months' : durationType === '2' ? 'quarters' : durationType === '3' ? 'years' : ''} required`}
                             name="duration"
                             value={discountDuration}
                             onChange={(e) => handleDiscountDuration(e.target.value)}
