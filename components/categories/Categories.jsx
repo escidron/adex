@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import CategoryCard from './CategoryCard'
 
-export default function Categories({ selectedStep, setSelectedStep, categoryId, setCategoryId, typeId, setTypeId, setIsPeriodic }) {
+export default function Categories({ selectedStep, setSelectedStep, categoryId, setCategoryId, typeId, setTypeId, setIsPeriodic,setCategoryList }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getData = async () => {
@@ -12,6 +12,8 @@ export default function Categories({ selectedStep, setSelectedStep, categoryId, 
         }).then(function (data) {
 
           setData(data.data)
+          setCategoryList(data.data)
+
 
         }).catch(function (err) {
           console.log('error', err)

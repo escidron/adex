@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Categories from '@/components/categories/Categories'
 import StepperComponent from '@/components/stepper/StepperComponent'
 import React from 'react'
@@ -7,6 +7,7 @@ import { Inter } from 'next/font/google'
 import BlackButton from '@/components/buttons/BlackButton'
 import ListingForm from '@/components/listingForm/ListingForm'
 import Footer from '@/components/footer/Footer'
+import BreadCrumbs from '@/components/breadcrumbs/BreadCrums'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,11 +16,44 @@ export default function Listing() {
     const [categoryId, setCategoryId] = useState(1);
     const [typeId, setTypeId] = useState(1);
     const [isPeriodic, setIsPeriodic] = useState('');
+
+    useEffect(() => {
+
+        if(selectedStep === 2){
+
+            categoryList.map((category)=>{
+                if(category.id === categoryId){
+                    setPath([{name:category.name,step:selectedStep-1}])
+                }
+            })
+        }else if (selectedStep === 3){
+            categoryList.map((category)=>{
+                if(category.id === typeId){
+                    setPath([...path,{name:category.name,step:selectedStep-1}])
+                }
+            })
+        }else if (selectedStep === 1){
+            setPath([])
+        }
+
+    }, [categoryId,typeId,selectedStep]);
+
     return (
         <>
             <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} `}>
                 <h1 className='text-[42px]'>List your Ad</h1>
                 <StepperComponent selectedStep={selectedStep} />
+                {
+                    selectedStep > 1 && (
+                        <div className='mt-8'>
+                            <BreadCrumbs 
+                            path={path} 
+                            setPath={(path)=>setPath(path)} 
+                            selectedStep={selectedStep} 
+                            setSelectedStep={(step)=>setSelectedStep(step)} />
+                        </div>
+                    )
+                }
                 <div className=' flex mt-10 mx-auto w-[90%] sm:w-[55%]  justify-between items-center'>
                     {selectedStep === 1 ? (
                         <div className='flex flex-col'>
@@ -54,7 +88,7 @@ export default function Listing() {
                             <p className='text-[18px] text-gray-500'>Choose which type of asset will be most effective for your target audience or marketing goals. </p>
                         </div>
                     ) : selectedStep === 3 ? (
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col w-full'>
                             <div className='flex justify-between items-center w-full'>
                                 <h1 className='text-[30px]'>Create ad</h1>
                                 {
