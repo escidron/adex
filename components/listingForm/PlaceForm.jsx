@@ -46,7 +46,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [showDiscounts, setShowDiscounts] = useState(false);
   const [showDiscountsList, setShowDiscountsList] = useState(false);
   const [discountDuration, setDiscountDuration] = useState('');
@@ -326,7 +326,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[190px] text-red-600 font-bold">{formik.errors.image}</div> : null}
           </div>
-          <div className=''>
+          {/* <div className=''>
             <div className='flex ite gap-4'>
               <PinkSwitch
                 {...label}
@@ -336,7 +336,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
               <p className='flex items-center'>Accept automatic Booking</p>
             </div>
             <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
-          </div>
+          </div> */}
           <div className='col-start-2 w-full flex justify-end mt-4'>
             <div className='w-full sm:max-w-[220px] sm:ml-2'>
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>

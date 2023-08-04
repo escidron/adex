@@ -42,7 +42,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState('');
   const [response, setResponse] = useState(false);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [showDiscounts, setShowDiscounts] = useState(false);
   const [showDiscountsList, setShowDiscountsList] = useState(false);
   const [discountDuration, setDiscountDuration] = useState('');
@@ -366,7 +366,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
           </div>
-          <div className=''>
+          {/* <div className=''>
             <div className='flex ite gap-4'>
               <PinkSwitch
                 {...label}
@@ -376,7 +376,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
               <p className='flex items-center'>Accept automatic Booking</p>
             </div>
             <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
-          </div>
+          </div> */}
           <div className='w-full sm:max-w-[220px] sm:ml-2'>
             <div className='ml-2'>
               {
