@@ -279,7 +279,7 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Sex</p>
-                    <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? user.sex : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? (user.sex ==1?'Male':user.sex == 2?'Female':user.sex == 3?'Other':'') : 'Not Provided'}</p>
                   </div>
                   <div onClick={() => setCurrentInfo('sex')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
