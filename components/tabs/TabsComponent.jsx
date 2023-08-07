@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -29,12 +29,6 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -42,8 +36,7 @@ function a11yProps(index) {
   };
 }
 
-export default function TabsComponent({children}) {
-  const [value, setValue] = React.useState(0);
+export default function TabsComponent({children,value,setValue}) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

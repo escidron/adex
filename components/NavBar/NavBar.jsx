@@ -210,11 +210,11 @@ export default function NavBar() {
                                     <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '18px' }} />
                                     Profile
                                 </Link>
-                                <Link href="/my-profile?tab=5" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                <Link href="/my-profile?tab=5&sub-tab=0" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                                     <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     My listing
                                 </Link>
-                                <Link href="/my-profile?tab=5" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                <Link href="/my-profile?tab=5&sub-tab=1" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                                     <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
                                     My Bookings
                                 </Link>

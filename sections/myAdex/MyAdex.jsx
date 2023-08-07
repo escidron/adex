@@ -1,4 +1,5 @@
 import { useEffect, useState, createContext } from 'react'
+import { useSearchParams } from 'next/navigation'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import MyListing from './MyListing'
 import MyBookings from './MyBookings'
@@ -10,6 +11,10 @@ export default function MyAdex() {
   const [listingData, setListingData] = useState([]);
   const [bookingData, setBookingData] = useState([]);
   const [refresh, setRefresh] = useState(false)
+  const searchParams = useSearchParams()
+  const subTab = searchParams.get('sub-tab')
+  const [value, setValue] = useState(subTab?parseInt(subTab):0);
+
   const [status, setStatus] = useState({
     available: 0,
     running: 0,
@@ -55,7 +60,7 @@ export default function MyAdex() {
       <div className='flex w-[80%] items-center'>
         <div className='w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
-            <TabsComponent>
+            <TabsComponent value={value} setValue={(value)=>setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} />
               <MyBookings label='My Booking' data={bookingData} />
             </TabsComponent>
