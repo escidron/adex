@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import DatePickerComponent from '../datePicker/DatePickerComponent';
 import { Inter } from 'next/font/google'
-import CounterComponent from '../counter/CounterComponent';
 import { ThreeDots } from 'react-loader-spinner'
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
@@ -12,7 +10,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import axios from 'axios';
-import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import Switch from '@mui/material/Switch';
@@ -68,7 +65,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const handleBoxes = (e) => {
     const id = e.currentTarget.id
     if (id !== boxes) {
-      //formik.values.durationType = id
       setBoxes(id);
       if (id === '2') {
         setBoxesQtd(300);
@@ -102,10 +98,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
       errors.description = 'Required';
     }
 
-    if (currentDateDay >= date.$D || currentDateMonth > date.$M || currentDateYear > date.$y) {
-      errors.date = 'Must be higher';
-    }
-
     if (images.length === 0) {
       errors.image = 'Required';
     }
@@ -118,7 +110,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
       title:  edit ? advertisement.title : "",
       location: edit ? advertisement.location : "",
       description: edit ? advertisement.description : "",
-      date: date,
       image: edit ? advertisement.image : images,
       price: edit ? advertisement.price : "",
     },
@@ -138,8 +129,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           lat: selected.lat,
           long: selected.lng,
           ad_duration_type: isPeriodic ? durationType : 0,
-          start_date: date,
-          duration: counter,
           sub_asset_type: typeId === 9 ? subType : 0,
           units: typeId === 17 ? boxesQtd : 0,
           per_unit_price: typeId === 17 ? values.price : 0,
@@ -183,7 +172,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
             <div className={`w-[30%] relative`}>
               <TextField
                 id='price'
-                label='Price'
+                label={typeId === 17?'Price/unit':'Price'}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 onInput={(e) => formatNumberInput(e.target.value)}
@@ -280,25 +269,6 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
 
             </div>
           ) : null}
-          <div className=" mt-2 w-full flex gap-4 relative">
-            {
-              typeId !== 17 && (
-
-            <div className={`w-full`}>
-              <label htmlFor="date" className="block   mb-1">
-                Start Date
-              </label>
-              <DatePickerComponent
-                id='date'
-                setDate={(date) => setDate(date)}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.date && formik.errors.date ? <div className="absolute  top-[80px] right-0 text-red-600 font-bold">{formik.errors.date}</div> : null}
-            </div>
-              )
-            }
-          </div>
 
           <div className="col-start-1 mt-2 w-full relative">
             <textarea
