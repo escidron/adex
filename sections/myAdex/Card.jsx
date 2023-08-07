@@ -7,7 +7,7 @@ import MultiImage from '@/components/multiImage/MultiImage';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Card({ item, setBookingModalOpen, edit }) {
+export default function Card({ item, setBookingModalOpen, bulletPoints }) {
     console.log(item)
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
@@ -51,18 +51,19 @@ export default function Card({ item, setBookingModalOpen, edit }) {
                     </div>
                     <div className='flex gap-2 items-center '>
                         <p className='text-[14px] mt-2 w-full'>
-                            {item.description.length > 125 ? item.description.split(' ').slice(0, 15).join(' ') + "..."
-                                : item.description}
+                            {item.description.length > 125 ? `${item.description.split(' ').slice(0, 15).join(' ')} ...`
+                                : bulletPoints.length > 0 ? (
+                                    <ul>
+                                        {bulletPoints.map((point, index) => {
+                                            if (index > 3) return null
+                                            return (
+
+                                                <li key={index}>{point}</li>
+                                            )
+                                        })}
+                                    </ul>
+                                ) : `${item.description}`}
                         </p>
-                        {/* <div className='ml-auto flex flex-col items-center'>
-                            {item.status == 2 && (
-                                <div className='h-[120px] w-[160px] border-[1px] rounded-md flex flex-col justify-center items-center mt-2'>
-                                    <p className='text-[15px]'>Days left on</p>
-                                    <p className='text-[15px]'> contract</p>
-                                    <p className='text-[24px] font-[600] mt-2'>{days}</p>
-                                </div>
-                            )}
-                        </div> */}
                     </div>
                 </div>
                 <div className='flex justify-between items-center mt-auto'>

@@ -110,13 +110,16 @@ export default function MyListing({ data, status }) {
         data.map((item, index) => {
           console.log(item)
           if (item.status == currentStatus) {
-            console.log('item status',item.status+item.id)
+            const bulletPints = item.description.split('\n');
             return (
               <>
                 <section key={item.id + index} className='w-full flex gap-4 items-center'>
-                <Link href={`/my-listing${item.status == 1?'/edit-advertisement':''}/?id=${item.id}`} 
-                      className='cursor-pointer'>
-                    <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} />
+                  <Link href={`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`}
+                    className='cursor-pointer'>
+                    <Card
+                      item={item}
+                      setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)}
+                      bulletPoints={bulletPints} />
                   </Link>
                   {
                     item.status == 1 ? (
@@ -134,20 +137,7 @@ export default function MyListing({ data, status }) {
               </>
             )
           }
-          return (
-            // <div key={item.id} className='mt-8 w-full'>
-            //   <p className='text-[20px] text-center'>No data found</p>
-            //   <p className='text-[16px] text-center font-thin'>
-            //     {
-            //      currentStatus == 1?'No Available Listing found':
-            //      currentStatus == 2?'No Running   Listing found':
-            //      currentStatus == 3?'No Finished  Listing found':
-            //      currentStatus == 4?'No Pending   Listing found':''
-            //     }
-            //   </p>
-            // </div>
-            null
-          )
+          return null
         })
       }
 
