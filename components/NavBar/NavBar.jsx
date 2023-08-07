@@ -27,38 +27,38 @@ export default function NavBar() {
     const router = useRouter();
 
     async function hasPayoutMethod() {
-      const response = await fetch(
-        "https://test.adexconnect.com/api/users/external-account",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      if (response.status === 200) {
-        const res = await response.json()
-        if(res.data){
-            // setHasPayout((prev) => (true));
-            setUser((prev) => ({ ...prev, hasPayout:true }))
+        const response = await fetch(
+            "https://test.adexconnect.com/api/users/external-account",
+            {
+                method: "GET",
+                credentials: "include",
+            }
+        );
+        if (response.status === 200) {
+            const res = await response.json()
+            if (res.data) {
+                // setHasPayout((prev) => (true));
+                setUser((prev) => ({ ...prev, hasPayout: true }))
 
+            }
         }
-      }
     }
 
     useEffect(() => {
         axios.post('https://test.adexconnect.com/api/users/notifications',
-        {}, {
-        withCredentials: true,
-        headers: {
-          'content-type': 'application/json'
-        }
-      })
-        .then(function (response) {
-          setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length ,notifications: response.data.notifications}))
-        //   setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+            {}, {
+            withCredentials: true,
+            headers: {
+                'content-type': 'application/json'
+            }
         })
-        .catch(function (error) {
-          console.log(error)
-        });
+            .then(function (response) {
+                setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length, notifications: response.data.notifications }))
+                //   setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
 
 
     }, []);
@@ -130,7 +130,7 @@ export default function NavBar() {
     }
 
     //sm:bg-red-700 md:bg-blue-700 lg:bg-green-700 xl:bg-gray-500 2xl:bg-yellow-500
-    console.log('haspayout',user.hasPayout)
+    console.log('haspayout', user.hasPayout)
     return (
         <div className={`bg-black   w-full h-[90px] text-slate-50 text-lg flex justify-between items-center py-4 px-[40px] lg:px-[80px] relative style_navbar
                         md:h-[90px]
@@ -159,7 +159,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
-                <Link href={user.hasPayout && user.isLogged ? '/listing' : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ?'/add-payout-method':''} className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href={user.hasPayout && user.isLogged ? '/listing' : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ? '/add-payout-method' : ''} className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
@@ -209,6 +209,14 @@ export default function NavBar() {
                                 <Link href="/my-profile?tab=1" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                                     <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '18px' }} />
                                     Profile
+                                </Link>
+                                <Link href="/my-profile?tab=5" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                    My listing
+                                </Link>
+                                <Link href="/my-profile?tab=5" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                    My Bookings
                                 </Link>
                                 <Link href="/messages" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                                     <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
