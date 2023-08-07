@@ -144,6 +144,24 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
         });
     },
   });
+
+  const handleDiscountDuration = (value) => {
+    setDiscountDuration(value)
+  }
+  const handleDiscount = (value) => {
+    setDiscount(value)
+  }
+  const saveDiscount = () => {
+    setDiscounts((prev) => ([...prev, { duration: discountDuration, discount: discount }]))
+    setDiscountDuration('')
+    setDiscount('')
+    setShowDiscounts(false)
+  }
+  const removeDiscount = (id) => {
+    const newDiscounts = discounts.filter((item, index) => index != id);
+    setDiscounts(newDiscounts)
+  }
+  
   return (
     <>
       {!response ? (
