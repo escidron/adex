@@ -10,7 +10,9 @@ import logo from '../../public/adex-logo-white-yellow.png'
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
-import MessageRoundedIcon from '@mui/icons-material/MessageRounded';
+import BookIcon from '@mui/icons-material/Book';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ForumIcon from '@mui/icons-material/Forum';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import { useRouter } from 'next/navigation';
@@ -206,24 +208,24 @@ export default function NavBar() {
                             <div
                                 className="absolute top-[95px] lg:top-[38px] xl:top-[90px] right-[-45px] w-[200px] text-sm font-medium text-white bg-black rounded-b-lg"
                             >
-                                <Link href="/my-profile?tab=1" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                                    <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '18px' }} />
+                                <Link href="/my-profile?tab=1" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     Profile
                                 </Link>
-                                <Link href="/my-profile?tab=5&sub-tab=0" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                <Link href="/my-profile?tab=5&sub-tab=0" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <ListAltIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     My listing
                                 </Link>
-                                <Link href="/my-profile?tab=5&sub-tab=1" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                <Link href="/my-profile?tab=5&sub-tab=1" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <BookIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     My Bookings
                                 </Link>
-                                <Link href="/messages" className="block w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                                    <MessageRoundedIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                <Link href="/messages" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <ForumIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     Messages
                                 </Link>
-                                <Link onClick={logout} href="/" className="block w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                                    <LogoutIcon sx={{ marginRight: '4px', fontSize: '15px' }} />
+                                <Link onClick={logout} href="/" className="flex gap-2 items-center w-full px-4 py-2 rounded-b-lg cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                    <LogoutIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     Logout
                                 </Link>
                             </div> :
