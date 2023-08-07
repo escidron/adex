@@ -11,8 +11,8 @@ import {
 } from '@stripe/react-stripe-js';
 import CloseIcon from '@mui/icons-material/Close';
 import { Inter } from 'next/font/google'
-import Footer from '../footer/Footer';
 import { ThreeDots } from 'react-loader-spinner'
+import toast, { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,8 +34,6 @@ export default function StripeForm({ setShowModal, setRefetch }) {
             type: 'card',
             card: elements.getElement(CardNumberElement),
         });
-
-        console.log('error', error)
         if (!error) {
             setShowModal(false)
             axios.post('https://test.adexconnect.com/api/payments/customer',
@@ -62,6 +60,9 @@ export default function StripeForm({ setShowModal, setRefetch }) {
 
                     console.log(error)
                 });
+        }else{
+            toast.error(error.message)
+            setIsPending(false)
         }
     };
 
@@ -72,6 +73,7 @@ export default function StripeForm({ setShowModal, setRefetch }) {
         <>
             <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setShowModal(false)}>
             </div>
+            <div><Toaster /></div>
             <form onSubmit={handleSubmit}>
                 <div className='card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px]'>
                     <div className='flex justify-between items-center flex-col mb-[20px] '>
