@@ -31,6 +31,7 @@ const data = [
 export default function Carrousel() {
     const settings = {
         dots: true,
+        dotsClass: 'button__bar',
         infinite: true,
         speed: 500,
         slidesToShow: 3,
