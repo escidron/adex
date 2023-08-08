@@ -60,7 +60,9 @@ export default function LoginPage() {
                             checkLogin: false,
                             showLoginOptions: false,
                             image: response.data.image,
-                            userId: response.data.userId
+                            userId: response.data.userId,
+                            hasPayout:response.data.hasPayout?true:false
+
                         }))
                     router.push('/')
                 })
