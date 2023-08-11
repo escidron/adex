@@ -11,14 +11,16 @@ import SecondaryButton from '@/components/buttons/SecondaryButton';
 import BlackButton from '@/components/buttons/BlackButton';
 import axios from 'axios';
 import { RefreshContext } from './MyAdex';
+import { CompanyRefreshContext } from '@/app/my-company/page';
+
 import Link from 'next/link';
 const inter = Inter({ subsets: ['latin'] })
 
-export default function MyListing({ data, status }) {
+export default function MyListing({ data, status,isCompanyPage }) {
   const [currentStatus, setCurrentStatus] = useState('1');
   const [advertisementId, setAdvertisementId] = useState('');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
-  const [refresh, setRefresh] = useContext(RefreshContext)
+  const [refresh, setRefresh] = useContext(isCompanyPage?CompanyRefreshContext:RefreshContext)
 
   if (data.length === 0) {
     return (

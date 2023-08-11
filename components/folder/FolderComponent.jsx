@@ -20,8 +20,12 @@ export default function FolderComponent({ userType }) {
                 <Link href='my-profile?tab=1' className={`border-l-[1px] border-r-[1px] ${tab == 1 ? 'bg-[#FCD33B]' : 'bg-white'}  px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>Personal Information</Link>
                 <Link href='my-profile?tab=2' className={`border-l-[1px] border-r-[1px] ${tab == 2 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>Security</Link>
                 <Link href='my-profile?tab=3' className={`border-l-[1px] border-r-[1px] ${tab == 3 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>Notifications</Link>
-                <Link href='my-profile?tab=4' className={`border-l-[1px] border-r-[1px] ${tab == 4 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My Wallet</Link>
-                <Link href='my-profile?tab=5' className={`border-l-[1px] border-r-[1px] ${tab == 5 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My ADEX</Link>
+                {
+                    userType == '2' && (
+
+                        <Link href='my-profile?tab=4' className={`border-l-[1px] border-r-[1px] ${tab == 4 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My Wallet</Link>
+                    )
+                }                <Link href='my-profile?tab=5' className={`border-l-[1px] border-r-[1px] ${tab == 5 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My ADEX</Link>
                 {
                     userType == '1' && (
                         <Link href='my-profile?tab=6' className={`border-l-[1px] border-r-[1px] ${tab == 6 ? 'bg-[#FCD33B]' : 'bg-white'} px-[40px] text-[15px] ${inter.className} font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>My Companies</Link>
