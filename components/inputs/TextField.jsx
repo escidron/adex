@@ -37,10 +37,9 @@ export default function TextField({
           w-full
           p-4
           pt-6 
-          
           font-light 
           bg-white 
-          border-2
+          border
           rounded-md
           outline-none
           transition
