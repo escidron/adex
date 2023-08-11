@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Inter } from 'next/font/google'
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-import AddCompanyModal from './addCompanyModal';
+import AddCompanyModal from './AddCompanyModal';
 import CompanyCard from '@/components/infoCard/CompanyCard';
 const inter = Inter({ subsets: ['latin'] })
 
