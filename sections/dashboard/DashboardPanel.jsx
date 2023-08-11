@@ -44,7 +44,7 @@ export default function DashboardPanel() {
                             <p className='font-[600] text-[15px]'>Longest Running Ad</p>
                             <div className='relative flex flex-col justify-center items-center w-[250] h-[250]'>
                                 <Image
-                                    src='/calendar 1.png'
+                                    src='/Calendar 1.png'
                                     alt="calendar"
                                     width={1800}
                                     height={1800}
