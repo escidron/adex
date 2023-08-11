@@ -12,6 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookIcon from '@mui/icons-material/Book';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import ForumIcon from '@mui/icons-material/Forum';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
@@ -26,7 +27,27 @@ export default function NavBar() {
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
     const [showNotifications, setshowNotifications] = useState(false)
+    const [userData, setUserData] = useState({});
+
     const router = useRouter();
+
+    useEffect(() => {
+        async function GetUserProfile() {
+            const response = await fetch(
+                "https://test.adexconnect.com/api/users/user-profile",
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+            if (response.status === 200) {
+                const res = await response.json()
+                console.log('res',res)
+                setUserData(res)
+            }
+        }
+        GetUserProfile();
+    }, []);
 
     async function hasPayoutMethod() {
         const response = await fetch(
@@ -212,6 +233,14 @@ export default function NavBar() {
                                     <PersonRoundedIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     Profile
                                 </Link>
+                                {
+                                    userData.user_type == '1' && (
+                                        <Link href="/my-profile?tab=6" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                                            <ApartmentIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
+                                            My Companies
+                                        </Link>
+                                    )
+                                }
                                 <Link href="/my-profile?tab=5&sub-tab=0" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                                     <ListAltIcon sx={{ marginRight: '4px', fontSize: '16px' }} />
                                     My listing
