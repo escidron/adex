@@ -15,7 +15,7 @@ export default function MyCompanies() {
     useEffect(() => {
         async function GetCompanies() {
             const response = await fetch(
-                "http://localhost:5000/api/users/get-companies",
+                "https://test.adexconnect.com/api/users/get-companies",
                 {
                     method: "GET",
                     credentials: "include",

@@ -49,7 +49,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch }) {
             // console.log('values', values)
             // console.log('adres', address)
             // console.log('images', images.length > 0?images[0].data_url:'')
-            axios.post('http://localhost:5000/api/users/add-company',
+            axios.post('https://test.adexconnect.com/api/users/add-company',
                 {
                     name: values.name,
                     image: images.length > 0?images[0].data_url:'',
