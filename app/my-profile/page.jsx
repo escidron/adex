@@ -10,7 +10,7 @@ export default function Profilepage() {
   useEffect(() => {
     async function GetUserProfile() {
         const response = await fetch(
-            "http://localhost:5000/api/users/user-profile",
+            "https://test.adexconnect.com/api/users/user-profile",
             {
                 method: "GET",
                 credentials: "include",
