@@ -182,7 +182,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <p onClick={handleRoute} className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</p>
-                <Link href={user.hasPayout && user.isLogged ? '/listing' : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ? '/add-payout-method' : ''} className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href={user.isLogged ? '/listing' :  '/login' } className='hover:text-[#FCD33B]'>Listing</Link>
             </section>
             {user.isLogged
                 ? (
