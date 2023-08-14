@@ -460,7 +460,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
         </form>
       ) : (
         <div className='mt-250px min-w-[500px] flex mx-auto justify-center'>
-          {hasPayout &&
+          {hasPayout ?
             (< Success >
               <h1 className='text-[25px]'>Listing created</h1>
 
@@ -472,6 +472,26 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                 </Link>
               </div>
             </Success>
+            ) : (
+              < Success >
+                <h1 className='text-[25px]'>Listing created</h1>
+
+                <p className='my-4'>Great job on creating your listing! To showcase it to potential buyers, please register a payout method. Once set up, your listing will go live and ready for business.</p>
+
+                <div className='flex flex-col justify-around w-full'>
+                  <Link href='/add-payout-method' className='mt-6 w-full'>
+                    <button className='mt-6 cursor-pointer flex justify-center items-center bg-black py-[8px] w-full px-[30px] rounded-md  font-[600] text-[#FCD33B] hover:text-black hover:bg-[#FCD33B]  text-lg
+                                   '>Add Payout Method
+                    </button>
+
+                  </Link>
+                  <Link href='/' className='mt-2'>
+                    <div  className='cursor-pointer border-2 flex justify-center items-center border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                      Do it later
+                    </div>
+                  </Link>
+                </div>
+              </Success>
             )
           }
         </div >
