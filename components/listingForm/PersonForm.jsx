@@ -120,7 +120,8 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           units: 0,
           per_unit_price: 0,
           is_automatic: checked ? '1' : '0',
-          discounts: discounts
+          discounts: discounts,
+          has_payout:hasPayout
 
         }, {
         withCredentials: true,

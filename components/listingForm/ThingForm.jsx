@@ -133,7 +133,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           units: typeId === 17 ? boxesQtd : 0,
           per_unit_price: typeId === 17 ? values.price : 0,
           is_automatic:checked?'1':'0',
-          discounts: discounts
+          discounts: discounts,
+          has_payout:hasPayout
 
 
         }, {
