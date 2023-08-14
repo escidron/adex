@@ -9,7 +9,8 @@ import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
 import { ThreeDots } from  'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function PayoutForm({ setStripeAccount }) {
@@ -17,6 +18,7 @@ export default function PayoutForm({ setStripeAccount }) {
   const [bod, setBod] = useState('');
   const [state, setState] = useState('AL');
   const [isPending, setIsPending] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
 
   const validate = values => {
     const errors = {};
@@ -112,11 +114,23 @@ export default function PayoutForm({ setStripeAccount }) {
             <input
               id="idNumber"
               name="idNumber"
+              type={isVisible?'text':'password'}
+              maxlength="9"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.idNumber}
               className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
             />
+            <div className="absolute top-9 right-2" onClick={()=>setIsVisible(!isVisible)}>
+              {
+                isVisible?(
+
+                  <VisibilityIcon fontSize="small" sx={{opacity:'0.6'}}/>
+                ):(
+                  <VisibilityOffIcon fontSize="small" sx={{opacity:'0.6'}}/>
+                )
+              }
+            </div>
             {formik.touched.idNumber && formik.errors.idNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.idNumber}</div> : null}
 
           </div>
