@@ -101,9 +101,8 @@ export default function PayoutForm({ setStripeAccount }) {
     <div className={` flex flex-col items-center justify-center  py-2  ${inter.className} p-2 `}>
       <div><Toaster /></div>
       <form className="text-black z-[91] px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
-        <p className=" text-[30px]">Address</p>
-        <p className=" text-[18px] font-normal mb-6">Register your bill address</p>
-        <div className=" w-full  flex gap-[20px]">
+        <p className=" text-[30px]">Stripe Verification Form</p>
+        <div className=" w-full  flex gap-[20px] mt-6">
           <div className="w-[60%] relative ">
             <div className="flex">
               <label htmlFor="idNumber" className="block  mb-1">
@@ -222,7 +221,7 @@ export default function PayoutForm({ setStripeAccount }) {
             ):'Continue'}
           </div>
         </button>
-        <p className=" mt-5 text-[12px]">Afterwards, you will be redirected to a secure enviroment, where you can input your bank account information.</p>
+        <p className=" mt-5 text-[14px]">Disclaimer: This information is not being stored by ADEX. It is only used for the Stripe Verification process.</p>
       </form>
     </div>
   );

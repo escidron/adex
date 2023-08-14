@@ -62,7 +62,7 @@ export default function AddPayoutMethod() {
       ) : (
         <>
           <h1 className='text-[35px]'>Create a payout Method</h1>
-          <p className='text-[16px] mb-4'>Before create your listing, you need to fill some important informations</p>
+          <p className='text-[16px] mb-4'>Complete your listing&apos;s visibility by adding a payout method for receiving payments.</p>
           {stripeAccount === ''
             ? (
 
