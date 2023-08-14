@@ -44,15 +44,17 @@ export default function AddPayoutMethod() {
 
           <div className='flex justify-center w-full'>
 
-            {/* <Link href='/' className='mt-6' >
-              <BlackButton label='Done' />
-            </Link> */}
-            <div className='flex justify-between w-full'>
-              <Link href='/' className='mt-6'>
-                <SecondaryButton label='Back home' dark={true} />
+            <div className='flex flex-col justify-around w-full'>
+              <Link href='/listing' className='mt-6 w-full'>
+                <button className='mt-6 cursor-pointer flex justify-center items-center bg-black py-[8px] w-full px-[30px] rounded-md  font-[600] text-[#FCD33B] hover:text-black hover:bg-[#FCD33B]  text-lg
+                                   '>Create Listing
+                </button>
+
               </Link>
-              <Link href='/listing' className='mt-6'>
-                <BlackButton label='Create Listing' />
+              <Link href='/' className='mt-2'>
+                <div className='cursor-pointer border-2 flex justify-center items-center border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                  Back to Home
+                </div>
               </Link>
             </div>
           </div>
