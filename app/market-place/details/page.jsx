@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
@@ -53,6 +54,7 @@ export default function AdDetails() {
   const id = searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
+  const router = useRouter();
 
   useEffect(() => {
     axios.post('https://test.adexconnect.com/api/advertisements/details',
@@ -141,16 +143,20 @@ export default function AdDetails() {
   }
   const sendMessage = () => {
 
-    socket.emit('send-buyer-message',
-      {
-        sended_by: user.userId,
-        seller_id: data.created_by,
-        buyer_id: user.userId,
-        advertisement_id: data.id,
-        message: message
-      })
-    setIsChatOpen(true)
-    setRefetch(prev => !prev)
+    if (user.isLogged){
+      socket.emit('send-buyer-message',
+        {
+          sended_by: user.userId,
+          seller_id: data.created_by,
+          buyer_id: user.userId,
+          advertisement_id: data.id,
+          message: message
+        })
+      setIsChatOpen(true)
+      setRefetch(prev => !prev)
+    }else{
+      router.push('/login')
+    }
 
   }
 

@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext } from 'react'
+import { useRouter } from 'next/navigation';
+
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
@@ -12,11 +14,12 @@ import { ThreeDots } from 'react-loader-spinner'
 import axios from 'axios';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import toast, { Toaster } from "react-hot-toast";
+import { UserContext } from '../../app/layout';
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Reservation({ data, hasCard, setShowModal, setIsBooked,setIsRequested, discounts }) {
+export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts }) {
 
     const currentDate = new Date();
     let currentDateDay = currentDate.getDate();
@@ -28,7 +31,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
     const [isPending, setIsPending] = useState(false)
     const [currentDiscount, setCurrentDiscount] = useState(0);
     const [discountOptions, setDiscountOptions] = useState(false);
-
+    const [user, setUser] = useContext(UserContext)
+    const router = useRouter();
     useEffect(() => {
         let hasDiscount = false
         discounts.map((item) => {
@@ -43,51 +47,55 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
 
     }, [counter]);
     const Booking = () => {
-        if (hasCard) {
-            setIsPending(true)
-            if (data.is_automatic === '1') {
-                axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+        if (user.IsLogged) {
+            if (hasCard) {
+                setIsPending(true)
+                if (data.is_automatic === '1') {
+                    axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+                        {
+                            data: data,
+                            duration: counter,
+                            start_date: date,
+                            current_discount: currentDiscount
+                        }, {
+                        withCredentials: true,
+                    })
+                        .then(function (response) {
+                            setIsPending(false)
+                            setIsBooked(true)
+                            console.log('set is booked')
+
+                        })
+                        .catch(function (error) {
+                            console.log('error', error.response.data.message)
+                            toast.error(error.response.data.message)
+                            setIsPending(false)
+
+                        });
+                    return
+                }
+                axios.post('https://test.adexconnect.com/api/payments/request-reserve',
                     {
                         data: data,
                         duration: counter,
-                        start_date: date,
-                        current_discount: currentDiscount
+                        start_date: date
                     }, {
                     withCredentials: true,
                 })
                     .then(function (response) {
                         setIsPending(false)
-                        setIsBooked(true)
-                        console.log('set is booked')
-
+                        console.log('set is requested')
+                        setIsRequested(true)
                     })
                     .catch(function (error) {
-                        console.log('error', error.response.data.message)
-                        toast.error(error.response.data.message)
-                        setIsPending(false)
-
+                        console.log('error', error)
                     });
                 return
             }
-            axios.post('https://test.adexconnect.com/api/payments/request-reserve',
-                {
-                    data: data,
-                    duration: counter,
-                    start_date: date
-                }, {
-                withCredentials: true,
-            })
-                .then(function (response) {
-                    setIsPending(false)
-                    console.log('set is requested')
-                    setIsRequested(true)
-                })
-                .catch(function (error) {
-                    console.log('error', error)
-                });
-            return
+            setIncomplete(true)
+        } else {
+            router.push('/login')
         }
-        setIncomplete(true)
     }
     return (
         <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
@@ -105,7 +113,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
                     <DatePickerComponent
                         id='date'
                         setDate={(date) => setDate(date)}
-                        disabled={data.ad_duration_type !== '0'?false:true}
+                        disabled={data.ad_duration_type !== '0' ? false : true}
                     />
                 </div>
                 {
@@ -119,7 +127,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked,s
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between items-center'>
-                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0"? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}`:''}`}</p>
+                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {
