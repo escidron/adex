@@ -9,14 +9,27 @@ import ImageLoader from '@/components/ImageLoader/ImageLoader';
 import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
+import DropDownButton from '@/components/dropdown/DropdownButton';
+import HelpIcon from '@mui/icons-material/Help';
 
 const inter = Inter({ subsets: ['latin'] })
+const itens = [
+    { id: 1, name: 'Gas station' },
+    { id: 2, name: 'Restaurant' },
+    { id: 3, name: 'Hotel' },
+    { id: 4, name: 'Store / Retail' },
+    { id: 5, name: 'Gym / Fitness' },
+    { id: 6, name: 'Entertainment' }
+];
 
 export default function AddCompanyModal({ setAddCompany, setRefetch }) {
     const [selected, setSelected] = useState(null);
     const [address, setAddress] = useState('');
     const [images, setImages] = useState([]);
     const [isPending, setIsPending] = useState(false)
+    const [dropDownSelected, setDropDownSelected] = useState('')
+    const [hasPhysicalSpace, setHasPhysicalSpace] = useState('')
+    const [showTip, setShowTip] = useState(false)
 
     const [coords, setCoords] = useState({
         lat: -3.745,
@@ -29,10 +42,16 @@ export default function AddCompanyModal({ setAddCompany, setRefetch }) {
             errors.name = 'Required';
         }
 
-        if (selected === null) {
-            errors.address = 'Required';
+        if (dropDownSelected == '') {
+            errors.industry = 'Required';
+        }
+        if (hasPhysicalSpace == '') {
+            errors.hasSpace = 'Required';
         }
 
+        if (selected === null && hasPhysicalSpace === '2') {
+            errors.address = 'Required';
+        }
         console.log(errors)
         return errors;
     };
@@ -41,91 +60,154 @@ export default function AddCompanyModal({ setAddCompany, setRefetch }) {
         initialValues: {
             name: '',
             image: images,
-            address: address
+            address: address,
+            industry: dropDownSelected,
+            hasSpace: hasPhysicalSpace
         },
         validate,
         onSubmit: values => {
             setIsPending(true)
-            // console.log('values', values)
-            // console.log('adres', address)
-            // console.log('images', images.length > 0?images[0].data_url:'')
             axios.post('https://test.adexconnect.com/api/users/add-company',
                 {
                     name: values.name,
-                    image: images.length > 0?images[0].data_url:'',
-                    address:address
+                    image: images.length > 0 ? images[0].data_url : '',
+                    address: address,
+                    industry: dropDownSelected,
+                    hasPhysicalSpace: hasPhysicalSpace
                 }, {
                 withCredentials: true,
             })
-            .then(function (response) {
-                console.log('response add company', response)
-                setIsPending(false)
-                setRefetch(true)
-                toast.success(response.data.message)
+                .then(function (response) {
+                    setIsPending(false)
+                    setRefetch(true)
+                    toast.success(response.data.message)
 
-            })
-            .catch(function (error) {
-                console.log('error',error)
-                if (error.response.status === 400) {
-                    toast.error(error.response.data.message, {
-                        duration: 6000,
-                        style: {
-                            width: 'auto',
-                            padding: '16px',
-                            minWidth: '450px',
-                            fontWeight: 500
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                    if (error.response.status === 400) {
+                        toast.error(error.response.data.message, {
+                            duration: 6000,
+                            style: {
+                                width: 'auto',
+                                padding: '16px',
+                                minWidth: '450px',
+                                fontWeight: 500
 
-                        }
-                    })
-                } else {
-                    toast.error(error.response.data.message, {
-                        duration: 6000,
-                        style: {
-                            padding: '8px',
-                            fontWeight: 500
+                            }
+                        })
+                    } else {
+                        toast.error(error.response.data.message, {
+                            duration: 6000,
+                            style: {
+                                padding: '8px',
+                                fontWeight: 500
 
-                        }
-                    })
-                }
-            })
-            .finally(function (response) {
-                setAddCompany(false)
-            })
+                            }
+                        })
+                    }
+                })
+                .finally(function (response) {
+                    setAddCompany(false)
+                })
         },
     });
+
+
+    const handleHasSpace = (e) => {
+        const id = e.currentTarget.id
+        if (id !== hasPhysicalSpace) {
+            setHasPhysicalSpace(id);
+        } else {
+            setHasPhysicalSpace('')
+        }
+    }
+
     return (
         <>
 
             <form onSubmit={formik.handleSubmit} className={`flex justify-center ${inter.className}`}>
                 <div className=' px-[30px] py-[15px]  bg-white rounded-xl w-[450px]'>
                     <div className='flex justify-center items-center mb-[20px] w-full'>
-                        <h1 className='text-[25px]'>Register your company</h1>
+                        <h1 className='text-[25px]'>Register your Business</h1>
                     </div>
-                    <div className='flex justify-between items-center flex-col mb-[20px] '>
-
+                    <div className='flex justify-between items-center flex-col mb-[20px] relative'>
                         <div className=" mt-6 w-full  text-black ">
                             <TextField
                                 id='name'
-                                label='Company Name'
+                                label='Name'
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.name}
                                 errors={formik.errors.name}
                             />
 
-                            {formik.touched.name && formik.errors.name ? <div className="absolute  top-[50px] text-red-600 font-bold">{formik.errors.name}</div> : null}
+                            {formik.touched.name && formik.errors.name ? <div className="absolute text-[12px] top-[80px] text-red-600 font-bold">{formik.errors.name}</div> : null}
                         </div>
-                        <div className="w-full mt-4 relative">
-                            <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-                                <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
-                                    <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
+                        <div className=' w-full mt-6 h-[55px] relative'>
+                            <DropDownButton
+                                label='Industry'
+                                itens={itens}
+                                dropDownSelected={dropDownSelected}
+                                setDropDownSelected={(selected) => setDropDownSelected(selected)}
+                            />
+                            {formik.touched.industry && formik.errors.industry ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.industry}</div> : null}
+
+                        </div>
+                        <div className='relative w-full mt-6'>
+                            <div className='flex items-center gap-2'>
+                                <div onMouseOver={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
+                                    <HelpIcon fontSize='small' className='cursor-pointer opacity-80 ' />
                                 </div>
-                            </MapCoordinatesContext.Provider>
-                            {formik.touched.address && formik.errors.address ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.address}</div> : null}
+                                <p>Does this business have a physical location?</p>
+                            </div>
+                            <div className="flex gap-2 mt-2">
+                                <div
+                                    type="text"
+                                    id="1"
+                                    name="account-1"
+                                    onClick={(e) => handleHasSpace(e)}
+                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                                >No
+                                </div>
+                                <div
+                                    type="text"
+                                    id="2"
+                                    name="account-2"
+                                    onClick={(e) => handleHasSpace(e)}
+                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                                >Yes
+                                </div>
+                            </div>
+                            {
+                                showTip && (
+                                    <div className='absolute bg-black top-8 py-2 left-0 w-[360px] h-[50px] rounded-lg  text-white'>
+                                        <p className='text-[14px] p-2 text-center'>
+                                            If this a home-based business, please check &quot;No&quot;
+                                        </p>
+                                    </div>
+                                )
+                            }
+                            {formik.touched.hasSpace && formik.errors.hasSpace ? <div className="absolute text-[12px] top-[80px] text-red-600 font-bold">{formik.errors.hasSpace}</div> : null}
 
                         </div>
+                        {
+                            hasPhysicalSpace === '2' && (
 
-                        <div className=" mt-4 w-full relative">
+                                <div className="w-full mt-4 relative">
+                                    <MapCoordinatesContext.Provider value={[coords, setCoords]}>
+                                        <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
+                                            <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
+                                        </div>
+                                    </MapCoordinatesContext.Provider>
+                                    {formik.touched.address && formik.errors.address ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.address}</div> : null}
+
+                                </div>
+                            )
+                        }
+
+                        <div className=" mt-6 w-full relative">
+                            <p>Profile Photo</p>
                             <div className={`w-full rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
                                 <ImageLoader
                                     images={images}
