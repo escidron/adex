@@ -56,12 +56,14 @@ export default function MyCompanies() {
         )
     }
     console.log('addCompany', addCompany)
+    console.log('refetch', refetch)
+
     return (
         <div className={` flex flex-col items-center  min-h-screen py-2 `}>
 
             {
                 addCompany ? (
-                    <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
+                    <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} refetch={refetch}/>
                 ) : (
 
                     <div className="
