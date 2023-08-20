@@ -22,7 +22,7 @@ const itens = [
     { id: 6, name: 'Entertainment' }
 ];
 
-export default function AddCompanyModal({ setAddCompany, setRefetch }) {
+export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
     const [selected, setSelected] = useState(null);
     const [address, setAddress] = useState('');
     const [images, setImages] = useState([]);
@@ -79,7 +79,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch }) {
             })
                 .then(function (response) {
                     setIsPending(false)
-                    setRefetch(true)
+                    setRefetch(!refetch)
                     toast.success(response.data.message)
 
                 })

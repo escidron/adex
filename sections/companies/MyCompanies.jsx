@@ -38,7 +38,7 @@ export default function MyCompanies() {
 
                 {
                     addCompany ? (
-                        <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
+                        <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} refetch={refetch} setRefetch={(refresh) => setRefetch(refresh)} />
                     ) : (
                         <div className={`flex justify-center items-center mt-8 ${inter.className} `}>
                             <div className="bg-white p-8 rounded-lg shadow-md border">
