@@ -1,5 +1,6 @@
 'use client'
 import { useState,useEffect } from 'react'
+import Image from 'next/image'
 import Categories from '@/components/categories/Categories'
 import StepperComponent from '@/components/stepper/StepperComponent'
 import React from 'react'
