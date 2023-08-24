@@ -26,7 +26,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout,advertisement, edit }) {
+export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayout,advertisement, edit,selectedCompany }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const currentDate = new Date();
@@ -134,7 +134,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           per_unit_price: typeId === 17 ? values.price : 0,
           is_automatic:checked?'1':'0',
           discounts: discounts,
-          has_payout:hasPayout
+          has_payout:hasPayout,
+          company_id:selectedCompany
 
 
         }, {
