@@ -3,12 +3,9 @@ import { useEffect, useState, createContext } from 'react'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import RatingComponent from '@/components/rating/RatingComponent'
-import ImageUploading from "react-images-uploading";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import MyWallet from '@/sections/myWallet/MyWallet'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import AddCard from '@/components/addCard/AddCard'
 import AddAccount from '@/components/addAccount/AddAccount'
@@ -17,6 +14,8 @@ import MyListing from '@/sections/myAdex/MyListing'
 import MyBookings from '@/sections/myAdex/MyBookings'
 import DashboardPanel from '@/sections/dashboard/DashboardPanel'
 import Footer from '@/components/footer/Footer'
+import ImageImporter from '@/components/gallery-image/imageImporter'
+import GalleryImage from '../../components/gallery-image/GalleryImage'
 
 
 
@@ -26,13 +25,15 @@ export const CompanyRefreshContext = createContext();
 
 export default function MyCompanyPage() {
     const [company, setCompany] = useState({});
-    const [images, setImages] = useState([]);
     const [rating, setRating] = useState(2);
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [refresh, setRefresh] = useState(false)
     const [listingData, setListingData] = useState([]);
     const [bookingData, setBookingData] = useState([]);
+    const [images, setImages] = useState([]);
+    const [gallery, setGallery] = useState([]);
+
     const [status, setStatus] = useState({
         available: 0,
         running: 0,
@@ -59,6 +60,51 @@ export default function MyCompanyPage() {
                 console.log(error)
             });
     }, []);
+
+    useEffect(() => {
+        if(images.length > 0){
+
+            axios.post('https://test.adexconnect.com/api/users/company-gallery',
+                {
+                    id:id,
+                    images: images
+                },
+                {
+                    withCredentials: true,
+    
+                })
+                .then(function (response) {
+                    console.log('image added')
+                    setImages([])
+                    getGallery()
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        }else{
+            getGallery()
+
+        }
+    }, [images]);
+
+    const getGallery =() => {
+            console.log('entrou no efect')
+            axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
+                {
+                    id:id,
+                },
+                {
+                    withCredentials: true,
+                })
+                .then(function (response) {
+                    setGallery(response.data.galleryWithImages)
+                    console.log('get gallery response',response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        
+    }
     return (
         <>
 
@@ -140,8 +186,19 @@ export default function MyCompanyPage() {
 
                     <h1 className='text-[26px] mb-4'>Company Financial Balance</h1>
                     <DashboardPanel />
-                </div>
 
+                    <h1 className='text-[26px] mb-4 mt-6'>Image Gallery</h1>
+                    <div className='w-full flex justify-start'>
+                        <div>
+
+                            <ImageImporter
+                                    images={images}
+                                    setImages={(image) => setImages(image)}
+                                />
+                        </div>
+                    </div>
+                    <GalleryImage gallery={gallery}/>
+                </div>
             </div>
             <Footer />
         </>
