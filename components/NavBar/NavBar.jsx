@@ -42,12 +42,12 @@ export default function NavBar() {
             );
             if (response.status === 200) {
                 const res = await response.json()
-                console.log('res',res)
+                console.log('res', res)
                 setUserData(res)
             }
         }
         GetUserProfile();
-    }, []);
+    }, [user]);
 
     async function hasPayoutMethod() {
         const response = await fetch(
@@ -85,6 +85,7 @@ export default function NavBar() {
 
 
     }, []);
+
     useEffect(() => {
         const handleClick = (event) => {
 
@@ -119,13 +120,6 @@ export default function NavBar() {
         autoLogin();
     }, []);
 
-    const handleRoute = () => {
-        if (user.isLogged) {
-            router.push('/market-place')
-        } else {
-            router.push('/login')
-        }
-    }
     const logout = () => {
         toast.dismiss()
 
@@ -182,7 +176,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? '/listing' :  '/login' } className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href={user.isLogged ? '/listing' : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
             {user.isLogged
                 ? (
