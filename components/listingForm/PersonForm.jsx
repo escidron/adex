@@ -402,6 +402,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
               <ImageLoader
                 images={images}
                 setImages={(image) => setImages(image)}
+                selectedCompany={selectedCompany}
               />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
