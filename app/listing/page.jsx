@@ -9,6 +9,7 @@ import BlackButton from '@/components/buttons/BlackButton'
 import ListingForm from '@/components/listingForm/ListingForm'
 import Footer from '@/components/footer/Footer'
 import BreadCrumbs from '@/components/breadcrumbs/BreadCrums'
+import AddCompanyModal from '@/sections/companies/AddCompanyModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,8 @@ export default function Listing() {
     const [userData, setUserData] = useState({});
     const [companies, setCompanies] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState('');
+    const [addCompany, setAddCompany] = useState(false);
+    const [refetch, setRefetch] = useState(false);
 
     useEffect(() => {
 
@@ -55,7 +58,6 @@ export default function Listing() {
             );
             if (response.status === 200) {
                 const res = await response.json()
-                console.log('res', res)
                 setUserData(res)
             }
         }
@@ -73,44 +75,65 @@ export default function Listing() {
             );
             if (response.status === 200) {
                 const res = await response.json()
-                console.log(res)
-                console.log('getting companies')
-
                 setCompanies(res)
             }
         }
         GetCompanies();
-    }, []);
+    }, [refetch]);
 
     return (
         <>
             <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} `}>
                 <h1 className='text-[42px]'>List your Ad</h1>
                 {
-                    userData.user_type == '1' && !selectedCompany  ?  (
+                    userData.user_type == '1' && !selectedCompany ? (
                         <>
                             <h1 className='text-lg'>Choose a Company to Create the Listing For</h1>
-                            <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-[50%]'>
-                                {
-                                    companies.map((company) => (
-                                        <div key={company.id} className='hover:cursor-pointer' onClick={()=>setSelectedCompany(company.id)}>
-                                            <div className="w-full aspect-square">
-                                                <Image
-                                                    src={company.company_logo}
-                                                    alt="Company Logo"
-                                                    width={2000}
-                                                    height={2000}
+                            {
+                                companies.length === 0 ? (
+                                    <>
 
-                                                    className='w-full h-full rounded-lg object-cover hover:scale-[1.1]'
-                                                />
+                                    {
+                                        addCompany ? (
+                                            <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
+                                        ) : (
+                                            <div className={`flex justify-center items-center mt-8 ${inter.className} `}>
+                                                <div className="bg-white p-8 rounded-lg shadow-md border">
+                                                    <h2 className="text-2xl font-semibold mb-4">My Companies</h2>
+                                                    <p className="text-gray-500">You haven&apos;t registered any companies yet.</p>
+                                                    <button onClick={() => setAddCompany(true)} className='style_banner_button w-full  mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
+                                                         lg:py-[10px] lg:px-[30px] lg:mt-10 '>
+                                                        <p className='style_banner_button_text font-medium'>Register company</p>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <h1 className='mt-2 font-bold'>
-                                                {company.company_name}
-                                            </h1>
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                                        )
+                                    }
+                                </>
+                                ) : (
+
+                                    <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-[50%]'>
+                                        {
+                                            companies.map((company) => (
+                                                <div key={company.id} className='hover:cursor-pointer' onClick={() => setSelectedCompany(company.id)}>
+                                                    <div className="w-full aspect-square">
+                                                        <Image
+                                                            src={company.company_logo}
+                                                            alt="Company Logo"
+                                                            width={2000}
+                                                            height={2000}
+                                                            className='w-full h-full rounded-lg object-cover hover:scale-[1.1]'
+                                                        />
+                                                    </div>
+                                                    <h1 className='mt-2 font-bold'>
+                                                        {company.company_name}
+                                                    </h1>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                )
+                            }
                         </>
                     ) : (
                         <>
@@ -205,12 +228,12 @@ export default function Listing() {
                                     />
                                 ) : (
 
-                                    <ListingForm 
-                                    categoryId={categoryId} 
-                                    typeId={typeId} 
-                                    isPeriodic={isPeriodic} 
-                                    setSelectedStep={(step) => setSelectedStep(step)} 
-                                    selectedCompany={selectedCompany}
+                                    <ListingForm
+                                        categoryId={categoryId}
+                                        typeId={typeId}
+                                        isPeriodic={isPeriodic}
+                                        setSelectedStep={(step) => setSelectedStep(step)}
+                                        selectedCompany={selectedCompany}
                                     />
                                 )
                                 }
