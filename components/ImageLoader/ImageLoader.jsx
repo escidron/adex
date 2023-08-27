@@ -65,6 +65,8 @@ export default function ImageLoader({ images, setImages, selectedCompany}) {
         getGallery()
     }, [selectedCompany]);
 
+    console.log('gallery',gallery)
+    console.log('showOptions',showOptions)
     return (
         <div className="w-full h-full">
             <ImageUploading
