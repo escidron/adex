@@ -90,7 +90,7 @@ export default function ImageLoader({ images, setImages, selectedCompany}) {
                         id="image-loader"
                         onMouseOver={() => { images.length > 0 ? setOnHover(true) : null }}
                         onMouseOut={() => { images.length > 0 ? setOnHover(false) : null }}
-                        className={`relative shadow-md h-full rounded-lg flex justify-center items-center cursor-pointer ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
+                        className={`relative shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
                         onClick={(e) => {
                             if (e.target.id == 'image-loader' || e.target.id == 'image-loaded') {
                                 if(gallery.length > 0){

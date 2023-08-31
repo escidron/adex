@@ -435,7 +435,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
 
           <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
+              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
                 <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
               </div>
             </MapCoordinatesContext.Provider>
@@ -451,7 +451,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.description}
-              className={`w-full border  p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[190px] text-red-600 font-bold">{formik.errors.description}</div> : null}
           </div>

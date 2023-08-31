@@ -19,7 +19,7 @@ export default function TextField({
   errors,
 }) {
   return (
-    <div className="w-full relative">
+    <div className="w-full relative shadow-sm">
       {formatPrice && (
         <p className='absolute top-[15px] left-2 text-[18px] font-[400] '>$</p>
       )}

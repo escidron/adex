@@ -188,7 +188,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
 
           <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
+              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
                 <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
               </div>
             </MapCoordinatesContext.Provider>

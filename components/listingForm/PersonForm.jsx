@@ -375,7 +375,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
 
           <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
+              <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
                 <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
               </div>
             </MapCoordinatesContext.Provider>
@@ -392,7 +392,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
               onBlur={formik.handleBlur}
               value={formik.values.description}
               placeholder='Description'
-              className={`w-full border  p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.description}</div> : null}
           </div>
