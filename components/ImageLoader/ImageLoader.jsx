@@ -6,7 +6,7 @@ import GalleryModal from "../modals/GalleryModal";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
 
-export default function ImageLoader({ images, setImages, selectedCompany}) {
+export default function ImageLoader({ images, setImages, selectedCompany,setImportFromGallery}) {
     const [onHover, setOnHover] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [openGalleryModal, setOpenGalleryModal] = useState(false);
@@ -20,6 +20,8 @@ export default function ImageLoader({ images, setImages, selectedCompany}) {
         // data for submit
         setImages(imageList);
         setOnHover(false)
+        setImportFromGallery(false)    
+
     };
 
     useEffect(() => {
