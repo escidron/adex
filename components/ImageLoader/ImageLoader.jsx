@@ -20,8 +20,9 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
         // data for submit
         setImages(imageList);
         setOnHover(false)
-        setImportFromGallery(false)    
-
+        if(selectedCompany){
+            setImportFromGallery(false)    
+        }
     };
 
     useEffect(() => {
