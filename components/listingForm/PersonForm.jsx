@@ -2,23 +2,19 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import DatePickerComponent from '../datePicker/DatePickerComponent';
 import { Inter } from 'next/font/google'
-import CounterComponent from '../counter/CounterComponent';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
 import SecondaryButton from '../buttons/SecondaryButton';
-import dayjs, { Dayjs } from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import axios from 'axios';
-import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
 import TextField from '../inputs/TextField';
 import Switch from '@mui/material/Switch';
-import { duration, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
@@ -48,6 +44,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   const [discountDuration, setDiscountDuration] = useState('');
   const [discount, setDiscount] = useState('');
   const [discounts, setDiscounts] = useState([]);
+  const [importFromGallery, setImportFromGallery] = useState(false);
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -122,8 +119,8 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           is_automatic: checked ? '1' : '0',
           discounts: discounts,
           has_payout:hasPayout,
-          company_id:selectedCompany
-
+          company_id:selectedCompany,
+          importFromGallery:importFromGallery
         }, {
         withCredentials: true,
       })
@@ -178,6 +175,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                 />
                 {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
               </div>
+
             ) : (
               <div className=" w-full relative flex gap-2">
                 <div className='w-[70%]'>
@@ -248,7 +246,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                   </div>
                 </div>
                 <div className=" w-full relative flex gap-2 mt-auto items-center">
-                  <div className='w-[30%]'>
+                  <div className='w-[30%] '>
                     <TextField
                       id='price'
                       label='Price'
@@ -383,7 +381,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
 
           </div>
 
-          <div className="col-start-1 mt-2 w-full relative">
+          <div className="col-start-1 mt-2 w-full relative ">
             <textarea
               type="textarea"
               id="description"
@@ -398,11 +396,12 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           </div>
 
           <div className=" mt-2 w-full relative">
-            <div className={`w-full ${images.length == 0 ? 'border-2 border-dashed ' : ''} rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
+            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
               <ImageLoader
                 images={images}
                 setImages={(image) => setImages(image)}
                 selectedCompany={selectedCompany}
+                setImportFromGallery={(isImport)=>setImportFromGallery(isImport)}
               />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}

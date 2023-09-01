@@ -112,16 +112,13 @@ export default function MyListing({ data, status,isCompanyPage }) {
         data.map((item, index) => {
           console.log(item)
           if (item.status == currentStatus) {
-            const bulletPints = item.description.split('\n');
+            const bulletPoints = item.description.split('\n');
             return (
               <>
                 <section key={item.id + index} className='w-full flex gap-4 items-center'>
-                  <Link href={`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`}
-                    className='cursor-pointer'>
-                    <Card
-                      item={item}
-                      setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)}
-                      bulletPoints={bulletPints} />
+                  <Link href={`/my-listing${item.status == 1?'/edit-advertisement':''}/?id=${item.id}`} 
+                      className='cursor-pointer'>
+                    <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} bulletPoints={bulletPoints}/>
                   </Link>
                   {
                     item.status == 1 ? (

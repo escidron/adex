@@ -2,18 +2,20 @@ import React from 'react'
 import Image from 'next/image';
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded';
 
-export default function GalleryImage({ gallery, isSelectable, selected, setSelected }) {
+export default function GalleryImage({ gallery, isSelectable, selected, setSelected,setImportFromGallery }) {
 
 
   const handleSelected = (index) => {
 
 
     if (!selected.includes(index)) {
-
       setSelected([...selected, index])
+      setImportFromGallery(true)
+
     } else {
       const newSelected = selected.filter(item => item != index)
       setSelected(newSelected)
+      setImportFromGallery(true)
     }
   }
   return (

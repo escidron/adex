@@ -52,6 +52,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
   const [discountDuration, setDiscountDuration] = useState('');
   const [discount, setDiscount] = useState('');
   const [discounts, setDiscounts] = useState([]);
+  const [importFromGallery, setImportFromGallery] = useState([]);
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -458,7 +459,13 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
 
           <div className=" mt-2 w-full relative">
             <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
-              <ImageLoader images={images} setImages={(image) => setImages(image)} />
+              <ImageLoader 
+              images={images} 
+              setImages={(image) => setImages(image)} 
+              selectedCompany={selectedCompany}
+              setImportFromGallery={(isImport)=>setImportFromGallery(isImport)}
+
+              />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[190px] text-red-600 font-bold">{formik.errors.image}</div> : null}
           </div>

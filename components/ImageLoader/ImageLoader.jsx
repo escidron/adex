@@ -65,8 +65,6 @@ export default function ImageLoader({ images, setImages, selectedCompany}) {
         getGallery()
     }, [selectedCompany]);
 
-    console.log('gallery',gallery)
-    console.log('showOptions',showOptions)
     return (
         <div className="w-full h-full">
             <ImageUploading
@@ -148,6 +146,8 @@ export default function ImageLoader({ images, setImages, selectedCompany}) {
                                     setSelected={(selected)=>setSelected(selected)}
                                     setFinishSelection={(toggle)=>setFinishSelection(toggle)}
                                     finishSelection={finishSelection}
+                                    setImportFromGallery={setImportFromGallery}
+
                                 />
                             )
                         }

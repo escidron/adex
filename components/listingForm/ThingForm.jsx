@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
-import SecondaryButton from '../buttons/SecondaryButton';
 import dayjs, { Dayjs } from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
@@ -49,7 +48,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const [discountDuration, setDiscountDuration] = useState('');
   const [discount, setDiscount] = useState('');
   const [discounts, setDiscounts] = useState([]);
-  
+  const [importFromGallery, setImportFromGallery] = useState([]);
+
   const [coords, setCoords] = useState({
     lat: -3.745,
     lng: -38.523
@@ -281,14 +281,20 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.description}
-              className={`w-full border  p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[190px] text-red-600 font-bold">{formik.errors.description}</div> : null}
           </div>
 
           <div className=" mt-2 w-full relative">
             <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
-              <ImageLoader images={images} setImages={(image) => setImages(image)} />
+              <ImageLoader 
+              images={images} 
+              setImages={(image) => setImages(image)} 
+              selectedCompany={selectedCompany}
+              setImportFromGallery={(isImport)=>setImportFromGallery(isImport)}
+
+              />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[190px] text-red-600 font-bold">{formik.errors.image}</div> : null}
           </div>

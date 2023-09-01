@@ -1,10 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react'
 import GalleryImage from '../gallery-image/GalleryImage'
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function GalleryModal({ setOpenGalleryModal,gallery,selected,setSelected,setFinishSelection,finishSelection }) {
+export default function GalleryModal({ setOpenGalleryModal,gallery,selected,setSelected,setFinishSelection,finishSelection,setImportFromGallery }) {
 
     return (
         <>
@@ -23,6 +22,7 @@ export default function GalleryModal({ setOpenGalleryModal,gallery,selected,setS
                         isSelectable={true}
                         selected={selected}
                         setSelected={setSelected}
+                        setImportFromGallery={setImportFromGallery}
                     />
                 </div>
                 <div className='w-full flex justify-end mt-4'>
