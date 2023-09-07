@@ -1,6 +1,7 @@
 
 'use client'
 import Card from './Card'
+import Link from 'next/link';
 import { useState, useEffect, useContext } from 'react';
 import { Inter } from 'next/font/google'
 import BookingModal from '@/components/modals/BookingModal';
@@ -12,8 +13,11 @@ import BlackButton from '@/components/buttons/BlackButton';
 import axios from 'axios';
 import { RefreshContext } from './MyAdex';
 import { CompanyRefreshContext } from '@/app/my-company/page';
-
-import Link from 'next/link';
+import ShareButtonFacebook from '@/components/facebook/ShareButton';
+import ShareIcon from '@mui/icons-material/Share';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function MyListing({ data, status,isCompanyPage }) {
@@ -21,6 +25,14 @@ export default function MyListing({ data, status,isCompanyPage }) {
   const [advertisementId, setAdvertisementId] = useState('');
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [refresh, setRefresh] = useContext(isCompanyPage?CompanyRefreshContext:RefreshContext)
+  const [sharingOptions, setSharingOptions] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+
+  const onCopy = useCallback(() => {
+    setCopied(true);
+    console.log('copiou')
+  }, [])
 
   if (data.length === 0) {
     return (
@@ -120,13 +132,37 @@ export default function MyListing({ data, status,isCompanyPage }) {
                       className='cursor-pointer'>
                     <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} bulletPoints={bulletPoints}/>
                   </Link>
-                  {
-                    item.status == 1 ? (
-                      <div onClick={() => setAdvertisementId(item.id)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
-                        <DeleteIcon sx={{ fontSize: '25px', "&:hover": { color: "black" } }} />
-                      </div>
-                    ) : ('')
-                  }
+                  <div className='flex flex-col gap-4 relative'>
+
+                    <div onClick={() => setSharingOptions(true)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
+                      <ShareIcon sx={{ fontSize: '25px', "&:hover": { color: "black", marginRight: '2px' } }} />
+                    </div>
+                    {
+                      sharingOptions && (
+                        <div className='absolute top-[-10px] right-[-140px] '>
+                          <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
+                            <FacebookIcon sx={{ color: 'blue' }} />
+                            <ShareButtonFacebook />
+                          </div>
+                          <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
+                            <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
+
+                              <ContentCopyIcon fontSize='small' sx={{ color: 'green' }} />
+                              <h1>Copy Link</h1>
+                            </div>
+                          </CopyToClipboard>
+                        </div>
+
+                      )
+                    }
+                    {
+                      item.status == 1 ? (
+                        <div onClick={() => setAdvertisementId(item.id)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
+                          <DeleteIcon sx={{ fontSize: '25px', "&:hover": { color: "black" } }} />
+                        </div>
+                      ) : ('')
+                    }
+                  </div>
                 </section>
                 {
                   bookingModalOpen && (

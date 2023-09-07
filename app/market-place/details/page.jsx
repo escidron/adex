@@ -54,6 +54,8 @@ export default function AdDetails() {
   const id = searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
+  const [gallery, setGallery] = useState([]);
+  const [company, setCompany] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -67,6 +69,10 @@ export default function AdDetails() {
       .then(function (response) {
         GetNotifications()
         setData(response.data.data)
+        if(response.data.data.company_id){
+          getGallery(response.data.data.company_id)
+          getCompany(response.data.data.company_id)
+        }
       })
       .catch(function (error) {
         console.log(error)
@@ -128,6 +134,22 @@ export default function AdDetails() {
     }
   }, [data, user, refetch]);
 
+  useEffect(() => {
+    if (data.id) {
+      axios.post('https://test.adexconnect.com/api/users/user-profile',
+        {id:data.created_by}, {
+        withCredentials: true,
+      })
+        .then(function (response) {
+
+            console.log('user-profile',response.data)
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    }
+  }, [data, user, refetch]);
+
   async function GetNotifications() {
     axios.post('https://test.adexconnect.com/api/users/notifications',
       {}, {
@@ -160,8 +182,43 @@ export default function AdDetails() {
 
   }
 
-  console.log('bokekd',isBooked)
-  console.log('reuqested',isRequested)
+
+  const getGallery =(id) => {
+    console.log('entrou no efect')
+    axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
+        {
+            id:id,
+        },
+        {
+            withCredentials: true,
+        })
+        .then(function (response) {
+            setGallery(response.data.galleryWithImages)
+            console.log('get gallery response',response)
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
+
+}
+  const getCompany =(id) => {
+    console.log('entrou no efect')
+    axios.post('https://test.adexconnect.com/api/users/my-company',
+        {
+            id:id,
+        },
+        {
+            withCredentials: true,
+        })
+        .then(function (response) {
+            setCompany(response.data[0])
+            console.log('company response',response)
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
+
+}
   return (
     <>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
@@ -193,19 +250,19 @@ export default function AdDetails() {
             </div>
           </Success>
         ) : (
-          <div className='flex flex-col w-[80%] '>
+          <div className='flex flex-col w-[80%] max-w-[1000px] '>
             <div className={`flex flex-col items-center justify-center`}>
-              <div className='w-[150px] h-[150px] '>
+            <Link href={`/market-place/company-details?id=${data.company_id}`} className='w-[150px] h-[150px] cursor-pointer'>
                 <Image
-                  src={data.seller_image ? data.seller_image : '/nouser.png'}
+                  src={data.seller_image && !data.company_id ? data.seller_image :data.company_id ?company.company_logo: '/nouser.png'}
                   alt="Seller Logo"
                   priority
                   width={2000}
                   height={2000}
                   className='rounded-full w-full h-full object-cover'
                 />
-              </div>
-              <h1 className='text-[35px] min-w-[250px] text-center'>{data.seller_name}</h1>
+              </Link>
+              <Link href={`/market-place/company-details?id=${data.company_id}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id?company.company_name:data.seller_name}</Link>
               <div className="flex items-center justify-center">
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
