@@ -79,7 +79,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     }
     console.log('isDataLoaded', isDataLoaded)
     return (
-        <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'}`}>
+        <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'}`}></div>
             <div className="flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
                 <div className="relative w-[60%] lg:w-[75%]">
