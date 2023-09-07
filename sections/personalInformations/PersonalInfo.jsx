@@ -15,7 +15,8 @@ export default function PersonalInfo() {
     phone: '',
     bio: '',
     profession: '',
-    sex: ''
+    sex: '',
+    handle:''
   });
   useEffect(() => {
     async function GetUserProfile() {
@@ -54,13 +55,11 @@ export default function PersonalInfo() {
       phone: user.phone,
       bio: user.bio,
       profession: user.profession,
-      sex: user.sex
+      sex: user.sex,
+      handle:user.handle
     
     }, {
     withCredentials: true,
-    headers: {
-      'content-type': 'application/json'
-    }
   })
     .then(function (response) {
       console.log('response',response)
@@ -146,6 +145,38 @@ export default function PersonalInfo() {
             }
           </div>
 
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
+            {
+              currentInfo === 'handle' ? (
+                <>
+                  <input
+                    type="text"
+                    id="handle"
+                    name="handle"
+                    placeholder='User Handle'
+                    value={user.handle != 'null' && user.handle ? user.handle : ''}
+                    onChange={(e) => setUser({ ...user, handle: e.target.value })}
+                    className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
+                  />
+                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                    <p className='style_banner_button_text font-medium '>Save</p>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className='font-[600]'>User Handle</p>
+                    <p className='font-[300] text-gray-600'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
+                  </div>
+                  <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
+                    <p className='text-gray-600 '>Edit</p>
+                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                  </div>
+                </>
+              )
+            }
+          </div>
+          
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
             {
               currentInfo === 'email' ? (
