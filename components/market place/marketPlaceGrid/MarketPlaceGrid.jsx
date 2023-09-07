@@ -150,7 +150,7 @@ export default function MarketPlaceGrid({newData,isDataLoaded}) {
                 <path d="M20.38 8.5C21.53 13.58 18.37 17.88 15.6 20.54C13.59 22.48 10.41 22.48 8.39001 20.54" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M22 2L2 22" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <h1 className="no-data-title">Browser location restrict</h1>
+            <h1 className="no-data-title">Browser location restriction</h1>
             <p>Please make sure your browser has access to your location and reload the page</p>
         </div>
         )

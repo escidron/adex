@@ -15,8 +15,8 @@ export default function MarketPlace() {
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [coords, setCoords] = useState({
-    lat: -3.745,
-    lng: -38.523
+    lat:  39.8283,
+    lng: -98.5795
   });
   const [adFilter, setAdFilter] = useState({
     radius: 50,
