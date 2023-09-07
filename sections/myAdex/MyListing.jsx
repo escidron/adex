@@ -144,7 +144,7 @@ export default function MyListing({ data, status,isCompanyPage }) {
                             <FacebookIcon sx={{ color: 'blue' }} />
                             <ShareButtonFacebook />
                           </div>
-                          <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
+                          <CopyToClipboard onCopy={onCopy} text={`https://adexconnect.com//market-place/details?id=${item.id}`}>
                             <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
 
                               <ContentCopyIcon fontSize='small' sx={{ color: 'green' }} />

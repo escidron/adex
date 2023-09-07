@@ -23,7 +23,7 @@ export default function CompanyDetailsPage() {
 
     useEffect(() => {
 
-        axios.post('http://localhost:5000/api/users/my-company',
+        axios.post('https://test.adexconnect.com/api/users/my-company',
             {
                 id: id,
             },
@@ -44,7 +44,7 @@ export default function CompanyDetailsPage() {
 
     const getGallery = (id) => {
         console.log('entrou no efect')
-        axios.post('http://localhost:5000/api/users/get-company-gallery',
+        axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
             {
                 id: id,
             },
