@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GalleryImage from '@/components/gallery-image/GalleryImage'
+import { industries } from '@/utils/industries'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function CompanyDetailsPage() {
     const [company, setCompany] = useState({});
     const [gallery, setGallery] = useState([]);
+    const [industry, setIndustry] = useState('');
+
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
 
@@ -33,6 +36,11 @@ export default function CompanyDetailsPage() {
             .then(function (response) {
                 setCompany(response.data[0])
                 getGallery(id)
+                industries.map((item)=>{
+                    if(item.id == response.data[0].industry){
+                        setIndustry(item.name)
+                    }
+                })
                 console.log('company response', response)
             })
             .catch(function (error) {

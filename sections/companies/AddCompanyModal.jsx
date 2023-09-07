@@ -11,16 +11,9 @@ import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 import DropDownButton from '@/components/dropdown/DropdownButton';
 import HelpIcon from '@mui/icons-material/Help';
+import { industries } from '@/utils/industries';
 
 const inter = Inter({ subsets: ['latin'] })
-const itens = [
-    { id: 1, name: 'Gas station' },
-    { id: 2, name: 'Restaurant' },
-    { id: 3, name: 'Hotel' },
-    { id: 4, name: 'Store / Retail' },
-    { id: 5, name: 'Gym / Fitness' },
-    { id: 6, name: 'Entertainment' }
-];
 
 export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
     const [selected, setSelected] = useState(null);
@@ -147,7 +140,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
                         <div className=' w-full mt-6 h-[55px] relative'>
                             <DropDownButton
                                 label='Industry'
-                                itens={itens}
+                                itens={industries}
                                 dropDownSelected={dropDownSelected}
                                 setDropDownSelected={(selected) => setDropDownSelected(selected)}
                             />
