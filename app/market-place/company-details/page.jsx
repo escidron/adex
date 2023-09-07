@@ -87,6 +87,7 @@ export default function CompanyDetailsPage() {
                         />
                     </div>
                     <h1 className='text-[35px] min-w-[250px] text-center cursor-pointer'>{company.company_name}</h1>
+                    <h1 className='text-[18px] min-w-[250px] text-center cursor-pointer'>{industry}</h1>
 
                     <div className='flex items-center  gap-1'>
                         <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
