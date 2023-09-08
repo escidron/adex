@@ -98,8 +98,6 @@ export default function PersonalInfo() {
         professionIsPublic:info=='profession' && user.professionIsPublic == '1'?'0':info=='profession' && user.professionIsPublic == '0'?'1':user.professionIsPublic,
         sexIsPublic:info=='sex' && user.sexIsPublic == '1'?'0':info=='sex' && user.sexIsPublic == '0'?'1':user.sexIsPublic,
         bioIsPublic:info=='bio' && user.bioIsPublic == '1'?'0':info=='bio' && user.bioIsPublic == '0'?'1':user.bioIsPublic
-
-
       }, {
       withCredentials: true,
     })
