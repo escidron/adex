@@ -10,8 +10,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const inter = Inter({ subsets: ['latin'] })
 
 export default function PersonalInfo() {
-  const [currentInfo, setCurrentInfo] = useState('');
   const [refresh, setRefresh] = useState(false)
+  const [currentInfo, setCurrentInfo] = useState('');
 
   const [user, setUser] = useState({
     name: '',
@@ -67,10 +67,10 @@ export default function PersonalInfo() {
         profession: user.profession,
         sex: user.sex,
         handle: user.handle,
-        handleIsPublic:user.handleIsPublic,
-        professionIsPublic:user.professionIsPublic,
-        sexIsPublic:user.sexIsPublic,
-        bioIsPublic:user.bioIsPublic
+        handleIsPublic: user.handleIsPublic,
+        professionIsPublic: user.professionIsPublic,
+        sexIsPublic: user.sexIsPublic,
+        bioIsPublic: user.bioIsPublic
 
       }, {
       withCredentials: true,
@@ -94,21 +94,21 @@ export default function PersonalInfo() {
         profession: user.profession,
         sex: user.sex,
         handle: user.handle,
-        handleIsPublic:info=='handle' && user.handleIsPublic == '1'?'0':info=='handle' && user.handleIsPublic == '0'?'1':user.handleIsPublic,
-        professionIsPublic:info=='profession' && user.professionIsPublic == '1'?'0':info=='profession' && user.professionIsPublic == '0'?'1':user.professionIsPublic,
-        sexIsPublic:info=='sex' && user.sexIsPublic == '1'?'0':info=='sex' && user.sexIsPublic == '0'?'1':user.sexIsPublic,
-        bioIsPublic:info=='bio' && user.bioIsPublic == '1'?'0':info=='bio' && user.bioIsPublic == '0'?'1':user.bioIsPublic
+        handleIsPublic: info == 'handle' && user.handleIsPublic == '1' ? '0' : info == 'handle' && user.handleIsPublic == '0' ? '1' : user.handleIsPublic,
+        professionIsPublic: info == 'profession' && user.professionIsPublic == '1' ? '0' : info == 'profession' && user.professionIsPublic == '0' ? '1' : user.professionIsPublic,
+        sexIsPublic: info == 'sex' && user.sexIsPublic == '1' ? '0' : info == 'sex' && user.sexIsPublic == '0' ? '1' : user.sexIsPublic,
+        bioIsPublic: info == 'bio' && user.bioIsPublic == '1' ? '0' : info == 'bio' && user.bioIsPublic == '0' ? '1' : user.bioIsPublic
       }, {
       withCredentials: true,
     })
       .then(function (response) {
         console.log('response', response)
-        
+        setRefresh(!refresh)
+
       })
       .catch(function (error) {
         console.log(error)
       });
-      setRefresh(!refresh)
   }
 
   return (
