@@ -68,11 +68,11 @@ export default function SellerDetailsPage() {
                             )
                         }
                         {
-                            seller.city && (
+                            seller.cityIsPublic == '1' && seller.city && (
 
                                 <div className='mt-1 flex items-center gap-3'>
                                     <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                    <h1>Cidade</h1>
+                                    <h1>{seller.city}</h1>
                                 </div>
                             )
                         }

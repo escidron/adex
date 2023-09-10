@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google'
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Divider } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,8 +26,9 @@ export default function PersonalInfo() {
     handleIsPublic: '0',
     professionIsPublic: '0',
     sexIsPublic: '0',
-    bioIsPublic: '0'
-
+    bioIsPublic: '0',
+    city: '',
+    cityIsPublic:'0'
   });
   useEffect(() => {
     async function GetUserProfile() {
@@ -70,7 +72,10 @@ export default function PersonalInfo() {
         handleIsPublic: user.handleIsPublic,
         professionIsPublic: user.professionIsPublic,
         sexIsPublic: user.sexIsPublic,
-        bioIsPublic: user.bioIsPublic
+        bioIsPublic: user.bioIsPublic,
+        city: user.city,
+        cityIsPublic :user.cityIsPublic
+
 
       }, {
       withCredentials: true,
@@ -94,10 +99,12 @@ export default function PersonalInfo() {
         profession: user.profession,
         sex: user.sex,
         handle: user.handle,
+        city:user.city,
         handleIsPublic: info == 'handle' && user.handleIsPublic == '1' ? '0' : info == 'handle' && user.handleIsPublic == '0' ? '1' : user.handleIsPublic,
         professionIsPublic: info == 'profession' && user.professionIsPublic == '1' ? '0' : info == 'profession' && user.professionIsPublic == '0' ? '1' : user.professionIsPublic,
         sexIsPublic: info == 'sex' && user.sexIsPublic == '1' ? '0' : info == 'sex' && user.sexIsPublic == '0' ? '1' : user.sexIsPublic,
-        bioIsPublic: info == 'bio' && user.bioIsPublic == '1' ? '0' : info == 'bio' && user.bioIsPublic == '0' ? '1' : user.bioIsPublic
+        bioIsPublic: info == 'bio' && user.bioIsPublic == '1' ? '0' : info == 'bio' && user.bioIsPublic == '0' ? '1' : user.bioIsPublic,
+        cityIsPublic: info == 'city' && user.cityIsPublic == '1' ? '0' : info == 'city' && user.cityIsPublic == '0' ? '1' : user.cityIsPublic,
       }, {
       withCredentials: true,
     })
@@ -190,50 +197,6 @@ export default function PersonalInfo() {
             }
           </div>
 
-          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
-            {
-              currentInfo === 'handle' ? (
-                <>
-                  <input
-                    type="text"
-                    id="handle"
-                    name="handle"
-                    placeholder='User Handle'
-                    value={user.handle != 'null' && user.handle ? user.handle : ''}
-                    onChange={(e) => setUser({ ...user, handle: e.target.value })}
-                    className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
-                  />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <p className='font-[600]'>User Handle</p>
-                    <p className='font-[300] text-gray-600'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
-                  </div>
-                  <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('handle')}>
-                      {
-                        user.handleIsPublic == '1' ? (
-
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
-                        ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
-                        )
-                      }
-                    </div>
-                  </div>
-                </>
-              )
-            }
-          </div>
-
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
             {
               currentInfo === 'email' ? (
@@ -297,6 +260,100 @@ export default function PersonalInfo() {
               )
             }
           </div>
+          <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
+
+          <div className='mb-2 flex gap-3 font-[600] text-[18px] items-center'>
+            <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+            <h1>You can decide if buyers can visualize these informations </h1>
+          </div>
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
+            {
+              currentInfo === 'handle' ? (
+                <>
+                  <input
+                    type="text"
+                    id="handle"
+                    name="handle"
+                    placeholder='User Handle'
+                    value={user.handle != 'null' && user.handle ? user.handle : ''}
+                    onChange={(e) => setUser({ ...user, handle: e.target.value })}
+                    className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
+                  />
+                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                    <p className='style_banner_button_text font-medium '>Save</p>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className='font-[600]'>User Handle</p>
+                    <p className='font-[300] text-gray-600'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
+                  </div>
+                  <div className='flex gap-2'>
+                    <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
+                      <p className='text-gray-600 '>Edit</p>
+                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    </div>
+                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('handle')}>
+                      {
+                        user.handleIsPublic == '1' ? (
+
+                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                        ) : (
+                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                        )
+                      }
+                    </div>
+                  </div>
+                </>
+              )
+            }
+          </div>
+          
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
+            {
+              currentInfo === 'city' ? (
+                <>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder='City'
+                    value={user.city != 'null' ? user.city : ''}
+                    onChange={(e) => setUser({ ...user, city: e.target.value })}
+                    className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
+                  />
+                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
+                    <p className='style_banner_button_text font-medium '>Save</p>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className='font-[600]'>City</p>
+                    <p className='font-[300] text-gray-600'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
+                  </div>
+                  <div className='flex gap-2'>
+                    <div onClick={() => setCurrentInfo('city')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
+                      <p className='text-gray-600 '>Edit</p>
+                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    </div>
+                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('city')}>
+                      {
+                        user.cityIsPublic == '1' ? (
+
+                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                        ) : (
+                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                        )
+                      }
+                    </div>
+                  </div>
+                </>
+              )
+            }
+          </div>
+
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {
               currentInfo === 'profession' ? (
