@@ -1,6 +1,6 @@
 'use client'
 import AdDetails from '@/app/market-place/details/page'
-import React from 'react'
+import {useState,useEffect} from 'react'
 
 export default function SharingPage() {
     const [rendered, setRendered] = useState(false);
