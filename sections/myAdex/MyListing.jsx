@@ -140,10 +140,7 @@ export default function MyListing({ data, status,isCompanyPage }) {
                     {
                       sharingOptions && (
                         <div className='absolute top-[-10px] right-[-140px] '>
-                          <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
-                            <FacebookIcon sx={{ color: 'blue' }} />
-                            <ShareButtonFacebook />
-                          </div>
+                          <ShareButtonFacebook id={item.id}/>
                           <CopyToClipboard onCopy={onCopy} text={`https://adexconnect.com//market-place/details?id=${item.id}`}>
                             <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
 
