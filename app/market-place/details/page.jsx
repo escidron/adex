@@ -223,7 +223,7 @@ export default function AdDetails() {
   }
   return (
     <>
-      <Head>
+      <head>
         {/* Open Graph Meta Tags */}
         <meta property="og:url" content='http://localhost:3000' />
         <meta property="og:type" content="website" />
@@ -233,7 +233,7 @@ export default function AdDetails() {
         {/* Optional: Set the image dimensions for better rendering */}
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-      </Head>
+      </head>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
         <div><Toaster /></div>
 
