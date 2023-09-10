@@ -18,7 +18,7 @@ export default function ShareButtonFacebook() {
       </Head>
       <FacebookProvider appId="1611678826026608" >
         <ShareButton
-          href="adexconnect.com"
+          href="https://adexconnect.com/my-listing/sharing-listing"
           className="my-classname"
           >
           Facebook
