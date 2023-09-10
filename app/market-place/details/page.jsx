@@ -1,4 +1,6 @@
 "use client"
+import Head from 'next/head';
+
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
@@ -69,7 +71,7 @@ export default function AdDetails() {
       .then(function (response) {
         GetNotifications()
         setData(response.data.data)
-        if(response.data.data.company_id){
+        if (response.data.data.company_id) {
           getGallery(response.data.data.company_id)
           getCompany(response.data.data.company_id)
         }
@@ -137,12 +139,12 @@ export default function AdDetails() {
   useEffect(() => {
     if (data.id) {
       axios.post('https://test.adexconnect.com/api/users/user-profile',
-        {id:data.created_by}, {
+        { id: data.created_by }, {
         withCredentials: true,
       })
         .then(function (response) {
 
-            console.log('user-profile',response.data)
+          console.log('user-profile', response.data)
         })
         .catch(function (error) {
           console.log(error)
@@ -157,7 +159,7 @@ export default function AdDetails() {
     })
       .then(function (response) {
 
-        setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length,notifications: response.data.notifications  }))
+        setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length, notifications: response.data.notifications }))
       })
       .catch(function (error) {
         console.log(error)
@@ -165,7 +167,7 @@ export default function AdDetails() {
   }
   const sendMessage = () => {
 
-    if (user.isLogged){
+    if (user.isLogged) {
       socket.emit('send-buyer-message',
         {
           sended_by: user.userId,
@@ -176,51 +178,62 @@ export default function AdDetails() {
         })
       setIsChatOpen(true)
       setRefetch(prev => !prev)
-    }else{
+    } else {
       router.push('/login')
     }
 
   }
 
 
-  const getGallery =(id) => {
+  const getGallery = (id) => {
     console.log('entrou no efect')
     axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
-        {
-            id:id,
-        },
-        {
-            withCredentials: true,
-        })
-        .then(function (response) {
-            setGallery(response.data.galleryWithImages)
-            console.log('get gallery response',response)
-        })
-        .catch(function (error) {
-            console.log(error)
-        });
+      {
+        id: id,
+      },
+      {
+        withCredentials: true,
+      })
+      .then(function (response) {
+        setGallery(response.data.galleryWithImages)
+        console.log('get gallery response', response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
 
-}
-  const getCompany =(id) => {
+  }
+  const getCompany = (id) => {
     console.log('entrou no efect')
     axios.post('https://test.adexconnect.com/api/users/my-company',
-        {
-            id:id,
-        },
-        {
-            withCredentials: true,
-        })
-        .then(function (response) {
-            setCompany(response.data[0])
-            console.log('company response',response)
-        })
-        .catch(function (error) {
-            console.log(error)
-        });
+      {
+        id: id,
+      },
+      {
+        withCredentials: true,
+      })
+      .then(function (response) {
+        setCompany(response.data[0])
+        console.log('company response', response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
 
-}
+  }
   return (
     <>
+      <Head>
+        {/* Open Graph Meta Tags */}
+        <meta property="og:url" content='http://localhost:3000' />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content='Your Page Title' />
+        <meta property="og:description" content='desciption' />
+        <meta property="og:image" content='https://media.istockphoto.com/id/1402485839/photo/green-blurred-nature-background.webp?b=1&s=612x612&w=0&k=20&c=f4HpyXYygEoZ3lmU6I8OF8RyuWfanZovKTFQNjOIlx4=' />
+        {/* Optional: Set the image dimensions for better rendering */}
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </Head>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
         <div><Toaster /></div>
 
@@ -252,9 +265,9 @@ export default function AdDetails() {
         ) : (
           <div className='flex flex-col w-[80%] max-w-[1000px] '>
             <div className={`flex flex-col items-center justify-center`}>
-            <Link href={`/market-place/${data.company_id?'company-details':'seller-details'}?id=${data.company_id?data.company_id:data.created_by}`} className='w-[150px] h-[150px] cursor-pointer'>
+              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='w-[150px] h-[150px] cursor-pointer'>
                 <Image
-                  src={data.seller_image && !data.company_id ? data.seller_image :data.company_id ?company.company_logo: '/nouser.png'}
+                  src={data.seller_image && !data.company_id ? data.seller_image : data.company_id ? company.company_logo : '/nouser.png'}
                   alt="Seller Logo"
                   priority
                   width={2000}
@@ -262,7 +275,7 @@ export default function AdDetails() {
                   className='rounded-full w-full h-full object-cover'
                 />
               </Link>
-              <Link href={`/market-place/${data.company_id?'company-details':'seller-details'}?id=${data.company_id?data.company_id:data.created_by}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id?company.company_name:data.seller_name}</Link>
+              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id ? company.company_name : data.seller_name}</Link>
               <div className="flex items-center justify-center">
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
@@ -270,7 +283,7 @@ export default function AdDetails() {
                 <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
               </div>
-              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`}   className={` flex item justify-center bg-black text-[#FCD33B] hover:bg-[#FCD33B] hover:text-black py-[8px]  px-[30px] rounded-md mt-2 font-[600]  text-lg `}>
+              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className={` flex item justify-center bg-black text-[#FCD33B] hover:bg-[#FCD33B] hover:text-black py-[8px]  px-[30px] rounded-md mt-2 font-[600]  text-lg `}>
                 Seller Details
               </Link>
             </div>
