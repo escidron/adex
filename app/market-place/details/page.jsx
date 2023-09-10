@@ -224,15 +224,11 @@ export default function AdDetails() {
   return (
     <>
       <head>
-        {/* Open Graph Meta Tags */}
-        <meta property="og:url" content='http://localhost:3000' />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content='Your Page Title' />
-        <meta property="og:description" content='desciption' />
-        <meta property="og:image" content='https://media.istockphoto.com/id/1402485839/photo/green-blurred-nature-background.webp?b=1&s=612x612&w=0&k=20&c=f4HpyXYygEoZ3lmU6I8OF8RyuWfanZovKTFQNjOIlx4=' />
-        {/* Optional: Set the image dimensions for better rendering */}
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="When Great Minds Don’t Think Alike" />
+        <meta property="og:description" content="How much does culture influence creative thinking?" />
+        <meta property="og:image" content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
       </head>
       <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
         <div><Toaster /></div>
