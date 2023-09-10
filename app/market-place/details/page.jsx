@@ -252,7 +252,7 @@ export default function AdDetails() {
         ) : (
           <div className='flex flex-col w-[80%] max-w-[1000px] '>
             <div className={`flex flex-col items-center justify-center`}>
-            <Link href={`/market-place/company-details?id=${data.company_id}`} className='w-[150px] h-[150px] cursor-pointer'>
+            <Link href={`/market-place/${data.company_id?'company-details':'seller-details'}?id=${data.company_id?data.company_id:data.created_by}`} className='w-[150px] h-[150px] cursor-pointer'>
                 <Image
                   src={data.seller_image && !data.company_id ? data.seller_image :data.company_id ?company.company_logo: '/nouser.png'}
                   alt="Seller Logo"
@@ -262,7 +262,7 @@ export default function AdDetails() {
                   className='rounded-full w-full h-full object-cover'
                 />
               </Link>
-              <Link href={`/market-place/company-details?id=${data.company_id}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id?company.company_name:data.seller_name}</Link>
+              <Link href={`/market-place/${data.company_id?'company-details':'seller-details'}?id=${data.company_id?data.company_id:data.created_by}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id?company.company_name:data.seller_name}</Link>
               <div className="flex items-center justify-center">
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
@@ -270,6 +270,9 @@ export default function AdDetails() {
                 <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                 <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
               </div>
+              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`}   className={` flex item justify-center bg-black text-[#FCD33B] hover:bg-[#FCD33B] hover:text-black py-[8px]  px-[30px] rounded-md mt-2 font-[600]  text-lg `}>
+                Seller Details
+              </Link>
             </div>
             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
