@@ -21,8 +21,8 @@ export default async function SharingPage({searchParams}) {
     const id = searchParams.id
 
     console.log('id',id)
+    const data = await getData(id)
     try{
-        const data = await getData(id)
         console.log('data',data)
         return (
             <>
