@@ -35,7 +35,7 @@ export default async function SharingPage({searchParams}) {
                 <main>
                     <div className='mt-[120px]'>
                         {/* <AdDetails /> */}
-                        <h1>{id}</h1>
+                        <h1>idddddddddddd{id}</h1>
                     </div>
                 </main>
     
