@@ -1,3 +1,4 @@
+'use client'
 import { FacebookProvider, ShareButton } from 'react-facebook';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
