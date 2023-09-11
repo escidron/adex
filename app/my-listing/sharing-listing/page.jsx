@@ -34,7 +34,7 @@ export default async function SharingPage({searchParams}) {
                 <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
                 <main>
                     <div className='mt-[120px]'>
-                        <AdDetails />
+                        {/* <AdDetails /> */}
                     </div>
                 </main>
     
