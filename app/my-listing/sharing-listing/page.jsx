@@ -19,8 +19,11 @@ async function getData(id) {
 
 export default async function SharingPage({searchParams}) {
     const id = searchParams.id
+
+    console.log('id',id)
     try{
         const data = await getData(id)
+        console.log('data',data)
         return (
             <>
                 <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
