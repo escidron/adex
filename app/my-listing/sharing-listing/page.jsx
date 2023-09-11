@@ -5,7 +5,7 @@ import axios from 'axios';
 
 async function getData(id) {
     try {
-      const response = await axios.post('http://localhost:5000/api/advertisements/shared-listing', {
+      const response = await axios.post('https://test.adexconnect.co/api/advertisements/shared-listing', {
         id: id,
       }, {
         withCredentials: true,
