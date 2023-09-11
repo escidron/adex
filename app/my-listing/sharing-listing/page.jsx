@@ -1,39 +1,43 @@
-'use client'
+
 import AdDetails from '@/app/market-place/details/page'
-import {useState,useEffect} from 'react'
+import axios from 'axios';
 
-export default function SharingPage() {
-    const [rendered, setRendered] = useState(false);
-    useEffect(() => {
 
-        setRendered(true)
-    }, []);
+async function getData(id) {
+    try {
+      const response = await axios.post('http://localhost:5000/api/advertisements/shared-listing', {
+        id: id,
+      }, {
+        withCredentials: true,
+      });
+      return response.data.data[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    // if (!rendered) {
-    //     return (
-    //         <>
-    //             <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
-    //             <meta property="fb:app_id" content="1611678826026608" />
-    //             <meta property="og:type" content="article" />
-    //             <meta property="og:title" content="Name of the listings" />
-    //             <meta property="og:description" content="Las Piñas Greande Manila" />
-    //             <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
 
-    //         </>
-    //     )
-    // }
-    return (
-        <>
-            <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
-            <meta property="fb:app_id" content="1611678826026608" />
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content="Name of the listings" />
-            <meta property="og:description" content="Las Piñas Greande Manila" />
-            <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
-            <div className='mt-[120px]'>
-                <AdDetails />
-            </div>
-
-        </>
-    )
+export default async function SharingPage({searchParams}) {
+    const id = searchParams.id
+    try{
+        const data = await getData(id)
+        return (
+            <>
+                <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
+                <meta property="fb:app_id" content="1611678826026608" />
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content={data?.title} />
+                <meta property="og:description" content={data?.address} />
+                <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
+                <main>
+                    <div className='mt-[120px]'>
+                        <AdDetails />
+                    </div>
+                </main>
+    
+            </>
+        )
+    } catch (error) {
+        console.error(error);
+      }
 }
