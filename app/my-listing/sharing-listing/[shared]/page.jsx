@@ -1,7 +1,11 @@
 
-import AdDetails from '@/app/market-place/details/page'
+import dynamic from 'next/dynamic';
 import axios from 'axios';
 
+// Dynamically import the AdDetails component to ensure client-side rendering
+const DynamicAdDetails = dynamic(() => import('@/app/market-place/details/page'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
 async function getData(id) {
     try {
@@ -17,13 +21,11 @@ async function getData(id) {
   }
 
 
-export default async function SharingPage({params}) {
+  export default async function SharingPage({params}) {
     const id = params.shared
 
-    console.log('id',id)
     const data = await getData(id)
     try{
-        console.log('data',data)
         return (
             <>
                 <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
@@ -34,7 +36,7 @@ export default async function SharingPage({params}) {
                 <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
                 <main>
                     <div className='mt-[120px]'>
-                        <AdDetails />
+                        <DynamicAdDetails sharedId={id}/>
                     </div>
                 </main>
     

@@ -36,7 +36,7 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function AdDetails() {
+export default function AdDetails({ sharedId }) {
   var socket = io.connect('http://localhost:4400')
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
@@ -53,7 +53,7 @@ export default function AdDetails() {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [discounts, setDiscounts] = useState([]);
-  const id = searchParams.get('id')
+  const id = sharedId?sharedId:searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
   const [gallery, setGallery] = useState([]);
