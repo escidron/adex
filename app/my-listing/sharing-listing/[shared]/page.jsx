@@ -28,7 +28,7 @@ async function getData(id) {
     try{
         return (
             <>
-                <meta property="og:url" content="https://adexconnect.com/my-listing/sharing-listing" />
+                <meta property="og:url" content={`https://adexconnect.com/my-listing/sharing-listing/${id}`} />
                 <meta property="fb:app_id" content="1611678826026608" />
                 <meta property="og:type" content="article" />
                 <meta property="og:title" content={data?.title || ''} />
