@@ -17,8 +17,8 @@ async function getData(id) {
   }
 
 
-export default async function SharingPage({searchParams}) {
-    const id = searchParams.id
+export default async function SharingPage({params}) {
+    const id = params.share
 
     console.log('id',id)
     const data = await getData(id)
