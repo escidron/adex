@@ -33,7 +33,7 @@ async function getData(id) {
                 <meta property="og:type" content="article" />
                 <meta property="og:title" content={data?.title || ''} />
                 <meta property="og:description" content={data?.address || ''} />
-                <meta property="og:image" content="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg" />
+                <meta property="og:image" content={`http://test.adexconnect.com/images/${data.shared_image}`} />
                 <main>
                     <div className='mt-[120px]'>
                         <DynamicAdDetails sharedId={id}/>
