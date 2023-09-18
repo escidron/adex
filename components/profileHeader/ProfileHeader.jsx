@@ -1,5 +1,7 @@
 "use client"
-import { useEffect, useState } from 'react'
+
+import { useEffect, useState,useContext } from 'react'
+import { UserContext } from '@/app/layout';
 import Image from 'next/image'
 import Link from 'next/link';
 import axios from 'axios';
@@ -8,6 +10,7 @@ import RatingComponent from '../rating/RatingComponent';
 
 export default function ProfileHeader() {
     const [rating, setRating] = useState(0);
+    const [user, setUser] = useContext(UserContext)
 
     const [userData, setUserData] = useState({
         name: '',
@@ -20,6 +23,7 @@ export default function ProfileHeader() {
         // data for submit
         setImages(imageList);
         setSrc(imageList[0].data_url)
+        setUser((prev) => ({ ...prev, image: imageList[0].data_url }))
         axios.post('https://test.adexconnect.com/api/users/my-profile-image',
             {
                 image: imageList[0].data_url,
