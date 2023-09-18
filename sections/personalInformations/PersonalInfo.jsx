@@ -264,7 +264,7 @@ export default function PersonalInfo() {
 
           <div className='mb-2 flex gap-3 font-[600] text-[18px] items-center'>
             <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
-            <h1>You can decide if buyers can visualize these informations </h1>
+            <h1 className='text-[16px]'>Making public this informations means anyone can see it</h1>
           </div>
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {

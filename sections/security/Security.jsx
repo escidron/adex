@@ -103,24 +103,7 @@ export default function Security() {
     <div className="flex flex-col items-center max-w-[40%] mx-auto ">
       <div><Toaster /></div>
       <label htmlFor="privacy" className="text-[30px] mt-8">Privacy</label>
-      <div className="flex justify-between items-center  w-full mt-8">
-        <div className="">
-          <h1 className="text-[18px] font-bold ">Public Profile</h1>
-          <p>Making your profile public means anyone can see your information</p>
-        </div>
-        <PinkSwitch {...label} defaultChecked sx={{ marginLeft: '10px' }} />
-      </div>
-
-      <div className="flex justify-between items-center w-full mt-8">
-        <div>
-          <h1 className="text-[18px] font-bold ">Show email</h1>
-          <p>This lets users find you by your email address</p>
-        </div>
-        <PinkSwitch {...label} sx={{ marginLeft: '10px' }} />
-      </div>
-
-      <Divider variant="middle" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
-      <label htmlFor="privacy" className="text-[30px]">Two Fact Authentication</label>
+      <label htmlFor="privacy" className="text-[24px] mt-10">Two Fact Authentication</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">
           <h1 className="text-[18px] font-bold ">Authenticator App</h1>
@@ -138,7 +121,7 @@ export default function Security() {
       </div>
       <Divider variant="middle" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
-      <h1 className="text-[30px]">Change Password</h1>
+      <h1 className="text-[24px]">Change Password</h1>
       <form className="flex flex-col mb-[250px] w-[400px]" onSubmit={formik.handleSubmit}>
         <div className=" mt-8 w-full relative">
           <TextField
