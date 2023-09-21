@@ -33,6 +33,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [discountOptions, setDiscountOptions] = useState(false);
     const [user, setUser] = useContext(UserContext)
     const router = useRouter();
+    
     useEffect(() => {
         let hasDiscount = false
         discounts.map((item) => {
@@ -47,7 +48,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
 
     }, [counter]);
     const Booking = () => {
-        if (user.IsLogged) {
+        if (user.isLogged) {
             if (hasCard) {
                 setIsPending(true)
                 if (data.is_automatic === '1') {
