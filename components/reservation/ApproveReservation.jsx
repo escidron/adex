@@ -8,13 +8,17 @@ import { Inter } from 'next/font/google'
 import formatNumberInput from '@/utils/formatInputNumbers';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import CancelBooking from '../modals/CancelBooking';
+import toast from 'react-hot-toast';
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount,setBookingAccepted,setBookingRejected }) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
     const [discountOptions, setDiscountOptions] = useState(false);
-
+    const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
+    const [cancelMessage, setCancelMessage] = useState('');
 
     console.log('advertisement', advertisement)
     const discount = 20
@@ -63,8 +67,29 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             });
     }
 
+    const cancelBooking = () => {
+        setOpenCancelBookingModal(false)
+        axios.post('https://test.adexconnect.com/api/payments/cancel-booking',
+            {
+                advertisementId: advertisement.id,
+                sellerId: advertisement.created_by,
+                buyerId: advertisement.requested_by,
+                cancelMessage:cancelMessage
+
+            }, {
+            withCredentials: true,
+        })
+            .then(function (response) {
+                toast.success('Booking sucessfuly cancelled.')
+
+            })
+            .catch(function (error) {
+                toast.error(error.response.data.error)
+            });
+    }
     return (
         <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
+
             {advertisement?.price && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
@@ -181,8 +206,37 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </>
                 ) : ('')
             }
+                        {
+                advertisement?.status == 2 && (
+                    <>
+                        <button disabled={isPending2 || isPending1 ? true : false} onClick={()=>setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                            {
+                                isPending2 ? (
+                                    <ThreeDots
+                                        height="30"
+                                        width="40"
+                                        radius="9"
+                                        color="black"
+                                        ariaLabel="three-dots-loading"
+                                        visible={true}
+                                    />
+                                ) : 'Cancel Booking'
+                            }
+                        </button>
+                    </>
+                ) 
+            }
 
-
+            {
+                openCancelBookingModal && (
+                    <CancelBooking 
+                        cancelBooking={cancelBooking}
+                        setCancelMessage = {(message)=>setCancelMessage(message)}
+                        cancelMessage={cancelMessage}
+                        setOpenCancelBookingModal={(closeModal)=>setOpenCancelBookingModal(closeModal)}
+                    />
+                )
+            }
 
         </div>
     )
