@@ -1,5 +1,6 @@
 'use client'
-import { useState, useContext } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import HelpIcon from '@mui/icons-material/Help';
 import { ThreeDots } from 'react-loader-spinner'
@@ -10,7 +11,6 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import CancelBooking from '../modals/CancelBooking';
 import toast from 'react-hot-toast';
-
 const inter = Inter({ subsets: ['latin'] })
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount,setBookingAccepted,setBookingRejected }) {
@@ -19,9 +19,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const [discountOptions, setDiscountOptions] = useState(false);
     const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
     const [cancelMessage, setCancelMessage] = useState('');
-
-    console.log('advertisement', advertisement)
-    const discount = 20
+    const router = useRouter();
 
     const Booking = () => {
         setIsPending1(true)
@@ -81,6 +79,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         })
             .then(function (response) {
                 toast.success('Booking sucessfuly cancelled.')
+                router.push('/my-profile?tab=5&sub-tab=1')
 
             })
             .catch(function (error) {
