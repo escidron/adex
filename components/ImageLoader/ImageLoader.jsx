@@ -122,7 +122,7 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
                                         <div
                                             onClick={() => setOpenGalleryModal(true)}
                                             className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] px-[30px] rounded-md  font-[600] text-black hover:scale-[1.1]  text-md'>
-                                            Adex gallery
+                                            ADEX gallery
                                         </div>
                                         <div
                                             onClick={() =>{

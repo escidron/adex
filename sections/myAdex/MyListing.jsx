@@ -4,7 +4,6 @@ import Card from './Card'
 import Link from 'next/link';
 import { useState, useEffect, useContext,useCallback } from 'react';
 import { Inter } from 'next/font/google'
-import BookingModal from '@/components/modals/BookingModal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
@@ -161,11 +160,7 @@ export default function MyListing({ data, status,isCompanyPage }) {
                     }
                   </div>
                 </section>
-                {
-                  bookingModalOpen && (
-                    <BookingModal setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} item={item} key={item.id + index} />
-                  )
-                }
+
               </>
             )
           }

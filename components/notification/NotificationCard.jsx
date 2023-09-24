@@ -14,7 +14,7 @@ export default function NotificationCard({ notification }) {
 
     const time = notification.created_at.slice(11, 16)
     return (
-        <div className='mt-2 hover:bg-[#FCD33B] hover:text-black  px-4 py-2 w-full'>
+        <div className='mt-2 hover:bg-[#FCD33B] hover:text-black hover:rounded-md  px-4 py-2 w-full'>
             <Link href={`${notification.redirect}&notification_id=${notification.id}`} className='w-full' >
                 <div className='flex justify-between items-center'>
                     <h1 className='text-[15px]'>{notification.header}</h1>

@@ -121,7 +121,7 @@ export default function Notifications() {
       <div className="flex justify-between items-center w-full mt-8 mb-[200px]">
         <div>
           <h1 className="text-[18px] font-bold ">Newsletter</h1>
-          <p>Updates on what’s going on here at Adex.</p>
+          <p>Updates on what’s going on here at ADEX.</p>
         </div>
         <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
       </div>

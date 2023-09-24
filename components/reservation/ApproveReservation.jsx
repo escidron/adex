@@ -78,7 +78,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             withCredentials: true,
         })
             .then(function (response) {
-                toast.success('Booking sucessfuly cancelled.')
+                toast.success('Booking sucessfuly canceled.')
                 router.push('/my-profile?tab=5&sub-tab=1')
 
             })
@@ -173,8 +173,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             </div>
             {
                 advertisement?.status == 4 ? (
-                    <>
-                        <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10 flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+                    <div className='mt-auto'>
+                        <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10 flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
                             {
                                 isPending1 ? (
                                     <ThreeDots
@@ -202,7 +202,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 ) : 'Decline'
                             }
                         </button>
-                    </>
+                    </div>
                 ) : ('')
             }
                         {

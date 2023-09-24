@@ -1,45 +1,20 @@
 "use client"
-import axios from "axios"
-import Link from "next/link"
-import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
+
 import { useTransition } from "react"
 import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
+import { ThreeDots } from 'react-loader-spinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Banner() {
   const [isPending, startTransition] = useTransition()
-  const [user,setUser] = useContext(UserContext)
   const router = useRouter();
 
   const handleRoute = () => {
-    if (user.isLogged) {
-        router.push('/market-place')
-    } else {
+    router.push('/market-place')
+  }
 
-        router.push('/login')
-    }
-}
-  
-  // const onSubmit = () => {
-  //   axios.get('https://test.adexconnect.com/api/users/seller-profile',
-  //     {
-
-  //     }, {
-  //     headers: {
-  //       'content-type': 'application/json'
-  //     }
-  //   })
-  //     .then(function (response) {
-
-  //       setUser({ ...user, isLogged: true, name: response.data.name })
-  //       // router.push('/')
-  //     })
-  //     .catch(function (error) {
-  //     });
-  // }
   return (
     <div className={`w-full h-[100vh]  relative ${inter.className}`} >
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-30'></div>
@@ -52,8 +27,17 @@ export default function Banner() {
                         lg:text-[34px]'>Connects with your Community and grow your business</h1>
         <p className='mt-4 lg:mt-6 text-lg z-10'>The platform with the largest network of people looking to help your business grow to a whole new level</p>
         <div onClick={() => startTransition(() => handleRoute())} className="mt-10 ">
-          <button className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md   hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200
-                                 lg:py-[15px] lg:px-[40px]  '><p className='style_banner_button_text font-medium'>{isPending ? "Navigating...": "Market Place"}</p>
+          <button className='style_banner_button flex justify-center items-center min-w-[192px] z-10 bg-black py-[10px] px-[20px] rounded-md   hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200
+                                 lg:py-[15px] lg:px-[40px]  '><p className='style_banner_button_text font-medium'>
+              {isPending ?
+                <ThreeDots
+                  height="30"
+                  width="40"
+                  radius="9"
+                  color="black"
+                  ariaLabel="three-dots-loading"
+                  visible={true}
+                /> : "Market Place"}</p>
           </button>
         </div>
       </div>
