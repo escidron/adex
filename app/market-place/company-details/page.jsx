@@ -52,7 +52,7 @@ export default function CompanyDetailsPage() {
 
     const getGallery = (id) => {
         console.log('entrou no efect')
-        axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
+        axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
             {
                 id: id,
             },

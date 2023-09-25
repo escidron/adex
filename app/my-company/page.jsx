@@ -64,7 +64,7 @@ export default function MyCompanyPage() {
     useEffect(() => {
         if(images.length > 0){
 
-            axios.post('https://test.adexconnect.com/api/users/company-gallery',
+            axios.post('https://test.adexconnect.com/api/users/image-gallery',
                 {
                     id:id,
                     images: images
@@ -89,7 +89,7 @@ export default function MyCompanyPage() {
 
     const getGallery =() => {
             console.log('entrou no efect')
-            axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
+            axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
                 {
                     id:id,
                 },

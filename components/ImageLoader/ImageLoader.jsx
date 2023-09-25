@@ -50,9 +50,9 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
     useEffect(() => {
 
         const getGallery = () => {
-            axios.post('https://test.adexconnect.com/api/users/get-company-gallery',
+            axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
                 {
-                    id: selectedCompany,
+                    //id: selectedCompany,
                 },
                 {
                     withCredentials: true,

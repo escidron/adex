@@ -7,12 +7,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Divider } from '@mui/material';
+import GalleryImage from '@/components/gallery-image/GalleryImage';
+import ImageImporter from '@/components/gallery-image/imageImporter';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function PersonalInfo() {
-  const [refresh, setRefresh] = useState(false)
   const [currentInfo, setCurrentInfo] = useState('');
+  const [refresh, setRefresh] = useState(false)
+  const [gallery, setGallery] = useState([]);
+  const [images, setImages] = useState([]);
 
   const [user, setUser] = useState({
     name: '',
@@ -28,8 +32,10 @@ export default function PersonalInfo() {
     sexIsPublic: '0',
     bioIsPublic: '0',
     city: '',
-    cityIsPublic:'0'
+    cityIsPublic: '0',
+    userType: '0'
   });
+
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
@@ -47,6 +53,43 @@ export default function PersonalInfo() {
     }
     GetUserProfile();
   }, [refresh]);
+
+  useEffect(() => {
+
+    axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+      {},
+      {
+        withCredentials: true,
+      })
+      .then(function (response) {
+        setGallery(response.data.galleryWithImages)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+
+
+  }, [refresh]);
+
+  useEffect(() => {
+    if (images.length > 0) {
+
+      axios.post('https://test.adexconnect.com/api/users/image-gallery',
+        {
+          images: images
+        },
+        {
+          withCredentials: true,
+        })
+        .then(function (response) {
+          setImages([])
+          setRefresh(!refresh)
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    }
+  }, [images]);
 
   const handleSex = (e) => {
     const id = e.currentTarget.id
@@ -74,8 +117,7 @@ export default function PersonalInfo() {
         sexIsPublic: user.sexIsPublic,
         bioIsPublic: user.bioIsPublic,
         city: user.city,
-        cityIsPublic :user.cityIsPublic
-
+        cityIsPublic: user.cityIsPublic
 
       }, {
       withCredentials: true,
@@ -87,8 +129,8 @@ export default function PersonalInfo() {
         console.log(error)
       });
   }
-
   const handlePublicInfo = (info) => {
+
     axios.post('https://test.adexconnect.com/api/users/update-user-profile',
       {
         name: user.name,
@@ -99,17 +141,17 @@ export default function PersonalInfo() {
         profession: user.profession,
         sex: user.sex,
         handle: user.handle,
-        city:user.city,
+        city: user.city,
         handleIsPublic: info == 'handle' && user.handleIsPublic == '1' ? '0' : info == 'handle' && user.handleIsPublic == '0' ? '1' : user.handleIsPublic,
         professionIsPublic: info == 'profession' && user.professionIsPublic == '1' ? '0' : info == 'profession' && user.professionIsPublic == '0' ? '1' : user.professionIsPublic,
         sexIsPublic: info == 'sex' && user.sexIsPublic == '1' ? '0' : info == 'sex' && user.sexIsPublic == '0' ? '1' : user.sexIsPublic,
         bioIsPublic: info == 'bio' && user.bioIsPublic == '1' ? '0' : info == 'bio' && user.bioIsPublic == '0' ? '1' : user.bioIsPublic,
         cityIsPublic: info == 'city' && user.cityIsPublic == '1' ? '0' : info == 'city' && user.cityIsPublic == '0' ? '1' : user.cityIsPublic,
+
       }, {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log('response', response)
         setRefresh(!refresh)
 
       })
@@ -127,7 +169,7 @@ export default function PersonalInfo() {
           rounded-lg 
           p-6
           w-1/2
-          max-w-[600px]
+          max-w-[800px]
           min-w-[400px]
         ">
         <h1 className="text-[30px]">Personal Informations</h1>
@@ -309,7 +351,7 @@ export default function PersonalInfo() {
               )
             }
           </div>
-          
+
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {
               currentInfo === 'city' ? (
@@ -504,7 +546,22 @@ export default function PersonalInfo() {
             }
           </div>
 
+
         </div>
+
+        <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
+
+        <h1 className='text-[30px] mb-4 mt-6'>Image Gallery</h1>
+        <div className={`w-full flex justify-start ${inter.className}`}>
+          <div>
+            <ImageImporter
+              images={images}
+              setImages={(image) => setImages(image)}
+            />
+          </div>
+        </div>
+        <GalleryImage gallery={gallery} />
+
       </div>
     </div >
   );
