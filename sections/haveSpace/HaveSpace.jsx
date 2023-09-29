@@ -5,7 +5,7 @@ import Link from 'next/link'
 import properties1 from '../../public/properties-1.jpg'
 import properties2 from '../../public/properties-2.jpg'
 import properties3 from '../../public/properties-3.jpg'
-import properties4 from '../../public/about-adex-section.png'
+import properties4 from '../../public/about-adex-section.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { Inter } from 'next/font/google'
@@ -33,20 +33,19 @@ export default function HaveSpace() {
                         src={properties2}
                         alt="Adex Logo"
                         priority
-                        className='w-1/2 md:w-[33.3%] '
+                        className='w-1/2 md:w-[25%] '
                     />
                     <Image
                         src={properties1}
                         alt="Adex Logo"
                         priority
-                        className='w-1/2 md:w-[33.3%]'
+                        className='w-1/2 md:w-[37.5%]'
                     />
                     <Image
                         src={properties3}
                         alt="Adex Logo"
                         priority
-                        style={{ width: '33.4%', aspectRatio: 1 }}
-                        className='hidden md:flex md:w-[33.3%]'
+                        className='hidden md:flex md:w-[37.5%]'
 
                     />
                 </div>
@@ -63,7 +62,7 @@ export default function HaveSpace() {
                             src={properties4}
                             alt="Adex Logo"
                             priority
-                            className='rounded-md xl:max-w-[600px] w-full lg:h-[250px] xl:h-[300px] mt-4'
+                            className='rounded-md shadow-md xl:max-w-[600px] w-full lg:h-[250px] xl:h-[300px] mt-4 object-cover'
                         />
                     </div>
                 </div>

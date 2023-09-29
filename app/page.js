@@ -1,5 +1,4 @@
-import Image from 'next/image'
-import banner from '../public/adex-home-banner.png'
+
 import Banner from '../sections/banner/Banner.jsx'
 import HaveSpace from '@/sections/haveSpace/HaveSpace'
 import AnyPerson from '@/sections/anyPerson/AnyPerson'

@@ -22,37 +22,37 @@ export default function page() {
         </div>
         <div className=' w-full flex'>
           <Image
-              src='/Rectangle 101.png'
+              src='/Rectangle 101.jpg'
+              alt="image of people"
+              priority
+              width={2000}
+              height={2000}
+              className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
+          />
+          <Image
+              src='/Rectangle 100.jpg'
               alt="image of people"
               priority
               width={300}
               height={300}
               className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
-          />
-          <Image
-              src='/Rectangle 100.png'
-              alt="image of people"
-              priority
-              width={300}
-              height={300}
-              className='w-1/2 md:w-[33.3%] lg:w-[30%] h-[288px]'
 
           />
           <Image
-              src='/Rectangle 105.png'
+              src='/Rectangle 105.jpg'
               alt="image of people"
               priority
-              width={300}
-              height={300}
-              className='hidden md:flex w-[33.3%] lg:w-[30%] h-[288px]'
+              width={2000}
+              height={2000}
+              className='hidden md:flex w-[33.3%] lg:w-[40%] h-[288px]'
 
           />
           <Image
-              src='/Rectangle 104.png'
+              src='/Rectangle 104.jpg'
               alt="image of people"
               priority
-              width={300}
-              height={300}
+              width={2000}
+              height={2000}
               className='hidden lg:flex w-1/5 h-[288px]'
           />
         </div>

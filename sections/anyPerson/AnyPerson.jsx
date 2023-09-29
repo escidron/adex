@@ -2,9 +2,9 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import properties4 from '../../public/properties-4.png'
+import properties4 from '../../public/properties-4.jpg'
 import properties5 from '../../public/properties-5.png'
-import properties6 from '../../public/properties-6.png'
+import properties6 from '../../public/properties-6.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 
@@ -17,12 +17,14 @@ export default function AnyPerson() {
             <div className='lg:w-[70%] text-white mt-6'>
                 <p className='text-center text-[16px] lg:text-[18px] px-[10px]'>By now you know – any person, place, or thing can earn with ADEX. Your creativity is your only limitation.  Good news is, now you’re here ready to create a listing – fantastic! Here are some things to keep in mind so that your listing pops and stands out above the crowd:</p>
             </div>
-            <div className=' w-full flex mt-6'>
+            <div className=' w-full md:w-[70%] flex mt-6'>
                 <Image
                     src={properties4}
+                    width={2000}
+                    height={2000}
                     alt="Adex Logo"
                     priority
-                    className='w-1/2 md:w-[33.3%] '
+                    className='w-1/2 md:w-[33.3%] rounded-l-[10px]'
 
                 />
                 <Image
@@ -36,7 +38,7 @@ export default function AnyPerson() {
                     src={properties6}
                     alt="Adex Logo"
                     priority
-                    className='hidden md:flex w-1/2 md:w-[33.3%] '
+                    className='hidden md:flex w-1/2 md:w-[33.3%] rounded-r-[10px]'
                 />
             </div>
             <div className='lg:w-[50%] text-white mt-6 px-[15px]'>
