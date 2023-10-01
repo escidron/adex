@@ -8,8 +8,8 @@ import dayjs, { Dayjs } from 'dayjs';
 export default function DatePickerComponent({ setDate,maxHeight,disabled,currentValue }) {
   const date = new Date();
 
-  let day = date.getDate()+ 1;
-  let month = date.getMonth() ;
+  let day = date.getDate();
+  let month = date.getMonth()+ 1 ;
   let year = date.getFullYear()
 
   const [value, setValue] = useState(dayjs(`${year}-${month}-${day}`));
