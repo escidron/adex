@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import HelpIcon from '@mui/icons-material/Help';
 import { ThreeDots } from 'react-loader-spinner'
@@ -11,15 +12,25 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import CancelBooking from '../modals/CancelBooking';
 import toast from 'react-hot-toast';
+import Countdown, { zeroPad } from 'react-countdown';
+
 const inter = Inter({ subsets: ['latin'] })
 
-export default function ApproveReservation({ advertisement, discounts, currentDiscount,setBookingAccepted,setBookingRejected }) {
+export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
     const [discountOptions, setDiscountOptions] = useState(false);
     const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
     const [cancelMessage, setCancelMessage] = useState('');
     const router = useRouter();
+    const pathName = usePathname();
+
+    const createdDate = new Date(advertisement.created_at);
+
+    const currentDate = new Date();
+
+    const millisecondsDifference = createdDate - currentDate;
+    const fiveDaysMiliseconds = 5 * 24 * 60 * 60 * 1000;
 
     const Booking = () => {
         setIsPending1(true)
@@ -67,18 +78,20 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const cancelBooking = () => {
         setOpenCancelBookingModal(false)
+
         axios.post('https://test.adexconnect.com/api/payments/cancel-booking',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
                 buyerId: advertisement.requested_by,
-                cancelMessage:cancelMessage
+                cancelMessage: cancelMessage,
 
             }, {
             withCredentials: true,
         })
             .then(function (response) {
                 toast.success('Booking sucessfuly canceled.')
+
                 router.push('/my-profile?tab=5&sub-tab=1')
 
             })
@@ -86,8 +99,47 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 toast.error(error.response.data.error)
             });
     }
+
+    const Finished = () => (
+        <span style={{ color: 'red' }}>No Cancellation available</span>
+    );
+
+    const renderer = ({ total, days, hours, minutes, seconds }) => {
+        if (total) {
+            // Render a countdown
+            return (
+                <div style={{ display: 'flex', position: 'relative', justifyContent: 'space-between' }}>
+
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '60px' }}>
+                        {zeroPad(days)}
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '10px' }}>
+                        :
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '60px' }}>
+                        {zeroPad(hours)}
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '10px' }}>
+                        :
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '60px' }}>
+                        {zeroPad(minutes)}
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '10px' }}>
+                        :
+                    </span>
+                    <span className='text-green' style={{ fontSize: '35px', textAlign: 'center', marginBottom: '0px', width: '60px' }}>
+                        {zeroPad(seconds)}
+                    </span>
+                </div>
+            );
+        } else {
+            // Render a finished state
+            return <Finished />;
+        }
+    };
     return (
-        <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
+        <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
 
             {advertisement?.price && (
                 <div className='flex justify-center'>
@@ -127,9 +179,9 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 {
                     advertisement.ad_duration_type !== '0' && (
                         <div className='mt-8 flex justify-between items-center'>
-                        <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0" ? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
-                        <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
-                    </div>
+                            <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0" ? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
+                            <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
+                        </div>
                     )
                 }
                 {
@@ -174,7 +226,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             {
                 advertisement?.status == 4 ? (
                     <div className='mt-auto'>
-                        <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10 flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+                        <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10  flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
                             {
                                 isPending1 ? (
                                     <ThreeDots
@@ -188,7 +240,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 ) : 'Accept'
                             }
                         </button>
-                        <button disabled={isPending2 || isPending1 ? true : false} onClick={Decline} className={`z-10 flex advertisement justify-center border border-black text-black mt-2 py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                        <button disabled={isPending2 || isPending1 ? true : false} onClick={Decline} className={`z-10 flex mt-2 advertisement justify-center border border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
                             {
                                 isPending2 ? (
                                     <ThreeDots
@@ -205,10 +257,10 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </div>
                 ) : ('')
             }
-                        {
+            {
                 advertisement?.status == 2 && (
                     <>
-                        <button disabled={isPending2 || isPending1 ? true : false} onClick={()=>setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                        <button disabled={isPending2 || isPending1 ? true : false} onClick={() => setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
                             {
                                 isPending2 ? (
                                     <ThreeDots
@@ -223,17 +275,34 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                             }
                         </button>
                     </>
-                ) 
+                )
             }
 
             {
                 openCancelBookingModal && (
-                    <CancelBooking 
+                    <CancelBooking
                         cancelBooking={cancelBooking}
-                        setCancelMessage = {(message)=>setCancelMessage(message)}
+                        setCancelMessage={(message) => setCancelMessage(message)}
                         cancelMessage={cancelMessage}
-                        setOpenCancelBookingModal={(closeModal)=>setOpenCancelBookingModal(closeModal)}
+                        setOpenCancelBookingModal={(closeModal) => setOpenCancelBookingModal(closeModal)}
                     />
+                )
+            }
+
+
+            {
+                advertisement.ad_duration_type === '0' && (
+
+                    <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
+                        <p>Time Remaining for Cancellation</p>
+                        <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} />
+                        <div className='flex mt-[-10px] text-[14px]'>
+                            <p className='absolute bottom-[12px] left-[60px]'>Days</p>
+                            <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
+                            <p className='absolute bottom-[12px] left-[195px]'>Minutes</p>
+                            <p className='absolute bottom-[12px] left-[270px]'>Seconds</p>
+                        </div>
+                    </div>
                 )
             }
 
