@@ -2,19 +2,23 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
+import DatePickerComponent from '../datePicker/DatePickerComponent';
 import { Inter } from 'next/font/google'
+import CounterComponent from '../counter/CounterComponent';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
 import SecondaryButton from '../buttons/SecondaryButton';
+import dayjs, { Dayjs } from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import axios from 'axios';
+import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
 import TextField from '../inputs/TextField';
 import Switch from '@mui/material/Switch';
-import { styled } from '@mui/material/styles';
+import { duration, styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
@@ -45,6 +49,9 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   const [discount, setDiscount] = useState('');
   const [discounts, setDiscounts] = useState([]);
   const [importFromGallery, setImportFromGallery] = useState(false);
+  const [date, setDate] = useState(null);
+
+console.log('my selected day',date)
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -56,7 +63,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
       formik.values.durationType = id
       setdurationType(id);
       formik.values.price = ''
-
     }
   }
   const validate = values => {
@@ -120,7 +126,10 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
           discounts: discounts,
           has_payout:hasPayout,
           company_id:selectedCompany,
-          importFromGallery:importFromGallery
+          importFromGallery:importFromGallery,
+          start_date : isPeriodic !== 1 ? date : null
+          
+
         }, {
         withCredentials: true,
       })
@@ -150,21 +159,18 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     setDiscountDuration('')
     setDiscount('')
     setShowDiscounts(false)
-
   }
   const removeDiscount = (id) => {
     const newDiscounts = discounts.filter((item, index) => index != id);
     setDiscounts(newDiscounts)
   }
-
   return (
     <>
       {!response ? (
 
         <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-8 gap-y-6' onSubmit={formik.handleSubmit}>
-          {
-            isPeriodic === 1 ? (
-              <div className=" w-full relative flex gap-2 mt-auto">
+          
+          <div className=" w-full relative flex gap-2 mt-auto">
                 <TextField
                   id='title'
                   label='Title'
@@ -175,21 +181,19 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
                 />
                 {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
               </div>
-
-            ) : (
+          {
+            isPeriodic !== 1 &&  (
               <div className=" w-full relative flex gap-2">
-                <div className='w-[70%]'>
-                  <TextField
-                    id='title'
-                    label='Title'
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.title}
-                    errors={formik.errors.title}
-                  />
-                  {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
+                <div className='w-[50%]'>
+                    <label htmlFor="date" className='mb-1'>Start date</label>
+                    <DatePickerComponent
+                        id='date'
+                        setDate={(date) => setDate(date)}
+                        currentValue={''}
+                        maxHeight='55px'
+                    />
                 </div>
-                <div className={`w-[30%] relative`}>
+                <div className={`w-[50%] relative mt-auto`}>
                   <TextField
                     id='price'
                     label='Price'
@@ -406,17 +410,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
           </div>
-          {/* <div className=''>
-            <div className='flex ite gap-4'>
-              <PinkSwitch
-                {...label}
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-                sx={{ marginLeft: '10px' }} />
-              <p className='flex items-center'>Accept automatic Booking</p>
-            </div>
-            <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
-          </div> */}
+
           <div className='col-start-2 w-full flex justify-end'>
             <div className='w-full sm:max-w-[220px] sm:ml-2'>
               {

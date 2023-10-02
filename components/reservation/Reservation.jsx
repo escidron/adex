@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect,useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/navigation';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -33,7 +33,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [discountOptions, setDiscountOptions] = useState(false);
     const [user, setUser] = useContext(UserContext)
     const router = useRouter();
-    
+
     useEffect(() => {
         let hasDiscount = false
         discounts.map((item) => {
@@ -47,8 +47,10 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         }
 
     }, [counter]);
+
     const Booking = () => {
         if (user.isLogged) {
+            console.log('entrou no true')
             if (hasCard) {
                 setIsPending(true)
                 if (data.is_automatic === '1') {
@@ -79,13 +81,12 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     {
                         data: data,
                         duration: counter,
-                        start_date: date
+                        start_date: data.ad_duration_type !== '0'? date : data.start_date
                     }, {
                     withCredentials: true,
                 })
                     .then(function (response) {
                         setIsPending(false)
-                        console.log('set is requested')
                         setIsRequested(true)
                     })
                     .catch(function (error) {
@@ -95,7 +96,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             }
             setIncomplete(true)
         } else {
-            router.push('/login')
+            console.log('entrou no false')
+            //router.push('/login')
         }
     }
     return (
@@ -115,6 +117,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         id='date'
                         setDate={(date) => setDate(date)}
                         disabled={data.ad_duration_type !== '0' ? false : true}
+                        currentValue={dayjs(`${data?.start_date}`)}
                     />
                 </div>
                 {
@@ -170,23 +173,29 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter - (data.price * counter) * (currentDiscount / 100)).toString()) : ''}`}</p>
                 </div>
             </div>
-            <button disabled={isPending ? true : false} onClick={Booking} className={`flex item justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg lg:mt-10 `}>
-                {data.is_automatic == '1' ? (
 
-                    isPending ? (
-                        <ThreeDots
-                            height="30"
-                            width="40"
-                            radius="9"
-                            color="#FCD33B"
-                            ariaLabel="three-dots-loading"
-                            visible={true}
-                        />
-                    ) : 'Book'
+            {
+                data.status == '1' && (
+                    <button disabled={isPending ? true : false} onClick={Booking} className={`flex item justify-center mt-auto bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg lg:mt-10 `}>
+                        {data.is_automatic == '1' ? (
 
-                ) : 'Request'}
-            </button>
-            {data.is_automatic === '0' && (
+                            isPending ? (
+                                <ThreeDots
+                                    height="30"
+                                    width="40"
+                                    radius="9"
+                                    color="#FCD33B"
+                                    ariaLabel="three-dots-loading"
+                                    visible={true}
+                                />
+                            ) : 'Book'
+
+                        ) : 'Request'}
+                    </button>
+
+                )
+            }
+            {data.is_automatic === '0' &&  data.status == '1' && (
                 <p className='text-[12px] mt-2'>You will only be charge if your reserve request is aproved</p>
             )}
             {incomplete && !hasCard && (

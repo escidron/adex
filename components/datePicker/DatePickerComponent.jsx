@@ -13,12 +13,13 @@ export default function DatePickerComponent({ setDate,maxHeight,disabled,current
   let year = date.getFullYear()
 
   const [value, setValue] = useState(dayjs(`${year}-${month}-${day}`));
+  console.log('date',value)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
 
       <DatePicker
         disabled={disabled?disabled:false} 
-        value={currentValue?currentValue:value}
+        value={currentValue?currentValue:''}
         onChange={(newValue) => {
           setValue(newValue)
           setDate(newValue)
