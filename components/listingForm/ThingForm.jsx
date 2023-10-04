@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
+import DatePickerComponent from '../datePicker/DatePickerComponent';
 import { Inter } from 'next/font/google'
+import CounterComponent from '../counter/CounterComponent';
 import { ThreeDots } from 'react-loader-spinner'
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
+import SecondaryButton from '../buttons/SecondaryButton';
 import dayjs, { Dayjs } from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import axios from 'axios';
+import base64ToBlob from '@/utils/base64ToBlob';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import Switch from '@mui/material/Switch';
@@ -48,8 +52,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const [discountDuration, setDiscountDuration] = useState('');
   const [discount, setDiscount] = useState('');
   const [discounts, setDiscounts] = useState([]);
-  const [importFromGallery, setImportFromGallery] = useState([]);
-
+  
   const [coords, setCoords] = useState({
     lat: -3.745,
     lng: -38.523
@@ -65,6 +68,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
   const handleBoxes = (e) => {
     const id = e.currentTarget.id
     if (id !== boxes) {
+      //formik.values.durationType = id
       setBoxes(id);
       if (id === '2') {
         setBoxesQtd(300);
@@ -116,12 +120,11 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
     validate,
     onSubmit: values => {
       setIsPending(true)
-
       axios.post(`https://test.adexconnect.com/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           title: values.title,
           description: values.description,
-          price: typeId === 17 ? values.price * boxesQtd : values.price,
+          price:  values.price,
           category_id: typeId,
           created_by: '',
           images: images,
@@ -134,8 +137,8 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
           per_unit_price: typeId === 17 ? values.price : 0,
           is_automatic:checked?'1':'0',
           discounts: discounts,
+          company_id:selectedCompany,
           has_payout:hasPayout,
-          company_id:selectedCompany
 
 
         }, {
@@ -194,7 +197,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
             </MapCoordinatesContext.Provider>
             {formik.touched.location && formik.errors.location ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.location}</div> : null}
           </div>
-          {typeId === 17 ? (
+          {/* {typeId === 17 ? (
             <div className="col-span-2 mt-2 w-full flex gap-4">
               <div className={`w-full`}>
                 <label htmlFor="emal" className="block   mb-1">
@@ -270,7 +273,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               </div>
 
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="col-start-1 mt-2 w-full relative">
             <textarea
@@ -292,23 +295,11 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               images={images} 
               setImages={(image) => setImages(image)} 
               selectedCompany={selectedCompany}
-              setImportFromGallery={(isImport)=>setImportFromGallery(isImport)}
 
               />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[190px] text-red-600 font-bold">{formik.errors.image}</div> : null}
           </div>
-          {/* <div className=''>
-            <div className='flex ite gap-4'>
-              <PinkSwitch
-                {...label}
-                checked={checked}
-                onChange={()=>setChecked(!checked)}
-                sx={{ marginLeft: '10px' }} />
-              <p className='flex items-center'>Accept automatic Booking</p>
-            </div>
-            <p className='text-[12px] text-gray-500'>You will not have to approve the reservation request</p>
-          </div> */}
           <div className='col-start-2 w-full flex justify-end mt-4'>
             <div className='w-full sm:max-w-[220px] sm:ml-2'>
               <button type="submit" className={`flex gap-2 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>

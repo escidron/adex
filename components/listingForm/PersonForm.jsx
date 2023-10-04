@@ -91,6 +91,11 @@ console.log('my selected day',date)
       errors.image = 'Required';
     }
 
+    if (!date) {
+      errors.date = 'Required';
+    }
+
+    console.log('error',errors)
     return errors;
   };
 
@@ -101,6 +106,7 @@ console.log('my selected day',date)
       description: edit ? advertisement.description : "",
       image: edit ? advertisement.image : images,
       price: edit ? advertisement.price : "",
+      date: edit ? advertisement.start_date : date,
     },
     validate,
     onSubmit: values => {
@@ -184,14 +190,16 @@ console.log('my selected day',date)
           {
             isPeriodic !== 1 &&  (
               <div className=" w-full relative flex gap-2">
-                <div className='w-[50%]'>
-                    <label htmlFor="date" className='mb-1'>Start date</label>
+                <div className='w-[50%] relative'>
+                    <label htmlFor="date" className='mb-1'>Event date</label>
                     <DatePickerComponent
                         id='date'
                         setDate={(date) => setDate(date)}
                         currentValue={''}
                         maxHeight='55px'
                     />
+                    {formik.touched.date && formik.errors.date ? <div className="absolute top-[80px] text-red-600 font-bold text-[12px]">{formik.errors.date}</div> : null}
+
                 </div>
                 <div className={`w-[50%] relative mt-auto`}>
                   <TextField

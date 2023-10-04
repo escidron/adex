@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
@@ -22,15 +22,34 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const [discountOptions, setDiscountOptions] = useState(false);
     const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
     const [cancelMessage, setCancelMessage] = useState('');
+    const [finishCountdown, setFinishCountdown] = useState(false);
     const router = useRouter();
     const pathName = usePathname();
 
     const createdDate = new Date(advertisement.created_at);
-
     const currentDate = new Date();
 
-    const millisecondsDifference = createdDate - currentDate;
+    const millisecondsDifference = currentDate - createdDate;
     const fiveDaysMiliseconds = 5 * 24 * 60 * 60 * 1000;
+    useEffect(() => {
+        axios.post('https://test.adexconnect.com/api/payments/get-contract',
+            {
+                advertisementId: advertisement.id,
+                sellerId: advertisement.created_by,
+                buyerId: advertisement.requested_by
+            }, {
+            withCredentials: true,
+        })
+            .then(function (response) {
+                console.log('contract info', response)
+                setFinishCountdown(response.data.cancellation_allowed == '0')
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+
+    }, [advertisement]);
 
     const Booking = () => {
         setIsPending1(true)
@@ -100,9 +119,23 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             });
     }
 
-    const Finished = () => (
-        <span style={{ color: 'red' }}>No Cancellation available</span>
-    );
+    const Finished = () => {
+        axios.post('https://test.adexconnect.com/api/payments/update-cancellation-status',
+            {
+                advertisementId: advertisement.id,
+                sellerId: advertisement.created_by,
+                buyerId: advertisement.requested_by
+            }, {
+            withCredentials: true,
+        })
+            .then(function (response) {
+                setFinishCountdown(true)
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+        return null
+    };
 
     const renderer = ({ total, days, hours, minutes, seconds }) => {
         if (total) {
@@ -138,10 +171,12 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             return <Finished />;
         }
     };
+
+    console.log('finishCountdown', finishCountdown)
     return (
         <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
 
-            {advertisement?.price && (
+            {advertisement?.price && advertisement.category_id != 17 && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
@@ -149,16 +184,27 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </p>
                 </div>
             )}
-            <div className=' flex items-center justify-between gap-2 mt-4' disabled={true}>
-                <div className='w-[50%]'>
-                    <label htmlFor="date" className='mb-1'>Start date</label>
-                    <DatePickerComponent
-                        id='date'
-                        setDate={(date) => setDate(date)}
-                        disabled={true}
-                        currentValue={dayjs(`${advertisement?.start_date}`)}
-                    />
-                </div>
+            <div className={` flex items-center ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
+                {
+                    advertisement.category_id == 17 ? (
+                        <div className='flex gap-1 items-end'>
+                            <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''} x ${advertisement.duration}`}</p>
+                            <p className='mb-1'>Units</p>
+                        </div>
+
+                    ) : (
+
+                        <div className='w-[50%]'>
+                            <label htmlFor="date" className='mb-1'>Start date</label>
+                            <DatePickerComponent
+                                id='date'
+                                setDate={(date) => setDate(date)}
+                                disabled={true}
+                                currentValue={dayjs(`${advertisement?.start_date}`)}
+                            />
+                        </div>
+                    )
+                }
                 {
                     advertisement.ad_duration_type !== '0' && (
                         <div className='w-[50%]'>
@@ -258,7 +304,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 ) : ('')
             }
             {
-                advertisement?.status == 2 && (
+                advertisement?.status == 2 && !finishCountdown && (
                     <>
                         <button disabled={isPending2 || isPending1 ? true : false} onClick={() => setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
                             {
@@ -291,18 +337,30 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
 
             {
-                advertisement.ad_duration_type === '0' && (
+                advertisement.ad_duration_type === '0' && advertisement.status == 2 && (
+                    <>
+                        {
+                            finishCountdown ? (
+                                <div className='flex flex-col justify-center items-center bg-[#FCD33B] mt-auto rounded-lg p-2 relative py-6'>
+                                    <p className='text-lg'>Cancellation is no longer possible.</p>
 
-                    <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
-                        <p>Time Remaining for Cancellation</p>
-                        <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} />
-                        <div className='flex mt-[-10px] text-[14px]'>
-                            <p className='absolute bottom-[12px] left-[60px]'>Days</p>
-                            <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
-                            <p className='absolute bottom-[12px] left-[195px]'>Minutes</p>
-                            <p className='absolute bottom-[12px] left-[270px]'>Seconds</p>
-                        </div>
-                    </div>
+                                </div>
+                            ) : (
+                                <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
+                                    <p>Time Remaining for Cancellation</p>
+                                    <Countdown date={Date.now() + 10000} renderer={renderer} />
+                                    {/* <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} /> */}
+                                    <div className='flex mt-[-10px] text-[14px]'>
+                                        <p className='absolute bottom-[12px] left-[60px]'>Days</p>
+                                        <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
+                                        <p className='absolute bottom-[12px] left-[195px]'>Minutes</p>
+                                        <p className='absolute bottom-[12px] left-[270px]'>Seconds</p>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </>
+
                 )
             }
 

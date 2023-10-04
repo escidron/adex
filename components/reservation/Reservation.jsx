@@ -49,10 +49,17 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [counter]);
 
     const Booking = () => {
+        console.log('user is loged', user.isLogged)
         if (user.isLogged) {
             console.log('entrou no true')
             if (hasCard) {
                 setIsPending(true)
+                //not using now
+                console.log('entrou no senddd',                    {
+                    data: data,
+                    duration: counter,
+                    start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ?  data.start_date : null
+                })
                 if (data.is_automatic === '1') {
                     axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
                         {
@@ -81,7 +88,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     {
                         data: data,
                         duration: counter,
-                        start_date: data.ad_duration_type !== '0'? date : data.start_date
+                        start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ?  data.start_date : null
                     }, {
                     withCredentials: true,
                 })
@@ -107,23 +114,32 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
                         {data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
+                        {
+                            data.category_id == 17 && '/Units'
+                        }
                     </p>
                 </div>
             )}
-            <div className=' flex items-center justify-between gap-2 mt-4'>
-                <div className='w-[60%]'>
-                    <label htmlFor="date" className='mb-1'>Start date</label>
-                    <DatePickerComponent
-                        id='date'
-                        setDate={(date) => setDate(date)}
-                        disabled={data.ad_duration_type !== '0' ? false : true}
-                        currentValue={dayjs(`${data?.start_date}`)}
-                    />
-                </div>
+            <div className={` flex items-center  ${data.category_id == 17 ? 'justify-center' : 'justify-between' } gap-2 mt-4`}>
+
                 {
-                    data.ad_duration_type !== '0' && (
+                    data.category_id != 17 && (
+
+                        <div className='w-[60%]'>
+                            <label htmlFor="date" className='mb-1'>Start date</label>
+                            <DatePickerComponent
+                                id='date'
+                                setDate={(date) => setDate(date)}
+                                disabled={data.ad_duration_type !== '0' ? false : true}
+                                currentValue={dayjs(`${data?.start_date}`)}
+                            />
+                        </div>
+                    )
+                }
+                {
+                    data.ad_duration_type !== '0' || data.category_id == 17 && (
                         <div className='w-[40%] flex flex-col items-center'>
-                            <label htmlFor="date" className='mb-1'>Duration</label>
+                            <label htmlFor="date" className='mb-1'>{data.category_id == 17 ? 'Units' : 'Duration'}</label>
                             <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
                         </div>
                     )
@@ -131,7 +147,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
             <div className='w-[90%] '>
                 <div className='mt-8 flex justify-between items-center'>
-                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
+                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {
@@ -195,7 +211,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
 
                 )
             }
-            {data.is_automatic === '0' &&  data.status == '1' && (
+            {data.is_automatic === '0' && data.status == '1' && (
                 <p className='text-[12px] mt-2'>You will only be charge if your reserve request is aproved</p>
             )}
             {incomplete && !hasCard && (
