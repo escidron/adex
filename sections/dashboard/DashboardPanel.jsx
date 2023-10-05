@@ -5,7 +5,8 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function DashboardPanel() {
+export default function DashboardPanel({ balance }) {
+    const pendingPayments = (balance.pending[0].amount/ 100).toFixed(2)
     return (
         <>
             <div className='p-4 bg-[#D9D9D9] flex h-[calc(100vh-340px)]'>
@@ -14,25 +15,25 @@ export default function DashboardPanel() {
                         <div className='w-full h-[100%] min-h-[140px] bg-white rounded-lg flex justify-center items-center'>
                             <div className={`flex flex-col ${inter.className} items-center`}>
                                 <label className='font-[600] text-[15px]'>Current Balance</label>
-                                <h1 className='text-[20px] text-[#31639C]'>$147.98</h1>
+                                <h1 className='text-[20px] text-[#31639C]'>$0</h1>
                             </div>
                         </div>
                         <div className='w-full h-[100%] min-h-[140px] bg-white rounded-lg flex justify-center items-center'>
                             <div className={`flex flex-col ${inter.className} items-center`}>
                                 <label className='font-[600] text-[15px]'>Pending Transactions</label>
-                                <h1 className='text-[20px] text-[#31639C]'>$107.32</h1>
+                                <h1 className='text-[20px] text-[#31639C]'>$ {pendingPayments}</h1>
                             </div>
                         </div>
                         <div className='w-full h-[100%] min-h-[140px] bg-white rounded-lg flex justify-center items-center'>
                             <div className={`flex flex-col ${inter.className} items-center`}>
                                 <label className='font-[600] text-[15px]'>Total Revenue</label>
-                                <h1 className='text-[20px] text-[#31639C]'>$675.32</h1>
+                                <h1 className='text-[20px] text-[#31639C]'>$</h1>
                             </div>
                         </div>
                         <div className='w-full h-[100%] min-h-[140px] bg-white rounded-lg flex justify-center items-center'>
                             <div className={`flex flex-col ${inter.className} items-center`}>
                                 <label className='font-[600] text-[15px]'>Taxable Income</label>
-                                <h1 className='text-[20px] text-[#31639C]'>$202.59</h1>
+                                <h1 className='text-[20px] text-[#31639C]'>$0</h1>
                             </div>
                         </div>
                     </div>
@@ -44,7 +45,7 @@ export default function DashboardPanel() {
                             <p className='font-[600] text-[15px]'>Longest Running Ad</p>
                             <div className='relative flex flex-col justify-center items-center w-[250] h-[250]'>
                                 <Image
-                                    src='/Calendar 1.png'
+                                    src='/calendar 1.png'
                                     alt="calendar"
                                     width={1800}
                                     height={1800}
