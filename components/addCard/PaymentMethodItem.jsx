@@ -1,42 +1,48 @@
 import React from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-export default function PaymentMethodItem({ item,setCheckDefault }) {
-
+import { Trash } from 'lucide-react';
+export default function PaymentMethodItem({ item, setCheckDefault, setShowDeleteModal,setDeleteId }) {
     const handleSelected = (e) => {
         axios.post('https://test.adexconnect.com/api/payments/set-default-card',
-        {cardId:e.target.id}, {
-        withCredentials: true,
-        headers: {
-            'content-type': 'application/json'
-        }
-    })
-        .then(function (response) {
-            setCheckDefault(true)
+            { cardId: item.id }, {
+            withCredentials: true,
         })
-        .catch(function (error) {
-            console.log(error)
-        });
+            .then(function (response) {
+                setCheckDefault(true)
+                console.log('response', response)
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
     }
+
+
     return (
-        <div className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[30px] py-[15px] rounded-md max-w-[450px]`}>
+        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[30px] py-[15px] rounded-md max-w-[450px] cursor-pointer`}>
             <div className='flex gap-2 items-center'>
                 <div className='w-[40px] h-[40px] '>
                     <Image
-                        src={`/${item.card_brand.toLowerCase()}.png`}
+                        src={`/${item.card.brand.toLowerCase()}.png`}
                         alt="card brand"
                         priority
                         width={100}
                         height={100}
                     />
                 </div>
-                <div >
-                    <div className='flex items-center font-[400]'>
-                        <p className='text-[20px]'>{`${item.card_brand.toLowerCase() === 'visa' ? 'Visa ' : 'MasterCard '}`}</p>
-                        <div className='h-[15px] ml-1'>
-                            <p className='ml-[1px]'>****</p>
+                <div className='ml-1'>
+                    <p className='font-semibold'>{item.name_on_card}</p>
+                    <div className='flex items-center font-[400] gap-1'>
+                        <div className='h-[15px] '>
+                            <p className=' font-semibold text-[15px]'>**** **** ****</p>
                         </div>
-                        <p>{item.card_number}</p>
+                        <p className='font-semibold'>{item.card.last4}</p>
+
+                    </div>
+
+                    <div className='flex gap-2 items-center'>
+                        <p >Expiration: </p>
+                        <p className='font-semibold'>{`${item.card.exp_month}/${item.card.exp_year}`}</p>
                         {
                             item.is_default == 1 ? (
 
@@ -46,16 +52,16 @@ export default function PaymentMethodItem({ item,setCheckDefault }) {
                             ) : ''
                         }
                     </div>
-
-                    <div>
-                        <p>{`Expiration: ${item.expiry_date.substring(5, 7)}/${item.expiry_date.substring(0, 4)}`}</p>
-
-                    </div>
                 </div>
             </div>
-            <div className='focus:outline-none'>
-                <input onChange={(e) => handleSelected(e)} type="radio" value="" checked={item.is_default == 1 ? true : false} id={item.stripe_payment_method_id} className='text-black checked:text-black' />
+            <div onClick={(e) => {
+                e.stopPropagation()
+                setDeleteId(item.id)
+                setShowDeleteModal(true)
+            }} className='p-2 rounded-md hover:bg-slate-100 cursor-pointer'>
+                <Trash />
             </div>
+
         </div>
     )
 }

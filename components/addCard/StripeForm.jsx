@@ -11,6 +11,7 @@ import {
 } from '@stripe/react-stripe-js';
 import CloseIcon from '@mui/icons-material/Close';
 import { Inter } from 'next/font/google'
+import Footer from '../footer/Footer';
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 
@@ -34,21 +35,15 @@ export default function StripeForm({ setShowModal, setRefetch }) {
             type: 'card',
             card: elements.getElement(CardNumberElement),
         });
+
         if (!error) {
             setShowModal(false)
             axios.post('https://test.adexconnect.com/api/payments/customer',
                 {
                     cardId: paymentMethod.id,
-                    cardNumber: paymentMethod.card.last4,
-                    exp_year: paymentMethod.card.exp_year,
-                    exp_month: paymentMethod.card.exp_month,
                     nameOnCard: nameOnCard,
-                    brand: paymentMethod.card.brand,
                 }, {
                 withCredentials: true,
-                headers: {
-                    'content-type': 'application/json'
-                }
             })
                 .then(function (response) {
 
