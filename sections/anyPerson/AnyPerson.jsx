@@ -1,54 +1,91 @@
-'use client'
 import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import properties4 from '../../public/properties-4.jpg'
-import properties5 from '../../public/properties-5.png'
-import properties6 from '../../public/properties-6.jpg'
-import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Image from 'next/image';
+import Link from 'next/link';
+const data = [
+    { id:1,
+      photo :require('../../public/image 29.png'),
+      comment:'It was incredibly easy to post the unused apartment above my garage for rent and have since been paying my mortgage with the proceeds.'
+      
+    },
+    { id:2,
+      photo :require('../../public/image 30.png'),
+      comment:'It was incredibly easy to post the unused apartment above my garage for rent and have since been paying my mortgage with the proceeds.'
 
-export default function AnyPerson() {
-    const [user,setUser] = useContext(UserContext)
+    },
+    { id:3,
+      photo :require('../../public/image 31.png'),
+      comment:'It was incredibly easy to post the unused apartment above my garage for rent and have since been paying my mortgage with the proceeds.'
 
-    return (
-        <div className='bg-black h-auto py-[30px] flex flex-col justify-center items-center'>
-            <h1 className='flex text-[32px] lg:text-[51px] text-white'>Any <span className='text-[#FCD33B] mx-2'>person</span>, place or thing</h1>
-            <div className='lg:w-[70%] text-white mt-6'>
-                <p className='text-center text-[16px] lg:text-[18px] px-[10px]'>By now you know – any person, place, or thing can earn with ADEX. Your creativity is your only limitation.  Good news is, now you’re here ready to create a listing – fantastic! Here are some things to keep in mind so that your listing pops and stands out above the crowd:</p>
-            </div>
-            <div className=' w-full md:w-[70%] flex mt-6'>
-                <Image
-                    src={properties4}
-                    width={2000}
-                    height={2000}
-                    alt="Adex Logo"
-                    priority
-                    className='w-1/2 md:w-[33.3%] rounded-l-[10px]'
+    },
+    { id:4,
+      photo :require('../../public/image 29.png'),
+      comment:'It was incredibly easy to post the unused apartment above my garage for rent and have since been paying my mortgage with the proceeds.'
 
-                />
-                <Image
-                    src={properties5}
-                    alt="Adex Logo"
-                    priority
-                    className='w-1/2 md:w-[33.3%] '
-                />
+    }
 
-                <Image
-                    src={properties6}
-                    alt="Adex Logo"
-                    priority
-                    className='hidden md:flex w-1/2 md:w-[33.3%] rounded-r-[10px]'
-                />
-            </div>
-            <div className='lg:w-[50%] text-white mt-6 px-[15px]'>
-                <p className='text-center text-[16px] lg:text-[18px]'>Are you a person that would like to offer yourself as Ad space or, do you have a place or thing you’d like to offer up as Ad space, create a Listing in a few easy steps:</p>
-            </div>
-            <Link href={user.isLogged?'/listing':'/login'}>
-                <button className='z-10 bg-[#FCD33B] py-[8px] px-[20px] mt-6 rounded-md hover:bg-black hover:text-[#FCD33B] text-md flex items-center justify-center'>
-                    <p className='style_banner_button_text font-semibold text-18px]'>Create a listing</p>
-                </button>
-            </Link>
+  ]
+
+export default function Carrousel() {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 2,
+        dotsClass: 'button__bar',
+        responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+            
+            slidesToShow: 2
+            }
+        },
+        {
+            breakpoint: 780,
+            settings: {
+            
+            slidesToShow: 1
+            }
+        },
+        {
+            breakpoint: 500,
+            settings: {
+            
+            slidesToShow: 1,
+            slidesToScroll:1
+            }
+        }
+        ]
+
+    };
+    const listItems = data.map((item) =>
+    
+    <li key={item.id} className='flex flex-col justify-center items-center mt-8'>
+      <div className='flex flex-col justify-center items-center'>
+        <div className='rounded-full flex justify-center p-4'>
+          <Image
+                  src={item.photo}
+                  alt="Adex item"
+                  width={100}
+                  height={100}
+                  className='rounded-full '
+                  />
         </div>
-    )
+        <p className='w-[80%]'>{item.comment}</p>
+      </div>
+    </li>
+  );
+  return (
+    <div className='w-full md:w-[80%]'>
+      <Slider {...settings}>
+        {listItems}
+      </Slider>
+  </div>
+  )
 }
+
+

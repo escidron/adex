@@ -31,11 +31,11 @@ const data = [
 export default function Carrousel() {
     const settings = {
         dots: true,
-        dotsClass: 'button__bar',
         infinite: true,
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 2,
+        dotsClass: 'button__bar',
         responsive: [
         {
             breakpoint: 1024,
@@ -80,7 +80,7 @@ export default function Carrousel() {
     </li>
   );
   return (
-    <div className='w-[80%]'>
+    <div className='w-full md:w-[80%]'>
       <Slider {...settings}>
         {listItems}
       </Slider>

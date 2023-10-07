@@ -123,6 +123,7 @@ input[type=number] {
 .slick-dots{
   bottom: 25px!important;
 }
+
 .button__bar {
   display: inline-block;
   vertical-align: middle;
@@ -131,7 +132,7 @@ input[type=number] {
   padding: 0;
   background: rgba(255, 255, 255, 0.3);
   border-radius: 40px;
-  width: 70px;
+  /* width: 70px; */
   text-align: center;
 }
 
@@ -169,7 +170,6 @@ input[type=number] {
   display: block;
   margin: auto;
 }
-
 /* .slick-prev:before{
   margin-right: -25px;
 }
@@ -245,4 +245,9 @@ input[type=number] {
   background-color: rgb(121, 119, 119);
   border-radius: 20px;
   opacity: 0.1;
+}
+
+.close_icon:hover{
+  color: #FCD33B;
+  cursor: pointer;
 }
