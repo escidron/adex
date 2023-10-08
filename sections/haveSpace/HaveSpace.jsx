@@ -28,41 +28,41 @@ export default function HaveSpace() {
                         </button>
                     </Link>
                 </div>
-                <div className=' lg:w-[60%] flex md:h-[288px]'>
+                <div className=' lg:w-[60%] flex h-[288px]'>
                     <Image
                         src={properties2}
                         alt="Adex Logo"
                         priority
-                        className='w-1/2 md:w-[25%] '
+                        className='hidden md:flex w-1/2 md:w-[28%] lg:hidden xl:flex xl:w-[25%] '
                     />
                     <Image
                         src={properties1}
                         alt="Adex Logo"
                         priority
-                        className='w-1/2 md:w-[37.5%]'
+                        className='w-full sm:w-1/2 md:w-[36%] lg:w-1/2 xl:w-[37.5%]'
                     />
                     <Image
                         src={properties3}
                         alt="Adex Logo"
                         priority
-                        className='hidden md:flex md:w-[37.5%]'
+                        className='hidden sm:flex sm:w-1/2 md:w-[36%] lg:w-1/2 xl:w-[37.5%]'
 
                     />
                 </div>
             </div>
 
-            <div className='style_earn_extra flex justify-around  w-full mx-auto p-[40px] lg:px-[20px] xl:p-[80px] '>
-                <div className='xl:w-[80%] gap-4 flex flex-col lg:flex-row justify-around lg:justify-between items-center '>
+            <div className='style_earn_extra flex justify-center w-full mx-auto p-[40px] lg:px-[20px] xl:p-[80px] '>
+                <div className='md:w-[80%] gap-8 flex flex-col lg:flex-row justify-between items-center '>
                     <div className='w-full flex flex-col items-center lg:items-start lg:w-[50%] '>
-                        <p className=' text-[32px] lg:text-[35px] xl:text-[51px] '>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
+                        <p className=' text-[32px] lg:text-[35px] xl:text-[48px] '>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
                         <p className='mt-5 text-[18px]'>Whether you’re looking for short term gig income or seeking to earn long term passive income, you can do it with ADEX. Our self-service marketplace listing platform empowers people and local businesses alike, allowing you to create conventional and unique advertising opportunities.</p>
                     </div>
-                    <div className='lg:w-[50%] bg-white rounded-md flex items-center'>
+                    <div className='w-full lg:w-[50%] bg-white rounded-md flex items-center'>
                         <Image
                             src={properties4}
                             alt="Adex Logo"
                             priority
-                            className='rounded-md shadow-md xl:max-w-[600px] w-full lg:h-[250px] xl:h-[300px] mt-4 object-cover'
+                            className='rounded-md shadow-md lg:max-w-[600px]  w-full h-[250px] lg:h-[300px] mt-4 object-cover'
                         />
                     </div>
                 </div>

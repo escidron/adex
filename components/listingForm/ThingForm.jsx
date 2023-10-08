@@ -161,7 +161,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
     <>
       {!response ? (
 
-        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
+        <form className='flex flex-col md:grid md:grid-cols-2 gap-x-10 gap-y-4' onSubmit={formik.handleSubmit}>
           <div className=" w-full relative flex gap-2">
             <div className='w-[70%]'>
               <TextField

@@ -348,8 +348,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                             ) : (
                                 <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
                                     <p>Time Remaining for Cancellation</p>
-                                    <Countdown date={Date.now() + 10000} renderer={renderer} />
-                                    {/* <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} /> */}
+                                    {/* <Countdown date={Date.now() + 10000} renderer={renderer} /> */}
+                                    <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} />
                                     <div className='flex mt-[-10px] text-[14px]'>
                                         <p className='absolute bottom-[12px] left-[60px]'>Days</p>
                                         <p className='absolute bottom-[12px] left-[130px]'>Hours</p>

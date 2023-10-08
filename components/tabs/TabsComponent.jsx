@@ -1,13 +1,9 @@
-import {useState} from 'react';
-import PropTypes from 'prop-types';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import AddCard from '../addCard/AddCard';
-import AddAccount from '../addAccount/AddAccount';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import TabIcon from './TabIcon';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

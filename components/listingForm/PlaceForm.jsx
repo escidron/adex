@@ -169,7 +169,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
     <>
       {!response ? (
 
-        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-10 gap-y-6' onSubmit={formik.handleSubmit}>
+        <form className='flex flex-col md:grid md:grid-cols-2 gap-x-10 gap-y-6' onSubmit={formik.handleSubmit}>
           {
             isPeriodic === 1 ? (
               <>

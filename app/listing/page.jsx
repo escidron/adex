@@ -149,7 +149,7 @@ export default function Listing() {
                                     </div>
                                 )
                             }
-                            <div className=' flex mt-10 mx-auto w-[90%] sm:w-1/2  justify-between items-center'>
+                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%]  justify-between items-center'>
                                 {selectedStep === 1 ? (
                                     <div className='flex flex-col'>
                                         <h1 className='text-[30px]'>Category</h1>
@@ -214,7 +214,7 @@ export default function Listing() {
                                 }
 
                             </div>
-                            <div className=' flex mt-10 mx-auto w-[90%] sm:w-[55%] flex-col'>
+                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%] flex-col'>
                                 {selectedStep < 3 ? (
                                     <Categories
                                         selectedStep={selectedStep}

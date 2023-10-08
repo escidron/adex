@@ -74,7 +74,7 @@ export default function Notifications() {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
-    <div className="flex flex-col items-center max-w-[40%] mx-auto ">
+    <div className="flex flex-col items-center w-[80%] lg:max-w-[700px] mx-auto ">
       <label htmlFor="privacy" className="text-[30px] mt-8">ADEX Notifications</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">

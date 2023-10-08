@@ -174,7 +174,7 @@ console.log('my selected day',date)
     <>
       {!response ? (
 
-        <form className='flex flex-col sm:grid sm:grid-cols-2 gap-x-8 gap-y-6' onSubmit={formik.handleSubmit}>
+        <form className='flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-6' onSubmit={formik.handleSubmit}>
           
           <div className=" w-full relative flex gap-2 mt-auto">
                 <TextField

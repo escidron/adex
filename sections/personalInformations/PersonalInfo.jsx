@@ -162,20 +162,11 @@ export default function PersonalInfo() {
 
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 `}>
-      <div className="
-          flex 
-          flex-col
-          items-center
-          rounded-lg 
-          p-6
-          w-1/2
-          max-w-[800px]
-          min-w-[400px]
-        ">
+      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[480px] min-w-[480px]">
         <h1 className="text-[30px]">Personal Informations</h1>
         <div className={`mt-2 w-full flex flex-col gap-3 ${inter.className}`}>
 
-          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px]">
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] w-full">
             {
               currentInfo === 'name' ? (
                 <>
@@ -196,11 +187,11 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Name</p>
-                    <p className='font-[300] text-gray-600'>{user.name != 'null' && user.name ? user.name : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.name != 'null' && user.name ? user.name : 'Not Provided'}</p>
                   </div>
                   <div onClick={() => setCurrentInfo('name')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    <Edit size={16} color='gray'/>
                   </div>
                 </>
               )
@@ -228,11 +219,12 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Last Name</p>
-                    <p className='font-[300] text-gray-600'>{user.lastName != 'null' && user.lastName ? user.lastName : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.lastName != 'null' && user.lastName ? user.lastName : 'Not Provided'}</p>
                   </div>
                   <div onClick={() => setCurrentInfo('lastname')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    <Edit size={16} color='gray'/>
+
                   </div>
                 </>
               )
@@ -260,11 +252,12 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Email</p>
-                    <p className='font-[300] text-gray-600'>{user.email != 'null' && user.email ? user.email : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap '>{user.email != 'null' && user.email ? user.email : 'Not Provided'}</p>
                   </div>
                   <div onClick={() => setCurrentInfo('email')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    <Edit size={16} color='gray'/>
+
                   </div>
                 </>
               )
@@ -296,7 +289,8 @@ export default function PersonalInfo() {
                   </div>
                   <div onClick={() => setCurrentInfo('phone')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                    <Edit size={16} color='gray'/>
+
                   </div>
                 </>
               )
@@ -305,7 +299,7 @@ export default function PersonalInfo() {
           <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
           <div className='mb-2 flex gap-3 font-[600] text-[18px] items-center'>
-            <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+            <EyeOff size={16} color='gray'/>
             <h1 className='text-[16px]'>Making public this informations means anyone can see it</h1>
           </div>
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
@@ -329,20 +323,21 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>User Handle</p>
-                    <p className='font-[300] text-gray-600'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                      <Edit size={16} color='gray'/>
+
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('handle')}>
                       {
                         user.handleIsPublic == '1' ? (
 
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <Eye size={16} color='gray'/>
                         ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <EyeOff size={16} color='gray'/>
                         )
                       }
                     </div>
@@ -373,20 +368,21 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>City</p>
-                    <p className='font-[300] text-gray-600'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('city')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                      <Edit size={16} color='gray'/>
+
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('city')}>
                       {
                         user.cityIsPublic == '1' ? (
 
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <Eye size={16} color='gray'/>
                         ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <EyeOff size={16} color='gray'/>
                         )
                       }
                     </div>
@@ -417,20 +413,21 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Profession</p>
-                    <p className='font-[300] text-gray-600'>{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap' >{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('profession')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                      <Edit size={16} color='gray'/>
+
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('profession')}>
                       {
                         user.professionIsPublic == '1' ? (
 
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <Eye size={16} color='gray'/>
                         ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <EyeOff size={16} color='gray'/>
                         )
                       }
                     </div>
@@ -484,15 +481,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('sex')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                      <Edit size={16} color='gray'/>
+
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('sex')}>
                       {
                         user.sexIsPublic == '1' ? (
 
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <Eye size={16} color='gray'/>
                         ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <EyeOff size={16} color='gray'/>
                         )
                       }
                     </div>
@@ -523,20 +521,21 @@ export default function PersonalInfo() {
                 <>
                   <div>
                     <p className='font-[600]'>Who I Am</p>
-                    <p className='font-[300] text-gray-600'>{user.bio != 'null' && user.bio ? user.bio : 'Not Provided'}</p>
+                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.bio != 'null' && user.bio ? user.bio : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('bio')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <EditIcon sx={{ fontSize: '16px', color: 'gray' }} />
+                      <Edit size={16} color='gray'/>
+
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('bio')}>
                       {
                         user.bioIsPublic == '1' ? (
 
-                          <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <Eye size={16} color='gray'/>
                         ) : (
-                          <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
+                          <EyeOff size={16} color='gray'/>
                         )
                       }
                     </div>

@@ -100,7 +100,7 @@ export default function Security() {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
-    <div className="flex flex-col items-center max-w-[40%] mx-auto ">
+    <div className="flex flex-col items-center w-[80%] lg:max-w-[700px] mx-auto ">
       <div><Toaster /></div>
       <label htmlFor="privacy" className="text-[30px] mt-8">Privacy</label>
       <label htmlFor="privacy" className="text-[24px] mt-10">Two Fact Authentication</label>

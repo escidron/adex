@@ -58,10 +58,10 @@ export default function ProfileHeader() {
         GetUserProfile();
     }, []);
     return (
-        <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99]'>
-            <div className='w-[140px] h-[140px] md:w-[180px] md:h-[180px] lg:w-[200px] lg:h-[200px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
+        <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99] px-6'>
+            <div className='w-[100px] h-[100px]  sm:w-[140px] sm:h-[140px]  md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
                 <Image
-                    src={src ? src : '/nouser.png'}
+                    src={src?src:'/nouser.png'}
                     alt="Adex Logo"
                     priority
                     width={2000}
@@ -95,15 +95,17 @@ export default function ProfileHeader() {
             </div>
             <div className='ml-8'>
                 <div className='flex items-center'>
-                    <h1 className='text-white text-[41px] h-[55px]'>{`${userData.name} ${userData.lastName}`}</h1>
+                    <p className='text-white text-[26px] md:text-[32px] lg:text-[36px] xl:text-[41px] m-0'>{`${userData.name} ${userData.lastName}`}</p>
                 </div>
-                <div className='flex gap-2 items-center'>
+                <div className='flex flex-col md:flex-row gap-2 md:items-center'>
                     <p className='text-white text-[15px]'>{userData.email}</p>
-                    <RatingComponent
-                        readOnly={true}
-                        rating={rating}
-                        setRating={(rating) => setRating(rating)}
-                    />
+                    <div className="md:ml-4 flex items-center">
+                        <RatingComponent 
+                            readOnly={true}
+                            rating={rating}
+                            setRating={(rating)=>setRating(rating)}
+                        />
+                    </div>
                 </div>
                 <button className=' bg-[#FCD33B] mt-3 py-[4px] px-[20px] rounded-md  hover:bg-black hover:text-[#FCD33B] text-lg'>
                     <Link href='/dashboard' className='style_banner_button_text font-semibold text-18px]'>View Dashboard</Link>
