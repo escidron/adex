@@ -135,7 +135,7 @@ export default function NavBar() {
     }
 
     return (
-        <div className={`bg-black sm:bg-green-200 md:bg-yellow-400 lg:bg-green-600 xl:bg-blue-400 2xl:bg-black w-full h-[90px] text-slate-50 text-lg 
+        <div className={`bg-black w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center ${inter.className} `}>
 
             <div><Toaster /></div>

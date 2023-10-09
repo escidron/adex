@@ -63,7 +63,7 @@ export default function PriceSlider() {
 
   const handleSliderChange = useCallback((event, value) => {
     debounceSliderChange(value);
-    }, []);
+    }, [debounceSliderChange]);
     
   const debounceSliderChange = debounce((val) => {
       if (val[1]*10)
