@@ -1,5 +1,5 @@
 'use client'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Categories from '@/components/categories/Categories'
 import StepperComponent from '@/components/stepper/StepperComponent'
@@ -15,8 +15,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Listing() {
     const [selectedStep, setSelectedStep] = useState(1);
-    const [categoryId, setCategoryId] = useState(1);
-    const [typeId, setTypeId] = useState(1);
+    const [categoryId, setCategoryId] = useState(0);
+    const [typeId, setTypeId] = useState(0);
     const [isPeriodic, setIsPeriodic] = useState('');
     const [categoryList, setCategoryList] = useState([]);
     const [path, setPath] = useState([]);
@@ -25,27 +25,27 @@ export default function Listing() {
     const [selectedCompany, setSelectedCompany] = useState('');
     const [addCompany, setAddCompany] = useState(false);
     const [refetch, setRefetch] = useState(false);
-
     useEffect(() => {
 
-        if(selectedStep === 2){
+        if (selectedStep === 2) {
 
-            categoryList.map((category)=>{
-                if(category.id === categoryId){
-                    setPath([{name:category.name,step:selectedStep-1}])
+            categoryList.map((category) => {
+                if (category.id === categoryId) {
+                    setPath([{ name: category.name, step: selectedStep - 1 }])
                 }
             })
-        }else if (selectedStep === 3){
-            categoryList.map((category)=>{
-                if(category.id === typeId){
-                    setPath([...path,{name:category.name,step:selectedStep-1}])
+        } else if (selectedStep === 3) {
+            categoryList.map((category) => {
+                if (category.id === typeId) {
+                    setPath([...path, { name: category.name, step: selectedStep - 1 }])
                 }
             })
-        }else if (selectedStep === 1){
+        } else if (selectedStep === 1) {
             setPath([])
         }
 
-    }, [categoryId,typeId,selectedStep]);
+    }, [categoryId, typeId, selectedStep]);
+
 
     useEffect(() => {
         async function GetUserProfile() {
@@ -75,12 +75,14 @@ export default function Listing() {
             );
             if (response.status === 200) {
                 const res = await response.json()
+                console.log(res)
+                console.log('getting companies')
+
                 setCompanies(res)
             }
         }
         GetCompanies();
     }, [refetch]);
-
     return (
         <>
             <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} `}>
@@ -93,23 +95,23 @@ export default function Listing() {
                                 companies.length === 0 ? (
                                     <>
 
-                                    {
-                                        addCompany ? (
-                                            <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
-                                        ) : (
-                                            <div className={`flex justify-center items-center mt-8 ${inter.className} `}>
-                                                <div className="bg-white p-8 rounded-lg shadow-md border">
-                                                    <h2 className="text-2xl font-semibold mb-4">My Companies</h2>
-                                                    <p className="text-gray-500">You haven&apos;t registered any companies yet.</p>
-                                                    <button onClick={() => setAddCompany(true)} className='style_banner_button w-full  mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
+                                        {
+                                            addCompany ? (
+                                                <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
+                                            ) : (
+                                                <div className={`flex justify-center items-center mt-8 ${inter.className} `}>
+                                                    <div className="bg-white p-8 rounded-lg shadow-md border">
+                                                        <h2 className="text-2xl font-semibold mb-4">My Companies</h2>
+                                                        <p className="text-gray-500">You haven&apos;t registered any companies yet.</p>
+                                                        <button onClick={() => setAddCompany(true)} className='style_banner_button w-full  mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
                                                          lg:py-[10px] lg:px-[30px] lg:mt-10 '>
-                                                        <p className='style_banner_button_text font-medium'>Register company</p>
-                                                    </button>
+                                                            <p className='style_banner_button_text font-medium'>Register company</p>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    }
-                                </>
+                                            )
+                                        }
+                                    </>
                                 ) : (
 
                                     <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-[50%]'>
@@ -149,7 +151,7 @@ export default function Listing() {
                                     </div>
                                 )
                             }
-                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%]  justify-between items-center'>
+                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%] 2xl:w-[55%] max-w-[800px] justify-between items-center'>
                                 {selectedStep === 1 ? (
                                     <div className='flex flex-col'>
                                         <h1 className='text-[30px]'>Category</h1>
@@ -214,7 +216,7 @@ export default function Listing() {
                                 }
 
                             </div>
-                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%] flex-col'>
+                            <div className=' flex mt-10 mx-auto w-[90%] xl:w-[75%] 2xl:w-[55%] max-w-[800px] flex-col'>
                                 {selectedStep < 3 ? (
                                     <Categories
                                         selectedStep={selectedStep}

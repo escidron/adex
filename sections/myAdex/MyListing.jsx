@@ -1,36 +1,34 @@
 
 'use client'
 import Card from './Card'
-import Link from 'next/link';
-import { useState, useEffect, useContext,useCallback } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { Inter } from 'next/font/google'
-import DeleteIcon from '@mui/icons-material/Delete';
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import BlackButton from '@/components/buttons/BlackButton';
 import axios from 'axios';
 import { RefreshContext } from './MyAdex';
+import Link from 'next/link';
 import { CompanyRefreshContext } from '@/app/my-company/page';
 import ShareButtonFacebook from '@/components/facebook/ShareButton';
-import ShareIcon from '@mui/icons-material/Share';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 const inter = Inter({ subsets: ['latin'] })
 
-export default function MyListing({ data, status,isCompanyPage }) {
-  const [currentStatus, setCurrentStatus] = useState('1');
+
+export default function MyListing({ data, status, isCompanyPage }) {
+  const [currentStatus, setCurrentStatus] = useState('0');
   const [advertisementId, setAdvertisementId] = useState('');
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
-  const [refresh, setRefresh] = useContext(isCompanyPage?CompanyRefreshContext:RefreshContext)
+  const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
   const [sharingOptions, setSharingOptions] = useState(false);
   const [copied, setCopied] = useState(false);
 
 
   const onCopy = useCallback(() => {
     setCopied(true);
-    console.log('copiou')
   }, [])
 
   if (data.length === 0) {
@@ -47,6 +45,8 @@ export default function MyListing({ data, status,isCompanyPage }) {
       setCurrentStatus(id);
     }
   }
+
+
   const deleteAdvertisement = () => {
     console.log('advertisementId', advertisementId)
     axios.post('https://test.adexconnect.com/api/advertisements/delete-advertisement',
@@ -63,6 +63,7 @@ export default function MyListing({ data, status,isCompanyPage }) {
         console.log(error)
       });
   }
+console.log('my listing details')
   return (
     <div className='flex flex-col items-center '>
       <div><Toaster /></div>
@@ -71,14 +72,25 @@ export default function MyListing({ data, status,isCompanyPage }) {
           <div className="flex gap-2">
             <div
               type="text"
+              id="0"
+              name="all"
+              onClick={(e) => handleCurrentStatus(e)}
+              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '0' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+            >
+              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>All</p>
+              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
+              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.all}</p>
+            </div>
+            <div
+              type="text"
               id="1"
               name="available"
               onClick={(e) => handleCurrentStatus(e)}
-              className={`w-[150px] py-2  px-4 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
             >
-              <p className={`flex items-center h-[20px] pr-1`}>Available</p>
-              <p>|</p>
-              <p className='pl-1'>{status.available}</p>
+              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Available</p>
+              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
+              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.available}</p>
             </div>
 
             <div
@@ -86,11 +98,11 @@ export default function MyListing({ data, status,isCompanyPage }) {
               id="2"
               name="running"
               onClick={(e) => handleCurrentStatus(e)}
-              className={`w-[150px] py-2  px-4 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
             >
-              <p className={`flex items-center h-[20px] pr-1`}>Running</p>
-              <p>|</p>
-              <p className='pl-1'>{status.running}</p>
+              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Running</p>
+              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
+              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.running}</p>
             </div>
 
             <div
@@ -98,11 +110,11 @@ export default function MyListing({ data, status,isCompanyPage }) {
               id="3"
               name="finished"
               onClick={(e) => handleCurrentStatus(e)}
-              className={`w-[150px] py-2  px-4 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
             >
-              <p className={`flex items-center h-[20px] pr-1`}>Finished</p>
-              <p>|</p>
-              <p className='pl-1'>{status.finished}</p>
+              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Finished</p>
+              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
+              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.finished}</p>
             </div>
 
             <div
@@ -110,37 +122,35 @@ export default function MyListing({ data, status,isCompanyPage }) {
               id="4"
               name="available"
               onClick={(e) => handleCurrentStatus(e)}
-              className={`w-[150px] py-2  px-4 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
             >
-              <p className={`flex items-center h-[20px] pr-1`}>Pending</p>
-              <p>|</p>
-              <p className='pl-1'>{status.pending}</p>
+              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Pending</p>
+              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
+              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.pending}</p>
             </div>
           </div>
         </div>
       </div>
       {
         data.map((item, index) => {
-          console.log(item)
-          if (item.status == currentStatus) {
+          if (item.status == currentStatus || currentStatus === '0') {
             const bulletPoints = item.description.split('\n');
             return (
               <>
                 <section key={item.id + index} className='w-full flex gap-4 items-center'>
-                  <Link href={`/my-listing${item.status == 1?'/edit-advertisement':''}/?id=${item.id}`} 
-                      className='cursor-pointer'>
-                    <Card item={item} setBookingModalOpen={(isOpen) => setBookingModalOpen(isOpen)} bulletPoints={bulletPoints}/>
-                  </Link>
-                  <div className='flex flex-col gap-4 relative'>
 
-                    <div onClick={() => setSharingOptions(true)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
-                      <ShareIcon sx={{ fontSize: '25px', "&:hover": { color: "black", marginRight: '2px' } }} />
-                    </div>
+                    <Card 
+                      item={item} 
+                      bulletPoints={bulletPoints} 
+                      setSharingOptions={(toggle)=>setSharingOptions(toggle)}
+                      setAdvertisementId={(id)=>setAdvertisementId(id)}
+                    />
+                  <div className='flex flex-col gap-4 relative'>
                     {
                       sharingOptions && (
                         <div className='absolute top-[-10px] right-[-140px] '>
                           <ShareButtonFacebook id={item.id}/>
-                          <CopyToClipboard onCopy={onCopy} text={`https://adexconnect.com//market-place/details?id=${item.id}`}>
+                          <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
                             <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
 
                               <ContentCopyIcon fontSize='small' sx={{ color: 'green' }} />
@@ -150,13 +160,6 @@ export default function MyListing({ data, status,isCompanyPage }) {
                         </div>
 
                       )
-                    }
-                    {
-                      item.status == 1 ? (
-                        <div onClick={() => setAdvertisementId(item.id)} className='rounded-full bg-black w-10 h-10 flex justify-center items-center text-white p-2 cursor-pointer hover:bg-[#FCD33B] hover:text-black'>
-                          <DeleteIcon sx={{ fontSize: '25px', "&:hover": { color: "black" } }} />
-                        </div>
-                      ) : ('')
                     }
                   </div>
                 </section>

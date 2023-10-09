@@ -4,20 +4,22 @@ import { Inter } from 'next/font/google'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MultiImage from '@/components/multiImage/MultiImage';
+import { Share2, Trash } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Card({ item, setBookingModalOpen, bulletPoints }) {
-    console.log(item)
+export default function Card({ item, bulletPoints, setSharingOptions, setAdvertisementId }) {
+    const router = useRouter();
+    
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
 
     var differenceInMilliseconds = date2.getTime() - date1.getTime();
-
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
     return (
-        <div className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
+        <div onClick={()=>router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
             <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -66,17 +68,28 @@ export default function Card({ item, setBookingModalOpen, bulletPoints }) {
                         </p>
                     </div>
                 </div>
-                <div className='flex justify-between items-center mt-auto'>
-                    <div className='flex mt-auto text-[20px] '>
+                <div className='flex justify-between items-center mt-auto '>
+                    <div className='flex mt-auto text-[20px] justify-between items-center'>
                         ${item.price}{item.ad_duration_type === '1' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Quarter</p>) : item.ad_duration_type === '3' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Year</p>) : ''}
                     </div>
-                    <div className='flex mt-auto' onClick={() => {
-                        if (item.status == 4) {
+                    <div className='flex gap-2'>
+                        <div onClick={(e) => {
+                            setSharingOptions(true)
+                            e.stopPropagation()
+                        }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer z-[20]'>
+                            <Share2 />
+                        </div>
+                        {
+                            item.status == 1 && (
 
-                            setBookingModalOpen(true)
+                                <div onClick={(e) => {
+                                    e.stopPropagation()
+                                    setAdvertisementId(item.id)
+                                }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                                    <Trash />
+                                </div>
+                            )
                         }
-                    }}>
-                        {/* <BlackButton label='view details' /> */}
                     </div>
                 </div>
             </div>

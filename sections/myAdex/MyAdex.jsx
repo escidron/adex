@@ -14,7 +14,6 @@ export default function MyAdex() {
   const searchParams = useSearchParams()
   const subTab = searchParams.get('sub-tab')
   const [value, setValue] = useState(subTab?parseInt(subTab):0);
-
   const [status, setStatus] = useState({
     available: 0,
     running: 0,
@@ -25,9 +24,6 @@ export default function MyAdex() {
     axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
       {}, {
       withCredentials: true,
-      headers: {
-        'content-type': 'application/json'
-      }
     })
       .then(function (response) {
         setListingData(response.data.data)
@@ -57,8 +53,8 @@ export default function MyAdex() {
       <div>
         <h1 className='text-[30px] mt-8'>My ADEX</h1>
       </div>
-      <div className='flex w-[80%] items-center'>
-        <div className='w-[40%]'>
+      <div className='flex w-full items-center'>
+        <div className='w-full lg:w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value)=>setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} />

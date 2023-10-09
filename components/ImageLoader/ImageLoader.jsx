@@ -3,10 +3,10 @@ import ImageUploading from "react-images-uploading";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import MultiImage from "../multiImage/MultiImage";
 import GalleryModal from "../modals/GalleryModal";
-import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+import { X } from "lucide-react";
 
-export default function ImageLoader({ images, setImages, selectedCompany,setImportFromGallery}) {
+export default function ImageLoader({ images, setImages, selectedCompany, setImportFromGallery }) {
     const [onHover, setOnHover] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [openGalleryModal, setOpenGalleryModal] = useState(false);
@@ -20,18 +20,22 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
         // data for submit
         setImages(imageList);
         setOnHover(false)
-        if(selectedCompany){
-            setImportFromGallery(false)    
+        if (selectedCompany) {
+
+            setImportFromGallery(false)
         }
     };
 
     useEffect(() => {
-        if(images[0]?.file){
-            const newImages = images.filter((item,index) => item.file.name != imageName);
+        if (images[0]?.file) {
+
+            const newImages = images.filter((item, index) => item.file.name != imageName);
             setImages(newImages)
-        }else{
-            const newImages = images.filter((item,index) => item.data_url.slice(50,70) != imageName);
+        } else {
+
+            const newImages = images.filter((item, index) => item.data_url.slice(50, 70) != imageName);
             setImages(newImages)
+
         }
 
     }, [imageName]);
@@ -43,7 +47,7 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
         if (selected.length > 0) {
             const newImages = gallery[0].company_gallery.filter((item, index) => selected.includes(index));
             setImages(newImages)
-        } 
+        }
 
     }, [finishSelection]);
 
@@ -67,7 +71,6 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
         }
         getGallery()
     }, [selectedCompany]);
-
     return (
         <div className="w-full h-full">
             <ImageUploading
@@ -94,9 +97,9 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
                         className={`relative shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
                         onClick={(e) => {
                             if (e.target.id == 'image-loader' || e.target.id == 'image-loaded') {
-                                if(gallery.length > 0){
+                                if (gallery.length > 0) {
                                     setShowOptions(true)
-                                }else{
+                                } else {
                                     onImageUpload()
                                 }
                             }
@@ -104,32 +107,30 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
                         {...dragProps}
                     >
                         {images.length === 0 ? (
-                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={() =>gallery.length > 0?setShowOptions(true):onImageUpload()} />
+                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()} />
                         ) : (
                             <MultiImage images={imageList.length > 0 ? imageList : images} setImageName={(name) => setImageName(name)} height={'160px'} remove={true} />
                         )}
 
                         {
                             showOptions && (
-                                <div className="absolute bg-black h-full w-full rounded-lg z-[99]">
+                                <div className="absolute bg-black h-full w-full rounded-lg z-[10] min-w-[350px]">
                                     <h1 className="text-white w-full mt-4 text-center">Import the images from:</h1>
-                                    <div className='w-full flex justify-end text-white absolute right-2 top-2'>
-                                        <CloseIcon
-                                            onClick={() => setShowOptions(false)}
-                                            sx={{ "&:hover": { color: "#FCD33B" } }} />
+                                    <div onClick={() => setShowOptions(false)} className='absolute top-1 right-1 text-white hover:bg-slate-200 hover:text-black p-1 rounded-md cursor-pointer'>
+                                        <X />
                                     </div>
                                     <div className="flex justify-between w-[80%] items-center mx-auto mt-4">
                                         <div
                                             onClick={() => setOpenGalleryModal(true)}
-                                            className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] px-[30px] rounded-md  font-[600] text-black hover:scale-[1.1]  text-md'>
+                                            className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] px-[20px] rounded-md  font-[600] text-black hover:scale-[1.1]  text-md'>
                                             ADEX gallery
                                         </div>
                                         <div
-                                            onClick={() =>{
+                                            onClick={() => {
                                                 onImageUpload()
                                                 setShowOptions(false)
                                             }}
-                                            className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] px-[30px] rounded-md  font-[600] text-black  hover:scale-[1.1]  text-md'>
+                                            className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] px-[20px] rounded-md  font-[600] text-black  hover:scale-[1.1]  text-md'>
                                             Your device
                                         </div>
                                     </div>
@@ -144,10 +145,10 @@ export default function ImageLoader({ images, setImages, selectedCompany,setImpo
                                     openGalleryModal={openGalleryModal}
                                     setOpenGalleryModal={(toggle) => setOpenGalleryModal(toggle)}
                                     gallery={gallery}
-                                    setGallery={(gallery)=>setGallery(gallery)}
+                                    setGallery={(gallery) => setGallery(gallery)}
                                     selected={selected}
-                                    setSelected={(selected)=>setSelected(selected)}
-                                    setFinishSelection={(toggle)=>setFinishSelection(toggle)}
+                                    setSelected={(selected) => setSelected(selected)}
+                                    setFinishSelection={(toggle) => setFinishSelection(toggle)}
                                     finishSelection={finishSelection}
                                     setImportFromGallery={setImportFromGallery}
 
