@@ -1,4 +1,4 @@
-
+'use client'
 import Banner from '../sections/banner/Banner.jsx'
 import HaveSpace from '@/sections/haveSpace/HaveSpace'
 import AnyPerson from '@/sections/anyPerson/AnyPerson'
