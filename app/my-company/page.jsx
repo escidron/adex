@@ -3,9 +3,12 @@ import { useEffect, useState, createContext } from 'react'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Inter } from 'next/font/google'
 import RatingComponent from '@/components/rating/RatingComponent'
+import ImageUploading from "react-images-uploading";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MyWallet from '@/sections/myWallet/MyWallet'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import AddCard from '@/components/addCard/AddCard'
 import AddAccount from '@/components/addAccount/AddAccount'
@@ -14,9 +17,10 @@ import MyListing from '@/sections/myAdex/MyListing'
 import MyBookings from '@/sections/myAdex/MyBookings'
 import DashboardPanel from '@/sections/dashboard/DashboardPanel'
 import Footer from '@/components/footer/Footer'
-import ImageImporter from '@/components/gallery-image/imageImporter'
 import GalleryImage from '../../components/gallery-image/GalleryImage'
-
+import GalleryCarrousel from '@/components/gallery-image/GalleryCarrousel'
+import ImageLoader from '@/components/ImageLoader/ImageLoader'
+import ImageImporter from '@/components/gallery-image/imageImporter'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -33,6 +37,7 @@ export default function MyCompanyPage() {
     const [bookingData, setBookingData] = useState([]);
     const [images, setImages] = useState([]);
     const [gallery, setGallery] = useState([]);
+    const [balance, setBalance] = useState(null);
 
     const [status, setStatus] = useState({
         available: 0,
@@ -42,6 +47,24 @@ export default function MyCompanyPage() {
     });
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
+
+    useEffect(() => {
+
+        axios.post('https://test.adexconnect.com/api/payments/get-account-balance',
+            {},
+            {
+                withCredentials: true,
+
+            })
+            .then(function (response) {
+                setBalance(response.data)
+
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+
+    }, []);
 
     useEffect(() => {
         axios.post('https://test.adexconnect.com/api/users/my-company',
@@ -62,16 +85,16 @@ export default function MyCompanyPage() {
     }, []);
 
     useEffect(() => {
-        if(images.length > 0){
+        if (images.length > 0) {
 
             axios.post('https://test.adexconnect.com/api/users/image-gallery',
                 {
-                    id:id,
+                    id: id,
                     images: images
                 },
                 {
                     withCredentials: true,
-    
+
                 })
                 .then(function (response) {
                     console.log('image added')
@@ -81,30 +104,31 @@ export default function MyCompanyPage() {
                 .catch(function (error) {
                     console.log(error)
                 });
-        }else{
+        } else {
             getGallery()
 
         }
     }, [images]);
 
-    const getGallery =() => {
-            console.log('entrou no efect')
-            axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
-                {
-                    id:id,
-                },
-                {
-                    withCredentials: true,
-                })
-                .then(function (response) {
-                    setGallery(response.data.galleryWithImages)
-                    console.log('get gallery response',response)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-        
+    const getGallery = () => {
+        console.log('entrou no efect')
+        axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+            {
+                id: id,
+            },
+            {
+                withCredentials: true,
+            })
+            .then(function (response) {
+                setGallery(response.data.galleryWithImages)
+                console.log('get gallery response', response)
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+
     }
+
     return (
         <>
 
@@ -118,29 +142,6 @@ export default function MyCompanyPage() {
                         height={2000}
                         className='rounded-full w-full h-full object-cover'
                     />
-                    {/* <ImageUploading
-                    value={images}
-                    onChange={onChange}
-                    dataURLKey="data_url"
-                    acceptType={["jpg", "png", 'JPEG']}
-
-                >
-                    {({
-                        onImageUpload,
-                    }) => (
-                        // write your building UI
-                        <div className='absolute right-[8px] bottom-[8px] cursor-pointer' onClick={onImageUpload}>
-                            <Image
-                                src='/Group 6.png'
-                                alt="Add profile image"
-                                priority
-                                width={40}
-                                height={40}
-                            />
-                        </div>
-
-                    )}
-                </ImageUploading> */}
 
                 </div>
                 <div className='ml-8'>
@@ -184,21 +185,29 @@ export default function MyCompanyPage() {
 
                     <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
-                    <h1 className='text-[26px] mb-4'>Company Financial Balance</h1>
-                    <DashboardPanel />
+                    {
+                        balance && (
+                            <>
+                                <h1 className='text-[26px] mb-4'>Company Financial Balance</h1>
+                                <DashboardPanel balance={balance} />
+                            </>
+                        )
+                    }
 
                     <h1 className='text-[26px] mb-4 mt-6'>Image Gallery</h1>
                     <div className='w-full flex justify-start'>
                         <div>
-
                             <ImageImporter
-                                    images={images}
-                                    setImages={(image) => setImages(image)}
-                                />
+                                images={images}
+                                setImages={(image) => setImages(image)}
+                            />
                         </div>
                     </div>
-                    <GalleryImage gallery={gallery}/>
+                    <GalleryImage gallery={gallery} />
+
+
                 </div>
+
             </div>
             <Footer />
         </>

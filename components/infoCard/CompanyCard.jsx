@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { ImageIcon } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] })
 const itens = [
@@ -28,17 +29,27 @@ export default function CompanyCard({ company }) {
             }
         })
     }, [company]);
+
     return (
         <Link href={`/my-company?id=${company.id}`} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border ${inter.className} cursor-pointer hover:border-black`}>
-            <div className="w-1/4">
-                <Image
-                    src={company.company_logo}
-                    alt="Company Logo"
-                    width={2000}
-                    height={2000}
+            <div className="w-1/4 rounded-lg">
+                {
+                    company.company_logo ? (
 
-                    className='w-full h-full rounded-lg object-cover'
-                />
+                        <Image
+                            src={company.company_logo}
+                            alt="Company Logo"
+                            width={2000}
+                            height={2000}
+        
+                            className='w-full h-full rounded-lg object-cover'
+                        />
+                    ) : (
+                        <div className='w-full h-full bg-slate-200 flex justify-center items-center rounded-lg'>
+                            <ImageIcon />
+                        </div>
+                    )
+                }
             </div>
             <div className="w-3/4 ml-4">
                 <h3 className="text-lg font-semibold">{company.company_name}</h3>

@@ -1,22 +1,22 @@
 "use client"
-import React,{useCallback,useState,useContext} from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { debounce,TextField } from '@mui/material';
+import { debounce, TextField } from '@mui/material';
 import { FilterContext } from '@/app/market-place/page';
 
 const AirbnbSlider = styled(Slider)(({ theme }) => ({
   color: '#3a8589',
   height: 1,
   padding: '13px 0',
-  
+
   '& .MuiSlider-thumb': {
     height: 27,
     width: 27,
     backgroundColor: '#000',
-    cursor:'pointer',
+    cursor: 'pointer',
     border: '1px solid currentColor',
     '&:hover': {
       boxShadow: '0 0 0 8px rgba(58, 133, 137, 0.16)',
@@ -56,46 +56,44 @@ AirbnbThumbComponent.propTypes = {
 };
 
 
-export default function PriceSlider() {
-  const [scale, setScale] = useState([0,999]);
+export default function PriceSlider({ filters, setFilters }) {
+  const [scale, setScale] = useState([filters.priceMin, filters.priceMax]);
   const [changed, setChanged] = useState(false);
-  const [adFilter,setAdFilter] = useContext(FilterContext)
+  // const [adFilter,setFilters] = useContext(FilterContext)
+  console.log('xxxx', filters)
 
   const handleSliderChange = useCallback((event, value) => {
     debounceSliderChange(value);
-    }, [debounceSliderChange]);
-    
+  }, []);
+
   const debounceSliderChange = debounce((val) => {
-      if (val[1]*10)
-      setScale([val[0]*10,val[1]*10])
-      setAdFilter((prev)=>({...prev,priceMin:val[0]*10,priceMax:val[1]*10}))
-    }, 200)
-  
-  const handleScale =(e)=>{
-  if (e.target.id=='min'){
-    setScale((prev)=>[e.target.value,prev[1]])
-    setAdFilter((prev)=>({...prev,priceMin:e.target.value}))
-  }else{
-    if (e.target.value!=999){
-      setScale((prev)=>[prev[0],e.target.value])
-      setAdFilter((prev)=>({...prev,priceMax:e.target.value}))
+    if (val[1] * 10)
+      setScale([val[0] * 10, val[1] * 10])
+    setFilters((prev) => ({ ...prev, priceMin: val[0] * 10, priceMax: val[1] * 10 }))
+  }, 200)
 
-    }else{
-      if(changed){ 
-        setScale((prev)=>[prev[0],e.target.value])
-        setAdFilter((prev)=>({...prev,priceMax:e.target.value}))
-
-      }else{
-
-        setChanged(true)
+  const handleScale = (e) => {
+    if (e.target.id == 'min') {
+      setScale((prev) => [e.target.value, prev[1]])
+      setFilters((prev) => ({ ...prev, priceMin: e.target.value }))
+    } else {
+      if (e.target.value != 999) {
+        setScale((prev) => [prev[0], e.target.value])
+        setFilters((prev) => ({ ...prev, priceMax: e.target.value }))
+      } else {
+        if (changed) {
+          setScale((prev) => [prev[0], e.target.value])
+          setFilters((prev) => ({ ...prev, priceMax: e.target.value }))
+        } else {
+          setChanged(true)
+        }
       }
-    }
 
+    }
   }
-}
 
   return (
-    <Box sx={{ width: 320,marginLeft:'10px' }} className='flex items-center flex-col justify-start'>
+    <Box sx={{ width: 320, marginLeft: '10px' }} className='flex items-center flex-col justify-start'>
       <Box sx={{ m: 1 }} />
       <label className='mb-2'>Price range</label>
       <AirbnbSlider
@@ -104,33 +102,33 @@ export default function PriceSlider() {
         getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
         defaultValue={[0, 100]}
         disableSwap
-        value={[scale[0]/10,scale[1]/10]}
+        value={[filters.priceMin / 10, filters.priceMax / 10]}
       />
       <Box className='flex gap-6 w-ful'>
 
         <Box className='relative flex-col '>
           <label className=' text-[12px] bg-transparent px-[2px]' >Minimum</label>
           <p className='absolute top-[37px] left-2 text-[18px] font-[400] '>$</p>
-          <input 
-          id='min'
-          type="text" 
-          className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]'
-          value={scale[0]}
-          onChange={(e)=>handleScale(e)}
+          <input
+            id='min'
+            type="text"
+            className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]'
+            value={filters.priceMin}
+            onChange={(e) => handleScale(e)}
           />
         </Box>
         <Box className='relative flex-col '>
           <label className=' text-[12px] bg-transparent px-[2px]' >Maximum</label>
           <p className='absolute top-[37px] left-2 text-[18px] font-[400]'>$</p>
-          <input 
-          id='max'
-          type="text" 
-          className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]' 
-          value={scale[1]==999 && !changed?`${scale[1]}+`:scale[1]}
-          onChange={(e)=>handleScale(e)}
+          <input
+            id='max'
+            type="text"
+            className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]'
+            value={filters.priceMax == 999 && !changed ? `${filters.priceMax}+` : filters.priceMax}
+            onChange={(e) => handleScale(e)}
           />
         </Box>
-        
+
       </Box>
     </Box>
   );

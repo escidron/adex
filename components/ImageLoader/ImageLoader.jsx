@@ -3,8 +3,9 @@ import ImageUploading from "react-images-uploading";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import MultiImage from "../multiImage/MultiImage";
 import GalleryModal from "../modals/GalleryModal";
+import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
-import { X } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
 
 export default function ImageLoader({ images, setImages, selectedCompany, setImportFromGallery }) {
     const [onHover, setOnHover] = useState(false);
@@ -94,7 +95,7 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
                         id="image-loader"
                         onMouseOver={() => { images.length > 0 ? setOnHover(true) : null }}
                         onMouseOut={() => { images.length > 0 ? setOnHover(false) : null }}
-                        className={`relative shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
+                        className={`relative shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer bg-slate-100 ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
                         onClick={(e) => {
                             if (e.target.id == 'image-loader' || e.target.id == 'image-loaded') {
                                 if (gallery.length > 0) {
@@ -107,7 +108,8 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
                         {...dragProps}
                     >
                         {images.length === 0 ? (
-                            <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()} />
+                            // <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()} />
+                            <ImagePlus size={25} onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()}/>
                         ) : (
                             <MultiImage images={imageList.length > 0 ? imageList : images} setImageName={(name) => setImageName(name)} height={'160px'} remove={true} />
                         )}

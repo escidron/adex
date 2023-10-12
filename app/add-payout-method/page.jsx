@@ -36,7 +36,7 @@ export default function AddPayoutMethod() {
   }, []);
 
   return (
-    <div className={`w-full h-[100vh] flex flex-col justify-center items-center ${inter.className}`}>
+    <div className={`w-full mt-[90px]  flex flex-col justify-center items-center ${inter.className}`}>
       {finish ? (
         <Success >
           <h1 className='text-[25px]'>Bank Account registered</h1>
@@ -61,7 +61,7 @@ export default function AddPayoutMethod() {
         </Success>
       ) : (
         <>
-          <h1 className='text-[35px]'>Create a payout Method</h1>
+          <h1 className='text-[34px]'>Create a payout Method</h1>
           <p className='text-[16px] mb-4'>Complete your listing&apos;s visibility by adding a payout method for receiving payments.</p>
           {stripeAccount === ''
             ? (

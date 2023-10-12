@@ -4,12 +4,11 @@ import axios from 'axios';
 import SecondaryButton from '../buttons/SecondaryButton'
 import BlackButton from '../buttons/BlackButton'
 import PriceSlider from '../slider/PriceSlider';
-import { X } from 'lucide-react';
+import {  X } from 'lucide-react';
 import { Divider } from '@mui/material';
 import { useEffect } from 'react';
 import haversine_distance from '@/utils/haversine_distance';
 import { MapCoordinatesContext } from '@/app/market-place/page';
-
 
 export default function MarketPlaceFilterModal({ setOpenFilter }) {
     const [adFilter, setAdFilter] = useContext(FilterContext)
@@ -33,12 +32,18 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
         }
         ).then(function (response) {
             console.log('response', response)
+            console.log('filteredData',filteredData)
+            const newData = []
             response.data.data.map((advertisement) => {
                 var distance = haversine_distance(coords, { lat: advertisement.lat, lng: advertisement.long });
-                if (distance < filters.radius) {
-                    setfilteredData((prev) => [...prev, advertisement])
+                if (distance < filters.radius ) {
+                    newData.push(advertisement)
                 }
             })
+            // if(){
+
+            // }
+            setfilteredData(newData)
         })
             .catch(function (error) {
                 console.log(error)
@@ -101,6 +106,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
             setFilters({ ...filters, adGroup: id });
         }
     }
+    
     const applyFilter = () => {
         setAdFilter(filters)
         setOpenFilter(false)
@@ -117,7 +123,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
 
     return (
         <>
-            <div className='bg-black w-full h-[100vh] absolute z-[90] top-0 left-0 opacity-50 flex justify-center items-center'
+            <div className='bg-black w-full h-full absolute z-[90] top-0 left-0 opacity-50 flex justify-center items-center'
                 onClick={() => setOpenFilter(false)}>
             </div>
             <div className=' px-[30px] py-[30px]  bg-white z-[99]   rounded-xl w-[80%] max-w-[450px] absolute top-[100px] left-[10%]'>
@@ -163,7 +169,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
                     <div className='flex justify-center'>
 
                         <div className='px-[20px] mt-4   '>
-                            <PriceSlider />
+                            <PriceSlider filters={filters}  setFilters={(newPrices)=>setFilters(newPrices)}/>
                         </div>
                     </div>
 

@@ -10,17 +10,12 @@ import { Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GalleryImage from '@/components/gallery-image/GalleryImage'
 import { industries } from '@/utils/industries'
-
 const inter = Inter({ subsets: ['latin'] })
-
-
-
 
 export default function CompanyDetailsPage() {
     const [company, setCompany] = useState({});
     const [gallery, setGallery] = useState([]);
     const [industry, setIndustry] = useState('');
-
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
 
@@ -69,8 +64,6 @@ export default function CompanyDetailsPage() {
 
     }
 
-    console.log('comany',company.company_gallery
-    )
     return (
         <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
             <div className='flex flex-col w-[80%] max-w-[1000px] '>

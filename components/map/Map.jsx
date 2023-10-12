@@ -29,7 +29,7 @@ function Map({ newData,isDataLoaded }) {
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
-      <div className={`h-[100%] fixed  left-0 w-full lg:w-[60%]  ${newData.length>0?'overflow-y-scroll':''}`}>
+      <div className={`h-[100%] fixed  left-0 w-full lg:w-[60%]`}>
           <MarketPlaceGrid newData = {newData} isDataLoaded={isDataLoaded}/>
       </div>
       <div className='h-[100%] hidden lg:fixed right-0  lg:flex justify-center items-center w-[40%] mt-[45px]  '>

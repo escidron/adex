@@ -1,38 +1,29 @@
 "use client"
 import { useState, useContext } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import logo from '../../../public/adex-logo-white-yellow.png'
-import InstagramIcon from '@mui/icons-material/Instagram';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import PinterestIcon from '@mui/icons-material/Pinterest';
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
 import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
 import { FilterContext } from '@/app/market-place/page';
-import PriceSlider from '@/components/slider/PriceSlider';
-import Footer from '@/components/footer/Footer';
 import { Inter } from 'next/font/google'
-import { ChevronDown, SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
+import MarketPlaceFooter from '@/components/footer/MarketPlaceFooter'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     const [selected, setSelected] = useState(null);
     const [openFilter, setOpenFilter] = useState(false);
-    const [adFilter, setAdFilter] = useContext(FilterContext)
     const [address, setAddress] = useState('');
 
 
     return (
-        <div className={`min-h-[100vh] h-auto bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} ${inter.className}`}>
-            <div className="w-full flex items-center px-[20px] mt-4 ">
+        <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} ${inter.className}`}>
+            <div className="w-full abso  top-5 flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
                 <div className="relative w-full lg:w-[75%]">
                     {/* google map search input */}
                     <PlacesAutocomplete setSelected={setSelected} setAddress={setAddress} />
-                    <button onClick={() => alert('click')} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <button onClick={() => {}} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
                         <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                     </button>
                 </div>
@@ -43,12 +34,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                     Filters
                 </button>
             </div>
-            {openFilter &&
 
-                    <MarketPlaceFilterModal 
-                        setOpenFilter={(toggle)=>setOpenFilter(toggle)}
-                    />
-            }
             {newData.length === 0 && isDataLoaded ?
                 <div className={`no-data  flex-col items-center mt-[100px] ${openFilter ? 'hidden' : 'flex'}`}>
                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,45 +59,25 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                     </div>
                 )
                     :
-                    <div className="justify-between mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px]">
-                        {newData.map((ad) => (
-                            <MarketPlaceCard key={ad.id} ad={ad} />
-                        ))}
-                    </div>
+                    <>
+                        <div className={`justify-between h-[80vh] mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+                            {newData.map((ad) => (
+                                <MarketPlaceCard key={ad.id} ad={ad} />
+                            ))}
+                            <MarketPlaceFooter />
+
+                        </div>
+                    </>
             }
-            <div className="market-place-footer ">
-                <Link className="market-place-footer-logo flex items-center justify-center" href="/">
-                    <Image
-                        src={logo}
-                        alt="Adex Logo"
-                        width={50}
-                        height={50}
-                        priority
-                    />
-                </Link>
-                <div className="market-place-footer-icons flex items-center">
 
-                    <Link href="#" className='hover:scale-[1.1]'>
-                        <InstagramIcon fontSize='small' sx={{ color: 'white' }} />
-                    </Link>
-
-                    <Link href="#" className='hover:scale-[1.1]'>
-                        <FacebookIcon fontSize='small' sx={{ color: 'white' }} />
-                    </Link>
-
-                    <Link href="#" className='hover:scale-[1.1]'>
-                        <TwitterIcon fontSize='small' sx={{ color: 'white' }} />
-                    </Link>
-
-                    <Link href="#" className='hover:scale-[1.1]'>
-                        <PinterestIcon fontSize='small' sx={{ color: 'white' }} />
-                    </Link>
-
-                </div>
-                <p className="market-place-footer-copy text-white">Copyright © 2022 ADEX CONNECT</p>
-
-            </div>
+            <MarketPlaceFooter isAbsolute={true}/>
             {/* <Footer /> */}
+            {openFilter &&
+
+                <MarketPlaceFilterModal
+                    setOpenFilter={(toggle) => setOpenFilter(toggle)}
+                />
+            }
         </div>
     )
 }

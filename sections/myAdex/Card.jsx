@@ -19,8 +19,8 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
     return (
-        <div onClick={()=>router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
-            <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
+        <div onClick={()=>router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
+            <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
                     item.status === 2 && (
@@ -31,7 +31,7 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
                     )
                 }
             </div>
-            <div className='ml-8 flex flex-col w-full'>
+            <div className='md:ml-8 flex flex-col w-full'>
                 <div>
                     <div className='flex justify-between items-center'>
                         <h1 className='text-[24px] font-[600]'>{item.title}</h1>
@@ -40,16 +40,16 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
                         </div>
 
                     </div>
-                    <div className='flex gap-2'>
-                        <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                        <p className='text-[14px] mt-[-3px]'>{item.address}</p>
-                    </div>
                     <div className="flex items-center justify-start">
                         <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                    </div>
+                    <div className='flex gap-2'>
+                        <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
+                        <p className='text-[14px] mt-[-3px] line-clamp-2'>{item.address}</p>
                     </div>
                     <div className='flex gap-2 items-center '>
                         <p className='text-[14px] mt-2 w-full'>
