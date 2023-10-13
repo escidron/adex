@@ -91,8 +91,11 @@ console.log('my selected day',date)
       errors.image = 'Required';
     }
 
-    if (!date) {
-      errors.date = 'Required';
+    if (isPeriodic !== 1) {
+
+      if (!date) {
+        errors.date = 'Required';
+      }
     }
 
     console.log('error',errors)
