@@ -7,7 +7,6 @@ import { useFormik } from 'formik';
 import { useContext } from 'react';
 import { UserContext } from "@/app/layout";
 import { useRouter } from 'next/navigation';
-import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
@@ -16,7 +15,7 @@ import SecondaryButton from "@/components/buttons/SecondaryButton";
 import TextField from "@/components/inputs/TextField";
 import TermsOfUseModal from "@/components/modals/TermsOfUseModal";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 
 
@@ -149,7 +148,7 @@ export default function SignUppage() {
     }
   }
   return (
-    <div className={` style_login flex flex-col h-full w-full items-center px-2 justify-center py-4 overflow-y-scroll fixed z-[99] top-0 left-0 ${inter.className}`}>
+    <div className={` style_login flex flex-col h-full w-full items-center px-2 justify-center py-4 overflow-y-scroll fixed z-[99] top-0 left-0 `}>
       <div><Toaster />
       </div>
       <div className=' fixed top-0 left-0 w-full h-full   bg-black z-[90] opacity-70'></div>
@@ -278,7 +277,7 @@ export default function SignUppage() {
               hover:text-black 
               hover:bg-[#FCD33B] 
               ${accountType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'} 
-              ${inter.className}`}
+              `}
               >Business
               </div>
               <div
@@ -298,14 +297,14 @@ export default function SignUppage() {
                 hover:text-black hover:bg-[#FCD33B] 
                 cursor-pointer
                 ${accountType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}   
-                ${inter.className}`}
+                `}
               >Individual
               </div>
             </div>
           </div>
 
           <div className={`flex rounded-lg items-center gap-4 mt-2`}>
-            <input type="checkbox" onChange={() => setCheckTerms(!checkTerms)} checked={checkTerms ? true : false} />
+            <input className="cursor-pointer" type="checkbox" onChange={() => setCheckTerms(!checkTerms)} checked={checkTerms ? true : false} />
             <p className="text-white ">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
           </div>
           {

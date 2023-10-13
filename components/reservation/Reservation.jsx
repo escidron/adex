@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
-import { Inter } from 'next/font/google'
 import { Divider } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -17,7 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { UserContext } from '../../app/layout';
 
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts }) {
 
@@ -108,7 +107,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         }
     }
     return (
-        <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
+        <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>

@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
-import { Inter } from 'next/font/google'
 import CounterComponent from '../counter/CounterComponent';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
@@ -24,7 +23,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { Divider } from '@mui/material';
 
-const inter = Inter({ subsets: ['latin'] })
+
 const PinkSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked': {
     color: '#FCD33B',
@@ -235,7 +234,7 @@ console.log('my selected day',date)
                         id="1"
                         name="account-1"
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Monthly
                       </div>
                       <div
@@ -244,7 +243,7 @@ console.log('my selected day',date)
                         name="account-2"
                         value={formik.values.durationType}
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Quarterly
                       </div>
                       <div
@@ -253,7 +252,7 @@ console.log('my selected day',date)
                         name="account-2"
                         value={formik.values.durationType}
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Annually
                       </div>
                     </div>
@@ -405,13 +404,13 @@ console.log('my selected day',date)
               onBlur={formik.handleBlur}
               value={formik.values.description}
               placeholder='Description'
-              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none `}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.description}</div> : null}
           </div>
 
           <div className=" mt-2 w-full relative">
-            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
+            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none `}>
               <ImageLoader
                 images={images}
                 setImages={(image) => setImages(image)}

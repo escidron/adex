@@ -1,11 +1,10 @@
 "use client"
 
 import { useTransition } from "react"
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 import { ThreeDots } from 'react-loader-spinner'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function Banner() {
   const [isPending, startTransition] = useTransition()
@@ -16,7 +15,7 @@ export default function Banner() {
   }
 
   return (
-    <div className={`w-full h-[100vh]  relative ${inter.className}`} >
+    <div className={`w-full h-[100vh]  relative `} >
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-30'></div>
       <div className='style_banner'></div>
       <div className='style_banner_box max-h-[400px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]

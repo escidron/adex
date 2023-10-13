@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { Inter } from 'next/font/google'
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
 import SecondaryButton from '../buttons/SecondaryButton';
@@ -20,7 +19,7 @@ import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 import TextField from '../inputs/TextField';
 
-const inter = Inter({ subsets: ['latin'] })
+
 const PinkSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked': {
     color: '#FCD33B',
@@ -230,7 +229,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                         id="1"
                         name="account-1"
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Monthly
                       </div>
                       <div
@@ -239,7 +238,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                         name="account-2"
                         value={formik.values.durationType}
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Quarterly
                       </div>
                       <div
@@ -248,7 +247,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                         name="account-2"
                         value={formik.values.durationType}
                         onClick={(e) => handleDurationType(e)}
-                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                        className={`w-[48%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${durationType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                       >Annually
                       </div>
                     </div>
@@ -395,7 +394,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleSubType(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Window
                   </div>
                   <div
@@ -406,7 +405,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleSubType(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${subType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Door
                   </div>
                   <div
@@ -415,7 +414,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                     name="account-3"
                     value={formik.values.subType}
                     onClick={(e) => handleSubType(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 rounded-lg outline-none ${subType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 rounded-lg outline-none ${subType == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Interior wall
                   </div>
                   <div
@@ -424,7 +423,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
                     name="account-4"
                     value={formik.values.subType}
                     onClick={(e) => handleSubType(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px]  p-2 rounded-lg outline-none ${subType == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px]  p-2 rounded-lg outline-none ${subType == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Exterior wall
                   </div>
                 </div>
@@ -452,13 +451,13 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep, hasPayo
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.description}
-              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none `}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[190px] text-red-600 font-bold">{formik.errors.description}</div> : null}
           </div>
 
           <div className=" mt-2 w-full relative">
-            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
+            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none `}>
               <ImageLoader 
               images={images} 
               setImages={(image) => setImages(image)} 

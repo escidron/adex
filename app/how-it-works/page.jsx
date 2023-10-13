@@ -5,9 +5,8 @@ import React from 'react'
 import Image from 'next/image'
 import Faq from '@/sections/faq/Faq'
 import Footer from '@/components/footer/Footer'
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function page() {
   return (
@@ -18,7 +17,7 @@ export default function page() {
         <VideoComponent />
         <GetPaid />
         <div className='bg-black p-5 w-full flex justify-center mt-8'>
-          <p className={`text-white text-[16px]  lg:text-[25px] font-[400] ${inter.className}`}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
+          <p className={`text-white text-[16px]  lg:text-[25px] font-[400] `}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
         </div>
         <div className=' w-full flex'>
           <Image

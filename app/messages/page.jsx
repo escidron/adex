@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useContext } from 'react'
 import { UserContext } from "@/app/layout";
 import axios from 'axios';
 import { Divider } from '@mui/material';
-import { Inter } from 'next/font/google'
 import ChatListBox from '@/components/chat/ChatListBox';
 import Chat from '@/components/chat/Chat';
 import { io } from "socket.io-client";
@@ -13,7 +12,7 @@ import { useSearchParams,useRouter } from 'next/navigation'
 import MultiImage from '@/components/multiImage/MultiImage';
 
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function MessagesPage() {
     var socket = io.connect('http://localhost:4400')
@@ -116,7 +115,7 @@ export default function MessagesPage() {
 
     let chatKey = []
     return (
-        <div className={`mt-[120px] w-full flex justify-center ${inter.className}`}>
+        <div className={`mt-[120px] w-full flex justify-center `}>
             <div className='w-[60%] flex justify-center gap-2'>
                 <div className='border shadow-sm w-[40%] h-[800px] bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right'>
                     {

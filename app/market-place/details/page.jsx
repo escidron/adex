@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
-import { Inter } from 'next/font/google'
 import { Divider } from '@mui/material';
 import BlackButton from '@/components/buttons/BlackButton';
 import Footer from '@/components/footer/Footer';
@@ -34,7 +33,7 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 
 // const socket = io('https://test.adexconnect.com')
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function AdDetails({ sharedId }) {
   var socket = io.connect('http://localhost:4400')
@@ -223,7 +222,7 @@ export default function AdDetails({ sharedId }) {
   }
   return (
     <>
-      <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
+      <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
         <div><Toaster /></div>
 
         {isBooked ? (
@@ -338,7 +337,7 @@ export default function AdDetails({ sharedId }) {
                     type="textarea"
                     id="message"
                     name="message"
-                    className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none ${inter.className} focus:border-black`}
+                    className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none  focus:border-black`}
                   />
                   <div className='max-w-[100px] flex ml-auto'>
                     <button disabled={isPending2 ? true : false} onClick={sendMessage} className={`z-10 flex item justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-2 font-[600]  ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
@@ -379,7 +378,7 @@ export default function AdDetails({ sharedId }) {
                       <div className='bg-black scroll-hidden w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAccept(false)}>
                       </div>
 
-                      <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                      <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] `}>
                         <h1 className='text-[22px] font-[400]'>Would you like to accept the contract proposal?</h1>
                         <div className='w-full flex justify-between items-center mt-8'>
                           <div onClick={() => setAccept(false)}>
@@ -407,7 +406,7 @@ export default function AdDetails({ sharedId }) {
                       <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
                       <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
                     </div>
-                    // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] ${inter.className}`}>
+                    // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] `}>
                     //   <div className='w-full flex justify-center items-center mt-8'>
                     //     <button onClick={() => setShowModal(true)} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
                     //       <p className='style_banner_button_text font-medium'>Add Payment Method</p>

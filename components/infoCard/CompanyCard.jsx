@@ -1,13 +1,12 @@
 import Image from 'next/image'
 import { useState,useEffect } from 'react';
 import Link from 'next/link';
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { ImageIcon } from 'lucide-react';
 
-const inter = Inter({ subsets: ['latin'] })
+
 const itens = [
     { id: 1, name: 'Gas station' },
     { id: 2, name: 'Restaurant' },
@@ -31,7 +30,7 @@ export default function CompanyCard({ company }) {
     }, [company]);
 
     return (
-        <Link href={`/my-company?id=${company.id}`} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border ${inter.className} cursor-pointer hover:border-black`}>
+        <Link href={`/my-company?id=${company.id}`} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border  cursor-pointer hover:border-black`}>
             <div className="w-1/4 rounded-lg">
                 {
                     company.company_logo ? (

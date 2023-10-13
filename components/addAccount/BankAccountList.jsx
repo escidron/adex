@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import BankAccountItem from './BankAccountItem'
 import axios from 'axios';
-import { Inter } from 'next/font/google'
 import toast from 'react-hot-toast';
 import DeleteConfirmationModal from '../modals/DeleteConfirmationModal';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function BankAccountList({ refetch,setRefetch }) {
     const [data, setData] = useState([]);
@@ -48,7 +47,7 @@ export default function BankAccountList({ refetch,setRefetch }) {
     }
 
     return (
-        <div className={`mt-4 ${inter.className} flex flex-col gap-2`}>
+        <div className={`mt-4  flex flex-col gap-2`}>
             {data.map((item) => 
                 <BankAccountItem 
                 key={item.id} 

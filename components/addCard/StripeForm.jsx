@@ -10,12 +10,11 @@ import {
     CardExpiryElement
 } from '@stripe/react-stripe-js';
 import CloseIcon from '@mui/icons-material/Close';
-import { Inter } from 'next/font/google'
 import Footer from '../footer/Footer';
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function StripeForm({ setShowModal, setRefetch }) {
     const stripe = useStripe();
@@ -90,7 +89,7 @@ export default function StripeForm({ setShowModal, setRefetch }) {
                                 name="lastName"
                                 value={nameOnCard}
                                 onChange={(e) => handleName(e)}
-                                className={`w-full border  p-2 rounded-lg outline-none ${inter.className}`}
+                                className={`w-full border  p-2 rounded-lg outline-none `}
                             />
                         </div>
                         <div className=" mt-4 w-full relative">

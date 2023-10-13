@@ -2,10 +2,9 @@ import { useState } from 'react';
 import TabsComponent from '@/components/tabs/TabsComponent';
 import AddCard from '@/components/addCard/AddCard';
 import AddAccount from '@/components/addAccount/AddAccount';
-import { Inter } from 'next/font/google'
 import { useSearchParams } from 'next/navigation'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 
 export default function MyWallet() {

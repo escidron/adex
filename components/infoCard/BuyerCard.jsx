@@ -3,19 +3,18 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import BlackButton from '@/components/buttons/BlackButton'
-import { Inter } from 'next/font/google'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import EmailIcon from '@mui/icons-material/Email';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import CloseIcon from '@mui/icons-material/Close';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function InfoCard({ advertisement, buyer }) {
     const [showModal, setShowModal] = useState(false)
 
     return (
-        <div className={`relative flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 ${inter.className}`}>
+        <div className={`relative flex gap-1 mt-4 mx-auto min-w-[600px] max-w-[850px] max-h-[300px] p-[20px]  mb-8 border-[1px] rounded-lg border-bg-gray-200 `}>
             <div className='h-[210px] w-[210px] min-h-[210px] min-w-[210px] rounded-md relative'>
                 <Image
                     src='/default-user.png'

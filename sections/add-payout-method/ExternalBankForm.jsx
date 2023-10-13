@@ -5,13 +5,12 @@ import { UserContext } from '../../app/layout';
 import axios from 'axios'
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import { Inter } from 'next/font/google'
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 
 
@@ -94,7 +93,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
     });
 
     return (
-        <div className={` flex flex-col items-center justify-center  py-2  ${inter.className} p-2 `}>
+        <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
             <div><Toaster /></div>
             <form className="text-black z-[91] relative px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
                 <Link href='/my-profile' className='absolute top-4 right-4'>
@@ -115,7 +114,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.bankName}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                     />
                     {formik.touched.bankName && formik.errors.bankName ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bankName}</div> : null}
                 </div>
@@ -133,7 +132,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.routingNumber}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                     />
                     {formik.touched.routingNumber && formik.errors.routingNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.routingNumber}</div> : null}
                 </div>
@@ -151,7 +150,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.accountNumber}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                     />
                     {formik.touched.accountNumber && formik.errors.accountNumber ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.accountNumber}</div> : null}
                 </div>
@@ -169,7 +168,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.confirmAccount}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                     />
                     {formik.touched.confirmAccount && formik.errors.confirmAccount ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.confirmAccount}</div> : null}
                 </div>

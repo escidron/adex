@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       {/* <body className={`${abel.className} ${showLoginModal || showSignUpModal?'overflow-hidden':''}`} > */}
-      <body className={`${abel.className}`} >
+      <body className={`${inter.className}`} >
         <UserContext.Provider value={[user, setUser]}>
           <NavBar 
           setShowLoginModal={(toggle)=>setShowLoginModal(toggle)} 

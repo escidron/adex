@@ -2,7 +2,6 @@
 import { useState } from "react";
 import axios from 'axios'
 import { useFormik } from 'formik';
-import { Inter } from 'next/font/google'
 import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
 import { ThreeDots } from 'react-loader-spinner'
@@ -12,7 +11,7 @@ import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import Footer from "@/components/footer/Footer";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function PayoutIndividualForm({ setHasAccount }) {
   // const [user,setUser] = useContext(UserContext)
@@ -110,7 +109,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
   return (
     <>
 
-      <div className={` flex flex-col items-center justify-center  py-2  ${inter.className} p-2 `}>
+      <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
         <div><Toaster /></div>
         <form className="text-black  z-[91] px-10 py-4 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
           <p className=" text-[24px]">Personal Details</p>
@@ -129,7 +128,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.idNumber}
-                className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
               />
               <div className="absolute top-9 right-2 cursor-pointer" onClick={() => setIsVisible(!isVisible)}>
                 {
@@ -176,7 +175,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.street}
-              className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+              className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
             />
             {formik.touched.street && formik.errors.street ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.street}</div> : null}
           </div>
@@ -194,7 +193,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.city}
-              className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+              className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
             />
             {formik.touched.city && formik.errors.city ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.city}</div> : null}
           </div>
@@ -208,7 +207,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               </div>
               <div >
                 <SelectUSState
-                  className={`dropdown w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                  className={`dropdown w-full border focus:border-black p-2 rounded-lg outline-none `}
                   name="state"
                   value={state}
                   onChange={state => setState(state)} />
@@ -227,14 +226,14 @@ export default function PayoutIndividualForm({ setHasAccount }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.zip}
-                className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
+                className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
               />
               {formik.touched.zip && formik.errors.zip ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.zip}</div> : null}
             </div>
           </div>
           {/* stripe image verification */}
           <div className=" w-full relative flex flex-col">
-            <p>Identity Document</p>
+            <p className="text-[14px]">Identity Document</p>
             <div className=" h-[160px]  mt-1">
               <ImageLoader
                 images={images}

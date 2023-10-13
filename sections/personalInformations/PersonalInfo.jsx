@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Inter } from 'next/font/google'
 import { Divider } from '@mui/material';
 import GalleryImage from '@/components/gallery-image/GalleryImage';
 import ImageImporter from '@/components/gallery-image/imageImporter';
 import { Edit, Eye, EyeOff } from 'lucide-react';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
@@ -162,7 +161,7 @@ export default function PersonalInfo() {
     <div className={` flex flex-col items-center  min-h-screen py-2 `}>
       <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[480px] min-w-[480px]">
         <h1 className="text-[30px]">Personal Informations</h1>
-        <div className={`mt-2 w-full flex flex-col gap-3 ${inter.className}`}>
+        <div className={`mt-2 w-full flex flex-col gap-3 `}>
 
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] w-full">
             {
@@ -445,7 +444,7 @@ export default function PersonalInfo() {
                     name="sex-1"
                     value={user.sex}
                     onClick={(e) => handleSex(e)}
-                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 1 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 1 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Male
                   </div>
                   <div
@@ -454,7 +453,7 @@ export default function PersonalInfo() {
                     name="sex-2"
                     value={user.sex}
                     onClick={(e) => handleSex(e)}
-                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 2 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 2 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Female
                   </div>
                   <div
@@ -463,7 +462,7 @@ export default function PersonalInfo() {
                     name="sex-3"
                     value={user.sex}
                     onClick={(e) => handleSex(e)}
-                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 3 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 3 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Other
                   </div>
                   <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
@@ -549,7 +548,7 @@ export default function PersonalInfo() {
         <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
         <h1 className='text-[30px] mb-4 mt-6'>Image Gallery</h1>
-        <div className={`w-full flex justify-start ${inter.className}`}>
+        <div className={`w-full flex justify-start `}>
           <div>
             <ImageImporter
               images={images}

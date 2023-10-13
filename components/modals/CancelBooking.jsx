@@ -1,10 +1,9 @@
 'use client'
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Inter } from 'next/font/google'
 import BlackButton from '../buttons/BlackButton';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function CancelBooking({ setOpenCancelBookingModal,setCancelMessage,cancelMessage,cancelBooking }) {
 
@@ -32,7 +31,7 @@ export default function CancelBooking({ setOpenCancelBookingModal,setCancelMessa
                         //placeholder='I want to cancel because...'
                         onChange={(e)=>setCancelMessage(e.target.value)}
                         value={cancelMessage}
-                        className={`w-full border mt-2 p-3 rounded-lg outline-none h-[140px] resize-none ${inter.className}`}
+                        className={`w-full border mt-2 p-3 rounded-lg outline-none h-[140px] resize-none `}
                     />
                     <p className='text-[12px]'>Your booking will be canceled,you will be refunded within 10 business days</p>
                     <div className='text-end mt-5'>

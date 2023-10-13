@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google'
 import { useState } from 'react';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -9,7 +8,7 @@ import ShareButtonFacebook from '@/components/facebook/ShareButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function Card({ item, bulletPoints, setAdvertisementId }) {
     const router = useRouter();
@@ -30,7 +29,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId }) {
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div onClick={() => router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
+        <div onClick={() => router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {

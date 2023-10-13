@@ -7,10 +7,9 @@ import { useSearchParams } from 'next/navigation'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ApproveReservation from '@/components/reservation/ApproveReservation'
-import { Inter } from 'next/font/google'
 import MultiImage from '@/components/multiImage/MultiImage';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function MyBooking() {
     const [buyer, setBuyer] = useState({});
@@ -80,7 +79,7 @@ export default function MyBooking() {
         <>
             <div className='mt-[120px] px-[60px] py-[30px] w-[60%] flex flex-col mx-auto'>
                 <h1 className='text-[45px] flex mx-auto'>Advertisement Details</h1>
-                <div className={`flex gap-3 justify-between mt-8 ${inter.className}`}>
+                <div className={`flex gap-3 justify-between mt-8 `}>
                 <div className='w-full md:w-[50%] max-w-[500px]'>
                                     <div className='w-full h-[300px] shadow-image rounded-lg'>
                                         <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />

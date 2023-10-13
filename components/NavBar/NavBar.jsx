@@ -8,12 +8,11 @@ import Image from 'next/image'
 import logo from '../../public/adex-logo-white-yellow.png'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/navigation';
-import { Inter } from 'next/font/google'
 import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
 import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2 } from 'lucide-react';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function NavBar() {
     const pathname = usePathname();
@@ -136,7 +135,7 @@ export default function NavBar() {
 
     return (
         <div className={`bg-black w-full h-[90px] text-slate-50 text-lg 
-                        flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center ${inter.className} `}>
+                        flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
 
             <div><Toaster /></div>
             {/* web screen */}

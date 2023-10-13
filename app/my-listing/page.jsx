@@ -7,7 +7,6 @@ import axios from 'axios'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ApproveReservation from '@/components/reservation/ApproveReservation'
 import { Divider } from '@mui/material';
-import { Inter } from 'next/font/google'
 import BuyerCard from '@/components/infoCard/BuyerCard'
 import { UserContext } from "@/app/layout";
 import MultiImage from '@/components/multiImage/MultiImage'
@@ -15,7 +14,7 @@ import Success from '@/components/messages/Success'
 import Link from 'next/link'
 import BlackButton from '@/components/buttons/BlackButton'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function MyListing() {
     const [buyer, setBuyer] = useState({});
@@ -113,7 +112,7 @@ export default function MyListing() {
                     !bookingAccepted && !bookingRejected && (
                         <>
                             <h1 className='text-[45px] flex mx-auto'>Advertisement Details</h1>
-                            <div className={`flex flex-col lg:flex-row gap-3  w-[80%]  justify-between mt-8 ${inter.className}`}>
+                            <div className={`flex flex-col lg:flex-row gap-3  w-[80%]  justify-between mt-8 `}>
                                 <div className='w-full md:w-[50%] max-w-[500px]'>
                                     <div className='w-full h-[300px] shadow-image rounded-lg'>
                                         <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />

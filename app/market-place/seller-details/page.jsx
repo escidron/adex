@@ -3,13 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
-import { Inter } from 'next/font/google'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Image from 'next/image'
 import { Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GalleryImage from '@/components/gallery-image/GalleryImage'
-const inter = Inter({ subsets: ['latin'] })
+
 import WorkIcon from '@mui/icons-material/Work';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -35,7 +34,7 @@ export default function SellerDetailsPage() {
         }
     }, []);
     return (
-        <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
+        <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
             <div className='flex flex-col w-[80%] max-w-[1000px] items-center'>
 
                 <div className="flex gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-[70%]">

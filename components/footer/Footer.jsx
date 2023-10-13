@@ -5,9 +5,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PinterestIcon from '@mui/icons-material/Pinterest';
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function Footer() {
   return (
@@ -41,7 +40,7 @@ export default function Footer() {
             </Link>
 
         </div>
-        <p className={`mt-3 text-white ${inter.className}`}>Copyright © 2022 ADEX CONNECT</p>
+        <p className={`mt-3 text-white `}>Copyright © 2022 ADEX CONNECT</p>
 
     </div>
   )

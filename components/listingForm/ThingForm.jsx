@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
-import { Inter } from 'next/font/google'
 import CounterComponent from '../counter/CounterComponent';
 import { ThreeDots } from 'react-loader-spinner'
 import ImageLoader from '../ImageLoader/ImageLoader';
@@ -19,7 +18,7 @@ import Switch from '@mui/material/Switch';
 import { styled } from '@mui/material/styles';
 import TextField from '../inputs/TextField';
 
-const inter = Inter({ subsets: ['latin'] })
+
 const PinkSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked': {
     color: '#FCD33B',
@@ -212,7 +211,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >100 Units
                   </div>
                   <div
@@ -223,7 +222,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >300 Units
                   </div>
                   <div
@@ -234,7 +233,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >500 Units
                   </div>
                   <div
@@ -245,7 +244,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${boxes == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >1000 Units
                   </div>
                   <div
@@ -255,7 +254,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     value={formik.values.boxes}
 
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 rounded-lg outline-none ${boxes == '5' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px] p-2 rounded-lg outline-none ${boxes == '5' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >1500 Units
                   </div>
                   <div
@@ -265,7 +264,7 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
                     value={formik.values.boxes}
 
                     onClick={(e) => handleBoxes(e)}
-                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px]  p-2 rounded-lg outline-none ${boxes == '6' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                    className={`w-[48%] flex justify-center items-center cursor-pointer text-[15px]  p-2 rounded-lg outline-none ${boxes == '6' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >2000 Units
                   </div>
                 </div>
@@ -284,13 +283,13 @@ export default function PlaceForm({ typeId, isPeriodic, setSelectedStep,hasPayou
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.description}
-              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none ${inter.className}`}
+              className={`w-full border shadow-sm p-3 rounded-lg outline-none h-[160px] resize-none `}
             />
             {formik.touched.description && formik.errors.description ? <div className="absolute top-[190px] text-red-600 font-bold">{formik.errors.description}</div> : null}
           </div>
 
           <div className=" mt-2 w-full relative">
-            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
+            <div className={`w-full border rounded-lg outline-none h-[160px] resize-none `}>
               <ImageLoader 
               images={images} 
               setImages={(image) => setImages(image)} 

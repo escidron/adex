@@ -1,12 +1,11 @@
 'use client'
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Inter } from 'next/font/google'
 import BlackButton from '../buttons/BlackButton';
 import { AlertTriangle, X } from 'lucide-react';
 import SecondaryButton from '../buttons/SecondaryButton';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function DeleteConfirmationModal({ label,setShowDeleteModal,deleteElement }) {
 

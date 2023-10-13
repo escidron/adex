@@ -2,10 +2,9 @@
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import Link from 'next/link'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function GetPaid() {
     const [user, setUser] = useContext(UserContext)
@@ -21,7 +20,7 @@ export default function GetPaid() {
                     <Link href={user.hasPayout && user.isLogged ? '/listing' : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ? '/add-payout-method' : '/'} 
                         className={`style_banner_button mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
                         lg:py-[15px] lg:px-[40px] lg:mt-10 '>
-                        <p className='style_banner_button_text font-medium ${inter.className}`}><p>Create Listing</p>
+                        <p className='style_banner_button_text font-medium `}><p>Create Listing</p>
                     </Link>
                 </div>
                 <div className='w-[320px] mt-8 h-full max-h-[400px] flex justify-between '>

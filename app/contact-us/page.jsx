@@ -2,11 +2,10 @@
 import React from 'react'
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { Inter } from 'next/font/google'
 import TextField from '@/components/inputs/TextField';
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
-const inter = Inter({ subsets: ['latin'] })
+
 
 
 
@@ -112,7 +111,7 @@ export default function ContactPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.number}
-            className={`w-full border  p-3 rounded-lg outline-none ${inter.className}`}
+            className={`w-full border  p-3 rounded-lg outline-none `}
           /> */}
           <TextField
             id='number'
@@ -134,7 +133,7 @@ export default function ContactPage() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.message}
-            className={`w-full border  p-3 rounded-lg outline-none h-[140px] resize-none ${inter.className}`}
+            className={`w-full border  p-3 rounded-lg outline-none h-[140px] resize-none `}
           />
           {formik.touched.message && formik.errors.message ? <div className="absolute  top-[140px] text-red-600 font-bold">{formik.errors.message}</div> : null}
         </div>

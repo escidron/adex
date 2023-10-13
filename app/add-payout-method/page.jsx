@@ -5,10 +5,9 @@ import Link from 'next/link';
 import ExternalBankForm from '@/sections/add-payout-method/ExternalBankForm';
 import PayoutIndividualForm from '@/sections/add-payout-method/PayoutIndividualForm'
 import { useState } from 'react'
-import { Inter } from 'next/font/google'
 import PayoutCompanyForm from '@/sections/add-payout-method/PayoutCompanyForm';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 
 
@@ -40,7 +39,7 @@ export default function AddPayoutMethod() {
 
   console.log('seller', seller)
   return (
-    <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center ${inter.className}`}>
+    <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center `}>
       {finish ? (
         <Success >
           <h1 className='text-[25px]'>Bank Account registered</h1>

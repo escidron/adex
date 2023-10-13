@@ -6,7 +6,6 @@ import DatePickerComponent from '../datePicker/DatePickerComponent';
 import HelpIcon from '@mui/icons-material/Help';
 import { ThreeDots } from 'react-loader-spinner'
 import { Divider } from '@mui/material';
-import { Inter } from 'next/font/google'
 import formatNumberInput from '@/utils/formatInputNumbers';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -14,7 +13,7 @@ import CancelBooking from '../modals/CancelBooking';
 import toast from 'react-hot-toast';
 import Countdown, { zeroPad } from 'react-countdown';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
     const [isPending1, setIsPending1] = useState(false)
@@ -174,7 +173,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     console.log('finishCountdown', finishCountdown)
     return (
-        <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 ${inter.className}`}>
+        <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
 
             {advertisement?.price && advertisement.category_id != 17 && (
                 <div className='flex justify-center'>

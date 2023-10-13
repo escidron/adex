@@ -3,14 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
-import { Inter } from 'next/font/google'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Image from 'next/image'
 import { Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GalleryImage from '@/components/gallery-image/GalleryImage'
 import { industries } from '@/utils/industries'
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function CompanyDetailsPage() {
     const [company, setCompany] = useState({});
@@ -65,7 +64,7 @@ export default function CompanyDetailsPage() {
     }
 
     return (
-        <div className={`mt-[150px] w-full h-full flex justify-center items-center ${inter.className}`}>
+        <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
             <div className='flex flex-col w-[80%] max-w-[1000px] '>
 
                 <div className={`flex flex-col items-center justify-center`}>

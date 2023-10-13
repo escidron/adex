@@ -4,14 +4,13 @@ import Image from 'next/image'
 import Categories from '@/components/categories/Categories'
 import StepperComponent from '@/components/stepper/StepperComponent'
 import React from 'react'
-import { Inter } from 'next/font/google'
 import BlackButton from '@/components/buttons/BlackButton'
 import ListingForm from '@/components/listingForm/ListingForm'
 import Footer from '@/components/footer/Footer'
 import BreadCrumbs from '@/components/breadcrumbs/BreadCrums'
 import AddCompanyModal from '@/sections/companies/AddCompanyModal'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function Listing() {
     const [selectedStep, setSelectedStep] = useState(1);
@@ -85,7 +84,7 @@ export default function Listing() {
     }, [refetch]);
     return (
         <>
-            <div className={`mt-[120px] w-full flex flex-col items-center ${inter.className} `}>
+            <div className={`mt-[120px] w-full flex flex-col items-center  `}>
                 <h1 className='text-[42px]'>List your Ad</h1>
                 {
                     userData.user_type == '1' && !selectedCompany ? (
@@ -99,7 +98,7 @@ export default function Listing() {
                                             addCompany ? (
                                                 <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
                                             ) : (
-                                                <div className={`flex justify-center items-center mt-8 ${inter.className} `}>
+                                                <div className={`flex justify-center items-center mt-8  `}>
                                                     <div className="bg-white p-8 rounded-lg shadow-md border">
                                                         <h2 className="text-2xl font-semibold mb-4">My Companies</h2>
                                                         <p className="text-gray-500">You haven&apos;t registered any companies yet.</p>

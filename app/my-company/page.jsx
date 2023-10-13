@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Inter } from 'next/font/google'
 import RatingComponent from '@/components/rating/RatingComponent'
 import ImageUploading from "react-images-uploading";
 import MyWallet from '@/sections/myWallet/MyWallet'
@@ -23,7 +22,7 @@ import ImageImporter from '@/components/gallery-image/imageImporter'
 import { BookmarkCheck, ImageIcon, LineChart, MapPin } from 'lucide-react'
 import { menuOptions } from '@/utils/companyAccountOptions'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export const CompanyRefreshContext = createContext();
 
@@ -167,7 +166,7 @@ export default function MyCompanyPage() {
                 </div>
 
             </div>
-            <div className={`mt-4 flex flex-col items-center ${inter.className} md:h-[60vh] `}>
+            <div className={`mt-4 flex flex-col items-center  md:h-[60vh] `}>
                 {/* <div className='w-[50%] mt-4 flex flex-col items-center'>
                     <h1 className='text-[26px]'>Payments & Payouts</h1>
                     <TabsComponent value={value1} setValue={(value) => setValue1(value)}>

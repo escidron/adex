@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 import PersonForm from '@/components/listingForm/PersonForm'
 import { useSearchParams } from 'next/navigation'
-import { Inter } from 'next/font/google'
 import axios from 'axios'
 import Link from 'next/link'
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function EditAdvertisement() {
     const [advertisement, setAdvertisement] = useState({})
@@ -38,7 +37,7 @@ export default function EditAdvertisement() {
                     </div>
                 </Link>
             </div>
-            <div className={`flex justify-center max-w-[50%] mx-auto  mt-8 min-h-[400px] ${inter.className}`}>
+            <div className={`flex justify-center max-w-[50%] mx-auto  mt-8 min-h-[400px] `}>
                 {
                     advertisement.id ? (
                         <PersonForm typeId={advertisement.category_id} isPeriodic={advertisement.is_periodic} hasPayout={true} edit={true} advertisement={advertisement} />

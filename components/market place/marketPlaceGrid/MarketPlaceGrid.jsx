@@ -3,12 +3,11 @@ import { useState, useContext } from 'react'
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
 import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
 import { FilterContext } from '@/app/market-place/page';
-import { Inter } from 'next/font/google'
 import { SlidersHorizontal } from 'lucide-react';
 import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
 import MarketPlaceFooter from '@/components/footer/MarketPlaceFooter'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     const [selected, setSelected] = useState(null);
@@ -17,7 +16,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
 
 
     return (
-        <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} ${inter.className}`}>
+        <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} `}>
             <div className="w-full abso  top-5 flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
                 <div className="relative w-full lg:w-[75%]">

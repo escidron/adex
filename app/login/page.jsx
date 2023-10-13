@@ -7,11 +7,10 @@ import { useFormik } from 'formik';
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
-import { Inter } from 'next/font/google'
 import toast, { Toaster } from "react-hot-toast";
 import TextField from "@/components/inputs/TextField";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 const validate = values => {
     const errors = {};
@@ -106,7 +105,7 @@ export default function LoginPage() {
                     priority
                 />
             </div>
-            <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto ${inter.className}`} onSubmit={formik.handleSubmit} >
+            <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `} onSubmit={formik.handleSubmit} >
                 <p className="text-white text-[36px]">Login</p>
                 <p className="text-white text-[18px] font-normal mt-2">Sign in to <span className="text-[#FCD33B]">continue.</span></p>
                 <div className=" mt-6 w-full relative text-black ">

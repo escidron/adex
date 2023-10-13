@@ -8,9 +8,8 @@ import properties3 from '../../public/properties-3.jpg'
 import properties4 from '../../public/about-adex-section.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function HaveSpace() {
     const [user, setUser] = useContext(UserContext)
@@ -19,7 +18,7 @@ export default function HaveSpace() {
 
         <div className='w-full h-auto'>
             <div className='w-full flex flex-col lg:flex-row'>
-                <div className={`bg-[#FCD33B] h-[288px] lg:w-[40%] flex flex-col justify-center items-center ${inter.className}`}>
+                <div className={`bg-[#FCD33B] h-[288px] lg:w-[40%] flex flex-col justify-center items-center `}>
                     <h1 className='text-5xl'>Have AD space?</h1>
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
                     <Link href={user.isLogged ? '/listing' : '/sign-up'}>

@@ -7,12 +7,11 @@ import { useFormik } from 'formik';
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
-import { Inter } from 'next/font/google'
 import toast, { Toaster } from "react-hot-toast";
 import { Password } from "@mui/icons-material";
 import TextField from "@/components/inputs/TextField";
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 const validate = values => {
     const errors = {};
@@ -203,7 +202,7 @@ export default function ForgotPasswordPage() {
             {
                 steps === 1 && (
 
-                    <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto ${inter.className}`} onSubmit={formik.handleSubmit} >
+                    <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `} onSubmit={formik.handleSubmit} >
                         <p className="text-white text-[36px]">Forgot password?</p>
                         <p className="text-white text-[16px] mt-2">We will send you reset instructions</p>
                         <div className=" mt-6 w-full relative text-black ">
@@ -234,7 +233,7 @@ export default function ForgotPasswordPage() {
             }
             {
                 steps === 2 && (
-                    <div className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto ${inter.className}`}>
+                    <div className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `}>
                         <p className="text-white text-[30px]">Enter the verification code</p>
                         <p className="text-white text-[14px] mt-2 w-[120%] text-center">{`We have sent you a code to ${email}`}</p>
                         <div className="w-full max-w-[400px] flex gap-2 mt-2">
@@ -318,7 +317,7 @@ export default function ForgotPasswordPage() {
             }
             {
                 steps === 3 && (
-                    <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto ${inter.className}`} >
+                    <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto `} >
                         <p className="text-white text-[30px]">Set a new password</p>
                         <p className="text-white text-[16px] mt-2">Your new password must be diferent from previously used passwords</p>
 
@@ -351,7 +350,7 @@ export default function ForgotPasswordPage() {
             }
             {
                 steps === 4 && (
-                    <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto ${inter.className}`} >
+                    <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto `} >
                         <p className="text-white text-[30px]">Well done!</p>
                         <p className="text-white text-[16px] mt-2">Your new password was reseted successfuly</p>
 

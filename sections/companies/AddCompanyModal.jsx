@@ -6,14 +6,13 @@ import { useFormik } from 'formik';
 import PlacesAutocomplete from '@/components/placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import ImageLoader from '@/components/ImageLoader/ImageLoader';
-import { Inter } from 'next/font/google'
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 import DropDownButton from '@/components/dropdown/DropdownButton';
 import HelpIcon from '@mui/icons-material/Help';
 import { industries } from '@/utils/industries';
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
     const [selected, setSelected] = useState(null);
@@ -119,7 +118,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
     return (
         <>
 
-            <form onSubmit={formik.handleSubmit} className={`flex justify-center ${inter.className}`}>
+            <form onSubmit={formik.handleSubmit} className={`flex justify-center `}>
                 <div className=' px-[30px] py-[15px]  bg-white rounded-xl w-[450px]'>
                     <div className='flex justify-center items-center mb-[20px] w-full'>
                         <h1 className='text-[25px]'>Register your Business</h1>
@@ -160,7 +159,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
                                     id="1"
                                     name="account-1"
                                     onClick={(e) => handleHasSpace(e)}
-                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                                 >No
                                 </div>
                                 <div
@@ -168,7 +167,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
                                     id="2"
                                     name="account-2"
                                     onClick={(e) => handleHasSpace(e)}
-                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] ${inter.className}`}
+                                    className={`w-[50%] p-2 min-h-[50px] flex justify-center items-center cursor-pointer rounded-lg outline-none ${hasPhysicalSpace == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                                 >Yes
                                 </div>
                             </div>
@@ -201,7 +200,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
 
                         <div className=" mt-6 w-full relative">
                             <p>Profile Photo</p>
-                            <div className={`w-full rounded-lg outline-none h-[160px] resize-none ${inter.className}`}>
+                            <div className={`w-full rounded-lg outline-none h-[160px] resize-none `}>
                                 <ImageLoader
                                     images={images}
                                     setImages={(image) => setImages(image)}

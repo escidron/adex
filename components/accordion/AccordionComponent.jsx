@@ -8,9 +8,8 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import { faqArray } from '@/utils/faq';
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -62,10 +61,10 @@ export default function AccordionComponent() {
           <div key={item.id}>
             <Accordion expanded={expanded === `panel${item.id}`} onChange={handleChange(`panel${item.id}`)} className='rounded-t-[10px] '>
               <AccordionSummary aria-controls={`panel${item.id}d-content`} id={`panel${item.id}d-header`} className='px-[40px]'>
-                <Typography className={`text-[20px] ml-8 ${inter.className}`}>{item.question}</Typography>
+                <Typography className={`text-[20px] ml-8 `}>{item.question}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography className={`text-[15px] ${inter.className}`}>
+                <Typography className={`text-[15px] `}>
                   {item.answer}
                 </Typography>
               </AccordionDetails>
