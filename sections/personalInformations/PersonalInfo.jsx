@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Inter } from 'next/font/google'
-import EditIcon from '@mui/icons-material/Edit';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Divider } from '@mui/material';
 import GalleryImage from '@/components/gallery-image/GalleryImage';
 import ImageImporter from '@/components/gallery-image/imageImporter';
+import { Edit, Eye, EyeOff } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] })
 
