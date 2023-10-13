@@ -3,11 +3,10 @@ import { useEffect } from 'react';
 import Success from '@/components/messages/Success';
 import Link from 'next/link';
 import ExternalBankForm from '@/sections/add-payout-method/ExternalBankForm';
-import PayoutForm from '@/sections/add-payout-method/PayoutForm'
+import PayoutIndividualForm from '@/sections/add-payout-method/PayoutIndividualForm'
 import { useState } from 'react'
-import SecondaryButton from '@/components/buttons/SecondaryButton';
-import BlackButton from '@/components/buttons/BlackButton';
 import { Inter } from 'next/font/google'
+import PayoutCompanyForm from '@/sections/add-payout-method/PayoutCompanyForm';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,8 +14,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function AddPayoutMethod() {
   const [hasBankAccount, setHasBankAccount] = useState(false);
-  const [stripeAccount, setStripeAccount] = useState('');
+  const [seller, setSeller] = useState(null);
   const [finish, setFinish] = useState(false);
+  const [hasAccount, setHasAccount] = useState(false);
 
   useEffect(() => {
     async function GetAddress() {
@@ -29,14 +29,18 @@ export default function AddPayoutMethod() {
       );
       if (response.status === 200) {
         const res = await response.json()
-        setStripeAccount((prev) => (res.account));
+        setSeller(res.data);
+        if (res.data.stripe_account) {
+          setHasAccount(true)
+        }
       }
     }
     GetAddress();
-  }, []);
+  }, [hasAccount]);
 
+  console.log('seller', seller)
   return (
-    <div className={`w-full mt-[90px]  flex flex-col justify-center items-center ${inter.className}`}>
+    <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center ${inter.className}`}>
       {finish ? (
         <Success >
           <h1 className='text-[25px]'>Bank Account registered</h1>
@@ -61,19 +65,23 @@ export default function AddPayoutMethod() {
         </Success>
       ) : (
         <>
-          <h1 className='text-[34px]'>Create a payout Method</h1>
-          <p className='text-[16px] mb-4'>Complete your listing&apos;s visibility by adding a payout method for receiving payments.</p>
-          {stripeAccount === ''
+          <h1 className='text-[30px]'>Stripe Verification Form</h1>
+          <p className='text-[16px] w-[90%] text-center mb-4'>Complete your listing&apos;s visibility by adding a payout method for receiving payments.</p>
+          {seller?.verified_identity === '1' && hasAccount
             ? (
-
-              <PayoutForm setStripeAccount={(account) => setStripeAccount(account)} />
-            )
-            : (
               <ExternalBankForm
                 setHasBankAccount={(has) => setHasBankAccount(has)}
-                stripeAccount={stripeAccount}
+                stripeAccount={seller.stripe_account}
                 setFinish={(finish) => setFinish(finish)} />
-            )}
+            )
+            : seller?.user_type == '2' ? (
+
+              <PayoutIndividualForm setHasAccount={(toggle) => setHasAccount(toggle)} />
+            ) : (
+              <PayoutCompanyForm setHasAccount={(toggle) => setHasAccount(toggle)} />
+
+            )
+          }
         </>
       )
       }

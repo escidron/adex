@@ -14,7 +14,7 @@ import Footer from "@/components/footer/Footer";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function PayoutForm({ setStripeAccount }) {
+export default function PayoutIndividualForm({ setHasAccount }) {
   // const [user,setUser] = useContext(UserContext)
   const [bod, setBod] = useState('');
   const [state, setState] = useState('AL');
@@ -70,7 +70,7 @@ export default function PayoutForm({ setStripeAccount }) {
       toast.dismiss()
 
       setIsPending(true)
-      axios.post('https://test.adexconnect.com/api/users/update-address',
+      axios.post('https://test.adexconnect.com/api/users/create-user-connect-account',
         {
           idNumber: values.idNumber,
           bod: bod,
@@ -86,7 +86,7 @@ export default function PayoutForm({ setStripeAccount }) {
           setIsPending(false)
 
           if (response.status == 200) {
-            setStripeAccount(response.data.account)
+            setHasAccount(true)
           }
         })
         .catch(function (error) {
@@ -112,13 +112,12 @@ export default function PayoutForm({ setStripeAccount }) {
 
       <div className={` flex flex-col items-center justify-center  py-2  ${inter.className} p-2 `}>
         <div><Toaster /></div>
-        <form className="text-black  z-[91] px-10 py-8 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
-          <p className=" text-[26px]">Stripe Verification Form</p>
-          {/* <p className=" text-[18px] font-normal mb-6">Register your bill address</p> */}
+        <form className="text-black  z-[91] px-10 py-4 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
+          <p className=" text-[24px]">Personal Details</p>
           <div className=" w-full  flex gap-[20px] ">
             <div className="w-[50%] relative ">
               <div className="flex">
-                <label htmlFor="idNumber" className="block  mb-1">
+                <label htmlFor="idNumber" className="block text-[14px]  mb-1">
                   Social Security Number
                 </label>
               </div>
@@ -132,7 +131,7 @@ export default function PayoutForm({ setStripeAccount }) {
                 value={formik.values.idNumber}
                 className={`w-full border focus:border-black p-2 rounded-lg outline-none ${inter.className}`}
               />
-              <div className="absolute top-10 right-2 cursor-pointer" onClick={() => setIsVisible(!isVisible)}>
+              <div className="absolute top-9 right-2 cursor-pointer" onClick={() => setIsVisible(!isVisible)}>
                 {
                   isVisible ? (
 
@@ -149,7 +148,7 @@ export default function PayoutForm({ setStripeAccount }) {
             </div>
             <div className="w-[50%] relative max-h-[42px]">
               <div className="flex">
-                <label htmlFor="bod" className="block   mb-1">
+                <label htmlFor="bod" className="block text-[14px]   mb-1">
                   Date of Birth
                 </label>
               </div>
@@ -166,7 +165,7 @@ export default function PayoutForm({ setStripeAccount }) {
 
           <div className="  w-full relative">
             <div className="flex">
-              <label htmlFor="street" className="block   mb-1">
+              <label htmlFor="street" className="block text-[14px]   mb-1">
                 Street address
               </label>
             </div>
@@ -184,7 +183,7 @@ export default function PayoutForm({ setStripeAccount }) {
 
           <div className="  w-full relative">
             <div className="flex">
-              <label htmlFor="city" className="block   mb-1">
+              <label htmlFor="city" className="block text-[14px]   mb-1">
                 City
               </label>
             </div>
@@ -203,7 +202,7 @@ export default function PayoutForm({ setStripeAccount }) {
           <div className=" w-full  flex gap-[20px]">
             <div className="w-[70%] relative">
               <div className="flex">
-                <label htmlFor="state" className="block   mb-1">
+                <label htmlFor="state" className="block text-[14px]   mb-1">
                   State
                 </label>
               </div>
@@ -218,7 +217,7 @@ export default function PayoutForm({ setStripeAccount }) {
             </div>
             <div className="w-[30%] relative">
               <div className="flex">
-                <label htmlFor="zip" className="block   mb-1">
+                <label htmlFor="zip" className="block text-[14px]   mb-1">
                   ZIP code
                 </label>
               </div>
@@ -246,7 +245,7 @@ export default function PayoutForm({ setStripeAccount }) {
             { formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
           </div>
           <div className=" w-full">
-            <button type="submit" className={`flex  gap-2 justify-center min-h-[50px] items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+            <button type="submit" className={`flex  gap-2 justify-center min-h-[50px] items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-4 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
               {/* <LockIcon sx={{ fontSize: '18px' }} /> */}
               <Lock size={18} />
               <div className='style_banner_button_text font-semibold text-[18px]'>
@@ -263,7 +262,7 @@ export default function PayoutForm({ setStripeAccount }) {
               </div>
             </button>
           </div>
-          <p className=" mt-5 text-[14px]">Disclaimer: This information is not being stored by ADEX. It is only used for the Stripe Verification process.</p>
+          <p className=" mt-2 text-[14px]">Disclaimer: This information is not being stored by ADEX. It is only used for the Stripe Verification process.</p>
         </form>
       </div>
       <div className="w-full"  >

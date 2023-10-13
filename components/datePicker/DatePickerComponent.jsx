@@ -4,7 +4,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
-
 export default function DatePickerComponent({ setDate,maxHeight,disabled,currentValue }) {
   const date = new Date();
 
@@ -13,12 +12,12 @@ export default function DatePickerComponent({ setDate,maxHeight,disabled,current
   let year = date.getFullYear()
 
   const [value, setValue] = useState(dayjs(`${year}-${month}-${day}`));
-  console.log('date',value)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
 
       <DatePicker
         disabled={disabled?disabled:false} 
+        autoFocus={false}
         value={currentValue?currentValue:''}
         onChange={(newValue) => {
           setValue(newValue)
@@ -28,6 +27,7 @@ export default function DatePickerComponent({ setDate,maxHeight,disabled,current
         sx={{
           width: '100%',
           '.MuiInputBase-root': { maxHeight:maxHeight? maxHeight: '50px', width: '100%' },
+          '.css-1d3z3hw-MuiOutlinedInput-notchedOutline':{borderColor:'#e5e1e1'},
         }}
       />
 

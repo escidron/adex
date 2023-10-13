@@ -78,17 +78,10 @@ input[type=number] {
   }
 }
 .no-data{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 100px; 
   animation: noDataAnimation 2s linear 0s  normal none;
-  
+
 }
-.no-data-title{
-  /* font-family: 'Roboto', sans-serif; */
-  font-size: 30px;
-}
+
 .cards-grid{
   height: auto;
   display: grid;
@@ -177,37 +170,6 @@ input[type=number] {
   margin-left: -25px;
 } */
 
-.market-place-footer{
-  width: 100%;
-  background-color: #252525;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  box-sizing: border-box;
-  bottom: 0;
-}
-
-.market-place-footer-logo{
-  height: 60px;
-  aspect-ratio: 1;
-
-}
-.market-place-footer-icons{
-  display: flex;
-  width: 100px;
-  justify-content: space-around;
-  align-items: center;
-}
-.market-place-footer-copy{
-  margin-top: 10px;
-}
-.market-place-footer-icon{
-  color: whitesmoke;
-}
 
 .card-payment-modal{
   top: 50%;
@@ -250,4 +212,8 @@ input[type=number] {
 .close_icon:hover{
   color: #FCD33B;
   cursor: pointer;
+}
+
+.MuiOutlinedInput-notchedOutline{
+  border-color: #e5e1e1 !important
 }
