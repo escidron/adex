@@ -141,7 +141,7 @@ export default function NavBar() {
             <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[500px] lg:w-[600px] xl:max-w-[50%]'>
-                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How it Work</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How it Works</Link>
                 <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
                 <div className='md:h-[50px] md:w-[50px] 
                                 lg:h-[60px] lg:w-[60px]
@@ -157,7 +157,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? '/listing' : '/login'} className='hover:text-[#FCD33B]'>Listing</Link>
+                <Link href={user.isLogged ? '/listing' : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
             {user.isLogged
                 ? (
@@ -281,7 +281,7 @@ export default function NavBar() {
                         </Link>
                         <Link href={`${user.isLogged ? '/listing' : 'login'}`} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <List size={20} />
-                            Create a Listing
+                            Create Listing
                         </Link>
                         <Link href="/how-it-works" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <HelpCircle size={20} />
