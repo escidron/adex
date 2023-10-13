@@ -1,8 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import axios from 'axios';
-import AddCompanyModal from './AddCompanyModal';
+import AddCompanyModal from '@/sections/companies/AddCompanyModal'
 import CompanyCard from '@/components/infoCard/CompanyCard';
 
 
