@@ -1,7 +1,7 @@
 
 'use client'
 import Card from './Card'
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { useState, useContext } from 'react';
 import { Inter } from 'next/font/google'
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
@@ -9,12 +9,8 @@ import SecondaryButton from '@/components/buttons/SecondaryButton';
 import BlackButton from '@/components/buttons/BlackButton';
 import axios from 'axios';
 import { RefreshContext } from './MyAdex';
-import Link from 'next/link';
 import { CompanyRefreshContext } from '@/app/my-company/page';
-import ShareButtonFacebook from '@/components/facebook/ShareButton';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,13 +19,6 @@ export default function MyListing({ data, status, isCompanyPage }) {
   const [currentStatus, setCurrentStatus] = useState('0');
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
-  const [sharingOptions, setSharingOptions] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-
-  const onCopy = useCallback(() => {
-    setCopied(true);
-  }, [])
 
   if (data.length === 0) {
     return (
@@ -63,7 +52,6 @@ export default function MyListing({ data, status, isCompanyPage }) {
         console.log(error)
       });
   }
-console.log('my listing details')
   return (
     <div className='flex flex-col items-center '>
       <div><Toaster /></div>
@@ -142,26 +130,9 @@ console.log('my listing details')
                     <Card 
                       item={item} 
                       bulletPoints={bulletPoints} 
-                      setSharingOptions={(toggle)=>setSharingOptions(toggle)}
                       setAdvertisementId={(id)=>setAdvertisementId(id)}
                     />
-                  <div className='flex flex-col gap-4 relative'>
-                    {
-                      sharingOptions && (
-                        <div className='absolute top-[-10px] right-[-140px] '>
-                          <ShareButtonFacebook id={item.id}/>
-                          <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
-                            <div className='flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
 
-                              <ContentCopyIcon fontSize='small' sx={{ color: 'green' }} />
-                              <h1>Copy Link</h1>
-                            </div>
-                          </CopyToClipboard>
-                        </div>
-
-                      )
-                    }
-                  </div>
                 </section>
 
               </>

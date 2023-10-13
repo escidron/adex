@@ -33,7 +33,6 @@ export default function MyAdex() {
         console.log(error)
       });
   }, [refresh]);
-  console.log('status', status)
 
   useEffect(() => {
     axios.post('https://test.adexconnect.com/api/advertisements/my-booking',
@@ -53,7 +52,7 @@ export default function MyAdex() {
       <div>
         <h1 className='text-[30px] mt-8'>My ADEX</h1>
       </div>
-      <div className='flex w-full items-center'>
+      <div className='flex w-full items-center md:px-8'>
         <div className='w-full lg:w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value)=>setValue(value)}>

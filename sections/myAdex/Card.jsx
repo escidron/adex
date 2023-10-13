@@ -1,25 +1,36 @@
-import Image from 'next/image'
-import BlackButton from '@/components/buttons/BlackButton'
 import { Inter } from 'next/font/google'
+import { useState } from 'react';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MultiImage from '@/components/multiImage/MultiImage';
-import { Share2, Trash } from 'lucide-react';
+import { Copy, Share2, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import ShareButtonFacebook from '@/components/facebook/ShareButton';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import toast from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Card({ item, bulletPoints, setSharingOptions, setAdvertisementId }) {
+export default function Card({ item, bulletPoints, setAdvertisementId }) {
     const router = useRouter();
-    
+    const [sharingOptions, setSharingOptions] = useState(false);
+    const [copied, setCopied] = useState(false);
+
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
 
     var differenceInMilliseconds = date2.getTime() - date1.getTime();
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
+
+
+
+    const onCopy = () => {
+        setCopied(true);
+        toast.success('Link copy to your clipboard')
+    }
     return (
-        <div onClick={()=>router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
+        <div onClick={() => router.push(`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black ${inter.className}`}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -31,7 +42,7 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
                     )
                 }
             </div>
-            <div className='md:ml-8 flex flex-col w-full'>
+            <div className={`relative md:ml-8 flex flex-col w-full`}>
                 <div>
                     <div className='flex justify-between items-center'>
                         <h1 className='text-[24px] font-[600]'>{item.title}</h1>
@@ -72,7 +83,7 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
                     <div className='flex mt-auto text-[20px] justify-between items-center'>
                         ${item.price}{item.ad_duration_type === '1' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Quarter</p>) : item.ad_duration_type === '3' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Year</p>) : ''}
                     </div>
-                    <div className='flex gap-2'>
+                    <div className={` gap-2 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {
                             setSharingOptions(true)
                             e.stopPropagation()
@@ -92,6 +103,26 @@ export default function Card({ item, bulletPoints, setSharingOptions, setAdverti
                         }
                     </div>
                 </div>
+                {
+                    sharingOptions && (
+                        <div onClick={(e) => e.stopPropagation()} className='w-full h-full bg-slate-200 rounded-lg absolute top-0 right-0 p-2 '>
+                            <div onClick={(e) => {
+                                e.stopPropagation()
+                                setSharingOptions(false)
+                            }} className='absolute top-1 right-1 hover:bg-slate-300 p-1 rounded-md cursor-pointer'>
+                                <X />
+                            </div>
+                            <ShareButtonFacebook id={item.id} />
+                            <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
+                                <div className='w-[180px] flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
+                                    <Copy />
+                                    <h1>Copy Link</h1>
+                                </div>
+                            </CopyToClipboard>
+                        </div>
+
+                    )
+                }
             </div>
         </div>
     )
