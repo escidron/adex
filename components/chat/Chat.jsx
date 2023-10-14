@@ -38,10 +38,10 @@ export default function Chat({ messages, userId,socket, setRefetch,advertisement
 
   return (
     <div className='flex-col w-full'>
-      <div className='border shadow-sm w-full h-[540px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >
+      <div className='border shadow-sm w-full h-[600px] md:h-[745px] lg:h-[540px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >
 
         {
-          messages.map((message, index) => {
+          messages.map((message) => {
             if (dates.substring(0, 10) != message.created_at.substring(0, 10)) {
               const date = new Date(message.created_at);
               const month = date.toLocaleString('en-US', { month: 'long' });

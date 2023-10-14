@@ -1,6 +1,4 @@
 "use client"
-import Head from 'next/head';
-
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
@@ -11,12 +9,9 @@ import { Divider } from '@mui/material';
 import BlackButton from '@/components/buttons/BlackButton';
 import Footer from '@/components/footer/Footer';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
-import {
-  Elements,
-} from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import StripeForm from '@/components/addCard/StripeForm';
-import WarningIcon from '@mui/icons-material/Warning';
 import { ThreeDots } from 'react-loader-spinner'
 import Success from '@/components/messages/Success';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
@@ -27,16 +22,12 @@ import { UserContext } from "@/app/layout";
 import { io } from "socket.io-client";
 import Chat from '@/components/chat/Chat';
 import MultiImage from '@/components/multiImage/MultiImage';
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
-// const socket = io('https://test.adexconnect.com')
-
-
-
 export default function AdDetails({ sharedId }) {
-  var socket = io.connect('http://localhost:4400')
+  var socket = io.connect('https://test.adexconnect.com:4500')
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
@@ -52,11 +43,12 @@ export default function AdDetails({ sharedId }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [discounts, setDiscounts] = useState([]);
-  const id = sharedId?sharedId:searchParams.get('id')
+  const id = sharedId ? sharedId : searchParams.get('id')
   const rejectedId = searchParams.get('rejected')
   const notificationId = searchParams.get('notification_id')
   const [gallery, setGallery] = useState([]);
   const [company, setCompany] = useState({});
+  const [isRendered, setIsRendered] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -70,6 +62,7 @@ export default function AdDetails({ sharedId }) {
       .then(function (response) {
         GetNotifications()
         setData(response.data.data)
+        console.log('checking data')
         if (response.data.data.company_id) {
           getGallery(response.data.data.company_id)
           getCompany(response.data.data.company_id)
@@ -122,28 +115,11 @@ export default function AdDetails({ sharedId }) {
         .then(function (response) {
 
           const allMessages = response.data.messages
-          console.log('allMessages', allMessages)
           const privateMessages = allMessages.filter(message => message.buyer_id == user.userId && message.seller_id == data.created_by && message.advertisement_id == data.id);
           setMessages(privateMessages)
           if (privateMessages.length > 0) {
             setIsChatOpen(true)
           }
-        })
-        .catch(function (error) {
-          console.log(error)
-        });
-    }
-  }, [data, user, refetch]);
-
-  useEffect(() => {
-    if (data.id) {
-      axios.post('https://test.adexconnect.com/api/users/user-profile',
-        { id: data.created_by }, {
-        withCredentials: true,
-      })
-        .then(function (response) {
-
-          console.log('user-profile', response.data)
         })
         .catch(function (error) {
           console.log(error)
@@ -164,6 +140,12 @@ export default function AdDetails({ sharedId }) {
         console.log(error)
       });
   }
+
+
+  socket.on('resend-data', () => {
+    setRefetch(!refetch)
+  })
+
   const sendMessage = () => {
 
     if (user.isLogged) {
@@ -183,9 +165,7 @@ export default function AdDetails({ sharedId }) {
 
   }
 
-
   const getGallery = (id) => {
-    console.log('entrou no efect')
     axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
       {
         id: id,
@@ -195,7 +175,6 @@ export default function AdDetails({ sharedId }) {
       })
       .then(function (response) {
         setGallery(response.data.galleryWithImages)
-        console.log('get gallery response', response)
       })
       .catch(function (error) {
         console.log(error)
@@ -203,7 +182,6 @@ export default function AdDetails({ sharedId }) {
 
   }
   const getCompany = (id) => {
-    console.log('entrou no efect')
     axios.post('https://test.adexconnect.com/api/users/my-company',
       {
         id: id,
@@ -220,8 +198,21 @@ export default function AdDetails({ sharedId }) {
       });
 
   }
+  console.log('gallery', gallery)
+  console.log('data', data)
+
+  useEffect(() => {
+
+
+    setIsRendered(true)
+  }, []);
+
+  if (!isRendered) {
+    return null
+  }
   return (
     <>
+
       <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
         <div><Toaster /></div>
 
@@ -235,7 +226,7 @@ export default function AdDetails({ sharedId }) {
               <Link href='/' className='mt-6'>
                 <SecondaryButton label='later' dark={true} />
               </Link>
-              <Link href='/my-profile?tab=1' className='mt-6'>
+              <Link href='/my-profile?tab=5' className='mt-6'>
                 <BlackButton label='view details' />
               </Link>
             </div>
@@ -360,65 +351,6 @@ export default function AdDetails({ sharedId }) {
 
             }
 
-            {/* <div className='mt-6'>
-              <h1 className='text-[24px] font-[600]'>Contract Details</h1>
-              <div className='mt-4'>
-                <h1 className='text-[20px] font-[500]'>City and State:</h1>
-                <h1 className='text-[20px] font-[500]'>Requirements:</h1>
-              </div>
-            </div> */}
-            {/* <div className='flex mx-auto mt-[40px] flex-col'>
-              <button onClick={() => setAccept(true)} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                <p className='style_banner_button_text font-medium '>Accept Contract</p>
-              </button>
-              {accept ? (
-                <>
-                  {hasCard ? (
-                    <>
-                      <div className='bg-black scroll-hidden w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAccept(false)}>
-                      </div>
-
-                      <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] `}>
-                        <h1 className='text-[22px] font-[400]'>Would you like to accept the contract proposal?</h1>
-                        <div className='w-full flex justify-between items-center mt-8'>
-                          <div onClick={() => setAccept(false)}>
-                            <SecondaryButton label='Close' dark={true} />
-                          </div>
-                          <button onClick={createPayment} className={`style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
-                            <div className='style_banner_button_text font-semibold text-[18px]  flex items justify-center'>
-                              {isPending ? (
-                                <ThreeDots
-                                  height="30"
-                                  width="40"
-                                  radius="9"
-                                  color="#FCD33B"
-                                  ariaLabel="three-dots-loading"
-                                  visible={true}
-                                />
-                              ) : 'Accept'}
-                            </div>
-                          </button>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className='flex gap-2 items-center mt-4'>
-                      <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
-                      <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
-                    </div>
-                    // <div className={`card-payment-modal px-[30px] py-[15px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-[400px] `}>
-                    //   <div className='w-full flex justify-center items-center mt-8'>
-                    //     <button onClick={() => setShowModal(true)} className='style_banner_button  mx-0 z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg'>
-                    //       <p className='style_banner_button_text font-medium'>Add Payment Method</p>
-                    //     </button>
-                    //   </div>
-                    // </div>
-
-                  )}
-                </>
-              ) : ''}
-
-            </div> */}
           </div>
         )}
       </div>
