@@ -16,7 +16,7 @@ import { ChevronLeft } from 'lucide-react';
 
 
 export default function MessagesPage() {
-    var socket = io.connect('wss://test.adexconnect.com:4500/socket.io/')
+    var socket = io.connect('wss://test.adexconnect.com:4500/');
     const [messages, setMessages] = useState([]);
     const [allChats, setallChats] = useState([]);
     const [showMessages, setshowMessages] = useState(false);
