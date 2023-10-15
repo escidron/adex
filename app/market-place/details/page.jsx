@@ -27,7 +27,7 @@ import { Toaster } from "react-hot-toast";
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
 export default function AdDetails({ sharedId }) {
-  var socket = io.connect('wss://test.adexconnect.com:4500/');
+  var socket = io.connect('https://test.adexconnect.com:4500');
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
