@@ -377,7 +377,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const millisecondsDifference = currentDate - createdDate;
     const fiveDaysMiliseconds = 5 * 24 * 60 * 60 * 1000;
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/payments/get-contract',
+        axios.post('http://localhost:5000/api/payments/get-contract',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -398,7 +398,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Booking = () => {
         setIsPending1(true)
-        axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+        axios.post('http://localhost:5000/api/payments/create-payment-intent',
             {
                 data: advertisement,
                 duration: advertisement.duration,
@@ -421,7 +421,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Decline = () => {
         setIsPending2(true)
-        axios.post('https://test.adexconnect.com/api/payments/decline-request',
+        axios.post('http://localhost:5000/api/payments/decline-request',
             {
                 id: advertisement.id,
                 requestedBy: advertisement.requested_by
@@ -443,7 +443,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const cancelBooking = () => {
         setOpenCancelBookingModal(false)
 
-        axios.post('https://test.adexconnect.com/api/payments/cancel-booking',
+        axios.post('http://localhost:5000/api/payments/cancel-booking',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -465,7 +465,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     const Finished = () => {
-        axios.post('https://test.adexconnect.com/api/payments/update-cancellation-status',
+        axios.post('http://localhost:5000/api/payments/update-cancellation-status',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
