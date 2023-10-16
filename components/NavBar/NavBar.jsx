@@ -19,6 +19,8 @@ export default function NavBar() {
     const [user, setUser] = useContext(UserContext)
     const [showNotifications, setshowNotifications] = useState(false)
     const [userData, setUserData] = useState({});
+    const [finishRequests, setFinishRequests] = useState(false);
+
     const router = useRouter();
 
     async function hasPayoutMethod() {
@@ -83,8 +85,12 @@ export default function NavBar() {
                 const currentUser = await response.json()
                 setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
                 hasPayoutMethod()
+                setFinishRequests(true)
+
             } else {
                 console.log('response error', response)
+                setFinishRequests(true)
+
             }
         }
         autoLogin();
@@ -204,7 +210,7 @@ export default function NavBar() {
                         </div>
                     </div>
                 )
-                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin ?
+                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests ?
                     (<div className='hidden h-[90px]
                                     md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
                         <div onClick={() => router.push('/login')} className=' cursor-pointer hidden lg:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
