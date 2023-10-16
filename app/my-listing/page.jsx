@@ -1,10 +1,8 @@
 "use client"
 import { useEffect, useState, useContext } from 'react'
-import Image from 'next/image'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ApproveReservation from '@/components/reservation/ApproveReservation'
 import { Divider } from '@mui/material';
 import BuyerCard from '@/components/infoCard/BuyerCard'
@@ -13,8 +11,7 @@ import MultiImage from '@/components/multiImage/MultiImage'
 import Success from '@/components/messages/Success'
 import Link from 'next/link'
 import BlackButton from '@/components/buttons/BlackButton'
-
-
+import { MapPin } from 'lucide-react'
 
 export default function MyListing() {
     const [buyer, setBuyer] = useState({});
@@ -23,7 +20,7 @@ export default function MyListing() {
     const [currentDiscount, setCurrentDiscount] = useState(0)
     const [bookingAccepted, setBookingAccepted] = useState(false)
     const [bookingRejected, setBookingRejected] = useState(false)
-
+    const [bulletPoints, setBulletPoints] = useState([])
     const [advertisement, setAdvertisement] = useState({
         image: '',
         title: '',
@@ -34,6 +31,9 @@ export default function MyListing() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
+
+    console.log('advertisement my liosting ', advertisement)
+
     useEffect(() => {
         axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
             {
@@ -47,6 +47,8 @@ export default function MyListing() {
                 setAdvertisement(response.data.data[0])
                 GetUserProfile(response.data.data[0].requested_by)
                 GetDiscounts(id, response.data.data[0].duration)
+                const bulletPoints = response.data.data[0].description.split('\n');
+                setBulletPoints(bulletPoints)
             })
             .catch(function (error) {
                 console.log(error)
@@ -73,7 +75,7 @@ export default function MyListing() {
             withCredentials: true,
         })
             .then(function (response) {
-                console.log(  'discounts',response.data)
+                console.log('discounts', response.data)
                 setDiscounts(response.data.discounts)
                 let hasDiscount = false
                 response.data.discounts.map((item) => {
@@ -105,6 +107,7 @@ export default function MyListing() {
             });
     }
 
+    console.log('bullet points', bulletPoints)
     return (
         <>
             <div className='mt-[120px] px-[60px] py-[30px] w-full  flex flex-col items-center mx-auto'>
@@ -130,17 +133,31 @@ export default function MyListing() {
                                             </div>
                                         </div>
                                         <div className='flex advertisements-center  gap-1'>
-                                            <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                            <h1 className='text-[15px] text-gray-500'>{advertisement.address}</h1>
+                                            {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
+                                            <MapPin size={16} color='gray' />
+                                            <h1 className='mt-[-2px] text-[15px] text-gray-500'>{advertisement.address}</h1>
                                         </div>
-                                        <h1 className='text-[15px] mt-4'>{advertisement.description}</h1>
+                                        <h1 className='text-[15px] mt-4'>
+                                            {
+                                                bulletPoints.length > 0 ? (
+                                                    <ul>
+                                                        {bulletPoints.map((point, index) => {
+                                                            return (
+
+                                                                <li key={index}>{point}</li>
+                                                            )
+                                                        })}
+                                                    </ul>
+                                                ) : `${advertisement.description}`
+                                            }
+                                        </h1>
                                     </div>
                                 </div>
-                                <ApproveReservation advertisement={advertisement} 
-                                discounts={discounts} 
-                                currentDiscount={currentDiscount} 
-                                setBookingAccepted={(accepted)=>setBookingAccepted(accepted)}
-                                setBookingRejected={(rejected)=>setBookingRejected(rejected)}
+                                <ApproveReservation advertisement={advertisement}
+                                    discounts={discounts}
+                                    currentDiscount={currentDiscount}
+                                    setBookingAccepted={(accepted) => setBookingAccepted(accepted)}
+                                    setBookingRejected={(rejected) => setBookingRejected(rejected)}
                                 />
                             </div>
                             <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
@@ -161,12 +178,12 @@ export default function MyListing() {
                             <h1 className='text-[25px]'>Booking request accepted</h1>
                             <p className='my-4'>A contract has been generated, you will receive the funds in your registered payout method.</p>
                             <div className='flex justify-center w-full'>
-                              <Link href='/' className='mt-6'>
-                                <BlackButton label='Done' />
-                              </Link>
+                                <Link href='/' className='mt-6'>
+                                    <BlackButton label='Done' />
+                                </Link>
                             </div>
-                          </Success>
-                          
+                        </Success>
+
                     )
                 }
                 {
@@ -175,12 +192,12 @@ export default function MyListing() {
                             <h1 className='text-[25px]'>Booking request rejected</h1>
                             <p className='my-4'> {`If you have any specific feedback or questions, please send a message to ${buyer.name}.`}</p>
                             <div className='flex justify-center w-full'>
-                              <Link href='/' className='mt-6'>
-                                <BlackButton label='Done' />
-                              </Link>
+                                <Link href='/' className='mt-6'>
+                                    <BlackButton label='Done' />
+                                </Link>
                             </div>
-                          </Success>
-                          
+                        </Success>
+
                     )
                 }
             </div>

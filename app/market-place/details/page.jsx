@@ -15,7 +15,6 @@ import StripeForm from '@/components/addCard/StripeForm';
 import { ThreeDots } from 'react-loader-spinner'
 import Success from '@/components/messages/Success';
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Reservation from '@/components/reservation/Reservation';
 import { useContext } from 'react';
 import { UserContext } from "@/app/layout";
@@ -23,11 +22,14 @@ import { io } from "socket.io-client";
 import Chat from '@/components/chat/Chat';
 import MultiImage from '@/components/multiImage/MultiImage';
 import { Toaster } from "react-hot-toast";
+import { MapPin } from 'lucide-react';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
 export default function AdDetails({ sharedId }) {
-  var socket = io.connect('https://test.adexconnect.com:4500');
+  // var socket = io.connect('http://localhost:4400')
+  //var socket = io.connect('https://test.adexconnect.com:4500')
+  //console.log(socket)
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
@@ -49,6 +51,8 @@ export default function AdDetails({ sharedId }) {
   const [gallery, setGallery] = useState([]);
   const [company, setCompany] = useState({});
   const [isRendered, setIsRendered] = useState(false);
+  const [bulletPoints, setBulletPoints] = useState([])
+
   const router = useRouter();
 
   useEffect(() => {
@@ -62,6 +66,8 @@ export default function AdDetails({ sharedId }) {
       .then(function (response) {
         GetNotifications()
         setData(response.data.data)
+        const bulletPoints = response.data.data.description.split('\n');
+        setBulletPoints(bulletPoints)
         console.log('checking data')
         if (response.data.data.company_id) {
           getGallery(response.data.data.company_id)
@@ -142,9 +148,9 @@ export default function AdDetails({ sharedId }) {
   }
 
 
-  socket.on('resend-data', () => {
-    setRefetch(!refetch)
-  })
+  //   socket.on('resend-data', () => {
+  //     setRefetch(!refetch)
+  // })
 
   const sendMessage = () => {
 
@@ -285,10 +291,23 @@ export default function AdDetails({ sharedId }) {
                     </div>
                   </div>
                   <div className='flex items-center  gap-1'>
-                    <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
+                    {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
+                    <MapPin size={16} color='gray' />
+
                     <h1 className='text-[15px] text-gray-500'>{data.address}</h1>
                   </div>
-                  <h1 className='text-[15px] mt-4'>{data.description}</h1>
+                  <h1 className='text-[15px] mt-4'>{
+                    bulletPoints.length > 0 ? (
+                      <ul>
+                        {bulletPoints.map((point, index) => {
+                          return (
+
+                            <li key={index}>{point}</li>
+                          )
+                        })}
+                      </ul>
+                    ) : `${data.description}`
+                  }</h1>
                 </div>
               </div>
               {!rejectedId ? (

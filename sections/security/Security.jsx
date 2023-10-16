@@ -55,10 +55,6 @@ export default function Security() {
     validate,
     onSubmit: values => {
       setIsPending(true)
-      console.log(          {
-        newPassword:values.password,
-        current:values.current
-    })
        axios.post('https://test.adexconnect.com/api/users/change-password',
           {
             newPassword:values.password,
@@ -67,8 +63,10 @@ export default function Security() {
             withCredentials: true,
           })
           .then(function (response) {
-            console.log('response',response)
             setIsPending(false)
+            formik.values.current =''
+            formik.values.password =''
+            formik.values.password2 =''
             toast.success(response.data.message)
 
           })

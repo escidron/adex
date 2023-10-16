@@ -10,7 +10,7 @@ import logo from '../../public/adex-logo-white-yellow.png'
 
 export default function MarketPlaceFooter({isHidden,isAbsolute}) {
   return (
-    <div className={`${isHidden > 0 ? 'flex' : 'flex'} col-span-full w-full bg-[#252525] h-[200px] flex-col items-center justify-center ${isAbsolute ? 'absolute left-0 bottom-0' : 'rounded-md'}`}>
+    <div className={`${isHidden > 0 ? 'flex' : 'flex'} mt-auto col-span-full w-full bg-[#252525] h-[200px] flex-col items-center justify-center ${isAbsolute ? 'absolute left-0 bottom-0' : 'rounded-md'}`}>
     <Link className="h-[60px] aspect-square flex items-center justify-center" href="/">
         <Image
             src={logo}

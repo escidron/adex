@@ -7,13 +7,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
 import { Divider } from '@mui/material';
-import HelpIcon from '@mui/icons-material/Help';
 import WarningIcon from '@mui/icons-material/Warning';
 import { ThreeDots } from 'react-loader-spinner'
 import axios from 'axios';
 import formatNumberInput from '@/utils/formatInputNumbers';
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { UserContext } from '../../app/layout';
+import { HelpCircle } from 'lucide-react';
 
 
 
@@ -136,7 +136,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     )
                 }
                 {
-                    data.ad_duration_type !== '0' || data.category_id == 17 && (
+                    data.ad_duration_type !== '0'  && (
                         <div className='w-[40%] flex flex-col items-center'>
                             <label htmlFor="date" className='mb-1'>{data.category_id == 17 ? 'Units' : 'Duration'}</label>
                             <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
@@ -155,7 +155,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         <div className='relative mt-2 flex justify-between items-center'>
                             <div className='flex items-center gap-1'>
                                 <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
-                                    <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' />
+                                    <HelpCircle size={17} className='cursor-pointer'/>
                                 </div>
                                 <p className='font-[600]'>Long contract discount</p>
                             </div>
