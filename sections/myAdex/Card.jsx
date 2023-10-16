@@ -112,7 +112,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId }) {
                                 <X />
                             </div>
                             <ShareButtonFacebook id={item.id} />
-                            <CopyToClipboard onCopy={onCopy} text={`http://localhost:3000/market-place/details?id=${item.id}`}>
+                            <CopyToClipboard onCopy={onCopy} text={`https://adexconnect.com/market-place/details?id=${item.id}`}>
                                 <div className='w-[180px] flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
                                     <Copy />
                                     <h1>Copy Link</h1>
