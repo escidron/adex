@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
+import HelpIcon from '@mui/icons-material/Help';
 import { ThreeDots } from 'react-loader-spinner'
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -22,6 +23,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
     const [cancelMessage, setCancelMessage] = useState('');
     const [finishCountdown, setFinishCountdown] = useState(false);
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
     const router = useRouter();
     const pathName = usePathname();
 
@@ -31,7 +33,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const millisecondsDifference = currentDate - createdDate;
     const fiveDaysMiliseconds = 5 * 24 * 60 * 60 * 1000;
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/payments/get-contract',
+        axios.post('http://localhost:5000/api/payments/get-contract',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -40,9 +42,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             withCredentials: true,
         })
             .then(function (response) {
-                console.log('contract info', response)
                 setFinishCountdown(response.data.cancellation_allowed == '0')
-
+                setIsContentLoaded(true)
             })
             .catch(function (error) {
                 console.log(error)
@@ -52,7 +53,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Booking = () => {
         setIsPending1(true)
-        axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+        axios.post('http://localhost:5000/api/payments/create-payment-intent',
             {
                 data: advertisement,
                 duration: advertisement.duration,
@@ -75,7 +76,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Decline = () => {
         setIsPending2(true)
-        axios.post('https://test.adexconnect.com/api/payments/decline-request',
+        axios.post('http://localhost:5000/api/payments/decline-request',
             {
                 id: advertisement.id,
                 requestedBy: advertisement.requested_by
@@ -97,7 +98,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const cancelBooking = () => {
         setOpenCancelBookingModal(false)
 
-        axios.post('https://test.adexconnect.com/api/payments/cancel-booking',
+        axios.post('http://localhost:5000/api/payments/cancel-booking',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -119,7 +120,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     const Finished = () => {
-        axios.post('https://test.adexconnect.com/api/payments/update-cancellation-status',
+        axios.post('http://localhost:5000/api/payments/update-cancellation-status',
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -171,18 +172,38 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         }
     };
 
+    if (!isContentLoaded) {
+        return (
+            <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+                <Skeleton variant="rounded" width={'100%'} height={120} />
+                <div className='mt-8'>
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                </div>
+                <div className='mt-8'>
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                </div>
+                <div className='mt-8'>
+                    <Skeleton variant="rounded" width={'100%'} height={60} />
+                </div>
+            </div>
+        )
+    }
+
     console.log('finishCountdown', finishCountdown)
     return (
         <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
 
-            {advertisement?.price && advertisement.category_id != 17 && (
-                <div className='flex justify-center'>
-                    <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
-                    <p className='flex items-center text-gray-500 '>
-                        {advertisement.ad_duration_type === '1' ? '/months' : advertisement.ad_duration_type === '2' ? '/quarters' : advertisement.ad_duration_type === '3' ? '/years' : ''}
-                    </p>
-                </div>
-            )}
+            {
+                advertisement?.price && advertisement.category_id != 17 && (
+                    <div className='flex justify-center'>
+                        <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
+                        <p className='flex items-center text-gray-500 '>
+                            {advertisement.ad_duration_type === '1' ? '/months' : advertisement.ad_duration_type === '2' ? '/quarters' : advertisement.ad_duration_type === '3' ? '/years' : ''}
+                        </p>
+                    </div>
+                )
+            }
             <div className={` flex items-center ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
                 {
                     advertisement.category_id == 17 ? (
@@ -236,7 +257,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                             <div className='flex items-center gap-1'>
                                 <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
                                     {/* <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' /> */}
-                                    <HelpCircle size={17} className='cursor-pointer'/>
+                                    <HelpCircle size={17} className='cursor-pointer' />
 
                                 </div>
                                 <p className='font-[600]'>Long contract discount</p>
@@ -271,7 +292,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 </div>
             </div>
             {
-                advertisement?.status == 4 ? (
+                advertisement?.status == 4 && (
                     <div className='mt-auto'>
                         <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10  flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
                             {
@@ -302,7 +323,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                             }
                         </button>
                     </div>
-                ) : ('')
+                )
             }
             {
                 advertisement?.status == 2 && !finishCountdown && (
