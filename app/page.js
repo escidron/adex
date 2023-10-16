@@ -10,7 +10,7 @@ export default function Home() {
       <Banner />
       <HaveSpace />
       <AnyPerson />
-      <CustomerComents />
+      {/* <CustomerComents /> */}
       <Footer />
     </main>
   )
