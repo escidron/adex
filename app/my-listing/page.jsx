@@ -4,7 +4,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import ApproveReservation from '@/components/reservation/ApproveReservation'
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import BuyerCard from '@/components/infoCard/BuyerCard'
 import { UserContext } from "@/app/layout";
 import MultiImage from '@/components/multiImage/MultiImage'
@@ -21,6 +21,8 @@ export default function MyListing() {
     const [bookingAccepted, setBookingAccepted] = useState(false)
     const [bookingRejected, setBookingRejected] = useState(false)
     const [bulletPoints, setBulletPoints] = useState([])
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
+
     const [advertisement, setAdvertisement] = useState({
         image: '',
         title: '',
@@ -49,6 +51,7 @@ export default function MyListing() {
                 GetDiscounts(id, response.data.data[0].duration)
                 const bulletPoints = response.data.data[0].description.split('\n');
                 setBulletPoints(bulletPoints)
+                setIsContentLoaded(true)
             })
             .catch(function (error) {
                 console.log(error)
@@ -110,49 +113,68 @@ export default function MyListing() {
     console.log('bullet points', bulletPoints)
     return (
         <>
-            <div className='mt-[120px] px-[60px] py-[30px] w-full  flex flex-col items-center mx-auto'>
+            <div className='mt-[120px] px-[60px] py-[30px] w-full lg:max-w-[80%]  flex flex-col items-center mx-auto'>
                 {
                     !bookingAccepted && !bookingRejected && (
                         <>
                             <h1 className='text-[45px] flex mx-auto'>Advertisement Details</h1>
                             <div className={`flex flex-col lg:flex-row gap-3  w-[80%]  justify-between mt-8 `}>
-                                <div className='w-full md:w-[50%] max-w-[500px]'>
-                                    <div className='w-full h-[300px] shadow-image rounded-lg'>
-                                        <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
-                                    </div>
+                                {
+                                    isContentLoaded ? (
+                                        <div className='w-full md:w-[50%] max-w-[500px]'>
+                                            <div className='w-full h-[300px] shadow-image rounded-lg'>
+                                                <MultiImage images={advertisement.image ? advertisement.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
+                                            </div>
 
-                                    <div className='mt-4'>
-                                        <div className='flex justify-between advertisements-center'>
-                                            <h1 className='text-[20px] font-[500]'>{advertisement.title}</h1>
-                                            <div className="flex advertisements-center justify-center">
-                                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                                                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                                            <div className='mt-4'>
+                                                <div className='flex justify-between advertisements-center'>
+                                                    <h1 className='text-[20px] font-[500]'>{advertisement.title}</h1>
+                                                    <div className="flex advertisements-center justify-center">
+                                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                                                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                                                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                                                    </div>
+                                                </div>
+                                                <div className='flex advertisements-center  gap-1'>
+                                                    {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
+                                                    <MapPin size={16} color='gray' />
+                                                    <h1 className='mt-[-2px] text-[15px] text-gray-500'>{advertisement.address}</h1>
+                                                </div>
+                                                <h1 className='text-[15px] mt-4 line-clamp-3'>
+                                                    {
+                                                        bulletPoints.length > 0 ? (
+                                                            <ul>
+                                                                {bulletPoints.map((point, index) => {
+                                                                    return (
+
+                                                                        <li key={index}>{point}</li>
+                                                                    )
+                                                                })}
+                                                            </ul>
+                                                        ) : `${advertisement.description}`
+                                                    }
+                                                </h1>
                                             </div>
                                         </div>
-                                        <div className='flex advertisements-center  gap-1'>
-                                            {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
-                                            <MapPin size={16} color='gray' />
-                                            <h1 className='mt-[-2px] text-[15px] text-gray-500'>{advertisement.address}</h1>
+                                    ) : (
+                                        <div className={`w-[80%] max-w-[500px] min-w-[400px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+                                            <Skeleton variant="rounded" width={'100%'} height={250} />
+                                            <div className='mt-4 flex justify-between'>
+                                                <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'60%'}/>
+                                                <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'20%'} />
+                                            </div>
+                                            <Skeleton variant="text"  width={'60%'} sx={{ fontSize: '25px' }} />
+                                            <div className='mt-4'>
+                                                <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                                                <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                                                <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                                            </div>
                                         </div>
-                                        <h1 className='text-[15px] mt-4'>
-                                            {
-                                                bulletPoints.length > 0 ? (
-                                                    <ul>
-                                                        {bulletPoints.map((point, index) => {
-                                                            return (
+                                    )
+                                }
 
-                                                                <li key={index}>{point}</li>
-                                                            )
-                                                        })}
-                                                    </ul>
-                                                ) : `${advertisement.description}`
-                                            }
-                                        </h1>
-                                    </div>
-                                </div>
                                 <ApproveReservation advertisement={advertisement}
                                     discounts={discounts}
                                     currentDiscount={currentDiscount}
@@ -166,7 +188,7 @@ export default function MyListing() {
                                 <h1 className='text-[35px]'>
                                     {advertisement.status == 2 ? 'Booked by' : 'Booking requested by'}
                                 </h1>
-                                <BuyerCard buyer={buyer} />
+                                <BuyerCard buyer={buyer} isContentLoaded={isContentLoaded} />
                             </div>
                         </>
                     )

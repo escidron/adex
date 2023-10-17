@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 import { ThreeDots } from 'react-loader-spinner'
 import axios from 'axios';
@@ -18,7 +18,7 @@ import { HelpCircle } from 'lucide-react';
 
 
 
-export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts }) {
+export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts,isContentLoaded }) {
 
     const currentDate = new Date();
     let currentDateDay = currentDate.getDate();
@@ -105,6 +105,26 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             console.log('entrou no false')
             //router.push('/login')
         }
+    }
+
+    
+    if (!isContentLoaded) {
+        return (
+            <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+                <Skeleton variant="rounded" width={'100%'} height={120} />
+                <div className='mt-8'>
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                </div>
+                <div className='mt-6'>
+
+                    <Skeleton variant="text" sx={{ fontSize: '25px' }} />
+                </div>
+                <div className='mt-auto'>
+                    <Skeleton variant="rounded" width={'100%'} height={60} />
+                </div>
+            </div>
+        )
     }
     return (
         <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>

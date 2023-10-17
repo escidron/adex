@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import BlackButton from '@/components/buttons/BlackButton';
 import Footer from '@/components/footer/Footer';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
@@ -28,8 +28,8 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 
 export default function AdDetails({ sharedId }) {
   // var socket = io.connect('http://localhost:4400')
-  //var socket = io.connect('https://test.adexconnect.com:4500')
-  //console.log(socket)
+  var socket = io.connect('http://test.adexconnect.com:4500')
+  console.log(socket)
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
@@ -52,6 +52,7 @@ export default function AdDetails({ sharedId }) {
   const [company, setCompany] = useState({});
   const [isRendered, setIsRendered] = useState(false);
   const [bulletPoints, setBulletPoints] = useState([])
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
 
   const router = useRouter();
 
@@ -73,6 +74,7 @@ export default function AdDetails({ sharedId }) {
           getGallery(response.data.data.company_id)
           getCompany(response.data.data.company_id)
         }
+        setIsContentLoaded(true)
       })
       .catch(function (error) {
         console.log(error)
@@ -250,38 +252,20 @@ export default function AdDetails({ sharedId }) {
         ) : (
           <div className='flex flex-col w-[80%] max-w-[1000px] '>
             <div className={`flex flex-col items-center justify-center`}>
-              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='w-[150px] h-[150px] cursor-pointer'>
-                <Image
-                  src={data.seller_image && !data.company_id ? data.seller_image : data.company_id ? company.company_logo : '/nouser.png'}
-                  alt="Seller Logo"
-                  priority
-                  width={2000}
-                  height={2000}
-                  className='rounded-full w-full h-full object-cover'
-                />
-              </Link>
-              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id ? company.company_name : data.seller_name}</Link>
-              <div className="flex items-center justify-center">
-                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-              </div>
-              <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className={` flex item justify-center bg-black text-[#FCD33B] hover:bg-[#FCD33B] hover:text-black py-[8px]  px-[30px] rounded-md mt-2 font-[600]  text-lg `}>
-                Seller Details
-              </Link>
-            </div>
-            <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
-
-            <div className={`flex flex-col lg:flex-row gap-3  ${rejectedId ? 'justify-center' : 'justify-between'}`}>
-              <div className='w-[50%] '>
-                <div className='w-full h-[300px] shadow-image rounded-lg'>
-                  <MultiImage images={data.image ? data.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
-                </div>
-                <div className='mt-4 '>
-                  <div className='flex gap-4 items-center'>
-                    <h1 className='text-[20px] font-[500]'>{data.title}</h1>
+              {
+                isContentLoaded ? (
+                  <>
+                    <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='w-[150px] h-[150px] cursor-pointer'>
+                      <Image
+                        src={data.seller_image && !data.company_id ? data.seller_image : data.company_id ? company.company_logo : '/nouser.png'}
+                        alt="Seller Logo"
+                        priority
+                        width={2000}
+                        height={2000}
+                        className='rounded-full w-full h-full object-cover'
+                      />
+                    </Link>
+                    <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className='text-[35px] min-w-[250px] text-center cursor-pointer'>{data.company_id ? company.company_name : data.seller_name}</Link>
                     <div className="flex items-center justify-center">
                       <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
                       <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
@@ -289,27 +273,80 @@ export default function AdDetails({ sharedId }) {
                       <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                       <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                     </div>
-                  </div>
-                  <div className='flex items-center  gap-1'>
-                    {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
-                    <MapPin size={16} color='gray' />
+                    <Link href={`/market-place/${data.company_id ? 'company-details' : 'seller-details'}?id=${data.company_id ? data.company_id : data.created_by}`} className={` flex item justify-center bg-black text-[#FCD33B] hover:bg-[#FCD33B] hover:text-black py-[8px]  px-[30px] rounded-md mt-2 font-[600]  text-lg `}>
+                      Seller Details
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Skeleton variant="circular" width={150} height={150} />
+                    <Skeleton variant="text" sx={{ fontSize: '45px' }} width={'40%'} />
+                    <Skeleton variant="text" sx={{ fontSize: '15px' }} width={'10%'} />
+                    <Skeleton variant="rounded" width={'20%'} height={60} />
 
-                    <h1 className='text-[15px] text-gray-500'>{data.address}</h1>
-                  </div>
-                  <h1 className='text-[15px] mt-4'>{
-                    bulletPoints.length > 0 ? (
-                      <ul>
-                        {bulletPoints.map((point, index) => {
-                          return (
+                  </>
+                )
+              }
 
-                            <li key={index}>{point}</li>
-                          )
-                        })}
-                      </ul>
-                    ) : `${data.description}`
-                  }</h1>
-                </div>
-              </div>
+            </div>
+
+            <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+
+            <div className={`flex flex-col lg:flex-row gap-3  ${rejectedId ? 'justify-center' : 'justify-between'}`}>
+              {
+                isContentLoaded ? (
+                  <div className='w-[50%] '>
+                    <div className='w-full h-[300px] shadow-image rounded-lg'>
+                      <MultiImage images={data.image ? data.image : [{ data_url: '/nouser.png' }]} height={'300px'} remove={false} />
+                    </div>
+                    <div className='mt-4 '>
+                      <div className='flex gap-4 items-center'>
+                        <h1 className='text-[20px] font-[500]'>{data.title}</h1>
+                        <div className="flex items-center justify-center">
+                          <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                          <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                          <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
+                          <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                          <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                        </div>
+                      </div>
+                      <div className='flex items-center  gap-1'>
+                        {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
+                        <MapPin size={16} color='gray' />
+
+                        <h1 className='text-[15px] text-gray-500'>{data.address}</h1>
+                      </div>
+                      <h1 className='text-[15px] mt-4'>{
+                        bulletPoints.length > 0 ? (
+                          <ul>
+                            {bulletPoints.map((point, index) => {
+                              return (
+
+                                <li key={index}>{point}</li>
+                              )
+                            })}
+                          </ul>
+                        ) : `${data.description}`
+                      }</h1>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={`w-[50%] max-w-[500px] min-w-[400px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+                    <Skeleton variant="rounded" width={'100%'} height={250} />
+                    <div className='mt-4 flex justify-between'>
+                      <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'60%'} />
+                      <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'20%'} />
+                    </div>
+                    <Skeleton variant="text" width={'60%'} sx={{ fontSize: '25px' }} />
+                    <div className='mt-4'>
+                      <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                      <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                      <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
+                    </div>
+                  </div>
+                )
+              }
+
               {!rejectedId ? (
 
                 <Reservation
@@ -320,6 +357,7 @@ export default function AdDetails({ sharedId }) {
                   setIsBooked={(booked) => setIsBooked(booked)}
                   setIsRequested={(requested) => setIsRequested(requested)}
                   discounts={discounts}
+                  isContentLoaded={isContentLoaded}
                 />
               ) : ('')}
 
