@@ -1,15 +1,21 @@
 'use client'
-import React from 'react'
+import {useState} from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import properties4 from '../../public/properties-4.jpg'
 import properties5 from '../../public/properties-5.png'
 import properties6 from '../../public/properties-6.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
+import { Button } from '@/components/ui/button'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation';
+
 
 export default function AnyPerson() {
-    const [user,setUser] = useContext(UserContext)
+    const [user, setUser] = useContext(UserContext)
+    const [isPending, setIsPending] = useState(false)
+
+    const router = useRouter();
 
     return (
         <div className='bg-black h-auto py-[30px] flex flex-col justify-center items-center'>
@@ -44,11 +50,13 @@ export default function AnyPerson() {
             <div className='lg:w-[50%] text-white mt-6 px-[15px]'>
                 <p className='text-center text-[16px] lg:text-[18px]'>Are you a person that would like to offer yourself as Ad space or, do you have a place or thing you’d like to offer up as Ad space, create a Listing in a few easy steps:</p>
             </div>
-            <Link href={user.isLogged?'/listing':'/login'}>
-                <button className='z-10 bg-[#FCD33B] py-[8px] px-[20px] mt-6 rounded-md hover:bg-black hover:text-[#FCD33B] text-md flex items-center justify-center'>
-                    <p className='style_banner_button_text font-semibold text-18px]'>Create a listing</p>
-                </button>
-            </Link>
+            <Button variant='secondary' className='mt-4' disabled={isPending} size='lg' onClick={() => {
+                setIsPending(true)
+                router.push(user.isLogged ? '/listing' : '/login')
+            }}>
+                {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                Create a listing
+            </Button>
         </div>
     )
 }

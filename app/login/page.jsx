@@ -1,5 +1,4 @@
 "use client"
-import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import axios from 'axios'
@@ -9,8 +8,8 @@ import { UserContext } from '../../app/layout';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from "react-hot-toast";
 import TextField from "@/components/inputs/TextField";
-
-
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const validate = values => {
     const errors = {};
@@ -31,6 +30,8 @@ export default function LoginPage() {
     const [user, setUser] = useContext(UserContext)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [isPending, setIsPending] = useState(false)
+
     const router = useRouter();
     const formik = useFormik({
         initialValues: {
@@ -40,18 +41,15 @@ export default function LoginPage() {
         validate,
         onSubmit: values => {
             toast.dismiss()
+            setIsPending(true)
             axios.post('https://test.adexconnect.com/api/users/auth',
                 {
                     email: values.email,
                     password: values.password
                 }, {
                 withCredentials: true,
-                headers: {
-                    'content-type': 'application/json'
-                }
             })
                 .then(function (response) {
-                    console.log('response', response)
                     setUser((prev) => (
                         {
                             ...prev, isLogged: true,
@@ -60,10 +58,10 @@ export default function LoginPage() {
                             showLoginOptions: false,
                             image: response.data.image,
                             userId: response.data.userId,
-                            hasPayout:response.data.hasPayout?true:false
-
+                            hasPayout: response.data.hasPayout ? true : false
                         }))
                     router.push('/')
+                    setIsPending(false)
                 })
 
                 .catch(function (error) {
@@ -135,15 +133,18 @@ export default function LoginPage() {
                     {passwordError && !formik.errors.password ? <div className="absolute top-[50px]  text-red-600 font-bold ">{passwordError}</div> : null}
                 </div>
 
-                <label onClick={()=>router.push('/forgot-password')} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
-                <button className='z-10 bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 hover:bg-black hover:text-[#FCD33B] text-black text-lg
-                                  lg:mt-10 '>Login
-                </button>
+                <label onClick={() => router.push('/forgot-password')} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
+
+                <Button variant='secondary' disabled={isPending}  type='submit' className='w-full mt-4 text-lg font-[600]'>
+                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                    Login
+                </Button>
+                
                 <p className="text-white mt-5">Don&apos;t have an account?
-                    <label  className="text-[#FCD33B] hover:opacity-80 cursor-pointer" 
-                    onClick={()=>{
-                        router.push('/sign-up')
-                    }}>Sign Up</label>
+                    <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer"
+                        onClick={() => {
+                            router.push('/sign-up')
+                        }}>Sign Up</label>
                 </p>
             </form>
         </div>

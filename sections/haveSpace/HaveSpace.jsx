@@ -1,18 +1,20 @@
 'use client'
-import React from 'react'
+import {useState} from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import properties1 from '../../public/properties-1.jpg'
 import properties2 from '../../public/properties-2.jpg'
 import properties3 from '../../public/properties-3.jpg'
 import properties4 from '../../public/about-adex-section.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
-
-
+import { Button } from '@/components/ui/button'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation';
 
 export default function HaveSpace() {
     const [user, setUser] = useContext(UserContext)
+    const [isPending, setIsPending] = useState(false)
+    const router = useRouter();
 
     return (
 
@@ -21,11 +23,13 @@ export default function HaveSpace() {
                 <div className={`bg-[#FCD33B] h-[288px] lg:w-[40%] flex flex-col justify-center items-center `}>
                     <h1 className='text-5xl'>Have AD space?</h1>
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
-                    <Link href={user.isLogged ? '/listing' : '/sign-up'}>
-                        <button className='style_banner_button z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:scale-[1.1] hover:text-white text-lg
-                                 lg:py-[10px] lg:px-[40px] lg:mt-5 '><p className=' font-medium'>{user.isLogged ? 'Create Listing' : 'Sign Up'}</p>
-                        </button>
-                    </Link>
+                    <Button className='mt-4' disabled={isPending} size='lg' onClick={() => {
+                        setIsPending(true)
+                        router.push(user.isLogged ? '/listing' : '/sign-up')
+                    }}>
+                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                        {user.isLogged ? 'Create Listing' : 'Sign Up'}
+                    </Button>
                 </div>
                 <div className=' lg:w-[60%] flex h-[288px]'>
                     <Image

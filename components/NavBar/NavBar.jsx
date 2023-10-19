@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
 import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2 } from 'lucide-react';
+import { Button } from '../ui/button';
 
 
 
@@ -210,16 +211,11 @@ export default function NavBar() {
                         </div>
                     </div>
                 )
-                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests ?
-                    (<div className='hidden h-[90px]
-                                    md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <div onClick={() => router.push('/login')} className=' cursor-pointer hidden lg:flex items-center z-10 ml-4 h-10 bg-[#FCD33B] py-[4px] px-[15px] rounded-md  text-black   hover:text-[#FCD33B]  hover:bg-black text-md'>
-                            <p className='style_banner_button_text font-semibold text-[16px]'>Login</p>
-                        </div>
-                        <div onClick={() => router.push('/sign-up')} className='hidden cursor-pointer lg:flex items-center z-10 ml-4 h-10 border-[#FCD33B] border-2 text-[#FCD33B] py-[4px] px-[15px] rounded-md    hover:bg-[#FCD33B]  hover:text-black text-md'>
-                            <p className='style_banner_button_text font-semibold text-[16px]'>Sign Up</p>
-                        </div>
-                    </div>) : ''
+                : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests &&
+                (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
+                <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button> 
+                <Button className='hidden lg:flex ml-4' variant='secondaryOutline' onClick={() => router.push('/sign-up')}>Sign Up</Button>
+            </div>) 
 
             }
 

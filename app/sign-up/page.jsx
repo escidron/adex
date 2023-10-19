@@ -14,6 +14,8 @@ import BlackButton from "@/components/buttons/BlackButton";
 import SecondaryButton from "@/components/buttons/SecondaryButton";
 import TextField from "@/components/inputs/TextField";
 import TermsOfUseModal from "@/components/modals/TermsOfUseModal";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 
 
@@ -23,8 +25,9 @@ export default function SignUppage() {
   const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
   const [showTerms, setShowterms] = useState(false);
-  const [isPending, setIsPending] = useState(false)
   const [checkTerms, setCheckTerms] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+
   const router = useRouter();
 
   const validate = values => {
@@ -44,7 +47,7 @@ export default function SignUppage() {
     if (!values.accountType) {
       errors.accountType = 'Required';
     }
-
+    
     if (!values.password) {
       errors.password = 'Required';
     }else if (values.password.length < 8){
@@ -93,18 +96,15 @@ export default function SignUppage() {
             accountType: accountType
           }, {
           withCredentials: true,
-          headers: {
-            'content-type': 'application/json'
-          }
         })
           .then(function (response) {
             if (response.status === 200) {
               setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false, userId: response.data.userId, hasPayout: false })
               router.push('/')
-              setIsPending(false)
             } else if (response.status === 401) {
               console.log(response.data.error)
             }
+            setIsPending(false)
           })
           .catch(function (error) {
             setIsPending(false)
@@ -313,8 +313,8 @@ export default function SignUppage() {
                 <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
                 </div>
                 <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-full md:w-[80%] min-w-[800px] h-[80vh]'>
-                <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
-                    <TermsOfUseModal />
+                  <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
+                    <TermsOfUseModal/>
                   </div>
                   <div className="w-full h-[10%] flex justify-around items-center">
                     <div onClick={() => setShowterms(false)}>
@@ -331,19 +331,10 @@ export default function SignUppage() {
               </>
             )
           }
-          <button type="submit" className={`z-10 flex justify-center items-center bg-[#FCD33B] font-[600] py-[8px] text-black px-[30px] rounded-md mt-4 w-full ${!isPending ? 'hover:bg-black hover:text-[#FCD33B]' : ''}  text-lg`}>
-            {isPending ? (
-              <ThreeDots
-                height="30"
-                width="40"
-                radius="9"
-                color="black"
-                ariaLabel="three-dots-loading"
-                visible={true}
-              />
-            ) : 'Sign Up'}
-
-          </button>
+                <Button variant='secondary' disabled={isPending}  type='submit' className='w-full mt-4 text-lg font-[600]'>
+                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                    Login
+                </Button>
           <p className="text-white mt-5 ">Have an account?
             <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
               router.push('/login')
