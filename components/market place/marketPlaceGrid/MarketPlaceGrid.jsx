@@ -2,11 +2,18 @@
 import { useState, useContext } from 'react'
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
 import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
-import { FilterContext } from '@/app/market-place/page';
 import { SlidersHorizontal } from 'lucide-react';
 import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
 import MarketPlaceFooter from '@/components/footer/MarketPlaceFooter'
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from '@/components/ui/button'
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded }) {
@@ -19,19 +26,38 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
         <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} `}>
             <div className="w-full abso  top-5 flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
-                <div className="relative w-full lg:w-[75%]">
+                <div className="relative w-full ">
                     {/* google map search input */}
                     <PlacesAutocomplete setSelected={setSelected} setAddress={setAddress} />
-                    <button onClick={() => {}} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <button onClick={() => { }} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
                         <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                     </button>
                 </div>
-                <button onClick={() => setOpenFilter(!openFilter)} className={`flex items-center ml-4 min-w-[100px] h-10 ${openFilter ? 'text-black bg-[#FCD33B]' : 'text-white bg-black'}   py-[4px] px-[15px] rounded-md   hover:text-black hover:bg-[#FCD33B]`}>
-                    <div className='mr-2'>
-                        <SlidersHorizontal size={18} />
-                    </div>
-                    Filters
-                </button>
+
+                <Dialog >
+                    <DialogTrigger >
+                        <Button className='ml-[20px]'>
+                            <div className='mr-2'>
+                                <SlidersHorizontal size={16} />
+                            </div>
+                            Filters
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Filters</DialogTitle>
+                            <DialogDescription>
+                                Use the filter modal to narrow down your listing search and discover the perfect advertisements with ease.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div>
+
+                            <MarketPlaceFilterModal
+                                setOpenFilter={(toggle) => setOpenFilter(toggle)}
+                            />
+                        </div>
+                    </DialogContent>
+                </Dialog>
             </div>
 
             {newData.length === 0 && isDataLoaded ?
@@ -69,7 +95,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                     </>
             }
 
-            <MarketPlaceFooter isAbsolute={true}/>
+            <MarketPlaceFooter isAbsolute={true} />
             {/* <Footer /> */}
             {openFilter &&
 

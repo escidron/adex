@@ -13,6 +13,7 @@ import Link from 'next/link'
 import BlackButton from '@/components/buttons/BlackButton'
 import { MapPin } from 'lucide-react'
 
+
 export default function MyListing() {
     const [buyer, setBuyer] = useState({});
     const [user, setUser] = useContext(UserContext)
@@ -110,10 +111,10 @@ export default function MyListing() {
             });
     }
 
-    console.log('bullet points', bulletPoints)
     return (
         <>
             <div className='mt-[120px] px-[60px] py-[30px] w-full lg:max-w-[80%]  flex flex-col items-center mx-auto'>
+
                 {
                     !bookingAccepted && !bookingRejected && (
                         <>
@@ -162,10 +163,10 @@ export default function MyListing() {
                                         <div className={`w-[80%] max-w-[500px] min-w-[400px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
                                             <Skeleton variant="rounded" width={'100%'} height={250} />
                                             <div className='mt-4 flex justify-between'>
-                                                <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'60%'}/>
+                                                <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'60%'} />
                                                 <Skeleton variant="text" sx={{ fontSize: '25px' }} width={'20%'} />
                                             </div>
-                                            <Skeleton variant="text"  width={'60%'} sx={{ fontSize: '25px' }} />
+                                            <Skeleton variant="text" width={'60%'} sx={{ fontSize: '25px' }} />
                                             <div className='mt-4'>
                                                 <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />
                                                 <Skeleton variant="text" width={'100%'} sx={{ fontSize: '25px' }} />

@@ -39,9 +39,15 @@ export default function EditAdvertisement() {
             </div>
             <div className={`flex justify-center max-w-[50%] mx-auto  mt-8 min-h-[400px] `}>
                 {
-                    advertisement.id ? (
-                        <PersonForm typeId={advertisement.category_id} isPeriodic={advertisement.is_periodic} hasPayout={true} edit={true} advertisement={advertisement} />
-                    ) : ('')
+                    advertisement.id && (
+                        <PersonForm 
+                            typeId={advertisement.category_id} 
+                            isPeriodic={advertisement.is_periodic} 
+                            hasPayout={true} 
+                            edit={true} 
+                            advertisement={advertisement} 
+                        />
+                    ) 
                 }
             </div>
         </div>

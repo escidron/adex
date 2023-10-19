@@ -3,25 +3,26 @@ import { useState } from 'react'
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
-import CounterComponent from '../counter/CounterComponent';
 import ImageLoader from '../ImageLoader/ImageLoader';
 import BlackButton from '../buttons/BlackButton';
 import SecondaryButton from '../buttons/SecondaryButton';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import axios from 'axios';
-import base64ToBlob from '@/utils/base64ToBlob';
+import { useRouter } from 'next/navigation';
 import Success from '../messages/Success';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import { ThreeDots } from 'react-loader-spinner'
 import TextField from '../inputs/TextField';
 import Switch from '@mui/material/Switch';
-import { duration, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { Divider } from '@mui/material';
+import { redirect } from 'next/dist/server/api-utils';
+import toast from 'react-hot-toast';
 
 
 const PinkSwitch = styled(Switch)(({ theme }) => ({
@@ -33,7 +34,7 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout, advertisement, edit,selectedCompany }) {
+export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPayout, advertisement, edit, selectedCompany }) {
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [isPending, setIsPending] = useState(false)
   const [durationType, setdurationType] = useState('1');
@@ -50,7 +51,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
   const [importFromGallery, setImportFromGallery] = useState(false);
   const [date, setDate] = useState(null);
 
-console.log('my selected day',date)
+  const router = useRouter();
 
   const [coords, setCoords] = useState({
     lat: -3.745,
@@ -71,9 +72,10 @@ console.log('my selected day',date)
       errors.title = 'Required';
     }
 
-    if (selected === null) {
+    if (values.location === null) {
       errors.location = 'Required';
     }
+
     if (values.price === 0 || !values.price) {
       errors.price = 'Must be higher than 0';
     } else if (typeof (values.price) == 'string') {
@@ -89,7 +91,6 @@ console.log('my selected day',date)
     if (images.length === 0) {
       errors.image = 'Required';
     }
-
     if (isPeriodic !== 1) {
 
       if (!date) {
@@ -97,14 +98,14 @@ console.log('my selected day',date)
       }
     }
 
-    console.log('error',errors)
+    console.log('error', errors)
     return errors;
   };
-
+  console.log('date', date)
   const formik = useFormik({
     initialValues: {
       title: edit ? advertisement.title : "",
-      location: edit ? advertisement.location : "",
+      location: edit ? advertisement.address : "",
       description: edit ? advertisement.description : "",
       image: edit ? advertisement.image : images,
       price: edit ? advertisement.price : "",
@@ -113,7 +114,6 @@ console.log('my selected day',date)
     validate,
     onSubmit: values => {
       setIsPending(true)
-
       axios.post(`https://test.adexconnect.com/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           id: edit ? advertisement.id : '',
@@ -132,11 +132,11 @@ console.log('my selected day',date)
           per_unit_price: 0,
           is_automatic: checked ? '1' : '0',
           discounts: discounts,
-          has_payout:hasPayout,
-          company_id:selectedCompany,
-          importFromGallery:importFromGallery,
-          start_date : isPeriodic !== 1 ? date : null
-          
+          has_payout: hasPayout,
+          company_id: selectedCompany,
+          importFromGallery: importFromGallery,
+          start_date: isPeriodic !== 1 ? date : date ? date : formik.values.date
+
 
         }, {
         withCredentials: true,
@@ -144,7 +144,12 @@ console.log('my selected day',date)
         .then(function (response) {
 
           setResponse(response.data.message)
-          setSelectedStep(4)
+          if (!edit) {
+            setSelectedStep(4)
+          } else {
+            router.push('/my-profile?tab=5')
+            toast.success('Listing edited successfully!')
+          }
           setIsPending(false)
         })
         .catch(function (error) {
@@ -152,7 +157,9 @@ console.log('my selected day',date)
           console.log(error)
           setIsPending(false)
 
-        });
+        })
+
+        
     },
   });
 
@@ -177,30 +184,30 @@ console.log('my selected day',date)
       {!response ? (
 
         <form className='flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-6' onSubmit={formik.handleSubmit}>
-          
+
           <div className=" w-full relative flex gap-2 mt-auto">
-                <TextField
-                  id='title'
-                  label='Title'
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.title}
-                  errors={formik.errors.title}
-                />
-                {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
-              </div>
+            <TextField
+              id='title'
+              label='Title'
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.title}
+              errors={formik.errors.title}
+            />
+            {formik.touched.title && formik.errors.title ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.title}</div> : null}
+          </div>
           {
-            isPeriodic !== 1 &&  (
+            isPeriodic !== 1 && (
               <div className=" w-full relative flex gap-2">
                 <div className='w-[50%] relative'>
-                    <label htmlFor="date" className='mb-1'>Event date</label>
-                    <DatePickerComponent
-                        id='date'
-                        setDate={(date) => setDate(date)}
-                        currentValue={''}
-                        maxHeight='55px'
-                    />
-                    {formik.touched.date && formik.errors.date ? <div className="absolute top-[80px] text-red-600 font-bold text-[12px]">{formik.errors.date}</div> : null}
+                  <label htmlFor="date" className='mb-1'>Event date</label>
+                  <DatePickerComponent
+                    id='date'
+                    setDate={(date) => setDate(date)}
+                    currentValue={dayjs(formik.values.date)}
+                    maxHeight='55px'
+                  />
+                  {formik.touched.date && formik.errors.date ? <div className="absolute top-[80px] text-red-600 font-bold text-[12px]">{formik.errors.date}</div> : null}
 
                 </div>
                 <div className={`w-[50%] relative mt-auto`}>
@@ -388,7 +395,11 @@ console.log('my selected day',date)
           <div className="w-full relative">
             <MapCoordinatesContext.Provider value={[coords, setCoords]}>
               <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
-                <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
+                <PlacesAutocomplete
+                  setSelected={setSelected}
+                  setAddress={(ad) => setAddress(ad)}
+                  currentLocation={formik.values.location}
+                />
               </div>
             </MapCoordinatesContext.Provider>
             {formik.touched.location && formik.errors.location ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.location}</div> : null}
@@ -415,7 +426,7 @@ console.log('my selected day',date)
                 images={images}
                 setImages={(image) => setImages(image)}
                 selectedCompany={selectedCompany}
-                setImportFromGallery={(isImport)=>setImportFromGallery(isImport)}
+                setImportFromGallery={(isImport) => setImportFromGallery(isImport)}
               />
             </div>
             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
@@ -464,11 +475,12 @@ console.log('my selected day',date)
           </div>
 
         </form>
-      ) : (
+      ) : !edit && (
         <div className='mt-250px min-w-[500px] flex mx-auto justify-center'>
           {hasPayout ?
             (< Success >
-              <h1 className='text-[25px]'>Listing created</h1>
+
+              <h1 className='text-[25px]'> Listing created</h1>
 
               <p className='my-4'>You will receive your funds in the default bank account registered.</p>
 
@@ -477,6 +489,7 @@ console.log('my selected day',date)
                   <BlackButton label='Done' />
                 </Link>
               </div>
+
             </Success>
             ) : (
               < Success >
@@ -492,7 +505,7 @@ console.log('my selected day',date)
 
                   </Link>
                   <Link href='/' className='mt-2'>
-                    <div  className='cursor-pointer border-2 flex justify-center items-center border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-[#FCD33B] hover:text-black text-lg'>
+                    <div className='cursor-pointer border-2 flex justify-center items-center border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-[#FCD33B] hover:text-black text-lg'>
                       Do it later
                     </div>
                   </Link>

@@ -4,11 +4,13 @@ import axios from 'axios';
 import SecondaryButton from '../buttons/SecondaryButton'
 import BlackButton from '../buttons/BlackButton'
 import PriceSlider from '../slider/PriceSlider';
-import {  X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Divider } from '@mui/material';
 import { useEffect } from 'react';
 import haversine_distance from '@/utils/haversine_distance';
 import { MapCoordinatesContext } from '@/app/market-place/page';
+import { Button } from '../ui/button';
+import { DialogFooter, DialogTrigger } from '../ui/dialog';
 
 export default function MarketPlaceFilterModal({ setOpenFilter }) {
     const [adFilter, setAdFilter] = useContext(FilterContext)
@@ -31,18 +33,13 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
             withCredentials: true,
         }
         ).then(function (response) {
-            console.log('response', response)
-            console.log('filteredData',filteredData)
             const newData = []
             response.data.data.map((advertisement) => {
                 var distance = haversine_distance(coords, { lat: advertisement.lat, lng: advertisement.long });
-                if (distance < filters.radius ) {
+                if (distance < filters.radius) {
                     newData.push(advertisement)
                 }
             })
-            // if(){
-
-            // }
             setfilteredData(newData)
         })
             .catch(function (error) {
@@ -106,7 +103,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
             setFilters({ ...filters, adGroup: id });
         }
     }
-    
+
     const applyFilter = () => {
         setAdFilter(filters)
         setOpenFilter(false)
@@ -123,17 +120,10 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
 
     return (
         <>
-            <div className='bg-black w-full h-full absolute z-[90] top-0 left-0 opacity-50 flex justify-center items-center'
-                onClick={() => setOpenFilter(false)}>
-            </div>
-            <div className=' px-[30px] py-[30px]  bg-white z-[99]   rounded-xl w-[80%] max-w-[450px] absolute top-[100px] left-[10%]'>
-                <div className='flex justify-center relative'>
-                    <p className='text-[24px]'>Filters</p>
-                    <div onClick={() => setOpenFilter(false)} className='absolute top-1 right-1 hover:bg-slate-200 p-1 rounded-md cursor-pointer'>
-                        <X />
-                    </div>
-                </div>
-                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
+
+            <div className='  bg-white    rounded-xl '>
+
+                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '10px', marginBottom: '20px' }} />
                 <div className='flex flex-col items-center'>
                     <div className='px-[20px]  flex flex-col items-center  gap-6'>
                         <div className='w-full flex flex-col items-start '>
@@ -169,20 +159,22 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
                     <div className='flex justify-center'>
 
                         <div className='px-[20px] mt-4   '>
-                            <PriceSlider filters={filters}  setFilters={(newPrices)=>setFilters(newPrices)}/>
+                            <PriceSlider filters={filters} setFilters={(newPrices) => setFilters(newPrices)} />
                         </div>
                     </div>
 
                 </div>
                 <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
-                <div className='flex w-full justify-between'>
-                    <div className='text-end mt-5'>
-                        <SecondaryButton label='Remove Filter' dark={true} onClick={removeFilter} />
-                    </div>
-                    <div className='text-end mt-5'>
-                        <BlackButton label={`Filter  (${filteredData.length})`} onClick={applyFilter} />
-                    </div>
-                </div>
+                <DialogFooter className='sm:justify-between'>
+                    <Button type="submit" variant='outline' className='flex gap-2' onClick={removeFilter}>
+                        <p>Remove Filter</p>
+                    </Button>
+                    <DialogTrigger >
+                        <Button type="submit" className='flex gap-2' onClick={applyFilter}>
+                            <p>{`Filter  (${filteredData.length})`}</p>
+                        </Button>
+                    </DialogTrigger>
+                </DialogFooter>
             </div>
 
         </>
