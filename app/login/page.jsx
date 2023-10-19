@@ -65,6 +65,7 @@ export default function LoginPage() {
                 })
 
                 .catch(function (error) {
+                    setIsPending(false)
 
                     if (error.response.status === 400) {
                         toast.error(error.response.data.message, {
