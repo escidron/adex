@@ -1,3 +1,5 @@
+'use client'
+import { useEffect } from 'react';
 import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import { useContext } from 'react';
@@ -14,10 +16,9 @@ import {
 } from "@reach/combobox";
 
 
-const PlacesAutocomplete = ({ setSelected,setAddress }) => {
+const PlacesAutocomplete = ({ setSelected,setAddress,currentLocation }) => {
 
   const [coords, setCoords] = useContext(MapCoordinatesContext)
-
   const {
     ready,
     value,
@@ -35,6 +36,13 @@ const PlacesAutocomplete = ({ setSelected,setAddress }) => {
     setCoords({ lat, lng })
     setAddress(address)
   };
+
+  useEffect(() => {
+    if(currentLocation){
+      handleSelect(currentLocation)
+    }
+  
+  }, []);
   let cont = 0
   return (
     <Combobox onSelect={handleSelect} className='w-full'>
