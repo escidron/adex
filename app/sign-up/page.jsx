@@ -333,7 +333,7 @@ export default function SignUppage() {
           }
                 <Button variant='secondary' disabled={isPending}  type='submit' className='w-full mt-4 text-lg font-[600]'>
                     {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                    Login
+                    Sign Up
                 </Button>
           <p className="text-white mt-5 ">Have an account?
             <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
