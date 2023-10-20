@@ -55,9 +55,9 @@ export default function HaveSpace() {
             </div>
 
             <div className='style_earn_extra flex justify-center w-full mx-auto p-[40px] lg:px-[20px] xl:p-[80px] '>
-                <div className='md:w-[80%] gap-8 flex flex-col lg:flex-row justify-between items-center '>
+                <div className='md:w-[80%] lg:w-[90%] 2xl:w-[80%] gap-8 flex flex-col lg:flex-row justify-between items-center '>
                     <div className='w-full flex flex-col items-center lg:items-start lg:w-[50%] '>
-                        <p className=' text-[32px] lg:text-[35px] xl:text-[48px] '>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
+                        <p className=' text-[25px] lg:text-[28px] xl:text-[32px] '>Earn extra <span className='text-[#FCD33B] mx-2'>money</span> with <span className='text-[#FCD33B] mx-2'>ADEX</span></p>
                         <p className='mt-5 text-[18px]'>Whether you’re looking for short term gig income or seeking to earn long term passive income, you can do it with ADEX. Our self-service marketplace listing platform empowers people and local businesses alike, allowing you to create conventional and unique advertising opportunities.</p>
                     </div>
                     <div className='w-full lg:w-[50%] bg-white rounded-md flex items-center'>

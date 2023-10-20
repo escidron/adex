@@ -144,10 +144,10 @@ export default function NavBar() {
         <div className={`bg-black w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
 
-            <div><Toaster /></div>
+<div><Toaster /></div>
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[500px] lg:w-[600px] xl:max-w-[50%]'>
-                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How it Works</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How It Works</Link>
                 <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
                 <div className='md:h-[50px] md:w-[50px] 
                                 lg:h-[60px] lg:w-[60px]
@@ -165,7 +165,7 @@ export default function NavBar() {
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
                 <Link href={user.isLogged ? '/listing' : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
-            {user.isLogged
+            {user.isLogged 
                 ? (
                     <div className=' cursor-pointer 
                             flex items-center  absolute top-0 right-4 lg:right-[80px]
@@ -202,7 +202,6 @@ export default function NavBar() {
                                         height={30}
                                         priority
                                         className='w-8 h-8 rounded-full'
-
                                     />
                                 ) : (
                                     <div className='w-8 h-8 rounded-full bg-[#FCD33B] text-black font-bold flex justify-center items-center border-2 border-[#FCD33B]'>{user.name.substring(0, 1).toUpperCase()}</div>
@@ -212,10 +211,10 @@ export default function NavBar() {
                     </div>
                 )
                 : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests &&
-                (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button> 
-                <Button className='hidden lg:flex ml-4' variant='secondaryOutline' onClick={() => router.push('/sign-up')}>Sign Up</Button>
-            </div>) 
+                    (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
+                        <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button> 
+                        <Button className='hidden lg:flex ml-4' variant='secondaryOutline' onClick={() => router.push('/sign-up')}>Sign Up</Button>
+                    </div>) 
 
             }
 
@@ -250,7 +249,7 @@ export default function NavBar() {
                         </Link>
                         <Link href="/sign-up" className={`${user.isLogged ? 'hidden' : 'flex'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <UserPlus2 size={20} />
-                            Sign up
+                            Sign Up
                         </Link>
                         <Link href="/my-profile?tab=1" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <User2 size={20} />
@@ -266,7 +265,7 @@ export default function NavBar() {
                         }
                         <Link href="/my-profile?tab=5&sub-tab=0" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <List size={20} />
-                            My listing
+                            My Listing
                         </Link>
                         <Link href="/my-profile?tab=5&sub-tab=1" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <BookmarkCheck size={20} />
@@ -278,7 +277,7 @@ export default function NavBar() {
                         </Link>
                         <Link href="/market-place" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <Store size={20} />
-                            ADEX market Place
+                            ADEX Market Place
                         </Link>
                         <Link href={`${user.isLogged ? '/listing' : 'login'}`} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <List size={20} />
@@ -286,11 +285,11 @@ export default function NavBar() {
                         </Link>
                         <Link href="/how-it-works" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <HelpCircle size={20} />
-                            How it Works
+                            How It Works
                         </Link>
                         <Link href="/contact-us" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <Mail size={20} />
-                            Contact us
+                            Contact Us
                         </Link>
                         <Link onClick={logout} href="/" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <LogOut size={20} />

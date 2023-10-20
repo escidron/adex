@@ -7,8 +7,6 @@ import GalleryImage from '@/components/gallery-image/GalleryImage';
 import ImageImporter from '@/components/gallery-image/imageImporter';
 import { Edit, Eye, EyeOff } from 'lucide-react';
 
-
-
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
   const [refresh, setRefresh] = useState(false)
@@ -159,7 +157,7 @@ export default function PersonalInfo() {
 
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 `}>
-      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[480px] min-w-[480px]">
+      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[550px] min-w-[480px]">
         <h1 className="text-[30px]">Personal Informations</h1>
         <div className={`mt-2 w-full flex flex-col gap-3 `}>
 
