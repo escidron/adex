@@ -20,11 +20,12 @@ export default function MyBookings({ data }) {
           const bulletPoints = item.description.split('\n');
 
           return (
-            <section key={item.id} className='w-full justify-center'>
-              <Link href={`/my-booking?id=${item.id}`}
-                className='cursor-pointer'>
-                <Card item={item} bulletPoints={bulletPoints} />
-              </Link>
+            <section key={item.id + index} className='w-full justify-center'>
+              <Card
+                item={item}
+                bulletPoints={bulletPoints}
+                route={`/my-booking?id=${item.id}`}
+              />
               <div className='w-[90%] h-[1px] mx-auto bg-gray-200 mt-8 mb-8'></div>
             </section>
           )

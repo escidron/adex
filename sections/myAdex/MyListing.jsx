@@ -125,13 +125,12 @@ export default function MyListing({ data, status, isCompanyPage }) {
             return (
               <>
                 <section key={item.id + index} className='w-full flex gap-4 items-center'>
-
-                    <Card 
-                      item={item} 
-                      bulletPoints={bulletPoints} 
-                      setAdvertisementId={(id)=>setAdvertisementId(id)}
-                    />
-
+                  <Card
+                    item={item}
+                    bulletPoints={bulletPoints}
+                    setAdvertisementId={(id) => setAdvertisementId(id)}
+                    route={`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`}
+                  />
                 </section>
 
               </>
