@@ -28,8 +28,7 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 
 export default function AdDetails({ sharedId }) {
   // var socket = io.connect('http://localhost:4400')
-  var socket = io.connect('http://test.adexconnect.com:4500')
-  console.log(socket)
+  //var socket = io.connect('http://test.adexconnect.com:4500')
   const [user, setUser] = useContext(UserContext)
   const [data, setData] = useState({});
   const [accept, setAccept] = useState(false)
@@ -154,17 +153,44 @@ export default function AdDetails({ sharedId }) {
   //     setRefetch(!refetch)
   // })
 
+  // const sendMessage = () => {
+
+  //   if (user.isLogged) {
+  //     socket.emit('send-buyer-message',
+  //       {
+  //         sended_by: user.userId,
+  //         seller_id: data.created_by,
+  //         buyer_id: user.userId,
+  //         advertisement_id: data.id,
+  //         message: message
+  //       })
+  //     setIsChatOpen(true)
+  //     setRefetch(prev => !prev)
+  //   } else {
+  //     router.push('/login')
+  //   }
+
+  // }
+
   const sendMessage = () => {
 
     if (user.isLogged) {
-      socket.emit('send-buyer-message',
+      axios.post('https://test.adexconnect.com/api/users/send-message',
         {
           sended_by: user.userId,
           seller_id: data.created_by,
           buyer_id: user.userId,
           advertisement_id: data.id,
           message: message
+        }, {
+        withCredentials: true,
+      })
+        .then(function (response) {
+          console.log('res', response)
         })
+        .catch(function (error) {
+          console.log(error)
+        });
       setIsChatOpen(true)
       setRefetch(prev => !prev)
     } else {
@@ -206,8 +232,6 @@ export default function AdDetails({ sharedId }) {
       });
 
   }
-  console.log('gallery', gallery)
-  console.log('data', data)
 
   useEffect(() => {
 
@@ -372,7 +396,7 @@ export default function AdDetails({ sharedId }) {
                     userId={user.userId}
                     createdBy={data.created_by}
                     advertisementId={data.id}
-                    socket={socket}
+                    //socket={socket}
                     setRefetch={(refetch) => setRefetch(refetch)} />
                 </div>
 

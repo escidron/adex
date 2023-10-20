@@ -16,7 +16,10 @@ import { ChevronLeft } from 'lucide-react';
 
 
 export default function MessagesPage() {
-    var socket = io.connect('https://test.adexconnect.com:4500');
+    // var socket = io.connect('http://localhost:4400')
+    //var socket = io.connect('http://test.adexconnect.com:4500');
+    // console.log(socket)
+
     const [messages, setMessages] = useState([]);
     const [allChats, setallChats] = useState([]);
     const [showMessages, setshowMessages] = useState(false);
@@ -39,9 +42,10 @@ export default function MessagesPage() {
     const router = useRouter()
     let chatKey = []
     let lastMessages = []
-    socket.on('resend-data', () => {
-        setRefetch(!refetch)
-    })
+    // socket.on('resend-data', () => {
+    //     setRefetch(!refetch)
+    // })
+
     useEffect(() => {
         axios.post('https://test.adexconnect.com/api/advertisements/chat-info',
             { key: key }, {
@@ -76,6 +80,18 @@ export default function MessagesPage() {
                 console.log(error)
             });
     }, [refetch]);
+
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+            setRefetch(prev => !prev);
+        }, 10000);
+        
+        return () => {
+            clearInterval(interval);
+        };
+
+    }, []);
 
     async function GetNotifications() {
         axios.post('https://test.adexconnect.com/api/users/notifications',
@@ -116,7 +132,6 @@ export default function MessagesPage() {
             }
         })
     }
-
 
     return (
         <div className={`mt-[120px] w-full flex justify-center `}>
@@ -234,7 +249,7 @@ export default function MessagesPage() {
                         userId={user.userId}
                         createdBy={selectedChat.createdBy}
                         advertisementId={selectedChat.advertisementId}
-                        socket={socket}
+                        // socket={socket}
                         setRefetch={(refetch) => setRefetch(refetch)} />
                 </div>
             </div>
