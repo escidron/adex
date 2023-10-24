@@ -14,19 +14,17 @@ export default function MultiImage({ images, setImageName, height, remove }) {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows:false
-
-
     };
     const listItems = images.map((item, index) =>
 
-        <div key={index} className='w-full h-full relative'>
+        <div key={index} className='w-full h-full relative '>
             <Image
                 src={item.data_url}
                 alt="Adex item"
                 id='image-loaded'
                 width={2000}
                 height={2000}
-                className={`rounded-lg w-full h-[${height}] object-cover`}
+                className={`rounded-[16px] w-full h-[${height}] object-cover`}
             />
             {
                 remove && (

@@ -5,20 +5,19 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-black text-primary-foreground hover:bg-black/80",
+        default: "bg-black text-primary-foreground hover:bg-black/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline2:
+          "border border-[#FCD33B] text-[#FCD33B]  bg-transparent hover:bg-[#FCD33B] hover:text-accent-foreground",
         secondary:
-            "bg-[#FCD33B] text-secondary-foreground hover:bg-[#FCD33B]/80",
-        secondaryOutline:
-          "border  border-[#FCD33B] bg-transparent text-[#FCD33B] hover:bg-[#FCD33B] hover:text-accent-foreground",
-        
-          destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "bg-[#FCD33B] text-secondary-foreground hover:bg-[#FCD33B]/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

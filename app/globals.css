@@ -174,7 +174,7 @@ input[type=number] {
 
 .slick-dots li.slick-active button:before {
   opacity: 1;
-  color: #FCD33B;
+  color: white;
 
 }
 .slick-dots{
@@ -203,7 +203,7 @@ input[type=number] {
 
 .button__bar li button {
   border: none;
-  background: black;
+  background: whitesmoke;
   color: transparent;
   cursor: pointer;
   display: block;
@@ -211,7 +211,9 @@ input[type=number] {
   width: 12px;
   border-radius: 7.5px;
 }
-
+.slick-dots li button:before{
+  color: whitesmoke;
+}
 .button__bar li.slick-active button {
   background-color: #FCD33B;
 }
@@ -282,3 +284,44 @@ input[type=number] {
   border-color: #e5e1e1 !important
 }
 
+/* react quill component */
+.ql-container {
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+}
+
+/* Snow Theme */
+.ql-snow.ql-toolbar {
+  display: block;
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+}
+
+/* Bubble Theme */
+.ql-container{
+  height: 190px;
+}
+.ql-bubble {
+  background-color: transparent;
+  height: 70px;
+  overflow: hidden;
+}
+
+.ql-editor{
+  overflow: hidden;
+  font-family: '__Inter_a64ecd', '__Inter_Fallback_a64ecd';
+  font-size: 14px;
+}
+
+
+
+.invisible_scroll_bar{
+  scrollbar-width: none; 
+
+}
+
+.invisible_scroll_bar::-webkit-scrollbar {
+  width: 0; 
+}

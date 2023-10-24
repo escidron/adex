@@ -6,7 +6,6 @@ import axios from 'axios';
 import Link from 'next/link'
 import Image from 'next/image'
 import logo from '../../public/adex-logo-white-yellow.png'
-import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
@@ -21,7 +20,6 @@ export default function NavBar() {
     const [showNotifications, setshowNotifications] = useState(false)
     const [userData, setUserData] = useState({});
     const [finishRequests, setFinishRequests] = useState(false);
-
     const router = useRouter();
 
     async function hasPayoutMethod() {
@@ -36,7 +34,6 @@ export default function NavBar() {
             const res = await response.json()
             if (res.data) {
                 // setHasPayout((prev) => (true));
-                console.log('entrou no external account navbar', res.data)
                 setUser((prev) => ({ ...prev, hasPayout: true }))
 
             }
@@ -87,11 +84,9 @@ export default function NavBar() {
                 setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
                 hasPayoutMethod()
                 setFinishRequests(true)
-
             } else {
                 console.log('response error', response)
                 setFinishRequests(true)
-
             }
         }
         autoLogin();
@@ -141,10 +136,10 @@ export default function NavBar() {
     }
 
     return (
-        <div className={`bg-black w-full h-[90px] text-slate-50 text-lg 
+        <div className={`bg-black ${pathname.includes('listing') ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
 
-<div><Toaster /></div>
+            <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[500px] lg:w-[600px] xl:max-w-[50%]'>
                 <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How It Works</Link>
@@ -213,7 +208,7 @@ export default function NavBar() {
                 : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests &&
                     (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
                         <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button> 
-                        <Button className='hidden lg:flex ml-4' variant='secondaryOutline' onClick={() => router.push('/sign-up')}>Sign Up</Button>
+                        <Button className='hidden lg:flex ml-4' variant='outline2' onClick={() => router.push('/sign-up')}>Sign Up</Button>
                     </div>) 
 
             }

@@ -1,20 +1,11 @@
-import React from 'react'
 import Image from 'next/image'
 
-export default function CategoryCard({ item,setCategoryId,selectedStep,setSelectedStep,setTypeId,setIsPeriodic }) {
+export default function CategoryCard({ item,selected,setListingProperties }) {
     return (
         <div 
-            onClick={()=>{
-                if(item.id <= 3){
-                    setCategoryId(item.id)
-                }else{
-                    setTypeId(item.id)
-                    setIsPeriodic(item.is_periodic)
-                }
-                setSelectedStep(selectedStep+1)
-            }} 
-            className='flex flex-col items-center justify-center w-full max-h-[150px] bg-black px-4 py-[24px] rounded-lg hover:scale-[1.1] cursor-pointer'>
-            <div className='h-[74px] '>
+            onClick={()=>setListingProperties(item.id)} 
+            className={`flex flex-col items-center justify-center w-full  max-h-[150px] ${selected ? 'bg-gray-600' : 'bg-black'}  px-4 py-[24px] rounded-lg hover:opacity-80 cursor-pointer`}>
+            <div className='h-[54px] md:h-[74px] aspect-square'>
                 <Image
                     src={'/'+item.image}
                     alt={'/'+item.image}
