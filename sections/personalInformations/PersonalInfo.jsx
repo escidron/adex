@@ -34,7 +34,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
-        "https://test.adexconnect.com/api/users/user-profile",
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
         {
           method: "GET",
           credentials: "include",
@@ -51,7 +51,7 @@ export default function PersonalInfo() {
 
   useEffect(() => {
 
-    axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
       {},
       {
         withCredentials: true,
@@ -69,7 +69,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     if (images.length > 0) {
 
-      axios.post('https://test.adexconnect.com/api/users/image-gallery',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/image-gallery`,
         {
           images: images
         },
@@ -97,7 +97,7 @@ export default function PersonalInfo() {
 
   const submit = () => {
     setCurrentInfo('')
-    axios.post('https://test.adexconnect.com/api/users/update-user-profile',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/update-user-profile`,
       {
         name: user.name,
         lastName: user.lastName,
@@ -126,7 +126,7 @@ export default function PersonalInfo() {
   }
   const handlePublicInfo = (info) => {
 
-    axios.post('https://test.adexconnect.com/api/users/update-user-profile',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/update-user-profile`,
       {
         name: user.name,
         lastName: user.lastName,

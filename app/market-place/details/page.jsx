@@ -56,7 +56,7 @@ export default function AdDetails({ sharedId }) {
   const router = useRouter();
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/details',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/details`,
       {
         id: id,
         notificationId: notificationId
@@ -81,7 +81,7 @@ export default function AdDetails({ sharedId }) {
   }, []);
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/discounts',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/discounts`,
       {
         id: id,
       }, {
@@ -96,7 +96,7 @@ export default function AdDetails({ sharedId }) {
   }, []);
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/payments/my-cards',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-cards`,
       {}, {
       withCredentials: true,
     })
@@ -115,7 +115,7 @@ export default function AdDetails({ sharedId }) {
 
   useEffect(() => {
     if (data.id) {
-      axios.post('https://test.adexconnect.com/api/advertisements/messages',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/messages`,
         {}, {
         withCredentials: true,
       })
@@ -135,7 +135,7 @@ export default function AdDetails({ sharedId }) {
   }, [data, user, refetch]);
 
   async function GetNotifications() {
-    axios.post('https://test.adexconnect.com/api/users/notifications',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
       {}, {
       withCredentials: true,
     })
@@ -175,7 +175,7 @@ export default function AdDetails({ sharedId }) {
   const sendMessage = () => {
 
     if (user.isLogged) {
-      axios.post('https://test.adexconnect.com/api/users/send-message',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-message`,
         {
           sended_by: user.userId,
           seller_id: data.created_by,
@@ -200,7 +200,7 @@ export default function AdDetails({ sharedId }) {
   }
 
   const getGallery = (id) => {
-    axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
       {
         id: id,
       },
@@ -216,7 +216,7 @@ export default function AdDetails({ sharedId }) {
 
   }
   const getCompany = (id) => {
-    axios.post('https://test.adexconnect.com/api/users/my-company',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-company`,
       {
         id: id,
       },

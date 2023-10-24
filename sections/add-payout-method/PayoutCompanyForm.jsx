@@ -116,7 +116,7 @@ export default function PayoutCompanyForm({ setHasAccount }) {
       if (step == 2) {
         setIsPending(true)
 
-        axios.post('https://test.adexconnect.com/api/users/create-company-connect-account',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-company-connect-account`,
           {
             name: values.name,
             idNumber: values.idNumber,

@@ -51,7 +51,7 @@ export default function MyCompanyPage() {
     console.log('selectedOption', selectedOption)
     useEffect(() => {
 
-        axios.post('https://test.adexconnect.com/api/payments/get-account-balance',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-account-balance`,
             {},
             {
                 withCredentials: true,
@@ -68,7 +68,7 @@ export default function MyCompanyPage() {
     }, []);
 
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/users/my-company',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-company`,
             {
                 id: id,
             },
@@ -88,7 +88,7 @@ export default function MyCompanyPage() {
     useEffect(() => {
         if (images.length > 0) {
 
-            axios.post('https://test.adexconnect.com/api/users/image-gallery',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/image-gallery`,
                 {
                     id: id,
                     images: images
@@ -113,7 +113,7 @@ export default function MyCompanyPage() {
 
     const getGallery = () => {
         console.log('entrou no efect')
-        axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
             {
                 id: id,
             },

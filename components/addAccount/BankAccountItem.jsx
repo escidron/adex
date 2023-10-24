@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 export default function BankAccountItem({ item, setCheckDefault, setShowDeleteModal, setDeleteId }) {
 
     const handleSelected = (e) => {
-        axios.post('https://test.adexconnect.com/api/payments/set-default-bank',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/set-default-bank`,
             { bankId: item.id }, {
             withCredentials: true,
         })

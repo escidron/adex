@@ -10,7 +10,7 @@ export default function SubCategoryForm() {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
 
     useEffect(() => {
-        axios('https://test.adexconnect.com/api/list-property',
+        axios(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/list-property`,
             {}, {
             withCredentials: true,
         })

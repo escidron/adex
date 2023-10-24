@@ -59,7 +59,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
         validate,
         onSubmit: values => {
             setIsPending(true)
-            axios.post('https://test.adexconnect.com/api/users/add-company',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/add-company`,
                 {
                     name: values.name,
                     image: images.length > 0 ? images[0].data_url : '',

@@ -47,7 +47,7 @@ export default function MessagesPage() {
     // })
 
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/advertisements/chat-info',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/chat-info`,
             { key: key }, {
             withCredentials: true,
         })
@@ -94,7 +94,7 @@ export default function MessagesPage() {
     }, []);
 
     async function GetNotifications() {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
             {}, {
             withCredentials: true,
 

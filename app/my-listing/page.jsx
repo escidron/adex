@@ -38,7 +38,7 @@ export default function MyListing() {
     console.log('advertisement my liosting ', advertisement)
 
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-advertisement`,
             {
                 id: id,
                 notificationId: notificationId
@@ -60,7 +60,7 @@ export default function MyListing() {
     }, []);
 
     async function GetUserProfile(id) {
-        axios.post('https://test.adexconnect.com/api/users/user-profile',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
             { id: id }, {
             withCredentials: true,
         })
@@ -74,7 +74,7 @@ export default function MyListing() {
     }
 
     async function GetDiscounts(id, duration) {
-        axios.post('https://test.adexconnect.com/api/advertisements/discounts',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/discounts`,
             { id: id }, {
             withCredentials: true,
         })
@@ -98,7 +98,7 @@ export default function MyListing() {
     }
 
     async function GetNotifications() {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
             {}, {
             withCredentials: true,
         })

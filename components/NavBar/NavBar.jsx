@@ -12,8 +12,6 @@ import Notifications from '../notification/Notifications';
 import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2 } from 'lucide-react';
 import { Button } from '../ui/button';
 
-
-
 export default function NavBar() {
     const pathname = usePathname();
     const [user, setUser] = useContext(UserContext)
@@ -22,9 +20,10 @@ export default function NavBar() {
     const [finishRequests, setFinishRequests] = useState(false);
     const router = useRouter();
 
+    
     async function hasPayoutMethod() {
         const response = await fetch(
-            "https://test.adexconnect.com/api/users/external-account",
+            `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
             {
                 method: "GET",
                 credentials: "include",
@@ -41,7 +40,8 @@ export default function NavBar() {
     }
 
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
             {}, {
             withCredentials: true,
         })
@@ -75,7 +75,7 @@ export default function NavBar() {
 
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("https://test.adexconnect.com/api/users/autologin", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/autologin`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -95,7 +95,7 @@ export default function NavBar() {
     useEffect(() => {
         async function GetUserProfile() {
             const response = await fetch(
-                "https://test.adexconnect.com/api/users/user-profile",
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
                 {
                     method: "GET",
                     credentials: "include",
@@ -112,7 +112,7 @@ export default function NavBar() {
 
     const logout = () => {
         toast.dismiss()
-        axios.post('https://test.adexconnect.com/api/users/logout',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/logout`,
             {
 
             }, {

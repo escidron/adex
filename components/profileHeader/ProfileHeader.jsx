@@ -25,7 +25,7 @@ export default function ProfileHeader() {
         setImages(imageList);
         setSrc(imageList[0].data_url)
         setUser((prev) => ({ ...prev, image: imageList[0].data_url }))
-        axios.post('https://test.adexconnect.com/api/users/my-profile-image',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-profile-image`,
         {
             image: imageList[0].data_url,
         }, {
@@ -41,7 +41,7 @@ export default function ProfileHeader() {
     useEffect(() => {
         async function GetUserProfile() {
             const response = await fetch(
-                "https://test.adexconnect.com/api/users/user-profile",
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
                 {
                     method: "GET",
                     credentials: "include",

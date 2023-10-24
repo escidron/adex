@@ -9,7 +9,7 @@ export default function Notifications({ notifications, notificationsQtd }) {
     const [user, setUser] = useContext(UserContext)
 
     const clearNotifications = () => {
-        axios.post('https://test.adexconnect.com/api/users/clear-notifications',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/clear-notifications`,
             {
                 notifications: user.notifications,
             },

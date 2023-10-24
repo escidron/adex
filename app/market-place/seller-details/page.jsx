@@ -20,7 +20,7 @@ export default function SellerDetailsPage() {
 
     useEffect(() => {
         if (id) {
-            axios.post('https://test.adexconnect.com/api/users/user-profile',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
                 { id: id }, {
                 withCredentials: true,
             })

@@ -20,7 +20,7 @@ export default function CompanyDetailsPage() {
 
     useEffect(() => {
 
-        axios.post('https://test.adexconnect.com/api/users/my-company',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-company`,
             {
                 id: id,
             },
@@ -46,7 +46,7 @@ export default function CompanyDetailsPage() {
 
     const getGallery = (id) => {
         console.log('entrou no efect')
-        axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
             {
                 id: id,
             },

@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [balance, setBalance] = useState(null);
   useEffect(() => {
 
-    axios.post('https://test.adexconnect.com/api/payments/get-account-balance',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-account-balance`,
       {},
       {
         withCredentials: true,

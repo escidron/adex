@@ -9,7 +9,7 @@ const DynamicAdDetails = dynamic(() => import('@/app/market-place/details/page')
 
 async function getData(id) {
     try {
-      const response = await axios.post('https://test.adexconnect.com/api/advertisements/shared-listing', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/shared-listing`, {
         id: id,
       }, {
         withCredentials: true,

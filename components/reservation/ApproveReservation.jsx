@@ -51,7 +51,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/payments/get-contract',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -71,7 +71,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Booking = () => {
         setIsPending1(true)
-        axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/create-payment-intent`,
             {
                 data: advertisement,
                 duration: advertisement.duration,
@@ -94,7 +94,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const Decline = () => {
         setIsPending2(true)
-        axios.post('https://test.adexconnect.com/api/payments/decline-request',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/decline-request`,
             {
                 id: advertisement.id,
                 requestedBy: advertisement.requested_by
@@ -116,7 +116,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const cancelBooking = () => {
         setOpenCancelBookingModal(false)
 
-        axios.post('https://test.adexconnect.com/api/payments/cancel-booking',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/cancel-booking`,
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,
@@ -138,7 +138,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     const Finished = () => {
-        axios.post('https://test.adexconnect.com/api/payments/update-cancellation-status',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/update-cancellation-status`,
             {
                 advertisementId: advertisement.id,
                 sellerId: advertisement.created_by,

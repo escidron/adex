@@ -12,7 +12,7 @@ export default function MyCompanies() {
     useEffect(() => {
         async function GetCompanies() {
             const response = await fetch(
-                "https://test.adexconnect.com/api/users/get-companies",
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-companies`,
                 {
                     method: "GET",
                     credentials: "include",

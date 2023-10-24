@@ -14,7 +14,7 @@ export default function BankAccountList({ refetch,setRefetch }) {
 
     useEffect(() => {
 
-        axios.post('https://test.adexconnect.com/api/payments/my-bank-accounts',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-bank-accounts`,
             {}, {
             withCredentials: true,
         })
@@ -30,7 +30,7 @@ export default function BankAccountList({ refetch,setRefetch }) {
 
     const deleteElement = () => {
         setShowDeleteModal(false)
-        axios.post('https://test.adexconnect.com/api/payments/delete-bank-account',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/delete-bank-account`,
             { bankAccountId:deletedId }, {
             withCredentials: true,
         })

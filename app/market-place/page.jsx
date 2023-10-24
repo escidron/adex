@@ -31,7 +31,7 @@ export default function MarketPlace() {
       console.log('located')
       async function getAds() {
         setNewData([])
-        const response = await axios.post("https://test.adexconnect.com/api/advertisements",
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements`,
           {
             radius: adFilter.radius,
             type: adFilter.type,

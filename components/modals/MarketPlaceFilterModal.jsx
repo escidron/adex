@@ -22,7 +22,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter }) {
 
     useEffect(() => {
         setfilteredData([])
-        axios.post("https://test.adexconnect.com/api/advertisements",
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements`,
             {
                 radius: filters.radius,
                 type: filters.type,

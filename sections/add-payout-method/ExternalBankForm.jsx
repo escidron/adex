@@ -55,7 +55,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
         onSubmit: values => {
             setIsPending(true)
             toast.dismiss()
-            axios.post('https://test.adexconnect.com/api/payments/external-bank',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/external-bank`,
                 {
                     routingNumber: values.routingNumber,
                     accountNumber: values.accountNumber,

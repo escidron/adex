@@ -60,7 +60,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ?  data.start_date : null
                 })
                 if (data.is_automatic === '1') {
-                    axios.post('https://test.adexconnect.com/api/payments/create-payment-intent',
+                    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/create-payment-intent`,
                         {
                             data: data,
                             duration: counter,
@@ -83,7 +83,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         });
                     return
                 }
-                axios.post('https://test.adexconnect.com/api/payments/request-reserve',
+                axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/request-reserve`,
                     {
                         data: data,
                         duration: counter,

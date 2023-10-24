@@ -50,7 +50,7 @@ export default function ContactPage() {
             number:values.number,
             message: values.message
           })
-      axios.post('https://test.adexconnect.com/api/users/contact-us',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/contact-us`,
         {
           name: values.name,
           email: values.email,

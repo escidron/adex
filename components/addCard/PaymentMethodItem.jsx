@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Trash } from 'lucide-react';
 export default function PaymentMethodItem({ item, setCheckDefault, setShowDeleteModal,setDeleteId }) {
     const handleSelected = (e) => {
-        axios.post('https://test.adexconnect.com/api/payments/set-default-card',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/set-default-card`,
             { cardId: item.id }, {
             withCredentials: true,
         })

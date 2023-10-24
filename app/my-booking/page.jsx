@@ -31,7 +31,7 @@ export default function MyBooking() {
     const id = searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
     useEffect(() => {
-        axios.post('https://test.adexconnect.com/api/advertisements/my-booking',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-booking`,
             {
                 advertisementId: id,
                 notificationId: notificationId
@@ -54,7 +54,7 @@ export default function MyBooking() {
     }, []);
 
     async function GetUserProfile(id) {
-        axios.post('https://test.adexconnect.com/api/users/user-profile',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
             {
                 id: id
             }, {
@@ -69,7 +69,7 @@ export default function MyBooking() {
             });
     }
     async function GetNotifications() {
-        axios.post('https://test.adexconnect.com/api/users/notifications',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
             {}, {
             withCredentials: true,
         })

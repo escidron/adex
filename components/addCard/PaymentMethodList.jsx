@@ -14,7 +14,7 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
 
     useEffect(() => {
 
-        axios.post('https://test.adexconnect.com/api/payments/my-cards',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-cards`,
             {}, {
             withCredentials: true,
 
@@ -33,7 +33,7 @@ export default function PaymentMethodList({ refetch,setRefetch }) {
 
     const deleteElement = () => {
         setShowDeleteModal(false)
-        axios.post('https://test.adexconnect.com/api/payments/delete-card',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/delete-card`,
             { cardId: deletedId }, {
             withCredentials: true,
         })

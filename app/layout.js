@@ -10,6 +10,8 @@ import favicon from "../public/static/favicon.ico";
 const inter = Inter({ subsets: ["latin"] });
 const abel = Abel({ subsets: ["latin"], weight: ["400"] });
 
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const UserContext = createContext();
 
@@ -31,7 +33,7 @@ export default function RootLayout({ children }) {
   });
     useEffect(() => {
         async function autoLogin() {
-            const response = await fetch("https://test.adexconnect.com/api/users/autologin", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/autologin`, {
                 method: "GET",
                 credentials: "include",
             });

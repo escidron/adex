@@ -21,7 +21,7 @@ export default function MyAdex() {
     pending: 0
   });
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/my-advertisement',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-advertisement`,
       {}, {
       withCredentials: true,
     })
@@ -35,7 +35,7 @@ export default function MyAdex() {
   }, [refresh]);
 
   useEffect(() => {
-    axios.post('https://test.adexconnect.com/api/advertisements/my-booking',
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-booking`,
       {}, {
       withCredentials: true,
     })

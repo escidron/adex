@@ -39,7 +39,7 @@ export default function Chat({ messages, userId,socket, setRefetch,advertisement
   const sendMessage = (e) => {
       e.preventDefault()
       console.log('sending')
-      axios.post('https://test.adexconnect.com/api/users/send-message',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-message`,
       {
         sended_by: userId,
         seller_id: createdBy,

@@ -55,7 +55,7 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
     useEffect(() => {
 
         const getGallery = () => {
-            axios.post('https://test.adexconnect.com/api/users/get-image-gallery',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
                 {
                     //id: selectedCompany,
                 },

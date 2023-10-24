@@ -55,7 +55,7 @@ export default function Security() {
     validate,
     onSubmit: values => {
       setIsPending(true)
-       axios.post('https://test.adexconnect.com/api/users/change-password',
+       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/change-password`,
           {
             newPassword:values.password,
             current:values.current

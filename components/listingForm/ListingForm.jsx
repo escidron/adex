@@ -9,7 +9,7 @@ export default function ListingForm({ categoryId, typeId, isPeriodic, setSelecte
   useEffect(() => {
     async function hasPayoutMethod() {
       const response = await fetch(
-        "https://test.adexconnect.com/api/users/external-account",
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
         {
           method: "GET",
           credentials: "include",

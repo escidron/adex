@@ -1,15 +1,12 @@
 "use client"
-import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
 import axios from 'axios'
-import { useFormik } from 'formik';
-import { useContext } from 'react';
-import { UserContext } from '../../app/layout';
-import { useRouter } from 'next/navigation';
-import toast, { Toaster } from "react-hot-toast";
-import { Password } from "@mui/icons-material";
 import TextField from "@/components/inputs/TextField";
+import toast, { Toaster } from "react-hot-toast";
+
+import { useState, useRef } from "react";
+import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -20,7 +17,6 @@ const validate = values => {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = 'Invalid email address, please enter a valid email';
     }
-
     return errors;
 };
 
@@ -75,7 +71,7 @@ export default function ForgotPasswordPage() {
         }
         console.log(randomNumber)
         // send email
-        axios.post('https://test.adexconnect.com/api/users/send-reset-password-email',
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-reset-password-email`,
             {
                 email: resend?email:values.email,
                 codeOTP: randomNumber
@@ -129,7 +125,7 @@ export default function ForgotPasswordPage() {
             toast.error('The password do not match.')
         } else {
 
-            axios.post('https://test.adexconnect.com/api/users/reset-password',
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/reset-password`,
                 {
                     email: email,
                     password: newPassword

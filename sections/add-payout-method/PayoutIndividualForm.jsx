@@ -69,7 +69,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       toast.dismiss()
 
       setIsPending(true)
-      axios.post('https://test.adexconnect.com/api/users/create-user-connect-account',
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-user-connect-account`,
         {
           idNumber: values.idNumber,
           bod: bod,
