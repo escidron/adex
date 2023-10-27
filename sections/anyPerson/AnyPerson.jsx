@@ -1,8 +1,8 @@
 'use client'
 import {useState} from 'react'
 import Image from 'next/image'
-import properties4 from '../../public/properties-4.jpg'
-import properties5 from '../../public/properties-5.png'
+import properties4 from '../../public/properties-4.jpeg'
+import properties5 from '../../public/properties-5.jpeg'
 import properties6 from '../../public/properties-6.jpg'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
@@ -36,6 +36,8 @@ export default function AnyPerson() {
                 <Image
                     src={properties5}
                     alt="Adex Logo"
+                    width={2000}
+                    height={2000}
                     priority
                     className='w-1/2 md:w-[33.3%] '
                 />
@@ -43,6 +45,8 @@ export default function AnyPerson() {
                 <Image
                     src={properties6}
                     alt="Adex Logo"
+                    width={2000}
+                    height={2000}
                     priority
                     className='hidden md:flex w-1/2 md:w-[33.3%] md:rounded-r-[10px]'
                 />

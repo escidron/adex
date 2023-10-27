@@ -20,7 +20,7 @@ export default function HaveSpace() {
 
         <div className='w-full h-auto'>
             <div className='w-full flex flex-col lg:flex-row'>
-                <div className={`bg-[#FCD33B] h-[288px] lg:w-[40%] flex flex-col justify-center items-center `}>
+                <div className={`bg-[#FCD33B] h-[288px] lg:w-[50%] xl:w-[35%] flex flex-col justify-center items-center  lg:border-r-[1px] lg:border-r-black`}>
                     <h1 className='text-5xl'>Have AD space?</h1>
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
                     <Button className='mt-4' disabled={isPending} size='lg' onClick={() => {
@@ -31,24 +31,30 @@ export default function HaveSpace() {
                         {user.isLogged ? 'Create Listing' : 'Sign Up'}
                     </Button>
                 </div>
-                <div className=' lg:w-[60%] flex h-[288px]'>
+                <div className=' lg:w-[50%] xl:w-[65%] flex h-[288px]'>
                     <Image
                         src={properties2}
                         alt="Adex Logo"
+                        width={2000}
+                        height={2000}
                         priority
-                        className='hidden md:flex w-1/2 md:w-[28%] lg:hidden xl:flex xl:w-[25%] '
+                        className='hidden md:flex w-1/2  lg:hidden xl:flex xl:w-[33%] '
                     />
                     <Image
                         src={properties1}
                         alt="Adex Logo"
+                        width={2000}
+                        height={2000}
                         priority
-                        className='w-full sm:w-1/2 md:w-[36%] lg:w-1/2 xl:w-[37.5%]'
+                        className='w-full sm:w-1/2  lg:w-full xl:w-[33%]'
                     />
                     <Image
                         src={properties3}
                         alt="Adex Logo"
+                        width={2000}
+                        height={2000}
                         priority
-                        className='hidden sm:flex sm:w-1/2 md:w-[36%] lg:w-1/2 xl:w-[37.5%]'
+                        className='hidden sm:flex sm:w-1/2  md:hidden xl:flex xl:w-[34%]'
 
                     />
                 </div>

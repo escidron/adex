@@ -86,7 +86,7 @@ export default function Listing({ params }) {
 
     const createListing = () => {
         setIsPending(true)
-        axios.post(`https://test.adexconnect.com/api/advertisements/new`,
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/new`,
             {
 
                 title: listingProperties.title,

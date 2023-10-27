@@ -13,12 +13,12 @@ export default function Banner() {
   const router = useRouter();
 
   return (
-    <div className={`w-full h-[100vh]  relative `} >
+    <div className={`w-full h-[100vh] relative `} >
 
 
-      <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-30'></div>
+      <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-20'></div>
       <div className='style_banner'></div>
-      <div className='style_banner_box max-h-[400px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+      <div className=' max-h-[400px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
                         md:w-[70%] md:max-w-[600px]
                         lg:max-w-[550px] lg:h-[450px] lg:top-[30%] lg:left-[10%] lg:translate-x-0 lg:translate-y-0' >
         <h1 className='text-2xl font-bold z-10 md:text-3xl lg:text-[34px]'>Connects with your Community and grow your business</h1>

@@ -26,15 +26,15 @@ export default function page() {
               priority
               width={2000}
               height={2000}
-              className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
+              className='hidden sm:flex sm:w-1/2  lg:w-[33.3%]  object-cover'
           />
           <Image
-              src='/Rectangle 100.jpg'
+              src='/Rectangle 108.jpeg'
               alt="image of people"
               priority
-              width={300}
-              height={300}
-              className='w-1/2 md:w-[33.3%] lg:w-1/5 h-[288px]'
+              width={2000}
+              height={2000}
+              className='hidden lg:flex lg:w-[33.3%]   object-cover'
 
           />
           <Image
@@ -43,17 +43,10 @@ export default function page() {
               priority
               width={2000}
               height={2000}
-              className='hidden md:flex w-[33.3%] lg:w-[40%] h-[288px]'
+              className='w-full sm:w-1/2 md:flex  lg:w-[40%]  object-cover'
 
           />
-          <Image
-              src='/Rectangle 104.jpg'
-              alt="image of people"
-              priority
-              width={2000}
-              height={2000}
-              className='hidden lg:flex w-1/5 h-[288px]'
-          />
+         
         </div>
         <Faq />
       </div>

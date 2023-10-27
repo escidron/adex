@@ -90,17 +90,14 @@ input[type=number] {
 .style_banner{
   height: 100%;
   width: 100%;
+  margin-top: 80px;
   background-image: url('../public/adex-home-banner.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position-x: center;
 
 }
-.style_banner_box{
-  /* font-family: 'Roboto', sans-serif; */
-  background-color: rgb(255, 255, 255, 70%);
-  
-}
+
 .style_banner_button{
   color: white;
 

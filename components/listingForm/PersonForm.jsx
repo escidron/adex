@@ -114,7 +114,7 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     validate,
     onSubmit: values => {
       setIsPending(true)
-      axios.post(`https://test.adexconnect.com/api/advertisements/${edit ? 'update' : 'new'}`,
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/${edit ? 'update' : 'new'}`,
         {
           id: edit ? advertisement.id : '',
           title: values.title,
