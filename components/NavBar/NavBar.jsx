@@ -1,14 +1,15 @@
 "use client"
-import { useContext, useState, useEffect, useRef } from 'react';
-import { UserContext } from '../../app/layout';
-import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link'
 import Image from 'next/image'
 import logo from '../../public/adex-logo-white-yellow.png'
-import { useRouter } from 'next/navigation';
-import toast, { Toaster } from "react-hot-toast";
 import Notifications from '../notification/Notifications';
+import toast, { Toaster } from "react-hot-toast";
+
+import { useContext, useState, useEffect, useRef } from 'react';
+import { UserContext } from '../../app/layout';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2 } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -109,7 +110,7 @@ export default function NavBar() {
         GetUserProfile();
     }, [user]);
 
-
+    console.log('user data',userData)
     const logout = () => {
         toast.dismiss()
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/logout`,
@@ -158,7 +159,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? '/listing' : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href={user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
             {user.isLogged 
                 ? (
@@ -274,7 +275,7 @@ export default function NavBar() {
                             <Store size={20} />
                             ADEX Market Place
                         </Link>
-                        <Link href={`${user.isLogged ? '/listing' : 'login'}`} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                        <Link href={user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <List size={20} />
                             Create Listing
                         </Link>

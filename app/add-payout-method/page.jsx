@@ -1,21 +1,18 @@
 'use client'
-import { useEffect } from 'react';
 import Success from '@/components/messages/Success';
 import Link from 'next/link';
 import ExternalBankForm from '@/sections/add-payout-method/ExternalBankForm';
 import PayoutIndividualForm from '@/sections/add-payout-method/PayoutIndividualForm'
-import { useState } from 'react'
 import PayoutCompanyForm from '@/sections/add-payout-method/PayoutCompanyForm';
 
-
-
-
+import { useEffect,useState } from 'react';
 
 export default function AddPayoutMethod() {
   const [hasBankAccount, setHasBankAccount] = useState(false);
   const [seller, setSeller] = useState(null);
   const [finish, setFinish] = useState(false);
   const [hasAccount, setHasAccount] = useState(false);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     async function GetAddress() {
@@ -37,7 +34,22 @@ export default function AddPayoutMethod() {
     GetAddress();
   }, [hasAccount]);
 
-  console.log('seller', seller)
+  useEffect(() => {
+    async function GetUserProfile() {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      if (response.status === 200) {
+        const res = await response.json()
+        setUserData(res)
+      }
+    }
+    GetUserProfile();
+  }, [user]);
   return (
     <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center `}>
       {finish ? (
@@ -48,7 +60,7 @@ export default function AddPayoutMethod() {
           <div className='flex justify-center w-full'>
 
             <div className='flex flex-col justify-around w-full'>
-              <Link href='/listing' className='mt-6 w-full'>
+              <Link href={`/listing/${userData.userType == 1 ? 'select_business' : 'category'}`} className='mt-6 w-full'>
                 <button className='mt-6 cursor-pointer flex justify-center items-center bg-black py-[8px] w-full px-[30px] rounded-md  font-[600] text-[#FCD33B] hover:text-black hover:bg-[#FCD33B]  text-lg
                                    '>Create Listing
                 </button>

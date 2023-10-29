@@ -1,10 +1,11 @@
 'use client'
-import {useState} from 'react'
 import Image from 'next/image'
 import properties1 from '../../public/properties-1.jpg'
 import properties2 from '../../public/properties-2.jpg'
 import properties3 from '../../public/properties-3.jpg'
 import properties4 from '../../public/about-adex-section.jpg'
+
+import {useState,useEffect} from 'react'
 import { useContext } from 'react';
 import { UserContext } from '../../app/layout';
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,26 @@ import { useRouter } from 'next/navigation';
 export default function HaveSpace() {
     const [user, setUser] = useContext(UserContext)
     const [isPending, setIsPending] = useState(false)
+    const [userData, setUserData] = useState({});
+
     const router = useRouter();
+
+    useEffect(() => {
+        async function GetUserProfile() {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+            if (response.status === 200) {
+                const res = await response.json()
+                setUserData(res)
+            }
+        }
+        GetUserProfile();
+    }, [user]);
 
     return (
 
@@ -25,7 +45,7 @@ export default function HaveSpace() {
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
                     <Button className='mt-4' disabled={isPending} size='lg' onClick={() => {
                         setIsPending(true)
-                        router.push(user.isLogged ? '/listing' : '/sign-up')
+                        router.push(user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/sign-up')
                     }}>
                         {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
                         {user.isLogged ? 'Create Listing' : 'Sign Up'}
