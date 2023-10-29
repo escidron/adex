@@ -1,4 +1,5 @@
 import Image from "next/image";
+import axios from "axios";
 import ImageUploading from "react-images-uploading";
 import { useState, useEffect } from "react";
 import { ImagePlus, Plus, Trash, X } from "lucide-react";
@@ -14,15 +15,53 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import GalleryModal from "../modals/GalleryModal";
 
-export default function DropImageArea({ images, setImages, selectedCompany, setImportFromGallery }) {
+export default function DropImageArea({ images, setImages, selectedCompany }) {
     const [showOptions, setShowOptions] = useState(false);
     const [openGalleryModal, setOpenGalleryModal] = useState(false);
     const [gallery, setGallery] = useState([]);
+    const [selected, setSelected] = useState([]);
+    const [finishSelection, setFinishSelection] = useState([]);
+    const [importFromGallery, setImportFromGallery] = useState(false);
+
     const maxNumber = 20;
     const onChange = (imageList, addUpdateIndex) => {
         setImages(imageList);
     };
+
+
+    useEffect(() => {
+        setOpenGalleryModal(false)
+        setShowOptions(false)
+        setSelected([])
+        if (selected.length > 0) {
+            const newImages = gallery[0].company_gallery.filter((item, index) => selected.includes(index));
+            setImages(newImages)
+        }
+
+    }, [finishSelection]);
+
+    useEffect(() => {
+
+        const getGallery = () => {
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
+                {
+                    //id: selectedCompany,
+                },
+                {
+                    withCredentials: true,
+                })
+                .then(function (response) {
+                    setGallery(response.data.galleryWithImages)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+
+        }
+        getGallery()
+    }, [selectedCompany]);
 
     const removeImage = (id) => {
         const newImages = images.filter((item, index) => index != id);
@@ -71,10 +110,14 @@ export default function DropImageArea({ images, setImages, selectedCompany, setI
                                                 <p>or</p>
                                                 <p className="font-[600]">Import images from :</p>
                                                 <div className=" h-full w-full max-w-[400px] rounded-lg ">
-                                                    <div className="flex justify-between w-[80%] items-center mx-auto mt-4">
-                                                        <Button variant='secondary' onClick={() => setOpenGalleryModal(true)}>
-                                                            ADEX gallery
-                                                        </Button>
+                                                    <div className={`flex ${gallery.length > 0 ? 'justify-between' : 'justify-center'}  w-[80%] items-center mx-auto mt-4`}>
+                                                        {
+                                                            gallery.length > 0 && (
+                                                                <Button variant='secondary' onClick={() => setOpenGalleryModal(true)}>
+                                                                    ADEX gallery
+                                                                </Button>
+                                                            )
+                                                        }
                                                         <Button variant='secondary' onClick={() => {
                                                             onImageUpload()
                                                             setShowOptions(false)
@@ -124,6 +167,23 @@ export default function DropImageArea({ images, setImages, selectedCompany, setI
                                             </div>
                                         )}
                                     </>
+                                )
+                            }
+                            {
+                                openGalleryModal && (
+                                    <GalleryModal
+                                        selectedCompany={selectedCompany}
+                                        openGalleryModal={openGalleryModal}
+                                        setOpenGalleryModal={(toggle) => setOpenGalleryModal(toggle)}
+                                        gallery={gallery}
+                                        setGallery={(gallery) => setGallery(gallery)}
+                                        selected={selected}
+                                        setSelected={(selected) => setSelected(selected)}
+                                        setFinishSelection={(toggle) => setFinishSelection(toggle)}
+                                        finishSelection={finishSelection}
+                                        setImportFromGallery={setImportFromGallery}
+
+                                    />
                                 )
                             }
                         </div>

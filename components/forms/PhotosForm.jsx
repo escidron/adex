@@ -10,7 +10,7 @@ export default function PhotosForm() {
     setListingProperties((prev)=>({ ...prev, images: images }))
   }
   return (
-    <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
+    <div className='w-full max-w-[800px] flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
       <div className='w-full h-full '>
         <div className='flex flex-col'>
           <h1 className='text-[32px]'>Add some photos</h1>

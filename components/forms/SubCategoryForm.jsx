@@ -28,7 +28,7 @@ export default function SubCategoryForm() {
             });
     }, [])
     return (
-        <div className='w-full '>
+        <div className='w-full max-w-[800px]'>
             <div className='flex flex-col'>
                 <h1 className='text-[32px]'>Sub-Category</h1>
                 <p className='text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>

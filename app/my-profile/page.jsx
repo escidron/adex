@@ -26,7 +26,7 @@ export default function Profilepage() {
 
   return (
         <main> 
-            <FolderComponent userType={userData.user_type}/>
+            <FolderComponent userType={userData.userType}/>
         </main>
   )
 }

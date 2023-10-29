@@ -11,10 +11,18 @@ import toast, { Toaster } from "react-hot-toast";
 import DropDownButton from '@/components/dropdown/DropdownButton';
 import HelpIcon from '@mui/icons-material/Help';
 import { industries } from '@/utils/industries';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 
-
-export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
+export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) {
     const [selected, setSelected] = useState(null);
     const [address, setAddress] = useState('');
     const [images, setImages] = useState([]);
@@ -22,6 +30,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
     const [dropDownSelected, setDropDownSelected] = useState('')
     const [hasPhysicalSpace, setHasPhysicalSpace] = useState('')
     const [showTip, setShowTip] = useState(false)
+    const [businessType, setBusinessType] = useState(0);
 
     const [coords, setCoords] = useState({
         lat: -3.745,
@@ -114,16 +123,17 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
             setHasPhysicalSpace('')
         }
     }
-
+    console.log('industries',industries)
+    console.log('businessType',businessType)
     return (
         <>
 
-            <form onSubmit={formik.handleSubmit} className={`flex justify-center `}>
-                <div className=' px-[30px] py-[15px]  bg-white rounded-xl w-[450px]'>
+            <form onSubmit={formik.handleSubmit} className={` `}>
+                <div className='' >
                     <div className='flex justify-center items-center mb-[20px] w-full'>
                         <h1 className='text-[25px]'>Register your Business</h1>
                     </div>
-                    <div className='flex justify-between items-center flex-col mb-[20px] relative'>
+                    <div className='flex justify-between items-center flex-col mb-[20px] '>
                         <div className=" mt-6 w-full  text-black ">
                             <TextField
                                 id='name'
@@ -136,13 +146,27 @@ export default function AddCompanyModal({ setAddCompany, setRefetch,refetch }) {
 
                             {formik.touched.name && formik.errors.name ? <div className="absolute text-[12px] top-[80px] text-red-600 font-bold">{formik.errors.name}</div> : null}
                         </div>
-                        <div className=' w-full mt-6 h-[55px] relative'>
+                        <div className=' w-full mt-6 h-[55px] '>
                             <DropDownButton
                                 label='Industry'
                                 itens={industries}
                                 dropDownSelected={dropDownSelected}
                                 setDropDownSelected={(selected) => setDropDownSelected(selected)}
                             />
+                            {/* <Select className="w-[70%] text-black" onValueChange={(value) => setBusinessType(parseInt(value))}>
+                                <SelectTrigger className='shadow-md'>
+                                    <SelectValue className='text-[12px]' placeholder="Select ..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {
+                                            industries.map((item) => (
+                                                <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                                            ))
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select> */}
                             {formik.touched.industry && formik.errors.industry ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.industry}</div> : null}
 
                         </div>

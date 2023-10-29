@@ -17,18 +17,20 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ClipboardList, Loader2 } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
-import { listingURL } from '@/utils/ListingURLs'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
-import { ListingContext } from '../layout'
+import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
+import { listingMachine } from '@/utils/listingStatesmachine'
+import BusinessForm from '@/components/forms/BusinessForm'
 
-const requiredFields = ['category','sub_category','title', 'location', 'description', 'price', 'date', 'images']
+
+const requiredFields = ['category', 'sub_category', 'title', 'location', 'description', 'price', 'date', 'images']
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
+    const [stateMachine, setStateMachine] = useContext(MachineStatesContext)
     const [required, setRequired] = useState(false);
-    const [totalSteps, setTotalSteps] = useState(10);
     const [isPending, setIsPending] = useState(false)
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
@@ -36,10 +38,9 @@ export default function Listing({ params }) {
     const step = params.step
     const router = useRouter();
 
-
     useEffect(() => {
         if (requiredFields.includes(step)) {
-            
+
             if (!listingProperties[step] || listingProperties[step].length == 0) {
                 setRequired(true)
             } else {
@@ -51,37 +52,68 @@ export default function Listing({ params }) {
         setAdvertisementType(categoryType)
     }, [listingProperties, step]);
 
-    const nextStep = () => {
 
-        let currentIndex = listingURL.findIndex(item => item.url === step);
+    const handleNext = () => {
+        let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
+        const isValid = listingMachine.states[nextRoute].ISVALID
 
-        if (currentIndex !== -1 && currentIndex < listingURL.length - 1) {
-            console.log('advertisementType',advertisementType)
-            if ((step === 'price' && advertisementType == 1) ||
-                step === 'discounts' ||
-                (step === 'sub_category' && listingProperties.sub_category != 9)) {
-                currentIndex += 1
-            }
-
-            router.push(`/listing/${listingURL[currentIndex + 1].url}`)
-            setListingProperties((prev) => ({ ...prev, currentStep: currentIndex + 1}))
-
+        if (!isValid) {
+            nextRoute = validRoute(nextRoute, 'NEXT')
         }
-
+        router.push(`/listing/${nextRoute}`)
+        setStateMachine((prev) => ({ ...prev, currentState: nextRoute,currentStep:stateMachine.currentStep + 1 }))
     }
-    const previusStep = () => {
-        let currentIndex = listingURL.findIndex(item => item.url === step);
-        console.log('prev', advertisementType)
-        if (currentIndex > 0) {
-            if ((step === 'date' && advertisementType == 1) ||
-                (step === 'images' && advertisementType != 1) ||
-                (step === 'title' && listingProperties.sub_category != 9)) {
-                currentIndex -= 1
-            }
 
-            router.push(`/listing/${listingURL[currentIndex - 1].url}`)
-            setListingProperties((prev) => ({ ...prev, currentStep: currentIndex - 1 }))
+
+    const handlePrevious = () => {
+        let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
+
+        const isValid = listingMachine.states[nextRoute].ISVALID
+
+        if (!isValid) {
+            nextRoute = validRoute(nextRoute, 'PREVIOUS')
         }
+        router.push(`/listing/${nextRoute}`)
+        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep:stateMachine.currentStep - 1  }))
+    }
+
+    const validRoute = (url, direction) => {
+        let validRoute
+
+        switch (url) {
+            case 'building_assets':
+
+                if (listingProperties.sub_category == 9) {
+                    validRoute = url;
+                } else {
+                    validRoute = listingMachine.states[url][direction];
+                }
+
+                break;
+
+            case 'discounts':
+
+                if (advertisementType == 1) {
+                    validRoute = listingMachine.states[url][direction];
+                } else {
+                    validRoute = url;
+                }
+
+                break;
+            case 'date':
+
+                if (advertisementType == 1) {
+                    validRoute = url;
+                } else {
+                    validRoute = listingMachine.states[url][direction];
+                }
+
+                break;
+            default:
+                validRoute = url;
+                break;
+        }
+        return validRoute
     }
 
     const createListing = () => {
@@ -112,11 +144,11 @@ export default function Listing({ params }) {
 
                 router.push('/my-profile?tab=5')
                 toast.success('Listing edited successfully!')
-                
+
                 setIsPending(false)
             })
             .catch(function (error) {
-                
+
                 console.log(error)
                 toast.error('Something went wrong!')
                 setIsPending(false)
@@ -135,7 +167,8 @@ export default function Listing({ params }) {
             </div>
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
                 {/* form div */}
-                <div className='w-full max-w-[800px] px-6 h-full flex justify-center pt-[100px]'>
+                <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
+                    {step === 'select_business' && <BusinessForm />}
                     {step === 'category' && <CategoryForm />}
                     {step === 'sub_category' && <SubCategoryForm />}
                     {step === 'building_assets' && <BuildingAssetsForm />}
@@ -150,13 +183,13 @@ export default function Listing({ params }) {
                 </div>
             </div>
             <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
-                <Progress value={(listingProperties.currentStep / totalSteps) * 100} className='w-full rounded-none h-[10px]' />
+                <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
-                    <Button onClick={previusStep} variant='outline' className='flex gap-2'>
+                    <Button onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button disabled={required || isPending} onClick={step === 'preview' ? createListing : nextStep} variant='default' className='flex gap-2 items-center'>
+                    <Button disabled={required || isPending} onClick={step === 'preview' ? createListing : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />

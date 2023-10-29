@@ -22,7 +22,7 @@ export default function LocationForm() {
             <div className='w-full sm:w-[500px]'>
                 <div className='flex flex-col'>
                     <h1 className='text-[32px]'>Location</h1>
-                    <p className='text-[18px] text-gray-500'>Enter a descriptive title for your listing.</p>
+                    <p className='text-[18px] text-gray-500'>Enter a the location</p>
                 </div>
                 <div className=' mt-4'>
                     <MapCoordinatesContext.Provider value={[coords, setCoords]}>
