@@ -49,7 +49,7 @@ export default function AddPayoutMethod() {
       }
     }
     GetUserProfile();
-  }, [user]);
+  }, []);
   return (
     <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center `}>
       {finish ? (
