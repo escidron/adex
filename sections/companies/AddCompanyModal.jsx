@@ -80,7 +80,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
             })
                 .then(function (response) {
                     setIsPending(false)
-                    setRefetch(!refetch)
+                    setRefetch((prev)=>!prev)
                     toast.success(response.data.message)
 
                 })

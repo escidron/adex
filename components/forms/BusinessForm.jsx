@@ -35,7 +35,7 @@ export default function BusinessForm() {
     const [addCompany, setAddCompany] = useState(false);
     const [refetch, setRefetch] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    
+
     const handleSelectedCompany = (companyId) => {
         setListingProperties({ ...listingProperties, selected_company: companyId })
     }
@@ -69,7 +69,6 @@ export default function BusinessForm() {
     if (!isLoaded) {
         return null
     }
-    console.log('selectedCompany', selectedCompany)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full flex justify-center'>
@@ -89,34 +88,15 @@ export default function BusinessForm() {
                                             </CardHeader>
 
                                             <CardFooter>
-                                                <Dialog className='w-full'>
-                                                    <DialogTrigger className='w-full'>
-                                                        <Button className='w-full'>
-                                                            <div className='mr-2'>
-                                                                <Plus size={20} />
-                                                            </div>
-                                                            Add Business
-                                                        </Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="sm:max-w-[425px]">
-
-                                                        <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
-                                                        <Select className="w-[70%] text-black" onValueChange={(value) => { }}>
-                                                            <SelectTrigger className='shadow-md'>
-                                                                <SelectValue className='text-[12px]' placeholder="Select ..." />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectGroup>
-                                                                    {
-                                                                        industries.map((item) => (
-                                                                            <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
-                                                                        ))
-                                                                    }
-                                                                </SelectGroup>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </DialogContent>
-                                                </Dialog>
+                                                <Button className='w-full' onClick={()=>{
+                                                    setAddCompany(true)
+                                                    setRefetch((prev)=>!prev)
+                                                    }}>
+                                                    <div className='mr-2'>
+                                                        <Plus size={20} />
+                                                    </div>
+                                                    Add Business
+                                                </Button>
 
                                             </CardFooter>
                                         </Card>
@@ -125,7 +105,6 @@ export default function BusinessForm() {
                             }
                         </>
                     ) : (
-
                         <div className='w-full max-w-[800px] h-[200px] mt-4 flex justify-center flex-wrap gap-8'>
                             {
                                 companies.map((company) => (
