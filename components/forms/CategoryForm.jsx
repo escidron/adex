@@ -27,7 +27,7 @@ export default function CategoryForm() {
             });
     }, [])
     return (
-        <div className='w-full max-w-[800px]'>
+        <div className='w-full max-w-[800px] overflow-y-auto invisible_scroll_bar'>
             <div className='flex flex-col'>
                 <h1 className='text-[32px]'>Category</h1>
                 <p className='text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>

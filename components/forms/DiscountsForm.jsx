@@ -77,7 +77,7 @@ export default function DiscountsForm() {
     }
     console.log('listingProperties.discounts',listingProperties.discounts)
     return (
-        <div className='w-full max-w-[1000px] flex flex-col items-center'>
+        <div className='w-full max-w-[1000px] flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full flex flex-col  md:flex-row justify-between '>
                 <div className='w-full sm:w-[400px]'>
                     <div className='flex flex-col'>

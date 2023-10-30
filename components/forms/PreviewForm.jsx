@@ -17,7 +17,7 @@ export default function PreviewForm() {
     }, []);
     
     return (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full sm:w-[500px]'>
 
                 <div className='flex flex-col'>

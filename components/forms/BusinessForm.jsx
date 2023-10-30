@@ -71,7 +71,7 @@ export default function BusinessForm() {
     }
     console.log('selectedCompany', selectedCompany)
     return (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full flex justify-center'>
                 {
                     companies.length === 0 ? (
