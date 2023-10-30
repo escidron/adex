@@ -32,8 +32,11 @@ export default function Listing({ params }) {
     const [stateMachine, setStateMachine] = useContext(MachineStatesContext)
     const [required, setRequired] = useState(false);
     const [isPending, setIsPending] = useState(false)
+    const [isDraftPending, setIsDrafPending] = useState(false)
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
+    const [userData, setUserData] = useState({});
+    const [importFromGallery, setImportFromGallery] = useState(false);
 
     const step = params.step
     const router = useRouter();
@@ -47,23 +50,36 @@ export default function Listing({ params }) {
                 setRequired(false)
             }
         }
-
         const categoryType = checkCategoryType(listingProperties.sub_category)
         setAdvertisementType(categoryType)
     }, [listingProperties, step]);
 
-
+    useEffect(() => {
+        async function GetUserProfile() {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+            if (response.status === 200) {
+                const res = await response.json()
+                setUserData(res)
+            }
+        }
+        GetUserProfile();
+    }, []);
     const handleNext = () => {
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
         const isValid = listingMachine.states[nextRoute].ISVALID
-
         if (!isValid) {
             nextRoute = validRoute(nextRoute, 'NEXT')
         }
         router.push(`/listing/${nextRoute}`)
-        setStateMachine((prev) => ({ ...prev, currentState: nextRoute,currentStep:stateMachine.currentStep + 1 }))
+        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
+        controlSteps()
     }
-
 
     const handlePrevious = () => {
         let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
@@ -74,7 +90,8 @@ export default function Listing({ params }) {
             nextRoute = validRoute(nextRoute, 'PREVIOUS')
         }
         router.push(`/listing/${nextRoute}`)
-        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep:stateMachine.currentStep - 1  }))
+        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep - 1 }))
+        controlSteps()
     }
 
     const validRoute = (url, direction) => {
@@ -116,15 +133,38 @@ export default function Listing({ params }) {
         return validRoute
     }
 
-    const createListing = () => {
-        setIsPending(true)
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/new`,
+    //control the amount of steps,depends of the user sub category choice and type of user
+    const controlSteps = () => {
+
+        if (userData.userType == 2) {
+            //for individual user,have 1 less step
+            if (step === 'sub_category' && stateMachine.totalSteps == 10 && listingProperties.sub_category != 9) {
+                setStateMachine((prev) => ({ ...prev, totalSteps: 9 }))
+            } else if (step === 'sub_category' && stateMachine.totalSteps == 9 && listingProperties.sub_category == 9) {
+                setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
+            }
+        } else {
+            if (step === 'sub_category' && stateMachine.totalSteps == 11 && listingProperties.sub_category != 9) {
+                setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
+            } else if (step === 'sub_category' && stateMachine.totalSteps == 10 && listingProperties.sub_category == 9) {
+                setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
+            }
+        }
+    }
+
+    const createListing = (isDraft) => {
+        if (isDraft) {
+            setIsDrafPending(true)
+        } else {
+            setIsPending(true)
+        }
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/${isDraft ? 'draft' : 'new'}`,
             {
 
                 title: listingProperties.title,
                 description: listingProperties.description,
                 price: listingProperties.price,
-                category_id: listingProperties.category,
+                category_id: listingProperties.sub_category,
                 images: listingProperties.images,
                 address: listingProperties.location,
                 lat: listingProperties.latitude,
@@ -134,24 +174,32 @@ export default function Listing({ params }) {
                 per_unit_price: advertisementType ? 2 : listingProperties.price,
                 discounts: listingProperties.discounts,
                 company_id: selectedCompany,
-                // importFromGallery: importFromGallery,
-                start_date: listingProperties.date
+                importFromGallery: importFromGallery,
+                start_date: listingProperties.date,
+                company_id: listingProperties.selected_company,
+                discounts:listingProperties.discounts
             }, {
             withCredentials: true,
         })
             .then(function (response) {
 
+                if (isDraft) {
+                    router.push('/')
+                    toast.success('Draft successfully saved!')
+                    setIsDrafPending(false)
+                } else {
+                    router.push('/my-profile?tab=5')
+                    toast.success('Listing created successfully!')
+                    setIsPending(false)
+                }
 
-                router.push('/my-profile?tab=5')
-                toast.success('Listing edited successfully!')
-
-                setIsPending(false)
             })
             .catch(function (error) {
 
                 console.log(error)
                 toast.error('Something went wrong!')
                 setIsPending(false)
+                setIsDrafPending(false)
 
             })
     }
@@ -161,9 +209,16 @@ export default function Listing({ params }) {
             <div className='h-[80px] border  flex items-center justify-between px-8 fixed top-0 w-full'>
                 <div className='flex gap-2'>
                     <ClipboardList />
-                    <p className='font-[600]'>Create Your Listing</p>
+                    <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Your Listing'}</p>
                 </div>
-                <Button variant='outline'>Save & Exit</Button>
+                <Button disabled={isDraftPending} variant='outline' onClick={() => createListing(true)} className='flex gap-2 items-center'>
+                    {
+                        isDraftPending && (
+                            <Loader2 size={18} className='animate-spin' />
+                        )
+                    }
+                    Save & Exit
+                </Button>
             </div>
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
                 {/* form div */}
@@ -185,11 +240,11 @@ export default function Listing({ params }) {
             <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
-                    <Button onClick={handlePrevious} variant='outline' className='flex gap-2'>
+                    <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button disabled={required || isPending} onClick={step === 'preview' ? createListing : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />

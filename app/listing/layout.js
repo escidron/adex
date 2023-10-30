@@ -27,6 +27,8 @@ export default function ListingLayout({ children }) {
     discounts: [],
     date: "",
     images: [],
+    isDraft : false,
+    selected_company: ''
   });
 
   useEffect(() => {
@@ -42,19 +44,36 @@ export default function ListingLayout({ children }) {
         const res = await response.json();
         setUserInfo(res);
         if(res.userType == '1'){
-
           router.push('/listing/select_business')
-          setStateMachine((prev) => ({ ...prev, currentState: 'select_business' }))
+          setStateMachine((prev) => ({ ...prev, currentState: 'select_business',totalSteps: 11 }))
 
         }else{
-
           router.push('/listing/category')
         }
-
       }
     }
     GetUserProfile();
   }, []);
+
+  useEffect(() => {
+    async function GetUserProfile() {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/get-draft`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      if (response.status === 200) {
+        const res = await response.json();
+        if(res.data){
+          setListingProperties(res.data)
+        }
+      }
+    }
+    GetUserProfile();
+  }, []);
+
   return (
     <div>
       <ListingContext.Provider

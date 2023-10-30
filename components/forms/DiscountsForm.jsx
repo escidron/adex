@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { useContext, useState, useEffect } from 'react'
 import { ListingContext } from '@/app/listing/layout';
 import {
@@ -21,6 +23,7 @@ import { Button } from '../ui/button';
 import { Info, Plus, Trash } from 'lucide-react';
 import { Separator } from '../ui/separator';
 import { checkCategoryType } from '@/utils/checkCategoryType';
+import toast from 'react-hot-toast';
 
 const monthsOptions = [
     { id: 1, label: '1 month' },
@@ -56,9 +59,23 @@ export default function DiscountsForm() {
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
     }
     const removeDiscount = (id) => {
-        const newDiscounts = listingProperties.discounts.filter((item, index) => index != id);
+        const newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
+            {
+                id
+            }, {
+            withCredentials: true,
+        })
+            .then(function (response) {
+                toast.success('Discount deleted')
+            })
+            .catch(function (error) {
+                console.log(error)
+                toast.error('Something went wrong!')
+            })
     }
+    console.log('listingProperties.discounts',listingProperties.discounts)
     return (
         <div className='w-full max-w-[1000px] flex flex-col items-center'>
             <div className='w-full flex flex-col  md:flex-row justify-between '>
@@ -139,12 +156,12 @@ export default function DiscountsForm() {
                                 <Separator className="my-4" />
                                 {
                                     listingProperties.discounts.map((item, index) => (
-                                        <div key={index}>
+                                        <div key={item.id}>
                                             <div className='flex gap-2 justify-between items-center p-2 w-full border mt-2 rounded-md'>
                                                 <div className='flex w-[90%]'>
                                                     <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
                                                 </div>
-                                                <div onClick={() => removeDiscount(index)} className='cursor-pointer w-[10%] flex justify-center items-center' >
+                                                <div onClick={() => removeDiscount(item.id)} className='cursor-pointer w-[10%] flex justify-center items-center' >
                                                     <Trash size={20} />
                                                 </div>
                                             </div>

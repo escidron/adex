@@ -3,7 +3,7 @@ import AddCompanyModal from '@/sections/companies/AddCompanyModal';
 
 import { useContext, useEffect, useState } from 'react'
 import { ListingContext } from '@/app/listing/layout';
-import { Image } from '@mui/icons-material';
+import Image from 'next/image';
 import { ImageIcon, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
@@ -26,6 +26,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { industries } from '@/utils/industries';
+import CompanyCard from '../infoCard/CompanyCard';
 
 export default function BusinessForm() {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -34,8 +35,9 @@ export default function BusinessForm() {
     const [addCompany, setAddCompany] = useState(false);
     const [refetch, setRefetch] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    const handleTitle = (title) => {
-        setListingProperties({ ...listingProperties, title: title })
+    
+    const handleSelectedCompany = (companyId) => {
+        setListingProperties({ ...listingProperties, selected_company: companyId })
     }
 
     useEffect(() => {
@@ -67,13 +69,13 @@ export default function BusinessForm() {
     if (!isLoaded) {
         return null
     }
+    console.log('selectedCompany', selectedCompany)
     return (
         <div className='w-full flex flex-col items-center'>
-            <div className='w-full sm:w-[500px]'>
+            <div className='w-full flex justify-center'>
                 {
                     companies.length === 0 ? (
                         <>
-
                             {
                                 addCompany ? (
                                     <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
@@ -99,7 +101,7 @@ export default function BusinessForm() {
                                                     <DialogContent className="sm:max-w-[425px]">
 
                                                         <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
-                                                        <Select className="w-[70%] text-black" onValueChange={(value) => {}}>
+                                                        <Select className="w-[70%] text-black" onValueChange={(value) => { }}>
                                                             <SelectTrigger className='shadow-md'>
                                                                 <SelectValue className='text-[12px]' placeholder="Select ..." />
                                                             </SelectTrigger>
@@ -124,31 +126,34 @@ export default function BusinessForm() {
                         </>
                     ) : (
 
-                        <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-[50%]'>
+                        <div className='w-full max-w-[800px] h-[200px] mt-4 flex justify-center flex-wrap gap-8'>
                             {
                                 companies.map((company) => (
-                                    <div key={company.id} className='hover:cursor-pointer' onClick={() => setSelectedCompany(company.id)}>
+                                    <div key={company.id} className={`hover:cursor-pointer ${listingProperties.selected_company == company.id ? 'border border-black p-2 rounded-lg' : ''}`} onClick={() => handleSelectedCompany(company.id)}>
                                         {
                                             company.company_logo ? (
+                                                <div className='h-[200px] max-h-[200px] '>
 
-                                                <Image
-                                                    src={company.company_logo}
-                                                    alt="Company Logo"
-                                                    width={2000}
-                                                    height={2000}
+                                                    <Image
+                                                        src={company.company_logo}
+                                                        alt="Company Logo"
+                                                        width={2000}
+                                                        height={2000}
 
-                                                    className='w-full h-full rounded-lg object-cover'
-                                                />
+                                                        className='w-full h-full rounded-lg object-cover'
+                                                    />
+                                                </div>
                                             ) : (
-                                                <div className='w-full h-full bg-slate-200 flex justify-center items-center rounded-lg'>
+                                                <div className='w-full h-[200px] max-h-[200px] aspect-square bg-slate-200 flex justify-center items-center rounded-lg'>
                                                     <ImageIcon />
                                                 </div>
                                             )
                                         }
-                                        <h1 className='mt-2 font-bold'>
+                                        <h1 className='mt-2 font-bold text-center' >
                                             {company.company_name}
                                         </h1>
                                     </div>
+
                                 ))
                             }
                         </div>

@@ -128,8 +128,8 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
     return (
         <>
 
-            <form onSubmit={formik.handleSubmit} className={` `}>
-                <div className='' >
+            <form onSubmit={formik.handleSubmit} className={`w-full flex justify-center`}>
+                <div className='max-w-[500px]' >
                     <div className='flex justify-center items-center mb-[20px] w-full'>
                         <h1 className='text-[25px]'>Register your Business</h1>
                     </div>

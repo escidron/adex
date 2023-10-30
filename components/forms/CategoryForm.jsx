@@ -40,7 +40,7 @@ export default function CategoryForm() {
                             <CategoryCard
                                 item={category}
                                 selected={listingProperties.category == category.id}
-                                setListingProperties={(selectedId)=>setListingProperties((prev)=>({...prev,category:selectedId,sub_category:''}))}
+                                setListingProperties={(selectedId)=>setListingProperties((prev)=>({...prev,category:selectedId}))}
                             />
                         </div>
                     ))

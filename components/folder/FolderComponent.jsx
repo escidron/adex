@@ -18,7 +18,7 @@ export default function FolderComponent({ userType }) {
 
     return (
         <>
-            <div className='flex justify-center bg-[#D9D9D9] h-[40px]'>
+            <div className='w-full flex justify-center bg-[#D9D9D9] h-[40px]'>
                 <Link href='my-profile?tab=1' className={`border-l-[1px] border-r-[1px] ${tab == 1 ? 'bg-[#FCD33B]' : 'bg-white'} px-[20px]  lg:px-[40px] text-[15px]  font-[600] flex items-center justify-center hover:bg-[#FCD33B]`}>
                     <p className='hidden text-[13px] md:flex lg:text-[15px]'>Personal Information</p>
                     <div className='md:hidden'>

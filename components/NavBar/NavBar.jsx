@@ -110,7 +110,6 @@ export default function NavBar() {
         GetUserProfile();
     }, [user]);
 
-    console.log('user data',userData)
     const logout = () => {
         toast.dismiss()
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/logout`,
