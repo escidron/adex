@@ -6,12 +6,15 @@ import { Divider } from '@mui/material';
 import GalleryImage from '@/components/gallery-image/GalleryImage';
 import ImageImporter from '@/components/gallery-image/imageImporter';
 import { Edit, Eye, EyeOff } from 'lucide-react';
+import DropImageArea from '@/components/dropImageArea/DropImageArea';
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
   const [refresh, setRefresh] = useState(false)
+  const [refetch, setRefetch] = useState(false)
   const [gallery, setGallery] = useState([]);
   const [images, setImages] = useState([]);
+  const [remove, setRemove] = useState(null);
 
   const [user, setUser] = useState({
     name: '',
@@ -57,16 +60,35 @@ export default function PersonalInfo() {
         withCredentials: true,
       })
       .then(function (response) {
-        setGallery(response.data.galleryWithImages)
+        setImages(response.data.galleryWithImages[0].company_gallery)
       })
       .catch(function (error) {
         console.log(error)
       });
 
 
-  }, [refresh]);
+  }, [gallery]);
 
   useEffect(() => {
+    if (remove) {
+
+      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/remove-gallery-image`,
+        { remove },
+        {
+          withCredentials: true,
+        })
+        .then(function (response) {
+        })
+        .catch(function (error) {
+          console.log(error)
+        });
+    }
+
+
+  }, [remove]);
+
+  useEffect(() => {
+
     if (images.length > 0) {
 
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/image-gallery`,
@@ -78,13 +100,14 @@ export default function PersonalInfo() {
         })
         .then(function (response) {
           setImages([])
+          setGallery([...gallery, images])
           setRefresh(!refresh)
         })
         .catch(function (error) {
           console.log(error)
         });
     }
-  }, [images]);
+  }, [refetch]);
 
   const handleSex = (e) => {
     const id = e.currentTarget.id
@@ -156,8 +179,8 @@ export default function PersonalInfo() {
   }
 
   return (
-    <div className={` flex flex-col items-center  min-h-screen py-2 `}>
-      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[550px] min-w-[480px]">
+    <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
+      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[650px] min-w-[480px]">
         <h1 className="text-[30px]">Personal Informations</h1>
         <div className={`mt-2 w-full flex flex-col gap-3 `}>
 
@@ -186,7 +209,7 @@ export default function PersonalInfo() {
                   </div>
                   <div onClick={() => setCurrentInfo('name')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray'/>
+                    <Edit size={16} color='gray' />
                   </div>
                 </>
               )
@@ -218,7 +241,7 @@ export default function PersonalInfo() {
                   </div>
                   <div onClick={() => setCurrentInfo('lastname')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray'/>
+                    <Edit size={16} color='gray' />
 
                   </div>
                 </>
@@ -251,7 +274,7 @@ export default function PersonalInfo() {
                   </div>
                   <div onClick={() => setCurrentInfo('email')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray'/>
+                    <Edit size={16} color='gray' />
 
                   </div>
                 </>
@@ -284,7 +307,7 @@ export default function PersonalInfo() {
                   </div>
                   <div onClick={() => setCurrentInfo('phone')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                     <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray'/>
+                    <Edit size={16} color='gray' />
 
                   </div>
                 </>
@@ -294,7 +317,7 @@ export default function PersonalInfo() {
           <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
           <div className='mb-2 flex gap-3 font-[600] text-[18px] items-center'>
-            <EyeOff size={16} color='gray'/>
+            <EyeOff size={16} color='gray' />
             <h1 className='text-[16px]'>Making public this informations means anyone can see it</h1>
           </div>
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
@@ -323,16 +346,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray'/>
+                      <Edit size={16} color='gray' />
 
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('handle')}>
                       {
                         user.handleIsPublic == '1' ? (
 
-                          <Eye size={16} color='gray'/>
+                          <Eye size={16} color='gray' />
                         ) : (
-                          <EyeOff size={16} color='gray'/>
+                          <EyeOff size={16} color='gray' />
                         )
                       }
                     </div>
@@ -368,16 +391,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('city')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray'/>
+                      <Edit size={16} color='gray' />
 
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('city')}>
                       {
                         user.cityIsPublic == '1' ? (
 
-                          <Eye size={16} color='gray'/>
+                          <Eye size={16} color='gray' />
                         ) : (
-                          <EyeOff size={16} color='gray'/>
+                          <EyeOff size={16} color='gray' />
                         )
                       }
                     </div>
@@ -413,16 +436,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('profession')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray'/>
+                      <Edit size={16} color='gray' />
 
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('profession')}>
                       {
                         user.professionIsPublic == '1' ? (
 
-                          <Eye size={16} color='gray'/>
+                          <Eye size={16} color='gray' />
                         ) : (
-                          <EyeOff size={16} color='gray'/>
+                          <EyeOff size={16} color='gray' />
                         )
                       }
                     </div>
@@ -476,16 +499,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('sex')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray'/>
+                      <Edit size={16} color='gray' />
 
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('sex')}>
                       {
                         user.sexIsPublic == '1' ? (
 
-                          <Eye size={16} color='gray'/>
+                          <Eye size={16} color='gray' />
                         ) : (
-                          <EyeOff size={16} color='gray'/>
+                          <EyeOff size={16} color='gray' />
                         )
                       }
                     </div>
@@ -521,16 +544,16 @@ export default function PersonalInfo() {
                   <div className='flex gap-2'>
                     <div onClick={() => setCurrentInfo('bio')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
                       <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray'/>
+                      <Edit size={16} color='gray' />
 
                     </div>
                     <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('bio')}>
                       {
                         user.bioIsPublic == '1' ? (
 
-                          <Eye size={16} color='gray'/>
+                          <Eye size={16} color='gray' />
                         ) : (
-                          <EyeOff size={16} color='gray'/>
+                          <EyeOff size={16} color='gray' />
                         )
                       }
                     </div>
@@ -546,16 +569,21 @@ export default function PersonalInfo() {
         <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
 
         <h1 className='text-[30px] mb-4 mt-6'>Image Gallery</h1>
-        <div className={`w-full flex justify-start `}>
-          <div>
-            <ImageImporter
-              images={images}
-              setImages={(image) => setImages(image)}
-            />
+
+        {/* <GalleryImage gallery={gallery} /> */}
+        <div className='w-full max-w-[800px] flex flex-col items-center  '>
+          <div className='w-full h-full '>
+            <div className='h-[400px]  mt-2 mb-[200px] w-full'>
+              <DropImageArea
+                images={images}
+                setImages={(image) => setImages(image)}
+                setRefetch={(toggle) => setRefetch(toggle)}
+                isInPersonalProfile={true}
+                setRemove={(item) => setRemove(item)}
+              />
+            </div>
           </div>
         </div>
-        <GalleryImage gallery={gallery} />
-
       </div>
     </div >
   );

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import GalleryModal from "../modals/GalleryModal";
 
-export default function DropImageArea({ images, setImages, selectedCompany }) {
+export default function DropImageArea({ images, setImages, selectedCompany, setRefetch, isInPersonalProfile, setRemove }) {
     const [showOptions, setShowOptions] = useState(false);
     const [openGalleryModal, setOpenGalleryModal] = useState(false);
     const [gallery, setGallery] = useState([]);
@@ -28,6 +28,10 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
     const maxNumber = 20;
     const onChange = (imageList, addUpdateIndex) => {
         setImages(imageList);
+        if (isInPersonalProfile) {
+
+            setRefetch((prev) => !prev)
+        }
     };
 
 
@@ -38,6 +42,10 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
         if (selected.length > 0) {
             const newImages = gallery[0].company_gallery.filter((item, index) => selected.includes(index));
             setImages(newImages)
+            if (isInPersonalProfile) {
+
+                setRefetch((prev) => !prev)
+            }
         }
 
     }, [finishSelection]);
@@ -66,6 +74,10 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
     const removeImage = (id) => {
         const newImages = images.filter((item, index) => index != id);
         setImages(newImages)
+        if (isInPersonalProfile) {
+            setRefetch((prev) => !prev)
+            setRemove(images[id])
+        }
     }
 
     return (
@@ -76,7 +88,7 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                 onChange={onChange}
                 maxNumber={maxNumber}
                 dataURLKey="data_url"
-                // acceptType={["jpg", "png", 'JPEG']}
+            // acceptType={["jpg", "png", 'JPEG']}
             >
                 {({
                     imageList,
@@ -90,9 +102,14 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                     <>
                         {
                             images.length > 0 && (
-                                <Button onClick={onImageUpload}>
-                                    Add Image
-                                </Button>
+                                <div className="flex gap-2 items-center">
+                                    <Button onClick={onImageUpload}>
+                                        Add from device
+                                    </Button>
+                                    <Button onClick={() => setOpenGalleryModal(true)}>
+                                        Add from ADEX Gallery
+                                    </Button>
+                                </div>
                             )
                         }
                         <div
@@ -128,7 +145,7 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className={`w-full max-h-[400px] ${images.length > 0 ? 'grid grid-cols-2 gap-4' : ''}`}>
+                                            <div className={`w-full h-[400px] ${images.length > 0 ? 'grid grid-cols-2 gap-4' : ''}`}>
                                                 {
                                                     images.map((image, index) => (
                                                         <div key={index} className={`${index == 0 ? 'col-span-full' : 'h-[250px]'} relative`}>
@@ -137,7 +154,7 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                                                                 alt="Listing images"
                                                                 width={2000}
                                                                 height={2000}
-                                                                className={`w-full max-h-[400px] rounded-lg object-cover ${index == 0 ? 'col-span-full' : 'h-[250px]'}`}
+                                                                className={`w-full max-h-[400px] rounded-lg ${index == 0 ? 'col-span-full object-cover' : 'h-[250px] object-contain'}`}
                                                             />
                                                             <AlertDialog>
                                                                 <AlertDialogTrigger>

@@ -10,6 +10,7 @@ export default function userProfileLayout({ children }) {
     return (
         <div>
           <ProfileHeader/>
+          
           {children}
           <Footer />
         </div>

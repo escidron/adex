@@ -8,6 +8,7 @@ import "react-quill/dist/quill.bubble.css";
 
 export const Preview = ({
   value,
+  heigth
 }) => {
   const ReactQuill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
 
@@ -16,7 +17,7 @@ export const Preview = ({
       theme="bubble"
       value={value}
       readOnly
-      className="line-clamp-3"
+      className={`line-clamp-3 ${heigth && `max-h-[${heigth}px]`}`}
     />
   );
 };

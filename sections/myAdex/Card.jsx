@@ -76,7 +76,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                                         })}
                                     </ul>
                                 ) : `${item.description}`} */}
-                                <Preview value={item.description}/>
+                                <Preview value={item.description} heigth={70}/>
                         </p>
                     </div>
                 </div>
