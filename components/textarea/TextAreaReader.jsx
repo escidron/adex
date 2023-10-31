@@ -16,6 +16,7 @@ export const Preview = ({
       theme="bubble"
       value={value}
       readOnly
+      className="line-clamp-3"
     />
   );
 };

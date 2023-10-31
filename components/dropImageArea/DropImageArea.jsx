@@ -76,7 +76,7 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                 onChange={onChange}
                 maxNumber={maxNumber}
                 dataURLKey="data_url"
-                acceptType={["jpg", "png", 'JPEG']}
+                // acceptType={["jpg", "png", 'JPEG']}
             >
                 {({
                     imageList,
@@ -141,7 +141,7 @@ export default function DropImageArea({ images, setImages, selectedCompany }) {
                                                             />
                                                             <AlertDialog>
                                                                 <AlertDialogTrigger>
-                                                                    <div className="absolute top-3 right-3 flex justify-center items-center p-1 hover:bg-slate-100  hover:text-black text-white rounded-lg">
+                                                                    <div className="absolute top-3 right-3 flex justify-center items-center p-1 bg-slate-100  text-black hover:bg-black hover:text-white rounded-lg">
                                                                         <Trash size={20} />
                                                                     </div>
                                                                 </AlertDialogTrigger>

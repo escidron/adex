@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import ShareButtonFacebook from '@/components/facebook/ShareButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast';
+import { Preview } from '@/components/textarea/TextAreaReader';
 
 
 
@@ -29,7 +30,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div onClick={() => router.push(route)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-[20px]  mb-8 border-[1px] cursor-pointer rounded-lg border-bg-gray-200 hover:border-black `}>
+        <div onClick={() => router.push(route)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -63,7 +64,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                     </div>
                     <div className='flex gap-2 items-center '>
                         <p className='text-[14px] mt-2 w-full'>
-                            {item.description.length > 125 ? `${item.description.split(' ').slice(0, 15).join(' ')} ...`
+                            {/* {item.description.length > 125 ? `${item.description.split(' ').slice(0, 15).join(' ')} ...`
                                 : bulletPoints.length > 0 ? (
                                     <ul>
                                         {bulletPoints.map((point, index) => {
@@ -74,7 +75,8 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                                             )
                                         })}
                                     </ul>
-                                ) : `${item.description}`}
+                                ) : `${item.description}`} */}
+                                <Preview value={item.description}/>
                         </p>
                     </div>
                 </div>
