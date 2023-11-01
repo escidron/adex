@@ -106,9 +106,14 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                     <Button onClick={onImageUpload}>
                                         Add from device
                                     </Button>
-                                    <Button onClick={() => setOpenGalleryModal(true)}>
-                                        Add from ADEX Gallery
-                                    </Button>
+                                    {
+                                        !isInPersonalProfile && (
+                                            <Button onClick={() => setOpenGalleryModal(true)}>
+                                                Add from ADEX Gallery
+                                            </Button>
+
+                                        )
+                                    }
                                 </div>
                             )
                         }

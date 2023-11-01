@@ -22,8 +22,9 @@ async function getData(id) {
 
 
   export default async function SharingPage({params}) {
+    console.log('params',params)
     const id = params.shared
-
+    console.log('id',id)
     const data = await getData(id)
     try{
         return (
@@ -39,7 +40,6 @@ async function getData(id) {
                         <DynamicAdDetails sharedId={id}/>
                     </div>
                 </main>
-    
             </>
         )
     } catch (error) {
