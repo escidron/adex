@@ -59,21 +59,26 @@ export default function DiscountsForm() {
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
     }
     const removeDiscount = (id) => {
-        const newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
+        console.log('discounts',listingProperties.discounts)
+        const newDiscounts = listingProperties.discounts.filter((item,index) => index != id);
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
-            {
-                id
-            }, {
-            withCredentials: true,
-        })
-            .then(function (response) {
-                toast.success('Discount deleted')
+        
+        if(listingProperties.discounts[0].id){
+
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
+                {
+                    id
+                }, {
+                withCredentials: true,
             })
-            .catch(function (error) {
-                console.log(error)
-                toast.error('Something went wrong!')
-            })
+                .then(function (response) {
+                    toast.success('Discount deleted')
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    toast.error('Something went wrong!')
+                })
+        }
     }
     console.log('listingProperties.discounts',listingProperties.discounts)
     return (
@@ -161,7 +166,7 @@ export default function DiscountsForm() {
                                                 <div className='flex w-[90%]'>
                                                     <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
                                                 </div>
-                                                <div onClick={() => removeDiscount(item.id)} className='cursor-pointer w-[10%] flex justify-center items-center' >
+                                                <div onClick={() => removeDiscount(item.id ? item.id : index)} className='cursor-pointer w-[10%] flex justify-center items-center' >
                                                     <Trash size={20} />
                                                 </div>
                                             </div>

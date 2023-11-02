@@ -1,7 +1,7 @@
 
 const listingMachine = {
     currentState:'category',
-    totalSteps:10,
+    totalSteps:11,
     currentStep:1,
     states:{
         select_business:{
@@ -54,16 +54,21 @@ const listingMachine = {
         date:{
             NEXT:'images',
             PREVIOUS:'discounts',
-            ISVALID:    false
+            ISVALID:    true
         },
         images:{
-            NEXT:'preview',
+            NEXT:'instructions',
             PREVIOUS:'date',
+            ISVALID:    true
+        },
+        instructions:{
+            NEXT:'preview',
+            PREVIOUS:'images',
             ISVALID:    true
         },
         preview:{
             NEXT:'preview',
-            PREVIOUS:'images',
+            PREVIOUS:'instructions',
             ISVALID:    true
         }
     }

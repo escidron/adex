@@ -2,7 +2,7 @@
 import axios from 'axios'
 import CategoryCard from '../categories/CategoryCard';
 
-import { useEffect, useState,useContext } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { ListingContext } from '@/app/listing/layout';
 
 export default function SubCategoryForm() {
@@ -18,8 +18,15 @@ export default function SubCategoryForm() {
                 const allCategories = response.data
                 const selectedCategories = []
                 allCategories.map((category) => {
-                    if (category.parent_id == listingProperties.category) {
-                        selectedCategories.push(category)
+                    if (listingProperties.category == 3) {
+
+                        if (category.parent_id == 1 || category.parent_id == 3 ) {
+                            selectedCategories.push(category)
+                        }
+                    } else {
+                        if (category.parent_id == listingProperties.category) {
+                            selectedCategories.push(category)
+                        }
                     }
                 })
                 setCategories(selectedCategories)
@@ -35,12 +42,12 @@ export default function SubCategoryForm() {
             </div>
             <div className='w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
                 {
-                    categories.map((category,index) => (
+                    categories.map((category, index) => (
                         <div key={category.id}  >
                             <CategoryCard
                                 item={category}
-                                selected={ listingProperties.sub_category == category.id}
-                                setListingProperties={(selectedId)=>setListingProperties((prev)=>({...prev,sub_category:selectedId}))}
+                                selected={listingProperties.sub_category == category.id}
+                                setListingProperties={(selectedId) => setListingProperties((prev) => ({ ...prev, sub_category: selectedId }))}
                             />
                         </div>
                     ))

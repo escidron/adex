@@ -14,7 +14,7 @@ export default function PhotosForm() {
       <div className='w-full h-full '>
         <div className='flex flex-col'>
           <h1 className='text-[32px]'>Add some photos</h1>
-          <p className='text-[18px] text-gray-500'>Pick Images to Highlight Your Listing</p>
+          <p className='text-[18px] text-gray-500'>Pick images to highlight your Listing</p>
         </div>
         <div className='h-[400px]  mt-2'>
           <DropImageArea

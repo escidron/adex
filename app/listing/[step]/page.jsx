@@ -23,9 +23,10 @@ import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
 import BusinessForm from '@/components/forms/BusinessForm'
+import InstructionsForm from '@/components/forms/InstructionsForm'
 
 
-const requiredFields = ['category', 'sub_category', 'title', 'location', 'description', 'price', 'date', 'images']
+const requiredFields = ['category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -135,21 +136,26 @@ export default function Listing({ params }) {
 
     //control the amount of steps,depends of the user sub category choice and type of user
     const controlSteps = () => {
+        console.log('steps', stateMachine.totalSteps)
+        const categoryType = checkCategoryType(listingProperties.sub_category)
 
-        if (userData.userType == 2) {
-            //for individual user,have 1 less step
-            if (step === 'sub_category' && stateMachine.totalSteps == 10 && listingProperties.sub_category != 9) {
-                setStateMachine((prev) => ({ ...prev, totalSteps: 9 }))
-            } else if (step === 'sub_category' && stateMachine.totalSteps == 9 && listingProperties.sub_category == 9) {
+        if (step === 'sub_category') {
+            if (categoryType == 1) {
                 setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
+            } else {
+                if (listingProperties.sub_category != 9) {
+                    setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
+                } else {
+                    setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
+                }
             }
-        } else {
-            if (step === 'sub_category' && stateMachine.totalSteps == 11 && listingProperties.sub_category != 9) {
-                setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
-            } else if (step === 'sub_category' && stateMachine.totalSteps == 10 && listingProperties.sub_category == 9) {
-                setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
+
+            if (userData.userType == 1) {
+                setStateMachine((prev) => ({ ...prev, totalSteps: stateMachine.totalSteps + 1 }))
             }
+            setListingProperties({ ...listingProperties, date: '',first_available_date:"",discounts:[] })
         }
+        //restart this params when change the listing type
     }
 
     const createListing = (isDraft) => {
@@ -161,23 +167,24 @@ export default function Listing({ params }) {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/${isDraft ? 'draft' : 'new'}`,
             {
 
-                title: listingProperties.title,
-                description: listingProperties.description,
-                price: listingProperties.price,
                 category_id: listingProperties.sub_category,
-                images: listingProperties.images,
+                title: listingProperties.title,
                 address: listingProperties.location,
                 lat: listingProperties.latitude,
                 long: listingProperties.longitude,
+                description: listingProperties.description,
+                price: listingProperties.price,
+                images: listingProperties.images,
                 ad_duration_type: advertisementType,
                 sub_asset_type: listingProperties.building_asset,
                 per_unit_price: advertisementType ? 2 : listingProperties.price,
                 discounts: listingProperties.discounts,
                 company_id: selectedCompany,
                 importFromGallery: importFromGallery,
-                start_date: listingProperties.date,
+                first_available_date: listingProperties.first_available_date,
+                date: listingProperties.date,
                 company_id: listingProperties.selected_company,
-                discounts:listingProperties.discounts
+                instructions:listingProperties.instructions
             }, {
             withCredentials: true,
         })
@@ -188,8 +195,8 @@ export default function Listing({ params }) {
                     toast.success('Draft successfully saved!')
                     setIsDrafPending(false)
                 } else {
-                    router.push('/my-profile?tab=5')
                     toast.success('Listing created successfully!')
+                    router.push('/my-profile?tab=5')
                     setIsPending(false)
                 }
 
@@ -211,14 +218,19 @@ export default function Listing({ params }) {
                     <ClipboardList />
                     <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Your Listing'}</p>
                 </div>
-                <Button disabled={isDraftPending} variant='outline' onClick={() => createListing(true)} className='flex gap-2 items-center'>
-                    {
-                        isDraftPending && (
-                            <Loader2 size={18} className='animate-spin' />
-                        )
-                    }
-                    Save & Exit
-                </Button>
+                <div className='flex gap-2 items-center'>
+                    <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/')} className='flex gap-2 items-center'>
+                        Cancel
+                    </Button>
+                    <Button disabled={isDraftPending} onClick={() => createListing(true)} className='flex gap-2 items-center'>
+                        {
+                            isDraftPending && (
+                                <Loader2 size={18} className='animate-spin' />
+                            )
+                        }
+                        Save & Exit
+                    </Button>
+                </div>
             </div>
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
                 {/* form div */}
@@ -234,6 +246,7 @@ export default function Listing({ params }) {
                     {step === 'discounts' && <DiscountsForm />}
                     {step === 'date' && <DateForm />}
                     {step === 'images' && <PhotosForm />}
+                    {step === 'instructions' && <InstructionsForm />}
                     {step === 'preview' && <PreviewForm />}
                 </div>
             </div>

@@ -82,7 +82,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                 </div>
                 <div className='flex justify-between items-center mt-auto '>
                     <div className='flex mt-auto text-[20px] justify-between items-center'>
-                        ${item.price}{item.ad_duration_type === '1' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Quarter</p>) : item.ad_duration_type === '3' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Year</p>) : ''}
+                        ${item.price}{item.ad_duration_type === '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
                     <div className={` gap-2 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {

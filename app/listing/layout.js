@@ -26,9 +26,11 @@ export default function ListingLayout({ children }) {
     price: "",
     discounts: [],
     date: "",
+    first_available_date:"",
     images: [],
     isDraft : false,
-    selected_company: ''
+    selected_company: '',
+    instructions:''
   });
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function ListingLayout({ children }) {
         setUserInfo(res);
         if(res.userType == '1'){
           router.push('/listing/select_business')
-          setStateMachine((prev) => ({ ...prev, currentState: 'select_business',totalSteps: 11 }))
+          setStateMachine((prev) => ({ ...prev, currentState: 'select_business',totalSteps: 12 }))
 
         }else{
           router.push('/listing/category')
