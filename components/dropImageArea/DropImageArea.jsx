@@ -2,7 +2,7 @@ import Image from "next/image";
 import axios from "axios";
 import ImageUploading from "react-images-uploading";
 import { useState, useEffect } from "react";
-import { ImagePlus, Plus, Trash, X } from "lucide-react";
+import { Eye, ImagePlus, Plus, Trash, X } from "lucide-react";
 import { Button } from "../ui/button";
 import {
     AlertDialog,
@@ -15,6 +15,16 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+
 import GalleryModal from "../modals/GalleryModal";
 
 export default function DropImageArea({ images, setImages, selectedCompany, setRefetch, isInPersonalProfile, setRemove }) {
@@ -33,7 +43,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
             setRefetch((prev) => !prev)
         }
     };
-    console.log('selected',selected)
+    console.log('selected', selected)
 
     useEffect(() => {
         setOpenGalleryModal(false)
@@ -41,7 +51,12 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
         setSelected([])
         if (selected.length > 0) {
             const newImages = gallery[0].company_gallery.filter((item, index) => selected.includes(index));
-            const allImages = [...images,...newImages]
+            const newImagesWithFlag = newImages.map((image) => {
+                return { ...image, isFromGallery: true };
+            });
+            console.log('newImagesWithFlag',newImagesWithFlag)
+            console.log('images',images)
+            const allImages = [...images, ...newImagesWithFlag]
             setImages(allImages)
             if (isInPersonalProfile) {
 
@@ -181,6 +196,25 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                                                     </AlertDialogFooter>
                                                                 </AlertDialogContent>
                                                             </AlertDialog>
+
+                                                            <Dialog className='max-w-[90%]'>
+                                                                <DialogTrigger >
+                                                                    <div className="absolute top-3 right-12 flex justify-center items-center p-1 bg-slate-100  text-black hover:bg-black hover:text-white rounded-lg">
+                                                                        <Eye size={20} />
+                                                                    </div>
+                                                                </DialogTrigger>
+                                                                <DialogContent className='max-w-[90%]'>
+                                                                    <div>
+                                                                        <Image
+                                                                            src={image.data_url}
+                                                                            alt="Listing images"
+                                                                            width={2000}
+                                                                            height={2000}
+                                                                            className={`w-full object-contain max-h-[800px]`}
+                                                                        />
+                                                                    </div>
+                                                                </DialogContent>
+                                                            </Dialog>
                                                         </div>
                                                     ))
                                                 }

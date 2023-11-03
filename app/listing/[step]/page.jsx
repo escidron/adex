@@ -161,7 +161,9 @@ export default function Listing({ params }) {
                     }
                 }
             }
-            setListingProperties({ ...listingProperties, date: '', first_available_date: "", discounts: [] })
+            if (!listingProperties.isDraft) {
+                setListingProperties({ ...listingProperties, date: '', first_available_date: "", discounts: [] })
+            }
         }
         //restart this params when change the listing type
     }

@@ -20,7 +20,7 @@ export default function SubCategoryForm() {
                 allCategories.map((category) => {
                     if (listingProperties.category == 3) {
 
-                        if (category.parent_id == 1 || category.parent_id == 3 ) {
+                        if ((category.parent_id == 1 || category.parent_id == 3) && category.id != 8 ) {
                             selectedCategories.push(category)
                         }
                     } else {

@@ -1,20 +1,48 @@
 import { useContext, useState, useEffect } from 'react'
 import { ListingContext } from '@/app/listing/layout';
 import { Calendar } from '../ui/calendar';
+import { checkCategoryType } from '@/utils/checkCategoryType';
 
 export default function DateForm() {
     //sub category == 4 is event type
     const [listingProperties, setListingProperties] = useContext(ListingContext)
+    const [date, setDate] = useState('');
+
+    useEffect(() => {
+
+        const categoryType = checkCategoryType(listingProperties.sub_category)
+
+        if (categoryType != 1) {
+            if (listingProperties.first_available_date) {
+
+                const newDate = new Date(listingProperties.first_available_date)
+                setDate(newDate)
+            }
+        } else {
+            if (listingProperties.date.from && listingProperties.date.to) {
+
+                const newDateFrom = new Date(listingProperties.date.from)
+                const newDateTo = new Date(listingProperties.date.to)
+
+                setDate({
+                    from: newDateFrom,
+                    to: newDateTo
+                })
+            }
+        }
+
+    }, [listingProperties]);
 
     const handleDate = (date) => {
-        console.log('date', date)
-        console.log('listingProperties', listingProperties)
-        if( listingProperties.sub_category == 4 ){
+        if (listingProperties.sub_category == 4) {
             setListingProperties({ ...listingProperties, date: date })
-        }else{
+            setDate(date)
+        } else {
             setListingProperties({ ...listingProperties, first_available_date: date })
+            setDate(date)
         }
     }
+    console.log('date', date)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className={`w-full  ${listingProperties.sub_category == 4 ? 'max-w-[550px]' : 'max-w-[280px]'}`}>
@@ -29,7 +57,7 @@ export default function DateForm() {
                     <Calendar
                         initialFocus
                         mode={listingProperties.sub_category == 4 ? 'range' : 'single'}
-                        selected={listingProperties.sub_category == 4 ? listingProperties.date: listingProperties.first_available_date}
+                        selected={date}
                         onSelect={(date) => handleDate(date)}
                         numberOfMonths={listingProperties.sub_category == 4 ? 2 : 1}
                         className="rounded-md border shadow-md " />

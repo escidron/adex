@@ -157,8 +157,8 @@ input[type=number] {
 .styled_map_cards{
   background-color: rgb(255, 255, 255);
   height: 420px;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 24px;
+  padding: 8px;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   /* font-family: 'Roboto', sans-serif; */
@@ -298,18 +298,20 @@ input[type=number] {
 
 /* Bubble Theme */
 .ql-container{
-  height: 190px;
+  height: 190px !important;
 }
 .ql-bubble {
   background-color: transparent;
-  height: 70px;
-  overflow: hidden;
+  height: 70px !important;
+  overflow: hidden !important;
+  scrollbar-width: none
 }
 
 .ql-editor{
   overflow: hidden;
   font-family: '__Inter_a64ecd', '__Inter_Fallback_a64ecd';
   font-size: 14px;
+  scrollbar-width: none
 }
 
 
