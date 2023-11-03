@@ -303,12 +303,12 @@ input[type=number] {
 .ql-bubble {
   background-color: transparent;
   height: 70px !important;
-  overflow: hidden !important;
-  scrollbar-width: none
+}
+.ql-bubble .ql-editor{
+  overflow: hidden;
 }
 
 .ql-editor{
-  overflow: hidden;
   font-family: '__Inter_a64ecd', '__Inter_Fallback_a64ecd';
   font-size: 14px;
   scrollbar-width: none
@@ -317,7 +317,7 @@ input[type=number] {
 
 
 .invisible_scroll_bar{
-  scrollbar-width: none; 
+  scrollbar-width: none !important; 
 
 }
 
