@@ -35,7 +35,7 @@ export default function PreviewForm() {
                             <p className='text-[12px] text-gray-500'>{listingProperties.location}</p>
                         </div>
                         <div className='mt-2 text-[14px]'>
-                            <Preview value={listingProperties.description}/>
+                            <Preview value={listingProperties.description} heigth={80}/>
                         </div>
                         <div className='flex w-[90%] justify-between items-center mt-[40px]'>
                             <p className='font-[400px] text-gray-500 text-[14px]'>
