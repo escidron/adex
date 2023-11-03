@@ -140,20 +140,28 @@ export default function Listing({ params }) {
         const categoryType = checkCategoryType(listingProperties.sub_category)
 
         if (step === 'sub_category') {
-            if (categoryType == 1) {
-                setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
+            if (userData.userType == 2) {
+                if (categoryType == 1) {
+                    setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
+                } else {
+                    if (listingProperties.sub_category != 9) {
+                        setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
+                    } else {
+                        setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
+                    }
+                }
             } else {
-                if (listingProperties.sub_category != 9) {
+                if (categoryType == 1) {
                     setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
                 } else {
-                    setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
+                    if (listingProperties.sub_category != 9) {
+                        setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
+                    } else {
+                        setStateMachine((prev) => ({ ...prev, totalSteps: 13 }))
+                    }
                 }
             }
-
-            if (userData.userType == 1) {
-                setStateMachine((prev) => ({ ...prev, totalSteps: stateMachine.totalSteps + 1 }))
-            }
-            setListingProperties({ ...listingProperties, date: '',first_available_date:"",discounts:[] })
+            setListingProperties({ ...listingProperties, date: '', first_available_date: "", discounts: [] })
         }
         //restart this params when change the listing type
     }
@@ -184,7 +192,7 @@ export default function Listing({ params }) {
                 first_available_date: listingProperties.first_available_date,
                 date: listingProperties.date,
                 company_id: listingProperties.selected_company,
-                instructions:listingProperties.instructions
+                instructions: listingProperties.instructions
             }, {
             withCredentials: true,
         })

@@ -33,7 +33,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
             setRefetch((prev) => !prev)
         }
     };
-
+    console.log('selected',selected)
 
     useEffect(() => {
         setOpenGalleryModal(false)
@@ -41,7 +41,8 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
         setSelected([])
         if (selected.length > 0) {
             const newImages = gallery[0].company_gallery.filter((item, index) => selected.includes(index));
-            setImages(newImages)
+            const allImages = [...images,...newImages]
+            setImages(allImages)
             if (isInPersonalProfile) {
 
                 setRefetch((prev) => !prev)
@@ -159,7 +160,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                                                 alt="Listing images"
                                                                 width={2000}
                                                                 height={2000}
-                                                                className={`w-full max-h-[400px] rounded-lg ${index == 0 ? 'col-span-full object-cover' : 'h-[250px] object-contain'}`}
+                                                                className={`w-full max-h-[400px] object-cover rounded-lg ${index == 0 ? 'col-span-full ' : 'h-[250px] '}`}
                                                             />
                                                             <AlertDialog>
                                                                 <AlertDialogTrigger>

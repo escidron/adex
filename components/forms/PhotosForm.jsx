@@ -6,7 +6,9 @@ import { ListingContext } from '@/app/listing/layout';
 export default function PhotosForm() {
   const [images, setImages] = useState([]);
   const [listingProperties, setListingProperties] = useContext(ListingContext)
+  
   const handleImages = (images) => {
+    console.log('images',images)
     setListingProperties((prev)=>({ ...prev, images: images }))
   }
   return (
