@@ -29,7 +29,7 @@ export default function ListingLayout({ children }) {
     first_available_date:"",
     images: [],
     isDraft : false,
-    selected_company: '',
+    select_business: '',
     instructions:''
   });
 
@@ -46,11 +46,11 @@ export default function ListingLayout({ children }) {
         const res = await response.json();
         setUserInfo(res);
         if(res.userType == '1'){
-          router.push('/listing/select_business')
+          router.push('/listing/create/select_business')
           setStateMachine((prev) => ({ ...prev, currentState: 'select_business',totalSteps: 12 }))
 
         }else{
-          router.push('/listing/category')
+          router.push('/listing/create/category')
         }
       }
     }

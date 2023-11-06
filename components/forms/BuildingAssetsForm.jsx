@@ -1,7 +1,6 @@
 
 
 import { useContext } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { Button } from '../ui/button';
 
 const buildingParts = [
@@ -22,7 +21,7 @@ const buildingParts = [
         label:'Exterior Wall'
     }
 ]
-export default function BuildingAssetsForm() {
+export default function BuildingAssetsForm({ ListingContext }) {
 
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     

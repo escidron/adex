@@ -1,24 +1,26 @@
-import { useState } from 'react';
+'use client'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MultiImage from '@/components/multiImage/MultiImage';
-import { Copy, Share2, Trash, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import ShareButtonFacebook from '@/components/facebook/ShareButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast';
+
+import { useState } from 'react';
+import { Copy, Edit, Share2, Trash, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Preview } from '@/components/textarea/TextAreaReader';
 
 
 
-export default function Card({ item, bulletPoints, setAdvertisementId, route }) {
+export default function Card({ item, setAdvertisementId, route }) {
     const router = useRouter();
     const [sharingOptions, setSharingOptions] = useState(false);
     const [copied, setCopied] = useState(false);
 
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
-
+console.log('item',item)
     var differenceInMilliseconds = date2.getTime() - date1.getTime();
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
@@ -30,7 +32,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div onClick={() => router.push(route)} className={`flex gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
+        <div scroll={true} onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -63,7 +65,7 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                         <p className='text-[14px] mt-[-3px] line-clamp-2'>{item.address}</p>
                     </div>
                     <div className='flex gap-2 items-center '>
-                        <p className='text-[14px] mt-2 w-full'>
+                        <div className='text-[14px] mt-2 w-full'>
                             {/* {item.description.length > 125 ? `${item.description.split(' ').slice(0, 15).join(' ')} ...`
                                 : bulletPoints.length > 0 ? (
                                     <ul>
@@ -76,15 +78,15 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                                         })}
                                     </ul>
                                 ) : `${item.description}`} */}
-                                <Preview value={item.description} heigth={70}/>
-                        </p>
+                            <Preview value={item.description} heigth={70} />
+                        </div>
                     </div>
                 </div>
                 <div className='flex justify-between items-center mt-auto '>
                     <div className='flex mt-auto text-[20px] justify-between items-center'>
                         ${item.price}{item.ad_duration_type === '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
-                    <div className={` gap-2 ${sharingOptions ? 'hidden' : 'flex'}`}>
+                    <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {
                             setSharingOptions(true)
                             e.stopPropagation()
@@ -93,13 +95,21 @@ export default function Card({ item, bulletPoints, setAdvertisementId, route }) 
                         </div>
                         {
                             item.status == 1 && (
+                                <>
+                                    <div onClick={(e) => {
+                                        e.stopPropagation()
+                                        router.push(`/listing/edit/${item.id}/${item.created_by_type == 1 ? 'select_business' : 'category'}`)
+                                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                                        <Edit />
+                                    </div>
 
-                                <div onClick={(e) => {
-                                    e.stopPropagation()
-                                    setAdvertisementId(item.id)
-                                }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
-                                    <Trash />
-                                </div>
+                                    <div onClick={(e) => {
+                                        e.stopPropagation()
+                                        setAdvertisementId(item.id)
+                                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                                        <Trash />
+                                    </div>
+                                </>
                             )
                         }
                     </div>

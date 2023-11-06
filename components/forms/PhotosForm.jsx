@@ -1,10 +1,8 @@
 import DropImageArea from '../dropImageArea/DropImageArea';
 
 import { useContext, useState } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 
-export default function PhotosForm() {
-  const [images, setImages] = useState([]);
+export default function PhotosForm({ ListingContext }) {
   const [listingProperties, setListingProperties] = useContext(ListingContext)
   
   const handleImages = (images) => {

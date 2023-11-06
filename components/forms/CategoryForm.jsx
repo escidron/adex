@@ -1,9 +1,8 @@
 import axios from 'axios'
 import CategoryCard from '../categories/CategoryCard';
 import { useEffect, useState,useContext } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 
-export default function CategoryForm() {
+export default function CategoryForm({ ListingContext }) {
     const [categories, setCategories] = useState([]);
     const [listingProperties, setListingProperties] = useContext(ListingContext)
 

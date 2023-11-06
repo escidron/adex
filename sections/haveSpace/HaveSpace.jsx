@@ -45,7 +45,7 @@ export default function HaveSpace() {
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
                     <Button className='mt-4' disabled={isPending} size='lg' onClick={() => {
                         setIsPending(true)
-                        router.push(user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/sign-up')
+                        router.push(user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/sign-up')
                     }}>
                         {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
                         {user.isLogged ? 'Create Listing' : 'Sign Up'}

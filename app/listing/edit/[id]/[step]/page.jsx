@@ -12,21 +12,66 @@ import PhotosForm from '@/components/forms/PhotosForm'
 import BuildingAssetsForm from '@/components/forms/BuildingAssetsForm'
 import PreviewForm from '@/components/forms/PreviewForm'
 import toast, { Toaster } from 'react-hot-toast'
+import BusinessForm from '@/components/forms/BusinessForm'
+import InstructionsForm from '@/components/forms/InstructionsForm'
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ClipboardList, Loader2 } from 'lucide-react'
+import { ChevronLeft, ClipboardList, Edit, Loader2 } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
 import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
-import BusinessForm from '@/components/forms/BusinessForm'
-import InstructionsForm from '@/components/forms/InstructionsForm'
+import { Separator } from '@/components/ui/separator'
 
 
-const requiredFields = ['category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
+const requiredFields = ['select_business','category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
+
+const editSteps = [
+    {
+        id:'Business',
+        url:'select_business'
+    },
+    {
+        id:'Category',
+        url:'category'
+    },
+    {
+        id:'Sub-category',
+        url:'sub_category'
+    },
+    {
+        id:'Title',
+        url:'title'
+    },
+    {
+        id:'Location',
+        url:'location'
+    },
+    {
+        id:'Description',
+        url:'description'
+    },
+    {
+        id:'Price',
+        url:'price'
+    },
+    {
+        id:'Date',
+        url:'date'
+    },
+    {
+        id:'Photos',
+        url:'images'
+    },
+    {
+        id:'Instructions',
+        url:'instructions'
+    }
+
+]
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -38,8 +83,8 @@ export default function Listing({ params }) {
     const [selectedCompany, setSelectedCompany] = useState('')
     const [userData, setUserData] = useState({});
     const [importFromGallery, setImportFromGallery] = useState(false);
-
     const step = params.step
+    const id = params.id
     const router = useRouter();
 
     useEffect(() => {
@@ -77,7 +122,7 @@ export default function Listing({ params }) {
         if (!isValid) {
             nextRoute = validRoute(nextRoute, 'NEXT')
         }
-        router.push(`/listing/${nextRoute}`)
+        router.push(`/listing/edit/${id}/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
         controlSteps()
     }
@@ -90,7 +135,7 @@ export default function Listing({ params }) {
         if (!isValid) {
             nextRoute = validRoute(nextRoute, 'PREVIOUS')
         }
-        router.push(`/listing/${nextRoute}`)
+        router.push(`/listing/edit/${id}/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep - 1 }))
         controlSteps()
     }
@@ -136,7 +181,6 @@ export default function Listing({ params }) {
 
     //control the amount of steps,depends of the user sub category choice and type of user
     const controlSteps = () => {
-        console.log('steps', stateMachine.totalSteps)
         const categoryType = checkCategoryType(listingProperties.sub_category)
 
         if (step === 'sub_category') {
@@ -161,9 +205,7 @@ export default function Listing({ params }) {
                     }
                 }
             }
-            if (!listingProperties.isDraft) {
-                setListingProperties({ ...listingProperties, date: '', first_available_date: "", discounts: [] })
-            }
+
         }
         //restart this params when change the listing type
     }
@@ -193,7 +235,7 @@ export default function Listing({ params }) {
                 importFromGallery: importFromGallery,
                 first_available_date: listingProperties.first_available_date,
                 date: listingProperties.date,
-                company_id: listingProperties.selected_company,
+                company_id: listingProperties.select_business,
                 instructions: listingProperties.instructions
             }, {
             withCredentials: true,
@@ -225,11 +267,11 @@ export default function Listing({ params }) {
             <Toaster />
             <div className='h-[80px] border  flex items-center justify-between px-8 fixed top-0 w-full'>
                 <div className='flex gap-2'>
-                    <ClipboardList />
-                    <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Your Listing'}</p>
+                    <Edit />
+                    <p className='font-[600]'>Edit your Listing</p>
                 </div>
                 <div className='flex gap-2 items-center'>
-                    <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/')} className='flex gap-2 items-center'>
+                    <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/my-profile?tab=5&sub-tab=0')} className='flex gap-2 items-center'>
                         Cancel
                     </Button>
                     <Button disabled={isDraftPending} onClick={() => createListing(true)} className='flex gap-2 items-center'>
@@ -242,26 +284,38 @@ export default function Listing({ params }) {
                     </Button>
                 </div>
             </div>
-            <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
+            <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex items-center justify-center `}>
                 {/* form div */}
+                <div className='w-[350px] pt-[100px] flex flex-col items-start px-6 h-full ml-[100px]'>
+                    <p className='text-[32px]'>Listing Details</p>
+                    <Separator className='mb-2'/> 
+                    {
+                        editSteps.map((step)=>(
+                            <p key={step.id} onClick={()=>{
+                                setListingProperties(prev=>({...prev,selectedStep:step.id}))
+                                router.push(`/listing/edit/${id}/${step.url}`)
+                            }}
+                            className={`w-full mt-1 flex items-center p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'}`} >{step.id}</p>
+                        ))
+                    }
+                </div>
                 <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
-                    {step === 'select_business' && <BusinessForm />}
-                    {step === 'category' && <CategoryForm />}
-                    {step === 'sub_category' && <SubCategoryForm />}
-                    {step === 'building_assets' && <BuildingAssetsForm />}
-                    {step === 'title' && <TitleForm />}
-                    {step === 'location' && <LocationForm />}
-                    {step === 'description' && <DescriptionForm />}
-                    {step === 'price' && <PriceForm />}
-                    {step === 'discounts' && <DiscountsForm />}
-                    {step === 'date' && <DateForm />}
-                    {step === 'images' && <PhotosForm />}
-                    {step === 'instructions' && <InstructionsForm />}
-                    {step === 'preview' && <PreviewForm />}
+                    {step === 'select_business' && <BusinessForm ListingContext={ListingContext}/>}
+                    {step === 'category' && <CategoryForm ListingContext={ListingContext}/>}
+                    {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext}/>}
+                    {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext}/>}
+                    {step === 'title' && <TitleForm ListingContext={ListingContext}/>}
+                    {step === 'location' && <LocationForm ListingContext={ListingContext}/>}
+                    {step === 'description' && <DescriptionForm ListingContext={ListingContext}/>}
+                    {step === 'price' && <PriceForm ListingContext={ListingContext}/>}
+                    {step === 'discounts' && <DiscountsForm ListingContext={ListingContext}/>}
+                    {step === 'date' && <DateForm ListingContext={ListingContext}/>}
+                    {step === 'images' && <PhotosForm ListingContext={ListingContext}/>}
+                    {step === 'instructions' && <InstructionsForm ListingContext={ListingContext}/>}
+                    {step === 'preview' && <PreviewForm ListingContext={ListingContext}/>}
                 </div>
             </div>
-            <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
-                <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
+            {/* <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
                     <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
@@ -276,7 +330,7 @@ export default function Listing({ params }) {
                         {step === 'preview' ? 'Create' : 'Next'}
                     </Button>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }

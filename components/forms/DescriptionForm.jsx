@@ -1,8 +1,7 @@
 import { useContext } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { TextAreaEditor } from '../textarea/TextAreaEditor';
 
-export default function DescriptionForm() {
+export default function DescriptionForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const handleDescription = (description) => {
         setListingProperties({ ...listingProperties, description: description })

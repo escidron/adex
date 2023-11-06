@@ -2,7 +2,6 @@
 import AddCompanyModal from '@/sections/companies/AddCompanyModal';
 
 import { useContext, useEffect, useState } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import Image from 'next/image';
 import { ImageIcon, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -28,7 +27,7 @@ import {
 import { industries } from '@/utils/industries';
 import CompanyCard from '../infoCard/CompanyCard';
 
-export default function BusinessForm() {
+export default function BusinessForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [companies, setCompanies] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState('');
@@ -37,7 +36,7 @@ export default function BusinessForm() {
     const [isLoaded, setIsLoaded] = useState(false);
 
     const handleSelectedCompany = (companyId) => {
-        setListingProperties({ ...listingProperties, selected_company: companyId })
+        setListingProperties({ ...listingProperties, select_business: companyId })
     }
 
     useEffect(() => {
@@ -73,7 +72,7 @@ export default function BusinessForm() {
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full flex justify-center'>
                 {
-                    companies.length === 0 ? (
+                    companies.length === 0 || addCompany ? (
                         <>
                             {
                                 addCompany ? (
@@ -88,10 +87,10 @@ export default function BusinessForm() {
                                             </CardHeader>
 
                                             <CardFooter>
-                                                <Button className='w-full' onClick={()=>{
+                                                <Button className='w-full' onClick={() => {
                                                     setAddCompany(true)
-                                                    setRefetch((prev)=>!prev)
-                                                    }}>
+                                                    setRefetch((prev) => !prev)
+                                                }}>
                                                     <div className='mr-2'>
                                                         <Plus size={20} />
                                                     </div>
@@ -105,13 +104,13 @@ export default function BusinessForm() {
                             }
                         </>
                     ) : (
-                        <div className='w-full max-w-[800px] h-[200px] mt-4 flex justify-center flex-wrap gap-8'>
+                        <div className='w-full max-w-[800px] h-[200px] mt-4 flex flex-wrap gap-8'>
                             {
                                 companies.map((company) => (
-                                    <div key={company.id} className={`hover:cursor-pointer ${listingProperties.selected_company == company.id ? 'border border-black p-2 rounded-lg' : ''}`} onClick={() => handleSelectedCompany(company.id)}>
+                                    <div key={company.id} className={` hover:cursor-pointer p-2 border  rounded-lg ${listingProperties.select_business == company.id ? 'border-black' : 'border-transparent'}`} onClick={() => handleSelectedCompany(company.id)}>
                                         {
                                             company.company_logo ? (
-                                                <div className='h-[200px] max-h-[200px] '>
+                                                <div className='border rounded-lg h-[200px] max-h-[200px] max-w-[200px]'>
 
                                                     <Image
                                                         src={company.company_logo}
@@ -135,6 +134,9 @@ export default function BusinessForm() {
 
                                 ))
                             }
+                            <div onClick={()=>setAddCompany(true)} className='cursor-pointer w-[200px] h-[200px] max-h-[200px] aspect-square bg-slate-200 flex justify-center items-center rounded-lg'>
+                                <Plus size={30}/>
+                            </div>
                         </div>
                     )
                 }

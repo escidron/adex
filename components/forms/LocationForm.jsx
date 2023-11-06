@@ -1,10 +1,9 @@
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 
 import { useContext, useState } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { MapCoordinatesContext } from '@/app/market-place/page';
 
-export default function LocationForm() {
+export default function LocationForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [coords, setCoords] = useState({
         lat: -3.745,

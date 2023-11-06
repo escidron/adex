@@ -20,6 +20,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 
 export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) {
@@ -80,7 +82,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
             })
                 .then(function (response) {
                     setIsPending(false)
-                    setRefetch((prev)=>!prev)
+                    setRefetch((prev) => !prev)
                     toast.success(response.data.message)
 
                 })
@@ -123,8 +125,8 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
             setHasPhysicalSpace('')
         }
     }
-    console.log('industries',industries)
-    console.log('businessType',businessType)
+    console.log('industries', industries)
+    console.log('businessType', businessType)
     return (
         <>
 
@@ -134,7 +136,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                         <h1 className='text-[25px]'>Register your Business</h1>
                     </div>
                     <div className='flex justify-between items-center flex-col mb-[20px] '>
-                        <div className=" mt-6 w-full  text-black ">
+                        <div className="relative mt-6 w-full  text-black ">
                             <TextField
                                 id='name'
                                 label='Name'
@@ -144,9 +146,9 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                                 errors={formik.errors.name}
                             />
 
-                            {formik.touched.name && formik.errors.name ? <div className="absolute text-[12px] top-[80px] text-red-600 font-bold">{formik.errors.name}</div> : null}
+                            {formik.touched.name && formik.errors.name ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.name}</div> : null}
                         </div>
-                        <div className=' w-full mt-6 h-[55px] '>
+                        <div className='relative w-full mt-6 h-[55px] '>
                             <DropDownButton
                                 label='Industry'
                                 itens={industries}
@@ -232,20 +234,19 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                             </div>
                             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
                         </div>
-                        <button type="submit" className={`flex gap-2 mt-4 justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md  ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
-                            <div className='style_banner_button_text font-semibold text-[18px]'>
-                                {isPending ? (
-                                    <ThreeDots
-                                        height="30"
-                                        width="40"
-                                        radius="9"
-                                        color="#FCD33B"
-                                        ariaLabel="three-dots-loading"
-                                        visible={true}
-                                    />
-                                ) : 'Register'}
-                            </div>
-                        </button>
+                        <div className='w-full flex justify-between items-center mt-3'>
+                            <Button disabled={isPending} variant='outline' onClick={() => setAddCompany(false)} className='flex gap-2 items-center'>
+                                Cancel
+                            </Button>
+                            <Button type="submit" disabled={isPending}  className='flex gap-2 items-center'>
+                                {
+                                    isPending && (
+                                        <Loader2 size={18} className='animate-spin' />
+                                    )
+                                }
+                                Register
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </form>

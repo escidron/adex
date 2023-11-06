@@ -1,13 +1,12 @@
 import MultiImage from '../multiImage/MultiImage';
 
 import { useContext, useState,useEffect } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { MapPin } from 'lucide-react';
 import { formatPrice } from '@/utils/format';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 import { Preview } from '../textarea/TextAreaReader';
 
-export default function PreviewForm() {
+export default function PreviewForm({ ListingContext }) {
     const [categoryType, setCategoryType] = useState('');
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     

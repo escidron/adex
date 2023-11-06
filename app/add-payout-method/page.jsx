@@ -60,7 +60,7 @@ export default function AddPayoutMethod() {
           <div className='flex justify-center w-full'>
 
             <div className='flex flex-col justify-around w-full'>
-              <Link href={`/listing/${userData.userType == 1 ? 'select_business' : 'category'}`} className='mt-6 w-full'>
+              <Link href={`/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}`} className='mt-6 w-full'>
                 <button className='mt-6 cursor-pointer flex justify-center items-center bg-black py-[8px] w-full px-[30px] rounded-md  font-[600] text-[#FCD33B] hover:text-black hover:bg-[#FCD33B]  text-lg
                                    '>Create Listing
                 </button>

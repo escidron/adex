@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { useContext, useState, useEffect } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import {
     Select,
     SelectContent,
@@ -55,7 +54,7 @@ const unitOptions = [
     { id: 250, label: '+250 units' },
 ]
 
-export default function DiscountsForm() {
+export default function DiscountsForm({ ListingContext }) {
 
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [newDiscount, setNewDiscount] = useState(false);

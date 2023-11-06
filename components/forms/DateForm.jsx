@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { Calendar } from '../ui/calendar';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 
-export default function DateForm() {
+export default function DateForm({ ListingContext }) {
     //sub category == 4 is event type
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [date, setDate] = useState('');
 
+    console.log('listingPropertie dates',listingProperties)
     useEffect(() => {
 
         const categoryType = checkCategoryType(listingProperties.sub_category)
@@ -21,6 +21,7 @@ export default function DateForm() {
         } else {
             if (listingProperties.date.from && listingProperties.date.to) {
 
+                
                 const newDateFrom = new Date(listingProperties.date.from)
                 const newDateTo = new Date(listingProperties.date.to)
 

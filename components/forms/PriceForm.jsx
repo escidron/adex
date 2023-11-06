@@ -1,7 +1,6 @@
 import CurrencyInput from 'react-currency-input-field';
 
 import { useContext,useState,useEffect } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import {
     Card,
     CardContent,
@@ -13,7 +12,7 @@ import { Info } from 'lucide-react';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 
 
-export default function PriceForm() {
+export default function PriceForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
 

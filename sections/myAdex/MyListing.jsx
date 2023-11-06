@@ -121,17 +121,16 @@ export default function MyListing({ data, status, isCompanyPage }) {
       {
         data.map((item, index) => {
           if (item.status == currentStatus || currentStatus === '0') {
-            const bulletPoints = item.description.split('\n');
+            console.log('keyyyy',item.id + index)
             return (
               <>
-                <section key={item.id + index} className='w-full flex gap-4 items-center'>
+                <div key={item.id + index} className='w-full flex gap-4 items-center'>
                   <Card
                     item={item}
-                    bulletPoints={bulletPoints}
                     setAdvertisementId={(id) => setAdvertisementId(id)}
-                    route={`/my-listing${item.status == 1 ? '/edit-advertisement' : ''}/?id=${item.id}`}
+                    route={`/listing/view/${item.id}`}
                   />
-                </section>
+                </div>
 
               </>
             )

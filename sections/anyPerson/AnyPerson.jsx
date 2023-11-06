@@ -75,7 +75,7 @@ export default function AnyPerson() {
             </div>
             <Button variant='secondary' className='mt-4' disabled={isPending} size='lg' onClick={() => {
                 setIsPending(true)
-                router.push(user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login')
+                router.push(user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login')
             }}>
                 {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
                 Create a listing

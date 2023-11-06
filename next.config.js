@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    scrollRestoration: 'manual',
     experimental: {
       appDir: true,
       typedRoutes: true,

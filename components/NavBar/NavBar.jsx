@@ -158,7 +158,7 @@ export default function NavBar() {
                     </Link>
                 </div>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
             {user.isLogged 
                 ? (
@@ -274,7 +274,7 @@ export default function NavBar() {
                             <Store size={20} />
                             ADEX Market Place
                         </Link>
-                        <Link href={user.isLogged ? `/listing/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                        <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <List size={20} />
                             Create Listing
                         </Link>

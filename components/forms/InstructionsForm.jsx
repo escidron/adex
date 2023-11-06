@@ -2,10 +2,9 @@
 import TextField from '../inputs/TextField'
 
 import { useContext } from 'react'
-import { ListingContext } from '@/app/listing/layout';
 import { TextAreaEditor } from '../textarea/TextAreaEditor';
 
-export default function InstructionsForm() {
+export default function InstructionsForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
 
     const handleInstructions = (instructions) => {

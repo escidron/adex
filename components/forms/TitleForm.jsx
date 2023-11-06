@@ -2,9 +2,8 @@
 import TextField from '../inputs/TextField'
 
 import {useContext} from 'react'
-import { ListingContext } from '@/app/listing/layout';
 
-export default function TitleForm() {
+export default function TitleForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
 
     const handleTitle = (title)=>{
