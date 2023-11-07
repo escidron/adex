@@ -45,7 +45,7 @@ export default function Footer() {
                             className='w-full x'
                         />
                     </div>
-                    <p className='w-[80%] mt-3 p-1 md:w-[600px] text-white text-[13px]'>At ADEX, our unwavering commitment is to provide a top-tier experience for every user. We believe in inclusivity and accessibility, ensuring that our platform is welcoming and useful to individuals of all backgrounds and abilities. We're not just any marketplace; we aspire to be a marketplace like no other. Our dedication to excellence and innovation sets us apart, guaranteeing a unique and exceptional experience for all who engage with us.</p>
+                    <p className='w-[80%] mt-3 p-1 md:w-[600px] text-white text-[13px]'>At ADEX, our unwavering commitment is to provide a top-tier experience for every user. We believe in inclusivity and accessibility, ensuring that our platform is welcoming and useful to individuals of all backgrounds and abilities. We&apos;re not just any marketplace; we aspire to be a marketplace like no other. Our dedication to excellence and innovation sets us apart, guaranteeing a unique and exceptional experience for all who engage with us.</p>
                     <div className="mt-4 flex items-center w-[120px] justify-around">
 
                         <Link href="#" className='hover:scale-[1.1]'>
