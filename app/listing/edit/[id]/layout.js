@@ -48,16 +48,9 @@ export default function ListingLayout({ children, params }) {
       if (response.status === 200) {
         const res = await response.json();
         setUserInfo(res);
-        if (res.userType == "1") {
-          router.push(`/listing/edit/${id}/select_business`);
-          setStateMachine((prev) => ({
-            ...prev,
-            currentState: "select_business",
-            totalSteps: 12,
-          }));
-        } else {
-          router.push(`/listing/edit/${id}/category`);
-        }
+        if (res.userType == "2") {
+          setListingProperties((prev)=>({...prev,selectedStep:'Category'}))
+        } 
       }
     }
     GetUserProfile();
@@ -78,6 +71,7 @@ export default function ListingLayout({ children, params }) {
         console.log(myListing);
         setListingProperties((prev) => ({
           ...prev,
+          selectedStep:userInfo?.userType == 2 ? 'Category' : 'Business',
           sub_category: myListing.category_id,
           title: myListing.title,
           location: myListing.address,

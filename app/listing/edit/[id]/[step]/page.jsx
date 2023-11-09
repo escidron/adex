@@ -27,62 +27,63 @@ import { listingMachine } from '@/utils/listingStatesmachine'
 import { Separator } from '@/components/ui/separator'
 
 
-const requiredFields = ['select_business','category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
+const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
 
 const editSteps = [
     {
-        id:'Business',
-        url:'select_business'
+        id: 'Business',
+        url: 'select_business'
     },
     {
-        id:'Category',
-        url:'category'
+        id: 'Category',
+        url: 'category'
     },
     {
-        id:'Sub-category',
-        url:'sub_category'
+        id: 'Sub-category',
+        url: 'sub_category'
     },
     {
-        id:'Title',
-        url:'title'
+        id: 'Building Assets',
+        url: 'building_assets'
     },
     {
-        id:'Location',
-        url:'location'
+        id: 'Title',
+        url: 'title'
     },
     {
-        id:'Description',
-        url:'description'
+        id: 'Location',
+        url: 'location'
     },
     {
-        id:'Price',
-        url:'price'
+        id: 'Description',
+        url: 'description'
     },
     {
-        id:'Date',
-        url:'date'
+        id: 'Price',
+        url: 'price'
     },
     {
-        id:'Photos',
-        url:'images'
+        id: 'Date',
+        url: 'date'
     },
     {
-        id:'Instructions',
-        url:'instructions'
+        id: 'Photos',
+        url: 'images'
+    },
+    {
+        id: 'Instructions',
+        url: 'instructions'
     }
 
 ]
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
-    const [stateMachine, setStateMachine] = useContext(MachineStatesContext)
     const [required, setRequired] = useState(false);
     const [isPending, setIsPending] = useState(false)
-    const [isDraftPending, setIsDrafPending] = useState(false)
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
     const [userData, setUserData] = useState({});
-    const [importFromGallery, setImportFromGallery] = useState(false);
     const step = params.step
     const id = params.id
     const router = useRouter();
@@ -116,109 +117,13 @@ export default function Listing({ params }) {
         }
         GetUserProfile();
     }, []);
-    const handleNext = () => {
-        let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
-        const isValid = listingMachine.states[nextRoute].ISVALID
-        if (!isValid) {
-            nextRoute = validRoute(nextRoute, 'NEXT')
-        }
-        router.push(`/listing/edit/${id}/${nextRoute}`)
-        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
-        controlSteps()
-    }
 
-    const handlePrevious = () => {
-        let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
+    const editListing = () => {
+        setIsPending(true)
 
-        const isValid = listingMachine.states[nextRoute].ISVALID
-
-        if (!isValid) {
-            nextRoute = validRoute(nextRoute, 'PREVIOUS')
-        }
-        router.push(`/listing/edit/${id}/${nextRoute}`)
-        setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep - 1 }))
-        controlSteps()
-    }
-
-    const validRoute = (url, direction) => {
-        let validRoute
-
-        switch (url) {
-            case 'building_assets':
-
-                if (listingProperties.sub_category == 9) {
-                    validRoute = url;
-                } else {
-                    validRoute = listingMachine.states[url][direction];
-                }
-
-                break;
-
-            case 'discounts':
-
-                if (advertisementType == 1) {
-                    validRoute = listingMachine.states[url][direction];
-                } else {
-                    validRoute = url;
-                }
-
-                break;
-            case 'date':
-
-                if (advertisementType == 1) {
-                    validRoute = url;
-                } else {
-                    validRoute = listingMachine.states[url][direction];
-                }
-
-                break;
-            default:
-                validRoute = url;
-                break;
-        }
-        return validRoute
-    }
-
-    //control the amount of steps,depends of the user sub category choice and type of user
-    const controlSteps = () => {
-        const categoryType = checkCategoryType(listingProperties.sub_category)
-
-        if (step === 'sub_category') {
-            if (userData.userType == 2) {
-                if (categoryType == 1) {
-                    setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
-                } else {
-                    if (listingProperties.sub_category != 9) {
-                        setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
-                    } else {
-                        setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
-                    }
-                }
-            } else {
-                if (categoryType == 1) {
-                    setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
-                } else {
-                    if (listingProperties.sub_category != 9) {
-                        setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
-                    } else {
-                        setStateMachine((prev) => ({ ...prev, totalSteps: 13 }))
-                    }
-                }
-            }
-
-        }
-        //restart this params when change the listing type
-    }
-
-    const createListing = (isDraft) => {
-        if (isDraft) {
-            setIsDrafPending(true)
-        } else {
-            setIsPending(true)
-        }
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/${isDraft ? 'draft' : 'new'}`,
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/update`,
             {
-
+                id: id,
                 category_id: listingProperties.sub_category,
                 title: listingProperties.title,
                 address: listingProperties.location,
@@ -232,7 +137,6 @@ export default function Listing({ params }) {
                 per_unit_price: advertisementType ? 2 : listingProperties.price,
                 discounts: listingProperties.discounts,
                 company_id: selectedCompany,
-                importFromGallery: importFromGallery,
                 first_available_date: listingProperties.first_available_date,
                 date: listingProperties.date,
                 company_id: listingProperties.select_business,
@@ -241,27 +145,20 @@ export default function Listing({ params }) {
             withCredentials: true,
         })
             .then(function (response) {
-
-                if (isDraft) {
-                    router.push('/')
-                    toast.success('Draft successfully saved!')
-                    setIsDrafPending(false)
-                } else {
-                    toast.success('Listing created successfully!')
-                    router.push('/my-profile?tab=5')
-                    setIsPending(false)
-                }
-
+                toast.success('Listing successfully updated!')
+                router.push('/my-profile?tab=5')
+                setIsPending(false)
             })
             .catch(function (error) {
 
                 console.log(error)
                 toast.error('Something went wrong!')
                 setIsPending(false)
-                setIsDrafPending(false)
 
             })
     }
+
+    console.log('listing',listingProperties)
     return (
         <>
             <Toaster />
@@ -271,12 +168,12 @@ export default function Listing({ params }) {
                     <p className='font-[600]'>Edit your Listing</p>
                 </div>
                 <div className='flex gap-2 items-center'>
-                    <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/my-profile?tab=5&sub-tab=0')} className='flex gap-2 items-center'>
+                    <Button variant='outline' onClick={() => router.push('/my-profile?tab=5&sub-tab=0')} className='flex gap-2 items-center'>
                         Cancel
                     </Button>
-                    <Button disabled={isDraftPending} onClick={() => createListing(true)} className='flex gap-2 items-center'>
+                    <Button disabled={isPending} onClick={editListing} className='flex gap-2 items-center'>
                         {
-                            isDraftPending && (
+                            isPending && (
                                 <Loader2 size={18} className='animate-spin' />
                             )
                         }
@@ -288,31 +185,43 @@ export default function Listing({ params }) {
                 {/* form div */}
                 <div className='w-[350px] pt-[100px] flex flex-col items-start px-6 h-full ml-[100px]'>
                     <p className='text-[32px]'>Listing Details</p>
-                    <Separator className='mb-2'/> 
+                    <Separator className='mb-2' />
                     {
-                        editSteps.map((step)=>(
-                            <p key={step.id} onClick={()=>{
-                                setListingProperties(prev=>({...prev,selectedStep:step.id}))
-                                router.push(`/listing/edit/${id}/${step.url}`)
-                            }}
-                            className={`w-full mt-1 flex items-center p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'}`} >{step.id}</p>
-                        ))
+                        editSteps.map((step) => {
+
+                            if(userData.userType == 2 && step.id == "Business" ){
+                                console.log('asdasd')
+                                return undefined
+                            }
+
+                            if(listingProperties.sub_category != 9 && step.id =="Building Assets" ){
+                                return undefined
+                            }
+                            return (
+
+                                <p key={step.id} onClick={() => {
+                                    setListingProperties(prev => ({ ...prev, selectedStep: step.id }))
+                                    router.push(`/listing/edit/${id}/${step.url}`)
+                                }}
+                                    className={`w-full mt-1 flex items-center p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'}`} >{step.id}</p>
+                            )
+                        })
                     }
                 </div>
                 <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
-                    {step === 'select_business' && <BusinessForm ListingContext={ListingContext}/>}
-                    {step === 'category' && <CategoryForm ListingContext={ListingContext}/>}
-                    {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext}/>}
-                    {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext}/>}
-                    {step === 'title' && <TitleForm ListingContext={ListingContext}/>}
-                    {step === 'location' && <LocationForm ListingContext={ListingContext}/>}
-                    {step === 'description' && <DescriptionForm ListingContext={ListingContext}/>}
-                    {step === 'price' && <PriceForm ListingContext={ListingContext}/>}
-                    {step === 'discounts' && <DiscountsForm ListingContext={ListingContext}/>}
-                    {step === 'date' && <DateForm ListingContext={ListingContext}/>}
-                    {step === 'images' && <PhotosForm ListingContext={ListingContext}/>}
-                    {step === 'instructions' && <InstructionsForm ListingContext={ListingContext}/>}
-                    {step === 'preview' && <PreviewForm ListingContext={ListingContext}/>}
+                    {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
+                    {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
+                    {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
+                    {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
+                    {step === 'title' && <TitleForm ListingContext={ListingContext} />}
+                    {step === 'location' && <LocationForm ListingContext={ListingContext} />}
+                    {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}
+                    {step === 'price' && <PriceForm ListingContext={ListingContext} />}
+                    {step === 'discounts' && <DiscountsForm ListingContext={ListingContext} />}
+                    {step === 'date' && <DateForm ListingContext={ListingContext} />}
+                    {step === 'images' && <PhotosForm ListingContext={ListingContext} />}
+                    {step === 'instructions' && <InstructionsForm ListingContext={ListingContext} />}
+                    {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
                 </div>
             </div>
             {/* <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
@@ -321,7 +230,7 @@ export default function Listing({ params }) {
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => editListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />

@@ -32,7 +32,7 @@ console.log('item',item)
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div scroll={true} onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
+        <div  onClick={() => router.push(route, undefined, { scroll: false })} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {

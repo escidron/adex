@@ -58,6 +58,7 @@ export default function HaveSpace() {
                         width={2000}
                         height={2000}
                         priority
+                        quality={100}
                         className='hidden md:flex w-1/2  lg:hidden xl:flex xl:w-[33%] '
                     />
                     <Image
@@ -66,6 +67,7 @@ export default function HaveSpace() {
                         width={2000}
                         height={2000}
                         priority
+                        quality={100}
                         className='w-full sm:w-1/2  lg:w-full xl:w-[33%]'
                     />
                     <Image
@@ -73,6 +75,7 @@ export default function HaveSpace() {
                         alt="Adex Logo"
                         width={2000}
                         height={2000}
+                        quality={100}
                         priority
                         className='hidden sm:flex sm:w-1/2  md:hidden xl:flex xl:w-[34%]'
 

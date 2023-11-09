@@ -34,23 +34,6 @@ export default function ListingLayout({ children, params }) {
     instructions: "",
   });
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        // A página não está visível (o usuário mudou de aba)
-        // Defina a posição de rolagem como o topo da página
-        window.scrollTo(0, 0);
-      }
-    };
-
-    // Adicione um ouvinte para o evento visibilitychange
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    // Remova o ouvinte quando o componente for desmontado
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
   
   useEffect(() => {
     axios

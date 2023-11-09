@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import PersonForm from '@/components/listingForm/PersonForm'
+import PersonForm from '@/components/listingForm(old)/PersonForm'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'

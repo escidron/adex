@@ -31,24 +31,6 @@ export default function Listing({ params }) {
     const [hasPayout, setHasPayout] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-          if (document.visibilityState === 'hidden') {
-            // A página não está visível (o usuário mudou de aba)
-            // Defina a posição de rolagem como o topo da página
-            window.scrollTo(0, 0);
-          }
-        };
-    
-        // Adicione um ouvinte para o evento visibilitychange
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-        // Remova o ouvinte quando o componente for desmontado
-        return () => {
-          document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-      }, []);
-
 
     useEffect(() => {
         async function hasPayoutMethod() {
@@ -123,7 +105,7 @@ export default function Listing({ params }) {
                     </Button>
                 </div>
             </div>
-            <div className={` w-full mt-[80px] py-4 flex flex-col items-center justify-center `}>
+            <div className={`h-full w-full mt-[80px] py-4 flex flex-col items-center justify-center `}>
                 {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
@@ -152,27 +134,32 @@ export default function Listing({ params }) {
                                             className={`w-full object-cover h-full rounded-lg`}
                                         />
                                     </div>
-                                    <div className='hidden md:flex w-[30%]  flex-col  gap-1'>
+                                    {
+                                        listingProperties.images.length >= 3 && (
 
-                                        <div className='w-full h-1/2'>
-                                            <Image
-                                                src={listingProperties.images[1] ? listingProperties.images[1].data_url : ''}
-                                                alt="Listing images"
-                                                width={2000}
-                                                height={2000}
-                                                className={`h-full object-cover rounded-lg`}
-                                            />
-                                        </div>
-                                        <div className='w-full h-1/2'>
-                                            <Image
-                                                src={listingProperties.images[2] ? listingProperties.images[2].data_url : ''}
-                                                alt="Listing images"
-                                                width={2000}
-                                                height={2000}
-                                                className={`h-full object-cover rounded-lg`}
-                                            />
-                                        </div>
-                                    </div>
+                                            <div className='hidden md:flex w-[30%]  flex-col  gap-1'>
+
+                                                <div className='w-full h-1/2'>
+                                                    <Image
+                                                        src={listingProperties.images[1] ? listingProperties.images[1].data_url : ''}
+                                                        alt="Listing images"
+                                                        width={2000}
+                                                        height={2000}
+                                                        className={`h-full object-cover rounded-lg`}
+                                                    />
+                                                </div>
+                                                <div className='w-full h-1/2'>
+                                                    <Image
+                                                        src={listingProperties.images[2] ? listingProperties.images[2].data_url : ''}
+                                                        alt="Listing images"
+                                                        width={2000}
+                                                        height={2000}
+                                                        className={`h-full object-cover rounded-lg`}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                                 <div className='w- full gap-4 flex justify-between'>
                                     <div className='w-full md:w-[60%] '>
@@ -208,7 +195,7 @@ export default function Listing({ params }) {
                                         <Separator className='my-3' />
                                         <Preview value={listingProperties.description} heigth={200} />
 
-                                        {
+                                         {
                                             (listingProperties.date || listingProperties.first_available_date) && (
                                                 <>
                                                     <Separator className='my-3' />
@@ -223,7 +210,7 @@ export default function Listing({ params }) {
                                                     </div>
                                                 </>
                                             )
-                                        }
+                                        } 
                                         {
                                             listingProperties.discounts.length > 0 && (
                                                 <>
@@ -317,7 +304,7 @@ export default function Listing({ params }) {
                 }
 
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

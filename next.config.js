@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    scrollRestoration: 'manual',
     experimental: {
+      scrollRestoration: true,
       appDir: true,
       typedRoutes: true,
       serverComponentsExternalPackages: ["mysql2"],
