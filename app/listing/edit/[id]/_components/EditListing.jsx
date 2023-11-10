@@ -82,7 +82,7 @@ export default function EditListing({ userData, myListing,categories,discounts }
                 discounts: discounts,
               }));
         }
-    }, [myListing]);
+    }, [myListing,userData,discounts,categories]);
 
     const editListing = () => {
         setIsPending(true)
