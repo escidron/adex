@@ -21,7 +21,6 @@ export default function Card({ item, setAdvertisementId, route }) {
 
     var date1 = new Date(item.start_date);
     var date2 = new Date(item.end_date);
-console.log('item',item)
     var differenceInMilliseconds = date2.getTime() - date1.getTime();
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);

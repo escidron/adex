@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default async function GetMyAdvertisement(token, id) {
+  console.log('getadversitmetoken',token)
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-advertisement`,
