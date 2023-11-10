@@ -38,6 +38,10 @@ export default function EditListing({ userData, myListing,categories,discounts }
     
     
     useEffect(() => {
+        console.log('listing',myListing)
+        console.log('userData',userData)
+        console.log('categories',categories)
+        console.log('discounts',discounts)
         if (myListing) {
             setListingProperties((prev) => ({
                 ...prev,
