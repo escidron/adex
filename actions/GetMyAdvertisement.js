@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export default async function GetMyAdvertisement(token, id) {
-  console.log("getadversitmetoken", token);
   try {
     // const response = await axios.post(
     //   `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-advertisement`,
@@ -32,7 +31,8 @@ export default async function GetMyAdvertisement(token, id) {
     );
 
     if (response.status === 200) {
-      const myListing = await response.json();
+      const res = await response.json();
+      const myListing = res.data[0]
       return myListing;
     } else {
       return null;
