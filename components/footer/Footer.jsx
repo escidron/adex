@@ -106,7 +106,7 @@ export default function Footer() {
                     width={2000}
                     height={2000}
                     quality={100}
-                    className='w-full object-cover h-[250px] sm:h-[300px] md:h-[350px] lg:h-[360px] '
+                    className='w-full object-cover h-[250px] sm:h-[300px] md:h-[350px] lg:h-auto '
                 />
             </div>
         </div>

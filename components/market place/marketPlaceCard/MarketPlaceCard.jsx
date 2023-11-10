@@ -1,10 +1,13 @@
 'use client'
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
 import Link from 'next/link';
 import CloseIcon from '@mui/icons-material/Close';
 import MultiImage from '@/components/multiImage/MultiImage';
 import { MapPin } from 'lucide-react';
+import { Preview } from '@/components/textarea/TextAreaReader';
+import { add } from 'date-fns';
+import { formatPrice } from '@/utils/format';
 
 
 
@@ -29,7 +32,7 @@ export default function MarketPlaceCard({ ad }) {
 
   }, []);
   return (
-    <Link href={`/market-place/details?id=${ad.id}`}  className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
+    <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
         <MultiImage images={ad.image} height={'200px'} remove={false} />
         <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1" ? 'bg-green-600' : "bg-orange-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1" ? 'Available' : 'Running'}</span></p>
@@ -48,24 +51,9 @@ export default function MarketPlaceCard({ ad }) {
             <MapPin size={14} color='gray' />
             <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
           </div>
-          <div className='style_card_description_box mt-2 '>
-            <div className="style_card_description text-[14px] h-[20px] ">
-              <p className='line-clamp-3'>
-                {
-                bulletPoints.length > 0 ? (
-                  <ul>
-                    {bulletPoints.map((point, index) => {
-                      return (
+          <Preview value={ad.description} heigth={80} />
 
-                        <li key={index}>{point}</li>
-                      )
-                    })}
-                  </ul>
-                ) : `${ad.description}`
-                }
-              </p>
-            </div>
-            {
+          {/* {
               showModal && (
                 <div className='absolute top-0 left-0 w-full h-full bg-slate-200 z-[99] p-2'>
                   <CloseIcon onClick={() => setShowModal(false)} sx={{ "&:hover": { color: "#FCD33B", cursor: 'pointer' } }} className='flex ml-auto' />
@@ -74,11 +62,10 @@ export default function MarketPlaceCard({ ad }) {
                   </div>
                 </div>
               )
-            }
-          </div>
+            } */}
 
           <div className='style_price_row flex w-[90%] justify-between items-center absolute bottom-[25px]'>
-            <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">${ad.price}</b>{
+            <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">{formatPrice(ad.price)}</b>{
               ad.ad_duration_type == '0' ? '/ Month' : ad.ad_duration_type == '2' ? '/ Unit' : ''
             }</p>
           </div>

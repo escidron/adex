@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Copy, Edit, Share2, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Preview } from '@/components/textarea/TextAreaReader';
+import { formatPrice } from '@/utils/format';
 
 
 
@@ -84,7 +85,7 @@ console.log('item',item)
                 </div>
                 <div className='flex justify-between items-center mt-auto '>
                     <div className='flex mt-auto text-[20px] justify-between items-center'>
-                        ${item.price}{item.ad_duration_type === '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Unit</p>) : ''}
+                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {

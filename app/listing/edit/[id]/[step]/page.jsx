@@ -25,6 +25,7 @@ import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
 import { Separator } from '@/components/ui/separator'
+import GetUserProfile from '@/actions/GetUserProfile'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -63,6 +64,10 @@ const editSteps = [
         url: 'price'
     },
     {
+        id: 'Discounts',
+        url: 'discounts'
+    },
+    {
         id: 'Date',
         url: 'date'
     },
@@ -77,29 +82,28 @@ const editSteps = [
 
 ]
 
-export default function Listing({ params }) {
+export default  function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [required, setRequired] = useState(false);
     const [isPending, setIsPending] = useState(false)
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
     const [userData, setUserData] = useState({});
-    const step = params.step
+    const [step, setStep] = useState('category');
+    //const step = params.step
     const id = params.id
     const router = useRouter();
 
-    useEffect(() => {
-        if (requiredFields.includes(step)) {
 
-            if (!listingProperties[step] || listingProperties[step].length == 0) {
-                setRequired(true)
-            } else {
-                setRequired(false)
-            }
+    useEffect(() => {
+        async function fetchData() {
+          // You can await here
+          const response = await GetUserProfile();
+          console.log('response',response)
+          // ...
         }
-        const categoryType = checkCategoryType(listingProperties.sub_category)
-        setAdvertisementType(categoryType)
-    }, [listingProperties, step]);
+        fetchData();
+      }, [])
 
     useEffect(() => {
         async function GetUserProfile() {
@@ -189,19 +193,23 @@ export default function Listing({ params }) {
                     {
                         editSteps.map((step) => {
 
-                            if(userData.userType == 2 && step.id == "Business" ){
-                                console.log('asdasd')
+                            if( userData.userType == 2 && step.id == "Business" ){
+                                return undefined
+                            }
+                            
+                            if( listingProperties.sub_category == 4 && step.id == "Discounts" ){
                                 return undefined
                             }
 
-                            if(listingProperties.sub_category != 9 && step.id =="Building Assets" ){
+                            if( listingProperties.sub_category != 9 && step.id =="Building Assets" ){
                                 return undefined
                             }
                             return (
 
                                 <p key={step.id} onClick={() => {
                                     setListingProperties(prev => ({ ...prev, selectedStep: step.id }))
-                                    router.push(`/listing/edit/${id}/${step.url}`)
+                                    setStep(step.url)
+                                    // router.push(`/listing/edit/${id}/${step.url}`)
                                 }}
                                     className={`w-full mt-1 flex items-center p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'}`} >{step.id}</p>
                             )
@@ -224,22 +232,6 @@ export default function Listing({ params }) {
                     {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
                 </div>
             </div>
-            {/* <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
-                <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
-                    <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>
-                        <ChevronLeft size={18} />
-                        Back
-                    </Button>
-                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => editListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
-                        {
-                            isPending && (
-                                <Loader2 size={18} className='animate-spin' />
-                            )
-                        }
-                        {step === 'preview' ? 'Create' : 'Next'}
-                    </Button>
-                </div>
-            </div> */}
         </>
     )
 }

@@ -8,6 +8,7 @@ export default async function GetUserProfile() {
     );
     if (response.status === 200) {
       const user = await response.json();
+      console.log('user',user)
         return user        
     }else{
         return null

@@ -4,11 +4,12 @@ import Image from 'next/image'
 import toast, { Toaster } from 'react-hot-toast'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Footer from '@/components/footer/Footer'
+import { format } from "date-fns"
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, Eye, Loader2, LogOut, MapPin } from 'lucide-react'
+import { AlertTriangle, CalendarIcon, Eye, Loader2, LogOut, MapPin } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
 import { ListingContext, MachineStatesContext } from './layout'
@@ -17,6 +18,7 @@ import { Separator } from '@/components/ui/separator'
 import { Calendar } from '@/components/ui/calendar'
 import { formatPrice } from '@/utils/format'
 import { Skeleton } from '@mui/material'
+import { cn } from '@/lib/utils'
 
 
 
@@ -31,7 +33,7 @@ export default function Listing({ params }) {
     const [hasPayout, setHasPayout] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
-
+    console.log('dateee', date)
     useEffect(() => {
         async function hasPayoutMethod() {
             const response = await fetch(
@@ -93,11 +95,7 @@ export default function Listing({ params }) {
     return (
         <>
             <Toaster />
-            <div className='h-[80px] z-[99] border bg-white flex items-center justify-between px-8 fixed top-0 w-full'>
-                <div className='flex gap-2'>
-                    <Eye />
-                    <p className='font-[600]'>View your Listing</p>
-                </div>
+            <div className='h-[80px] z-[99] border bg-white flex items-center justify-end px-8 fixed top-0 w-full'>
                 <div className='flex gap-2 items-center'>
                     <Button onClick={() => router.push('/my-profile?tab=5&sub-tab=0')} className='flex gap-2 items-center'>
                         <LogOut size={15} />
@@ -121,7 +119,6 @@ export default function Listing({ params }) {
                                     </div>
                                 )
                             }
-
                             <div>
 
                                 <div className='w-full mt-4 flex gap-1 h-[400px]'>
@@ -195,22 +192,61 @@ export default function Listing({ params }) {
                                         <Separator className='my-3' />
                                         <Preview value={listingProperties.description} heigth={200} />
 
-                                         {
-                                            (listingProperties.date || listingProperties.first_available_date) && (
+                                        {
+                                            listingProperties.date.from && listingProperties.date.to &&(
                                                 <>
                                                     <Separator className='my-3' />
                                                     <div className='flex flex-col gap-2'>
                                                         <p className='text-[26px]'>Start and End Date</p>
-                                                        <Calendar
-                                                            initialFocus
-                                                            mode={listingProperties.sub_category == 4 ? 'range' : 'single'}
-                                                            selected={date}
-                                                            numberOfMonths={listingProperties.sub_category == 4 ? 2 : 1}
-                                                        />
+                                                        <div className='flex items-center gap-2'>
+                                                            <Button
+                                                                variant={"outline"}
+                                                                className={cn(
+                                                                    "w-[240px] justify-start text-left font-normal",
+                                                                    !date && "text-muted-foreground"
+                                                                )}
+                                                            >
+                                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                                {date && format(date.from, "PPP") }
+                                                            </Button>
+                                                            <p>-</p>
+                                                            <Button
+                                                                
+                                                                variant={"outline"}
+                                                                className={cn(
+                                                                    "w-[240px] justify-start text-left font-normal",
+                                                                    !date && "text-muted-foreground"
+                                                                )}
+                                                            >
+                                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                                {date && format(date.to, "PPP")}
+                                                            </Button>
+
+                                                        </div>
                                                     </div>
                                                 </>
                                             )
-                                        } 
+                                        }
+                                        {
+                                            listingProperties.first_available_date && (
+                                                <>
+                                                    <Separator className='my-3' />
+                                                    <div className='flex flex-col gap-2'>
+                                                        <p className='text-[26px]'>First Available Date</p>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={cn(
+                                                                "w-[240px] justify-start text-left font-normal",
+                                                                !date && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                                            {listingProperties.first_available_date && format(new Date(listingProperties.first_available_date), "PPP")}
+                                                        </Button>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
                                         {
                                             listingProperties.discounts.length > 0 && (
                                                 <>
@@ -302,9 +338,8 @@ export default function Listing({ params }) {
                         </div>
                     )
                 }
-
             </div>
-            {/* <Footer /> */}
+            <Footer />
         </>
     )
 }
