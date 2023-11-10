@@ -4,15 +4,12 @@ export const MachineStatesContext = createContext();
 import axios from "axios";
 
 import { useState, createContext, useEffect } from "react";
-import { listingMachine } from "@/utils/listingStatesmachine";
 import { useRouter } from "next/navigation";
 
 export default function ListingLayout({ children, params }) {
   const router = useRouter();
   const id = params.id;
 
-  const [stateMachine, setStateMachine] = useState(listingMachine);
-  const [userInfo, setUserInfo] = useState(null);
   const [listingData, setListingData] = useState({});
 
   const [listingProperties, setListingProperties] = useState({

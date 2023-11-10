@@ -99,7 +99,7 @@ console.log('item',item)
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()
-                                        router.push(`/listing/edit/${item.id}/${item.created_by_type == 1 ? 'select_business' : 'category'}`)
+                                        router.push(`/listing/edit/${item.id}`)
                                     }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                                         <Edit />
                                     </div>

@@ -17,13 +17,10 @@ import InstructionsForm from '@/components/forms/InstructionsForm'
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ClipboardList, Edit, Loader2 } from 'lucide-react'
-import { Progress } from '@/components/ui/progress'
+import {  Edit, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
-import { ListingContext, MachineStatesContext } from '../layout'
-import { checkCategoryType } from '@/utils/checkCategoryType'
-import { listingMachine } from '@/utils/listingStatesmachine'
+import { ListingContext } from './layout'
 import { Separator } from '@/components/ui/separator'
 import GetUserProfile from '@/actions/GetUserProfile'
 
