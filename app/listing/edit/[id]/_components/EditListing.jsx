@@ -64,7 +64,7 @@ export default function EditListing({ userData, myListing,categories,discounts }
                 building_asset: myListing.sub_asset_type,
             }));
         }
-        if(categories){
+        if(categories && myListing){
 
             categories.map((category) => {
               if (category.id == myListing.category_id) {
