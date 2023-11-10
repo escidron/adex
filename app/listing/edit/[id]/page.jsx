@@ -7,7 +7,7 @@ import GetDiscounts from "@/actions/GetDiscounts";
 
 
 export default async function page({ params }) {
-    const token =  GetToken()
+    const token = await GetToken()
     const id = params.id
     console.log('page topken',token)
     const userData = await GetUserProfile(token)
