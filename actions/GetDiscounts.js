@@ -2,19 +2,37 @@ import axios from "axios";
 
 export default async function GetDiscounts(token, id) {
   try {
-    const response = await axios.post(
+    // const response = await axios.post(
+    //   `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/discounts`,
+    //   { id: id },
+    //   {
+    //     withCredentials: true,
+    //     headers: {
+    //       Cookie: `jwt=${token}`, 
+    //     },
+    //   }
+    // );
+    const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/discounts`,
-      { id: id },
       {
-        withCredentials: true,
+        method: "POST",
         headers: {
-          Cookie: `jwt=${token}`, 
+          Cookie: `jwt=${token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'        
         },
+        credentials: "include",
+        body: JSON.stringify({ id: id }),
       }
     );
+    if (response.status === 200) {
+      const res = await response.json();
+      const discounts = res
+      return discounts;
+    } else {
+      return null;
+    }
 
-    const discounts = response.data;
-    return discounts;
   } catch (error) {
     console.log(error);
     return null;

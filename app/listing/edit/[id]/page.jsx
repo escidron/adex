@@ -13,7 +13,6 @@ export default async function page({ params }) {
     const myListing = await GetMyAdvertisement(token,id)
     const categories = await GetCategories()
     const discounts = await GetDiscounts(token,id)
-    console.log('listing',myListing)
     return (
         <div>
             <EditListing 
