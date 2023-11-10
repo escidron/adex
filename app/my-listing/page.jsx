@@ -80,9 +80,9 @@ export default function MyListing() {
         })
             .then(function (response) {
                 console.log('discounts', response.data)
-                setDiscounts(response.data.discounts)
+                setDiscounts(response.data)
                 let hasDiscount = false
-                response.data.discounts.map((item) => {
+                response.data.map((item) => {
                     if (duration >= item.duration) {
                         hasDiscount = true
                         setCurrentDiscount(item.discount)

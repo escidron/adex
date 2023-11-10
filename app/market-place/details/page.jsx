@@ -88,7 +88,7 @@ export default function AdDetails({ sharedId }) {
       withCredentials: true,
     })
       .then(function (response) {
-        setDiscounts(response.data.discounts)
+        setDiscounts(response.data)
       })
       .catch(function (error) {
         console.log(error)
