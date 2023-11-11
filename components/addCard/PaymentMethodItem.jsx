@@ -10,7 +10,6 @@ export default function PaymentMethodItem({ item, setCheckDefault, setShowDelete
         })
             .then(function (response) {
                 setCheckDefault(true)
-                console.log('response', response)
             })
             .catch(function (error) {
                 console.log(error)

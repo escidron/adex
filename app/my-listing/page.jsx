@@ -35,7 +35,6 @@ export default function MyListing() {
     const id = searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
 
-    console.log('advertisement my liosting ', advertisement)
 
     useEffect(() => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/my-advertisement`,
@@ -65,7 +64,6 @@ export default function MyListing() {
             withCredentials: true,
         })
             .then(function (response) {
-                console.log('buyer info', response)
                 setBuyer(response.data)
             })
             .catch(function (error) {
@@ -79,7 +77,6 @@ export default function MyListing() {
             withCredentials: true,
         })
             .then(function (response) {
-                console.log('discounts', response.data)
                 setDiscounts(response.data)
                 let hasDiscount = false
                 response.data.map((item) => {

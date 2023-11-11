@@ -1,9 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 export default function NotificationCard({ notification }) {
-    console.log('notification', notification)
     
-
     const givenTimestamp = notification.created_at.slice(0, 10);
     const currentDate = new Date();
     const dateObject = new Date(givenTimestamp);

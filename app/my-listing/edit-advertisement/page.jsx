@@ -19,7 +19,6 @@ export default function EditAdvertisement() {
         })
             .then(function (response) {
                 setAdvertisement(response.data.data[0])
-                console.log('response', response)
             })
             .catch(function (error) {
                 console.log(error)

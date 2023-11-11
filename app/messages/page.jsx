@@ -52,7 +52,6 @@ export default function MessagesPage() {
             withCredentials: true,
         })
             .then(function (response) {
-                console.log('response', response)
                 GetNotifications()
 
                 const allMessages = response.data.messages

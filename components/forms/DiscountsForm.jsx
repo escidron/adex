@@ -45,13 +45,9 @@ export default function DiscountsForm({ ListingContext }) {
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
     }
     const removeDiscount = (id) => {
-        console.log('id',id)
-        console.log('discount',listingProperties.discounts)
         const newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
-        console.log('new discount',newDiscounts)
         if (listingProperties.discounts[0].id) {
-
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
                 {
                     id

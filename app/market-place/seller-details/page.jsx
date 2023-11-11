@@ -26,7 +26,6 @@ export default function SellerDetailsPage() {
             })
                 .then(function (response) {
                     setSeller(response.data)
-                    console.log('user-profile', response.data)
                 })
                 .catch(function (error) {
                     console.log(error)

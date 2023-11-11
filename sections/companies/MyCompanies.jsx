@@ -20,9 +20,6 @@ export default function MyCompanies() {
             );
             if (response.status === 200) {
                 const res = await response.json()
-                console.log(res)
-                console.log('getting companies')
-
                 setCompanies(res)
             }
         }

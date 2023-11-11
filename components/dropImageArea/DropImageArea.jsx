@@ -43,7 +43,6 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
             setRefetch((prev) => !prev)
         }
     };
-    console.log('selected', selected)
 
     useEffect(() => {
         setOpenGalleryModal(false)
@@ -54,8 +53,6 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
             const newImagesWithFlag = newImages.map((image) => {
                 return { ...image, isFromGallery: true };
             });
-            console.log('newImagesWithFlag',newImagesWithFlag)
-            console.log('images',images)
             const allImages = [...images, ...newImagesWithFlag]
             setImages(allImages)
             if (isInPersonalProfile) {

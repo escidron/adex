@@ -56,9 +56,9 @@ const editSteps = [
     }
 
 ]
-export default function StepList({ userData,setStep }) {
+export default function StepList({ userData, setStep ,requiredInformations }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
-
+    console.log(    'required',requiredInformations)
     return (
         <div className='w-[350px] pt-[100px] flex flex-col items-start px-6 h-full ml-[100px]'>
             <p className='text-[32px]'>Listing Details</p>
@@ -83,7 +83,7 @@ export default function StepList({ userData,setStep }) {
                             setListingProperties(prev => ({ ...prev, selectedStep: step.id }))
                             setStep(step.url)
                         }}
-                            className={`w-full mt-1 flex items-center p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'}`} >{step.id}</p>
+                            className={`w-full mt-1 flex items-center  border-2 p-2 rounded-lg  cursor-pointer ${listingProperties.selectedStep == step.id ? 'bg-black text-[#FCD33B] hover:bg-black' : 'hover:bg-slate-300'} ${requiredInformations.includes(step.id) ? 'border-red-700 bg-white text-black hover:bg-slate-300' : 'border-transparent'}`}>{step.id}</p>
                     )
                 })
             }

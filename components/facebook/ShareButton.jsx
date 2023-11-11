@@ -2,7 +2,6 @@ import { FacebookProvider, ShareButton } from 'react-facebook';
 import { Facebook } from 'lucide-react';
 
 export default function ShareButtonFacebook({id}) {
-  console.log(  'facebok')
   return (
     <>
       <FacebookProvider appId="1611678826026608" >

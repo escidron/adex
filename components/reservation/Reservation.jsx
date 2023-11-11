@@ -48,17 +48,10 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [counter]);
 
     const Booking = () => {
-        console.log('user is loged', user.isLogged)
         if (user.isLogged) {
-            console.log('entrou no true')
             if (hasCard) {
                 setIsPending(true)
                 //not using now
-                console.log('entrou no senddd',                    {
-                    data: data,
-                    duration: counter,
-                    start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ?  data.start_date : null
-                })
                 if (data.is_automatic === '1') {
                     axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/create-payment-intent`,
                         {

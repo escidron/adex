@@ -54,7 +54,6 @@ export default function ForgotPasswordPage() {
             const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
             setCodeOTP(randomNumber)
             setEmail(values.email)
-            console.log(randomNumber)
             // send email
             resendEmail(values)
         },
@@ -69,7 +68,6 @@ export default function ForgotPasswordPage() {
         if(!resend){
             setEmail(values.email)
         }
-        console.log(randomNumber)
         // send email
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-reset-password-email`,
             {
@@ -80,7 +78,6 @@ export default function ForgotPasswordPage() {
 
         })
             .then(function (response) {
-                console.log('response', response)
                 setSteps(2)
                 toast.success(response.data.message)
 

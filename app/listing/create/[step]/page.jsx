@@ -136,7 +136,6 @@ export default function Listing({ params }) {
 
     //control the amount of steps,depends of the user sub category choice and type of user
     const controlSteps = () => {
-        console.log('steps', stateMachine.totalSteps)
         const categoryType = checkCategoryType(listingProperties.sub_category)
 
         if (step === 'sub_category') {

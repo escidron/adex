@@ -28,7 +28,6 @@ export default function MarketPlace() {
   const router = useRouter();
   useEffect(() => {
     if (located) {
-      console.log('located')
       async function getAds() {
         setNewData([])
         const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements`,
@@ -49,8 +48,7 @@ export default function MarketPlace() {
           response.data.data.map((ad) => {
             // Calculate  the distance between markers
             var distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
-            console.log('filter radius', adFilter.radius)
-            console.log('distance', distance)
+
             if (distance < adFilter.radius) {
               setNewData((prevData) => [...prevData, ad])
             }
@@ -62,22 +60,16 @@ export default function MarketPlace() {
       }
       getAds();
     } else {
-      console.log('not located general',navigator.geolocation)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           
-          console.log('before set located',navigator.geolocation)
           setCoords({ lat: position.coords.latitude, lng: position.coords.longitude })
           setLocated(true)
 
         });
-        console.log('in the if set located')
 
       } else {
         toast.dismiss()
-        console.log('not located at all set located')
-
-        console.log('Please make sure your browser has access to your location')
         toast.error('Please make sure your browser has access to your location', {
           duration: 10000,
           style: {

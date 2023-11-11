@@ -141,7 +141,6 @@ export default function PersonalInfo() {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log('response', response)
       })
       .catch(function (error) {
         console.log(error)

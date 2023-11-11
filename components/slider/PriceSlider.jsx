@@ -60,7 +60,6 @@ export default function PriceSlider({ filters, setFilters }) {
   const [scale, setScale] = useState([filters.priceMin, filters.priceMax]);
   const [changed, setChanged] = useState(false);
   // const [adFilter,setFilters] = useContext(FilterContext)
-  console.log('xxxx', filters)
 
   const handleSliderChange = useCallback((event, value) => {
     debounceSliderChange(value);

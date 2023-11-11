@@ -35,7 +35,6 @@ export default function CompanyDetailsPage() {
                         setIndustry(item.name)
                     }
                 })
-                console.log('company response', response)
             })
             .catch(function (error) {
                 console.log(error)
@@ -45,7 +44,6 @@ export default function CompanyDetailsPage() {
 
 
     const getGallery = (id) => {
-        console.log('entrou no efect')
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
             {
                 id: id,
@@ -55,7 +53,6 @@ export default function CompanyDetailsPage() {
             })
             .then(function (response) {
                 setGallery(response.data.galleryWithImages)
-                console.log('get gallery response', response)
             })
             .catch(function (error) {
                 console.log(error)

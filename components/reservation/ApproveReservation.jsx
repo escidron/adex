@@ -34,7 +34,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const interval1 = Math.abs(startDate - currentDate);
     const interval2 = Math.abs(currentDate - createdDate);
     const fiveDaysInterval = 5 * 24 * 60 * 60 * 1000;
-    console.log('compare', currentDate > startDate)
     const availableDays = interval1 / (1000 * 60 * 60 * 24)
 
     let hasStarted = false

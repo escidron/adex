@@ -101,7 +101,6 @@ export default function PersonForm({ typeId, isPeriodic, setSelectedStep, hasPay
     console.log('error', errors)
     return errors;
   };
-  console.log('date', date)
   const formik = useFormik({
     initialValues: {
       title: edit ? advertisement.title : "",

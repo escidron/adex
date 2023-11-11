@@ -125,8 +125,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
             setHasPhysicalSpace('')
         }
     }
-    console.log('industries', industries)
-    console.log('businessType', businessType)
+
     return (
         <>
 

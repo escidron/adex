@@ -28,6 +28,7 @@ import GetDiscounts from '@/actions/GetDiscounts'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
 import FormSkeleton from './_components/FormSkeleton'
+import Footer from '@/components/footer/Footer'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -42,6 +43,7 @@ export default function EditListing({ params }) {
     const [userData, setUserData] = useState('');
     const [step, setStep] = useState('category');
     const [isContentLoaded, setIsContentLoaded] = useState(false);
+    const [requiredInformations, setRequiredInformations] = useState([]);
 
     const router = useRouter();
 
@@ -101,46 +103,95 @@ export default function EditListing({ params }) {
 
     }, []);
 
+    const checkPendingInformations = () => {
+        let pendingInformations = false
+
+        if (!listingProperties.title) {
+            pendingInformations = true
+            if (!requiredInformations.includes('Title')) {
+                setRequiredInformations(prev => ([...prev, 'Title']))
+            }
+        } else {
+            if (requiredInformations.includes('Title')) {
+                const newRequiredInformations = requiredInformations.filter(item => item != "Title")
+                setRequiredInformations(newRequiredInformations)
+            }
+        }
+
+        if (listingProperties.description.length < 12) {
+            pendingInformations = true
+            if (!requiredInformations.includes('Description')) {
+                setRequiredInformations(prev => ([...prev, 'Description']))
+            }
+        }else {
+            if (requiredInformations.includes('Description')) {
+                const newRequiredInformations = requiredInformations.filter(item => item != "Description")
+                setRequiredInformations(newRequiredInformations)
+            }
+        }
+
+        console.log('location',listingProperties.price)
+
+        if (!listingProperties.price) {
+            pendingInformations = true
+            setRequiredInformations(prev => ([...prev, 'Price']))
+        }
+        if (listingProperties.images.length == 0) {
+            pendingInformations = true
+            setRequiredInformations(prev => ([...prev, 'Photos']))
+        }
+
+        return pendingInformations
+    }
+console.log('requ',requiredInformations)
     const editListing = () => {
         setIsPending(true)
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/update`,
-            {
-                id: id,
-                category_id: listingProperties.sub_category,
-                title: listingProperties.title,
-                address: listingProperties.location,
-                lat: listingProperties.latitude,
-                long: listingProperties.longitude,
-                description: listingProperties.description,
-                price: listingProperties.price,
-                images: listingProperties.images,
-                ad_duration_type: advertisementType,
-                sub_asset_type: listingProperties.building_asset,
-                per_unit_price: advertisementType ? 2 : listingProperties.price,
-                discounts: listingProperties.discounts,
-                company_id: selectedCompany,
-                first_available_date: listingProperties.first_available_date,
-                date: listingProperties.date,
-                company_id: listingProperties.select_business,
-                instructions: listingProperties.instructions
-            }, {
-            withCredentials: true,
-        })
-            .then(function (response) {
-                toast.success('Listing successfully updated!')
-                router.push('/my-profile?tab=5')
-                setIsPending(false)
-            })
-            .catch(function (error) {
 
-                console.log(error)
-                toast.error('Something went wrong!')
-                setIsPending(false)
+        const pendingInformations = checkPendingInformations()
 
+        if (!pendingInformations) {
+
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/update`,
+                {
+                    id: id,
+                    category_id: listingProperties.sub_category,
+                    title: listingProperties.title,
+                    address: listingProperties.location,
+                    lat: listingProperties.latitude,
+                    long: listingProperties.longitude,
+                    description: listingProperties.description,
+                    price: listingProperties.price,
+                    images: listingProperties.images,
+                    ad_duration_type: advertisementType,
+                    sub_asset_type: listingProperties.building_asset,
+                    per_unit_price: advertisementType ? 2 : listingProperties.price,
+                    discounts: listingProperties.discounts,
+                    company_id: selectedCompany,
+                    first_available_date: listingProperties.first_available_date,
+                    date: listingProperties.date,
+                    company_id: listingProperties.select_business,
+                    instructions: listingProperties.instructions
+                }, {
+                withCredentials: true,
             })
+                .then(function (response) {
+                    toast.success('Listing successfully updated!')
+                    router.push('/my-profile?tab=5')
+                    setIsPending(false)
+                })
+                .catch(function (error) {
+
+                    console.log(error)
+                    toast.error('Something went wrong!')
+                    setIsPending(false)
+
+                })
+        } else {
+            toast.error('Missing Required Informations')
+            setIsPending(false)
+        }
     }
 
-console.log('listing proiperties',listingProperties)
     return (
         <>
             <Toaster />
@@ -152,6 +203,7 @@ console.log('listing proiperties',listingProperties)
                         <StepList
                             setStep={(newStep) => setStep(newStep)}
                             userData={userData}
+                            requiredInformations={requiredInformations}
                         />
                     ) : (
                         <ListDetailsSkeleton />

@@ -68,7 +68,6 @@ export default function AdDetails({ sharedId }) {
         setData(response.data.data)
         const bulletPoints = response.data.data.description.split('\n');
         setBulletPoints(bulletPoints)
-        console.log('checking data')
         if (response.data.data.company_id) {
           getGallery(response.data.data.company_id)
           getCompany(response.data.data.company_id)

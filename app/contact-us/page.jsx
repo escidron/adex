@@ -43,13 +43,6 @@ export default function ContactPage() {
     },
     validate,
     onSubmit: values => {
-
-      console.log(        {
-            name: values.name,
-            email: values.email,
-            number:values.number,
-            message: values.message
-          })
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/contact-us`,
         {
           name: values.name,

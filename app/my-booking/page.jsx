@@ -41,7 +41,6 @@ export default function MyBooking() {
 
             })
             .then(function (response) {
-                console.log(response)
                 GetNotifications()
                 GetUserProfile(response.data.data[0].created_by)
                 setAdvertisement(response.data.data[0])

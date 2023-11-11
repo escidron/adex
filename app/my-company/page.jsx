@@ -48,7 +48,6 @@ export default function MyCompanyPage() {
     const id = searchParams.get('id')
     const selectedOption = searchParams.get('option')
 
-    console.log('selectedOption', selectedOption)
     useEffect(() => {
 
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-account-balance`,
@@ -77,7 +76,6 @@ export default function MyCompanyPage() {
 
             })
             .then(function (response) {
-                console.log(response)
                 setCompany(response.data[0])
             })
             .catch(function (error) {
@@ -98,7 +96,6 @@ export default function MyCompanyPage() {
 
                 })
                 .then(function (response) {
-                    console.log('image added')
                     setImages([])
                     getGallery()
                 })
@@ -112,7 +109,6 @@ export default function MyCompanyPage() {
     }, [images]);
 
     const getGallery = () => {
-        console.log('entrou no efect')
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
             {
                 id: id,
@@ -122,7 +118,6 @@ export default function MyCompanyPage() {
             })
             .then(function (response) {
                 setGallery(response.data.galleryWithImages)
-                console.log('get gallery response', response)
             })
             .catch(function (error) {
                 console.log(error)

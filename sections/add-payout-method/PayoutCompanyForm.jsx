@@ -146,7 +146,6 @@ export default function PayoutCompanyForm({ setHasAccount }) {
           })
           .catch(function (error) {
             setIsPending(false)
-            console.log('addres error', error.response.data.error)
             toast.error(error.response.data.error, {
               duration: 20000,
               style: {

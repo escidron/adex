@@ -1,7 +1,7 @@
-export default async function GetUserProfile() {
+export default async function GetPayoutMethod() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
       {
         method: "GET",
         headers: {
@@ -12,8 +12,12 @@ export default async function GetUserProfile() {
       }
     );
     if (response.status === 200) {
-      const user = await response.json();
-      return user;
+      const res = await response.json();
+      if (res.data) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return null;
     }
