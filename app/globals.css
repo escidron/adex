@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -324,4 +325,27 @@ input[type=number] {
 
 .invisible_scroll_bar::-webkit-scrollbar {
   width: 0; 
+}
+
+.custom-slider-image{
+  height: 600px;
+  width: 1000px;
+
+  
+}
+
+.image-gallery{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-gallery-thumbnail-image{
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+}
+.image-gallery-play-button{
+  display: none;
 }
