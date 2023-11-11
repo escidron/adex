@@ -7,7 +7,6 @@ export default function DateForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [date, setDate] = useState('');
 
-    console.log('listingPropertie dates',listingProperties)
     useEffect(() => {
 
         const categoryType = checkCategoryType(listingProperties.sub_category)
@@ -19,7 +18,7 @@ export default function DateForm({ ListingContext }) {
                 setDate(newDate)
             }
         } else {
-            if (listingProperties.date.from && listingProperties.date.to) {
+            if (listingProperties.date?.from && listingProperties.date?.to) {
 
                 
                 const newDateFrom = new Date(listingProperties.date.from)

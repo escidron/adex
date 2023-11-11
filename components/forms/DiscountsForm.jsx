@@ -45,10 +45,11 @@ export default function DiscountsForm({ ListingContext }) {
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
     }
     const removeDiscount = (id) => {
-        console.log('discounts', listingProperties.discounts)
-        const newDiscounts = listingProperties.discounts.filter((item, index) => index != id);
+        console.log('id',id)
+        console.log('discount',listingProperties.discounts)
+        const newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
-
+        console.log('new discount',newDiscounts)
         if (listingProperties.discounts[0].id) {
 
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
@@ -66,8 +67,7 @@ export default function DiscountsForm({ ListingContext }) {
                 })
         }
     }
-    console.log('listingProperties.discounts', listingProperties.discounts)
-    console.log('monthsOptions.monthsOptions', monthsOptions)
+
     return (
         <div className='w-full max-w-[1000px] flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full flex flex-col  md:flex-row justify-between '>
