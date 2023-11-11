@@ -9,21 +9,32 @@ import BlackButton from '@/components/buttons/BlackButton';
 import axios from 'axios';
 import { RefreshContext } from './MyAdex';
 import { CompanyRefreshContext } from '@/app/my-company/page';
+import StatusTabBar from './_components/StatusTabBar';
+import { Skeleton } from '@mui/material';
+import CardSkeleton from './_components/CardSkeleton';
 
 
 
 
 
-export default function MyListing({ data, status, isCompanyPage }) {
+export default function MyListing({ data, status, isCompanyPage, isContentLoaded }) {
   const [currentStatus, setCurrentStatus] = useState('0');
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
 
-  if (data.length === 0) {
+  if (data.length && isContentLoaded === 0) {
     return (
       <>
         <h1 className='text-[20px]'>There are not exist any Listing yet</h1>
         <p className='text-gray-600'>Go to Listing for getting your first one.</p>
+      </>
+    )
+  }
+  if (!isContentLoaded) {
+    return (
+      <>
+        <CardSkeleton />
+        <CardSkeleton />
       </>
     )
   }
@@ -36,13 +47,11 @@ export default function MyListing({ data, status, isCompanyPage }) {
 
 
   const deleteAdvertisement = () => {
-    console.log('advertisementId', advertisementId)
     axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-advertisement`,
       { id: advertisementId }, {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response)
         setAdvertisementId('')
         setRefresh(prev => (!prev))
         toast.success('Advertisement deleted successfully')
@@ -53,75 +62,15 @@ export default function MyListing({ data, status, isCompanyPage }) {
   }
   return (
     <div className='flex flex-col items-center '>
-      <div><Toaster /></div>
-      <div className=" mt-2 w-full flex gap-4">
-        <div className={`w-full`}>
-          <div className="flex gap-2">
-            <div
-              type="text"
-              id="0"
-              name="all"
-              onClick={(e) => handleCurrentStatus(e)}
-              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '0' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
-            >
-              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>All</p>
-              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.all}</p>
-            </div>
-            <div
-              type="text"
-              id="1"
-              name="available"
-              onClick={(e) => handleCurrentStatus(e)}
-              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
-            >
-              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Available</p>
-              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.available}</p>
-            </div>
-
-            <div
-              type="text"
-              id="2"
-              name="running"
-              onClick={(e) => handleCurrentStatus(e)}
-              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
-            >
-              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Running</p>
-              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.running}</p>
-            </div>
-
-            <div
-              type="text"
-              id="3"
-              name="finished"
-              onClick={(e) => handleCurrentStatus(e)}
-              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '3' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
-            >
-              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Finished</p>
-              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.finished}</p>
-            </div>
-
-            <div
-              type="text"
-              id="4"
-              name="available"
-              onClick={(e) => handleCurrentStatus(e)}
-              className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '4' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
-            >
-              <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Pending</p>
-              <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-              <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.pending}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* <div><Toaster /></div> */}
+      <StatusTabBar
+        status={status}
+        currentStatus={currentStatus}
+        handleCurrentStatus={(current) => handleCurrentStatus(current)}
+      />
       {
         data.map((item, index) => {
           if (item.status == currentStatus || currentStatus === '0') {
-            console.log('keyyyy',item.id + index)
             return (
               <>
                 <div key={item.id + index} className='w-full flex gap-4 items-center'>

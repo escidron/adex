@@ -14,6 +14,7 @@ export default function MyAdex() {
   const searchParams = useSearchParams()
   const subTab = searchParams.get('sub-tab')
   const [value, setValue] = useState(subTab?parseInt(subTab):0);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
   const [status, setStatus] = useState({
     available: 0,
     running: 0,
@@ -28,6 +29,7 @@ export default function MyAdex() {
       .then(function (response) {
         setListingData(response.data.data)
         setStatus(response.data.status)
+        setIsContentLoaded(true)
       })
       .catch(function (error) {
         console.log(error)
@@ -40,7 +42,6 @@ export default function MyAdex() {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response)
         setBookingData(response.data.data)
       })
       .catch(function (error) {
@@ -56,7 +57,7 @@ export default function MyAdex() {
         <div className='w-full lg:w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value)=>setValue(value)}>
-              <MyListing label='My Listing' data={listingData} status={status} />
+              <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded}/>
               <MyBookings label='My Booking' data={bookingData} />
             </TabsComponent>
           </RefreshContext.Provider>

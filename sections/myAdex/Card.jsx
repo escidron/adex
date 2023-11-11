@@ -12,8 +12,6 @@ import { useRouter } from 'next/navigation';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { formatPrice } from '@/utils/format';
 
-
-
 export default function Card({ item, setAdvertisementId, route }) {
     const router = useRouter();
     const [sharingOptions, setSharingOptions] = useState(false);
@@ -66,18 +64,6 @@ export default function Card({ item, setAdvertisementId, route }) {
                     </div>
                     <div className='flex gap-2 items-center '>
                         <div className='text-[14px] mt-2 w-full'>
-                            {/* {item.description.length > 125 ? `${item.description.split(' ').slice(0, 15).join(' ')} ...`
-                                : bulletPoints.length > 0 ? (
-                                    <ul>
-                                        {bulletPoints.map((point, index) => {
-                                            if (index > 3) return null
-                                            return (
-
-                                                <li key={index}>{point}</li>
-                                            )
-                                        })}
-                                    </ul>
-                                ) : `${item.description}`} */}
                             <Preview value={item.description} heigth={70} />
                         </div>
                     </div>

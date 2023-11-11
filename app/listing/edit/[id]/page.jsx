@@ -26,6 +26,8 @@ import GetUserProfile from '@/actions/GetUserProfile'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
+import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
+import FormSkeleton from './_components/FormSkeleton'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -39,6 +41,8 @@ export default function EditListing({ params }) {
     const [selectedCompany, setSelectedCompany] = useState('')
     const [userData, setUserData] = useState('');
     const [step, setStep] = useState('category');
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
+
     const router = useRouter();
 
 
@@ -46,7 +50,6 @@ export default function EditListing({ params }) {
     useEffect(() => {
 
         async function getInfo() {
-            //const token = await GetToken()
             const userData = await GetUserProfile()
             setUserData(userData)
             const myListing = await GetMyAdvertisement(id)
@@ -92,6 +95,7 @@ export default function EditListing({ params }) {
                     discounts: discounts,
                 }));
             }
+            setIsContentLoaded(true)
         }
         getInfo();
 
@@ -142,25 +146,40 @@ export default function EditListing({ params }) {
             <Toaster />
             <TopBar isPending={isPending} editListing={() => editListing()} />
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex items-center justify-center `}>
-                <StepList
-                    setStep={(newStep) => setStep(newStep)}
-                    userData={userData}
-                />
-                <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
-                    {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
-                    {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
-                    {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
-                    {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
-                    {step === 'title' && <TitleForm ListingContext={ListingContext} />}
-                    {step === 'location' && <LocationForm ListingContext={ListingContext} />}
-                    {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}
-                    {step === 'price' && <PriceForm ListingContext={ListingContext} />}
-                    {step === 'discounts' && <DiscountsForm ListingContext={ListingContext} />}
-                    {step === 'date' && <DateForm ListingContext={ListingContext} />}
-                    {step === 'images' && <PhotosForm ListingContext={ListingContext} />}
-                    {step === 'instructions' && <InstructionsForm ListingContext={ListingContext} />}
-                    {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
-                </div>
+                {
+                    isContentLoaded ? (
+
+                        <StepList
+                            setStep={(newStep) => setStep(newStep)}
+                            userData={userData}
+                        />
+                    ) : (
+                        <ListDetailsSkeleton />
+                    )
+                }
+                
+                {
+                    isContentLoaded ? (
+                        <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
+                        {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
+                        {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
+                        {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
+                        {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
+                        {step === 'title' && <TitleForm ListingContext={ListingContext} />}
+                        {step === 'location' && <LocationForm ListingContext={ListingContext} />}
+                        {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}
+                        {step === 'price' && <PriceForm ListingContext={ListingContext} />}
+                        {step === 'discounts' && <DiscountsForm ListingContext={ListingContext} />}
+                        {step === 'date' && <DateForm ListingContext={ListingContext} />}
+                        {step === 'images' && <PhotosForm ListingContext={ListingContext} />}
+                        {step === 'instructions' && <InstructionsForm ListingContext={ListingContext} />}
+                        {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
+                    </div>
+                    ) : (
+                        <FormSkeleton />
+                    )
+                }
+
             </div>
         </>
     )
