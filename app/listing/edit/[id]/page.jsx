@@ -29,6 +29,7 @@ import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
 import FormSkeleton from './_components/FormSkeleton'
 import Footer from '@/components/footer/Footer'
+import { checkCategoryType } from '@/utils/checkCategoryType'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -58,10 +59,12 @@ export default function EditListing({ params }) {
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             if (myListing) {
+                const categoryType = checkCategoryType(myListing.category_id)
                 setListingProperties((prev) => ({
                     ...prev,
                     selectedStep: userData?.userType == 2 ? 'Category' : 'Business',
                     sub_category: myListing.category_id,
+                    ad_duration_type:categoryType,
                     title: myListing.title,
                     location: myListing.address,
                     latitude: myListing.lat,
@@ -105,7 +108,8 @@ export default function EditListing({ params }) {
 
     const checkPendingInformations = () => {
         let pendingInformations = false
-
+        //manage the logic for required fields
+        
         if (!listingProperties.title) {
             pendingInformations = true
             if (!requiredInformations.includes('Title')) {
@@ -129,8 +133,6 @@ export default function EditListing({ params }) {
                 setRequiredInformations(newRequiredInformations)
             }
         }
-
-        console.log('location',listingProperties.price)
 
         if (!listingProperties.price) {
             pendingInformations = true
@@ -158,13 +160,14 @@ export default function EditListing({ params }) {
 
         return pendingInformations
     }
-console.log('requ',requiredInformations)
+    
     const editListing = () => {
         setIsPending(true)
 
         const pendingInformations = checkPendingInformations()
 
         if (!pendingInformations) {
+            const categoryType = checkCategoryType(listingProperties.sub_category)
 
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/update`,
                 {
@@ -177,7 +180,7 @@ console.log('requ',requiredInformations)
                     description: listingProperties.description,
                     price: listingProperties.price,
                     images: listingProperties.images,
-                    ad_duration_type: advertisementType,
+                    ad_duration_type: categoryType,
                     sub_asset_type: listingProperties.building_asset,
                     per_unit_price: advertisementType ? 2 : listingProperties.price,
                     discounts: listingProperties.discounts,
