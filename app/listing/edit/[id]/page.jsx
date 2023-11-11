@@ -134,11 +134,26 @@ export default function EditListing({ params }) {
 
         if (!listingProperties.price) {
             pendingInformations = true
-            setRequiredInformations(prev => ([...prev, 'Price']))
+            if (!requiredInformations.includes('Description')) {
+                setRequiredInformations(prev => ([...prev, 'Price']))
+            }
+        }else {
+            if (requiredInformations.includes('Price')) {
+                const newRequiredInformations = requiredInformations.filter(item => item != "Price")
+                setRequiredInformations(newRequiredInformations)
+            }
         }
+
         if (listingProperties.images.length == 0) {
             pendingInformations = true
-            setRequiredInformations(prev => ([...prev, 'Photos']))
+            if (!requiredInformations.includes('Description')) {
+                setRequiredInformations(prev => ([...prev, 'Photos']))
+            }
+        }else {
+            if (requiredInformations.includes('Photos')) {
+                const newRequiredInformations = requiredInformations.filter(item => item != "Photos")
+                setRequiredInformations(newRequiredInformations)
+            }
         }
 
         return pendingInformations
