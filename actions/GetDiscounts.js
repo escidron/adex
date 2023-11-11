@@ -1,5 +1,5 @@
 
-export default async function GetDiscounts(token, id) {
+export default async function GetDiscounts(id) {
   try {
 
     const response = await fetch(
@@ -7,7 +7,7 @@ export default async function GetDiscounts(token, id) {
       {
         method: "POST",
         headers: {
-          Cookie: `jwt=${token}`,
+         
           'Accept': 'application/json',
           'Content-Type': 'application/json'        
         },

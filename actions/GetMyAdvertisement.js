@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function GetMyAdvertisement(token, id) {
+export default async function GetMyAdvertisement( id) {
   try {
 
     const response = await fetch(
@@ -8,7 +8,6 @@ export default async function GetMyAdvertisement(token, id) {
       {
         method: "POST",
         headers: {
-          Cookie: `jwt=${token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'        
         },

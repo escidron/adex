@@ -1,4 +1,4 @@
-export default async function GetUserProfile(token) {
+export default async function GetUserProfile() {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
