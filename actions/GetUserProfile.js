@@ -3,9 +3,8 @@ export default async function GetUserProfile(token) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
-          Cookie: `jwt=${token}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },

@@ -1,6 +1,6 @@
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 
-export default async  function GetToken() {
-    const token = cookies().get('jwt')?.value
-    return token
-  }
+// export default async  function GetToken() {
+//     const token = cookies().get('jwt')?.value
+//     return token
+//   }

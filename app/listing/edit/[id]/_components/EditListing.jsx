@@ -22,67 +22,79 @@ import { useContext } from 'react'
 import { ListingContext } from '../layout'
 import { Separator } from '@/components/ui/separator'
 import StepList from './StepList'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetCategories from '@/actions/GetCategories'
+import GetDiscounts from '@/actions/GetDiscounts'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
 
 
 
-export default function EditListing({ userData, myListing,categories,discounts }) {
+export default function EditListing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [isPending, setIsPending] = useState(false)
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
+    const [userData, setUserData] = useState('');
     const [step, setStep] = useState('category');
     const router = useRouter();
-    
-    
+
+
+    const id = params.id
     useEffect(() => {
-        console.log('listing',myListing)
-        console.log('userData',userData)
-        console.log('categories',categories)
-        console.log('discounts',discounts)
-        if (myListing) {
-            setListingProperties((prev) => ({
-                ...prev,
-                selectedStep: userData?.userType == 2 ? 'Category' : 'Business',
-                sub_category: myListing.category_id,
-                title: myListing.title,
-                location: myListing.address,
-                latitude: myListing.lat,
-                longitude: myListing.long,
-                description: myListing.description,
-                price: myListing.price,
-                date: {
-                    from: myListing.start_date,
-                    to: myListing.end_date,
-                },
-                first_available_date: myListing.first_available_date,
-                images: myListing.image,
-                select_business: myListing.company_id,
-                instructions: myListing.instructions,
-                building_asset: myListing.sub_asset_type,
-            }));
-        }
-        if(categories && myListing){
 
-            categories.map((category) => {
-              if (category.id == myListing.category_id) {
+        async function getInfo() {
+            //const token = await GetToken()
+            const userData = await GetUserProfile()
+            setUserData(userData)
+            const myListing = await GetMyAdvertisement(id)
+            const categories = await GetCategories()
+            const discounts = await GetDiscounts(id)
+            if (myListing) {
                 setListingProperties((prev) => ({
-                  ...prev,
-                  category: category.parent_id,
+                    ...prev,
+                    selectedStep: userData?.userType == 2 ? 'Category' : 'Business',
+                    sub_category: myListing.category_id,
+                    title: myListing.title,
+                    location: myListing.address,
+                    latitude: myListing.lat,
+                    longitude: myListing.long,
+                    description: myListing.description,
+                    price: myListing.price,
+                    date: {
+                        from: myListing.start_date,
+                        to: myListing.end_date,
+                    },
+                    first_available_date: myListing.first_available_date,
+                    images: myListing.image,
+                    select_business: myListing.company_id,
+                    instructions: myListing.instructions,
+                    building_asset: myListing.sub_asset_type,
                 }));
-              }
-            });
-        }
-        if(discounts){
+            }
+            if (categories && myListing) {
 
-            setListingProperties((prev) => ({
-                ...prev,
-                discounts: discounts,
-              }));
+                categories.map((category) => {
+                    if (category.id == myListing.category_id) {
+                        setListingProperties((prev) => ({
+                            ...prev,
+                            category: category.parent_id,
+                        }));
+                    }
+                });
+            }
+            if (discounts) {
+
+                setListingProperties((prev) => ({
+                    ...prev,
+                    discounts: discounts,
+                }));
+            }
         }
-    }, [myListing,userData,discounts,categories]);
+        getInfo();
+
+    }, []);
 
     const editListing = () => {
         setIsPending(true)
@@ -127,10 +139,10 @@ export default function EditListing({ userData, myListing,categories,discounts }
     return (
         <>
             <Toaster />
-            <TopBar isPending={isPending} editListing={()=>editListing()} />
+            <TopBar isPending={isPending} editListing={() => editListing()} />
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex items-center justify-center `}>
-                <StepList 
-                    setStep={(newStep)=>setStep(newStep)}
+                <StepList
+                    setStep={(newStep) => setStep(newStep)}
                     userData={userData}
                 />
                 <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
