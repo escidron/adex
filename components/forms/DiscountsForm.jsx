@@ -23,7 +23,7 @@ import { Info, Plus, Trash } from 'lucide-react';
 import { Separator } from '../ui/separator';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 import toast from 'react-hot-toast';
-import { monthsOptions,unitOptions } from '@/utils/discountsOptions';
+import { monthsOptions, unitOptions } from '@/utils/discountsOptions';
 
 
 export default function DiscountsForm({ ListingContext }) {
@@ -44,8 +44,13 @@ export default function DiscountsForm({ ListingContext }) {
         setNewDiscount(false)
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
     }
-    const removeDiscount = (id) => {
-        const newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
+    const removeDiscount = (id, deleteIndex) => {
+        let newDiscounts = []
+        if (id) {
+            newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
+        } else {
+            newDiscounts = listingProperties.discounts.filter((item,index) => index != deleteIndex);
+        }
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
         if (listingProperties.discounts[0].id) {
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-discount`,
@@ -161,7 +166,7 @@ export default function DiscountsForm({ ListingContext }) {
                                 <Separator className="my-4" />
                                 {
                                     listingProperties.discounts.map((item, index) => (
-                                        <div key={item.id}>
+                                        <div key={index}>
                                             <div className='flex gap-2 justify-between items-center p-2 w-full border mt-2 rounded-md'>
                                                 <div className='flex w-[90%]'>
                                                     {
@@ -177,7 +182,7 @@ export default function DiscountsForm({ ListingContext }) {
                                                         )
                                                     }
                                                 </div>
-                                                <div onClick={() => removeDiscount(item.id ? item.id : index)} className='cursor-pointer w-[10%] flex justify-center items-center' >
+                                                <div onClick={() => removeDiscount(item.id, index)} className='cursor-pointer w-[10%] flex justify-center items-center' >
                                                     <Trash size={20} />
                                                 </div>
                                             </div>
