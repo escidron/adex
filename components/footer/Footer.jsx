@@ -11,7 +11,7 @@ import { Separator } from '../ui/separator';
 
 export default function Footer() {
     return (
-        <div className="h-[calc(100vh-90px)] bg-[#252525] flex flex-col justify-between items-center mt-[200px]">
+        <div className="h-[850px] bg-[#252525] flex flex-col justify-between items-center mt-[200px]">
             <div className='w-full'>
                 <div className='w-full mt-[50px] flex flex-col items-center justify-center'>
                     <Separator className='w-[80%]' />
@@ -69,36 +69,6 @@ export default function Footer() {
 
                 </div>
             </div>
-            {/* <Link className="h-[180px] flex items-center justify-center" href="/">
-                <Image
-                    src='/adex-logo-white-yellow.png'
-                    alt="Adex Logo"
-                    width={180}
-                    height={180}
-
-                    className='w-[100px] xl:w-[180px] lg:w-[140px]'
-                />
-            </Link>
-            <div className="flex items-center w-[120px] justify-around">
-
-                <Link href="#" className='hover:scale-[1.1]'>
-                    <InstagramIcon fontSize='small' sx={{ color: 'white' }} />
-                </Link>
-
-                <Link href="#" className='hover:scale-[1.1]'>
-                    <FacebookIcon fontSize='small' sx={{ color: 'white' }} />
-                </Link>
-
-                <Link href="#" className='hover:scale-[1.1]'>
-                    <TwitterIcon fontSize='small' sx={{ color: 'white' }} />
-                </Link>
-
-                <Link href="#" className='hover:scale-[1.1]'>
-                    <PinterestIcon fontSize='small' sx={{ color: 'white' }} />
-                </Link>
-
-            </div>
-            <p className={`mt-3 text-white `}>Copyright © 2022 ADEX CONNECT</p> */}
             <div className='w-full max-h-[400px]'>
                 <Image
                     src='/footer-image.png'
