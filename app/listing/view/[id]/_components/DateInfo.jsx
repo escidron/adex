@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
 export default function DateInfo({ listingProperties }) {
-    console.log()
+    console.log('listingProperties.first_available_date',listingProperties.first_available_date)
     return (
         <div>
             {
@@ -46,7 +46,7 @@ export default function DateInfo({ listingProperties }) {
                                 className="w-[240px] justify-start text-left font-normal"
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {format(new Date(listingProperties.first_available_date), "PPP")}
+                                {format(new Date(listingProperties.first_available_date.substring(0, 10)), "PPP")}
                             </Button>
                         </div>
                     </>

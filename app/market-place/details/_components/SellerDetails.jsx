@@ -10,7 +10,6 @@ import Image from 'next/image'
 
 export default function SellerDetails({ listingProperties }) {
     const router = useRouter()
-    console.log('listingProperties.seller_image', listingProperties.seller_image)
     return (
         <div>
             {
