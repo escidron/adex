@@ -20,6 +20,7 @@ import { useContext } from 'react'
 import { ListingContext} from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
+import { useRouter } from 'next/navigation'
 
 
 export default function Listing({ params }) {
@@ -28,6 +29,7 @@ export default function Listing({ params }) {
     const [hasPayout, setHasPayout] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const id = params.id
+    const router = useRouter();
 
     useEffect(() => {
 
@@ -84,6 +86,13 @@ export default function Listing({ params }) {
         getInfo();
 
     }, []);
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+          window.scrollTo(0, 0);
+        };
+        handleRouteChange()
+      }, [router.events]);
 
     return (
         <>
