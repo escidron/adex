@@ -17,7 +17,7 @@ import GetPayoutMethod from '@/actions/getPayoutMethod'
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
 import { useContext } from 'react'
-import { ListingContext} from './layout'
+import { ListingContext } from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 
@@ -86,10 +86,10 @@ export default function Listing({ params }) {
 
     useEffect(() => {
         const handleRouteChange = () => {
-          window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
         };
         handleRouteChange()
-      }, []);
+    }, []);
 
     return (
         <>
@@ -113,8 +113,12 @@ export default function Listing({ params }) {
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />
 
-                                        <Separator className='my-5' />
-                                        <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
+                                        {advertisementType != 1 && (
+                                            <>
+                                                <Separator className='my-5' />
+                                                <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
+                                            </>
+                                        )}
 
                                         <Separator className='my-5' />
                                         <InstructionsInfo listingProperties={listingProperties} />
