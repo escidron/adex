@@ -84,7 +84,7 @@ input[type=number] {
   /* font-family: 'Roboto', sans-serif; */
   font-weight: 300;
   font-size: 16px;
-  z-index: 99;
+  z-index: 98;
   position: fixed;
   top: 0;
 }

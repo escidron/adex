@@ -4,27 +4,31 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { formatPrice } from '@/utils/format'
 import { MapPin } from 'lucide-react'
 
-export default function ListingHeader({ listingProperties,advertisementType } ) {
-    console.log('advertuliment type',advertisementType)
+export default function ListingHeader({ listingProperties, advertisementType, isBuyerView }) {
+    console.log('advertuliment type', advertisementType)
     return (
         <>
             <div className='mt-2 flex justify-between items-center'>
                 <h1 className='text-[32px] font-[500]'>{listingProperties.title}</h1>
                 {/* <p className='mt-2 text-[32px] font-[500]'>{formatPrice(listingProperties.price)}</p> */}
-                <div className='flex gap-1 items-center'>
-                    <p className='text-[32px]'>{formatPrice(listingProperties.price)}</p>
-                    {
-                        listingProperties.sub_category === 17 && (
-                            <p className='mt-1'>/Unit</p>
-                        )
-                    }
-                    {
-                        advertisementType === 0 && (
-                            <p className='mt-1'>/Month</p>
-                        )
-                    }
+                {
+                    !isBuyerView && (
+                        <div className='flex gap-1 items-center'>
+                            <p className='text-[32px]'>{formatPrice(listingProperties.price)}</p>
+                            {
+                                listingProperties.sub_category === 17 && (
+                                    <p className='mt-1'>/Unit</p>
+                                )
+                            }
+                            {
+                                advertisementType === 0 && (
+                                    <p className='mt-1'>/Month</p>
+                                )
+                            }
 
-                </div>
+                        </div>
+                    )
+                }
             </div>
             <div className="flex items-center justify-start">
                 <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />

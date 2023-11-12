@@ -1,13 +1,13 @@
+import axios from "axios";
 
-export default async function GetDiscounts(id) {
+export default async function GetAdvertisementDetails( id) {
   try {
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/discounts`,
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/details`,
       {
         method: "POST",
         headers: {
-         
           'Accept': 'application/json',
           'Content-Type': 'application/json'        
         },
@@ -15,14 +15,15 @@ export default async function GetDiscounts(id) {
         body: JSON.stringify({ id: id }),
       }
     );
+
     if (response.status === 200) {
       const res = await response.json();
-      const discounts = res
-      return discounts;
+      console.log('response',res.data)
+      const myListing = res.data
+      return myListing;
     } else {
-      return [];
+      return null;
     }
-
   } catch (error) {
     console.log(error);
     return null;

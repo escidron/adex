@@ -13,18 +13,20 @@ import axios from 'axios';
 import formatNumberInput from '@/utils/formatInputNumbers';
 import toast from "react-hot-toast";
 import { UserContext } from '../../app/layout';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Loader2 } from 'lucide-react';
+import { Button } from '../ui/button';
+import { DateFieldComponent } from '../datePicker/DateFieldComponent';
 
 
 
 
-export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts,isContentLoaded }) {
+export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts, isContentLoaded }) {
 
     const currentDate = new Date();
     let currentDateDay = currentDate.getDate();
     let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
     let currentDateYear = currentDate.getFullYear()
-    const [date, setDate] = useState(dayjs(`${currentDateYear}-${currentDate.getMonth()}-${currentDateDay + 1}`));
+    const [date, setDate] = useState('');
     const [counter, setCounter] = useState(1);
     const [incomplete, setIncomplete] = useState(false);
     const [isPending, setIsPending] = useState(false)
@@ -32,7 +34,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [discountOptions, setDiscountOptions] = useState(false);
     const [user, setUser] = useContext(UserContext)
     const router = useRouter();
-
+    console.log('date', date)
     useEffect(() => {
         let hasDiscount = false
         discounts.map((item) => {
@@ -80,7 +82,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     {
                         data: data,
                         duration: counter,
-                        start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ?  data.start_date : null
+                        start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ? data.start_date : null
                     }, {
                     withCredentials: true,
                 })
@@ -96,14 +98,14 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             setIncomplete(true)
         } else {
             console.log('entrou no false')
-            //router.push('/login')
+            router.push('/login')
         }
     }
 
-    
+
     if (!isContentLoaded) {
         return (
-            <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+            <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-2 `}>
                 <Skeleton variant="rounded" width={'100%'} height={120} />
                 <div className='mt-8'>
                     <Skeleton variant="text" sx={{ fontSize: '25px' }} />
@@ -119,47 +121,42 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
         )
     }
+    console.log('data', data)
     return (
-        <div className={`w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
+        <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
-                        {data.ad_duration_type === '1' ? '/months' : data.ad_duration_type === '2' ? '/quarters' : data.ad_duration_type === '3' ? '/years' : ''}
-                        {
-                            data.category_id == 17 && '/Units'
-                        }
+                        {data.ad_duration_type == '0' ? '/months' : data.ad_duration_type == '2' ? '/units' : ''}
                     </p>
                 </div>
             )}
-            <div className={` flex items-center  ${data.category_id == 17 ? 'justify-center' : 'justify-between' } gap-2 mt-4`}>
+            <div className={` flex items-center  ${data.category_id == 17 ? 'justify-center' : 'justify-between'} mt-4`}>
 
                 {
-                    data.category_id != 17 && (
+                    data.ad_duration_type != '1' && (
+                        <>
+                            <div className='w-[65%]'>
+                                <label htmlFor="date" className='mb-1'>Start date</label>
+                                <DateFieldComponent
+                                    date={date ? date : data.first_available_date}
+                                    setDate={(newDate) => setDate(newDate)}
+                                    disabledDate={data.first_available_date}
+                                />
+                            </div>
+                            <div className='w-[35%] flex flex-col items-center justify-end'>
+                                <label htmlFor="date" className='mb-1'>{data.category_id == 17 ? 'Units' : 'Duration'}</label>
+                                <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
+                            </div>
+                        </>
+                    )
+                }
 
-                        <div className='w-[60%]'>
-                            <label htmlFor="date" className='mb-1'>Start date</label>
-                            <DatePickerComponent
-                                id='date'
-                                setDate={(date) => setDate(date)}
-                                disabled={data.ad_duration_type !== '0' ? false : true}
-                                currentValue={dayjs(`${data?.start_date}`)}
-                            />
-                        </div>
-                    )
-                }
-                {
-                    data.ad_duration_type !== '0'  && (
-                        <div className='w-[40%] flex flex-col items-center'>
-                            <label htmlFor="date" className='mb-1'>{data.category_id == 17 ? 'Units' : 'Duration'}</label>
-                            <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
-                        </div>
-                    )
-                }
             </div>
-            <div className='w-[90%] '>
-                <div className='mt-8 flex justify-between items-center'>
-                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
+            <div className='w-full'>
+                <div className='mt-4 flex justify-between items-center'>
+                    <p className=''>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {
@@ -168,7 +165,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         <div className='relative mt-2 flex justify-between items-center'>
                             <div className='flex items-center gap-1'>
                                 <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
-                                    <HelpCircle size={17} className='cursor-pointer'/>
+                                    <HelpCircle size={17} className='cursor-pointer' />
                                 </div>
                                 <p className='font-[600]'>Long contract discount</p>
                             </div>
@@ -198,32 +195,26 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
 
                 <div className='mt-2 flex justify-between items-center'>
                     <p className='text-[20px] font-[600]'>Total</p>
-                    <p>{`$${data?.price ? formatNumberInput((data.price * counter - (data.price * counter) * (currentDiscount / 100)).toString()) : ''}`}</p>
+                    <p className='font-[600]'>{`$${data?.price ? formatNumberInput((data.price * counter - (data.price * counter) * (currentDiscount / 100)).toString()) : ''}`}</p>
                 </div>
             </div>
 
             {
                 data.status == '1' && (
-                    <button disabled={isPending ? true : false} onClick={Booking} className={`flex item justify-center mt-auto bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md mt-4 font-[600] md:mt-5 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg lg:mt-10 `}>
-                        {data.is_automatic == '1' ? (
+                    // <Button onClick={Booking} className='mt-4 '>
+                    //     Request
+                    // </Button>
+                    <Button  className='mt-4' disabled={isPending} onClick={() => {
+                        setIsPending(true)
+                        Booking()
 
-                            isPending ? (
-                                <ThreeDots
-                                    height="30"
-                                    width="40"
-                                    radius="9"
-                                    color="#FCD33B"
-                                    ariaLabel="three-dots-loading"
-                                    visible={true}
-                                />
-                            ) : 'Book'
-
-                        ) : 'Request'}
-                    </button>
-
+                    }}>
+                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                        Request Booking
+                    </Button>
                 )
             }
-            {data.is_automatic === '0' && data.status == '1' && (
+            {data.status == '1' && (
                 <p className='text-[12px] mt-2'>You will only be charge if your reserve request is aproved</p>
             )}
             {incomplete && !hasCard && (

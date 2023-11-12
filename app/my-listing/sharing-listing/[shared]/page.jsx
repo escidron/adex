@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 
 // Dynamically import the AdDetails component to ensure client-side rendering
-const DynamicAdDetails = dynamic(() => import('@/app/market-place/details/page'), {
+const DynamicAdDetails = dynamic(() => import('@/app/market-place/details/pageold'), {
   ssr: false, // Disable server-side rendering for this component
 });
 
