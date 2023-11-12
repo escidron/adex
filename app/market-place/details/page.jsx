@@ -52,12 +52,11 @@ export default function ListingDetails({ sharedId }) {
             setDiscounts(discounts)
             const categoryType = checkCategoryType(myListing.category_id)
             setAdvertisementType(categoryType)
-            console.log('my listing', myListing)
-            console.log('discounts', discounts)
+
             if (myListing) {
                 setListingProperties((prev) => ({
                     ...prev,
-                    status:myListing.status,
+                    status: myListing.status,
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,
@@ -75,9 +74,9 @@ export default function ListingDetails({ sharedId }) {
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
                     seller_name: myListing.seller_name,
-                    seller_image:myListing.seller_image,
-                    seller_id:myListing.created_by,
-                    ad_duration_type:categoryType
+                    seller_image: myListing.seller_image,
+                    seller_id: myListing.created_by,
+                    ad_duration_type: categoryType
                 }));
 
             }
@@ -150,7 +149,7 @@ export default function ListingDetails({ sharedId }) {
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w-full flex justify-between mt-4'>
                                     <div className='w-full md:w-[50%]'>
-                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} isBuyerView={true}/>
+                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} isBuyerView={true} />
 
                                         <Separator className='my-6' />
                                         <Preview value={listingProperties.description} heigth={200} />
@@ -158,18 +157,31 @@ export default function ListingDetails({ sharedId }) {
                                         <Separator className='my-6' />
                                         <SellerDetails listingProperties={listingProperties} />
 
-                                        <Separator className='my-6' />
-                                        <DateInfo listingProperties={listingProperties} />
+                                        {
+                                            listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to) && (
+                                                <>
+                                                    <Separator className='my-6' />
+                                                    <DateInfo listingProperties={listingProperties} />
+                                                </>
+                                            )
+                                        }
 
-                                        {advertisementType != 1 && (
+                                        {advertisementType != 1 && listingProperties.discounts.length > 0 && (
                                             <>
                                                 <Separator className='my-6' />
                                                 <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
                                             </>
-                                        )}
+                                        )
+                                        }
 
-                                        <Separator className='my-6' />
-                                        <InstructionsInfo listingProperties={listingProperties} />
+
+                                        {listingProperties.instructions.length > 12 && (
+                                            <>
+                                                <Separator className='my-6' />
+                                                <InstructionsInfo listingProperties={listingProperties} />
+                                            </>
+                                        )
+                                        }
                                     </div>
 
                                     <div className='w-full md:w-[40%] flex justify-end' >
