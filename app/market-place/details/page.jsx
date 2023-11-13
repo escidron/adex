@@ -175,7 +175,7 @@ export default function ListingDetails({ sharedId }) {
                                         }
 
 
-                                        {listingProperties.instructions.length > 12 && (
+                                        {listingProperties.instructions?.length > 12 && (
                                             <>
                                                 <Separator className='my-6' />
                                                 <InstructionsInfo listingProperties={listingProperties} />

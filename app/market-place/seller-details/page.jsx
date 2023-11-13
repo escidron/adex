@@ -11,26 +11,28 @@ import GalleryImage from '@/components/gallery-image/GalleryImage'
 
 import WorkIcon from '@mui/icons-material/Work';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MarketPlaceCard from '@/components/market place/marketPlaceCard/MarketPlaceCard'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetSellerListing from '@/actions/GetSellerListings'
 
 export default function SellerDetailsPage() {
     const [seller, setSeller] = useState({});
+    const [sellerListings, setSellerListings] = useState([]);
 
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
 
+
     useEffect(() => {
-        if (id) {
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
-                { id: id }, {
-                withCredentials: true,
-            })
-                .then(function (response) {
-                    setSeller(response.data)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
+        async function getInfo() {
+
+            const sellerInfo = await GetUserProfile(id)
+            setSeller(sellerInfo)
+
+            const listings = await GetSellerListing(id)
+            setSellerListings(listings)
         }
+        getInfo();
     }, []);
     return (
         <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
@@ -96,8 +98,21 @@ export default function SellerDetailsPage() {
                 <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
 
-                {/* <GalleryImage gallery={gallery}/> */}
 
+                <div>
+                    <p className='text-[32px]'>{`${seller.name}’s Listings`}</p>
+                </div>
+
+                {
+                    sellerListings.length > 0 && (
+
+                        <div className={` h-auto mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 gap-4 md:p-2 xl:p-[10px] `}>
+                            {sellerListings.map((ad) => (
+                                <MarketPlaceCard key={ad.id} ad={ad} />
+                            ))}
+                        </div>
+                    )
+                }
 
             </div >
         </div>
