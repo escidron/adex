@@ -1,19 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
-import axios from 'axios'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Image from 'next/image'
-import { Divider } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import GalleryImage from '@/components/gallery-image/GalleryImage'
-
 import WorkIcon from '@mui/icons-material/Work';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MarketPlaceCard from '@/components/market place/marketPlaceCard/MarketPlaceCard'
-import GetUserProfile from '@/actions/GetUserProfile'
 import GetSellerListing from '@/actions/GetSellerListings'
+
+import { Divider } from '@mui/material';
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 export default function SellerDetailsPage() {
     const [seller, setSeller] = useState({});
@@ -22,18 +19,15 @@ export default function SellerDetailsPage() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
 
-
     useEffect(() => {
         async function getInfo() {
-
-            const sellerInfo = await GetUserProfile(id)
-            setSeller(sellerInfo)
-
-            const listings = await GetSellerListing(id)
+            const {listings,profile_info} = await GetSellerListing(id)
             setSellerListings(listings)
+            setSeller(profile_info)
         }
         getInfo();
     }, []);
+
     return (
         <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
             <div className='flex flex-col w-[80%] max-w-[1000px] items-center'>
