@@ -1,13 +1,23 @@
 function haversine_distance(mk1, mk2) {
+  const R = 3958.8; 
 
-    var R = 3958.8; // Radius of the Earth in miles
-    var rlat1 = mk1.lat * (Math.PI/180); // Convert degrees to radians
-    var rlat2 = mk2.lat * (Math.PI/180); // Convert degrees to radians
-    var difflat = rlat2-rlat1; // Radian difference (latitudes)
-    var difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
+  const lat1 = mk1.lat * (Math.PI / 180);
+  const lon1 = mk1.lng * (Math.PI / 180);
+  const lat2 = mk2.lat * (Math.PI / 180);
+  const lon2 = mk2.lng * (Math.PI / 180);
 
-    var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-    return d;
-  }  
+  const dLat = lat2 - lat1;
+  const dLon = lon2 - lon1;
 
-  export default haversine_distance
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = R * c; 
+
+  return distance;
+}
+
+export default haversine_distance;

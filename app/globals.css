@@ -168,7 +168,13 @@ input[type=number] {
 
 .style_combobox{
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 99 !important;
   /* font-family: 'Roboto', sans-serif; */
+}
+
+.ComboboxPopover_style{
+  z-index: 99 !important;
+
 }
 
 .slick-dots li.slick-active button:before {
@@ -348,4 +354,9 @@ input[type=number] {
 }
 .image-gallery-play-button{
   display: none;
+}
+
+.MuiSlider-track{
+  width: 105% !important;
+  left: -10px !important;
 }

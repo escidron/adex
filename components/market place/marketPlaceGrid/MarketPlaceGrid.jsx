@@ -1,10 +1,12 @@
 "use client"
-import { useState, useContext } from 'react'
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
 import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
-import { SlidersHorizontal } from 'lucide-react';
 import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
 import MarketPlaceFooter from '@/components/footer/MarketPlaceFooter'
+import qs from "query-string";
+
+import { useState, useEffect } from 'react'
+import { SlidersHorizontal } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -14,27 +16,69 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useDebounce } from '@/hooks/use-debounce';
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     const [selected, setSelected] = useState(null);
-    const [openFilter, setOpenFilter] = useState(false);
     const [address, setAddress] = useState('');
 
+    const [openFilter, setOpenFilter] = useState(false);
 
+    const [value, setValue] = useState("")
+    const debouncedValue = useDebounce(value);
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const radius = searchParams.get("radius");
+    const adGroup = searchParams.get("adGroup");
+    const type = searchParams.get("type");
+    const priceMin = searchParams.get("priceMin");
+    const priceMax = searchParams.get("priceMax");
+    const key = searchParams.get("key");
+    useEffect(() => {
+        const url = qs.stringifyUrl({
+            url: pathname,
+            query: {
+                radius: radius,
+                adGroup: adGroup,
+                type: type,
+                priceMin: priceMin,
+                priceMax: priceMax,
+                key: debouncedValue,
+            }
+        }, { skipEmptyString: true, skipNull: true });
+
+        router.push(url);
+    }, [debouncedValue, router, pathname])
+
+    // const handleKeyDown = (event)=>{
+    //     if (event.key === 'Enter') {
+    //         // Ação que você deseja executar quando a tecla Enter é pressionada
+    //         alert(event.target.value);
+    //       }
+    // }
     return (
         <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} `}>
             <div className="w-full abso  top-5 flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
                 <div className="relative w-full ">
                     {/* google map search input */}
-                    <PlacesAutocomplete setSelected={setSelected} setAddress={setAddress} />
-                    <button onClick={() => { }} type="button" className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
-                    </button>
+                    {/* <PlacesAutocomplete setSelected={setSelected} setAddress={setAddress} /> */}
+                    <Input
+                        className='pl-8 h-[44px]'
+                        placeholder="What are you looking for?"
+                        onChange={(e) => setValue(e.target.value)}
+                    // onKeyDown={(e)=>handleKeyDown(e)}
+                    />
+                    <svg aria-hidden="true" className="absolute top-3 left-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </div>
 
-                <Dialog >
+                <Dialog className='mt-8 max-h-[80vh] overflow-y-auto z-[60]'>
                     <DialogTrigger >
                         <Button className='ml-[20px]'>
                             <div className='mr-2'>
@@ -43,19 +87,17 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                             Filters
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[60]" onClick={() => alert('content')}>
                         <DialogHeader>
                             <DialogTitle>Filters</DialogTitle>
                             <DialogDescription>
                                 Use the filter modal to narrow down your listing search and discover the perfect advertisements with ease.
                             </DialogDescription>
                         </DialogHeader>
-                        <div>
-
-                            <MarketPlaceFilterModal
-                                setOpenFilter={(toggle) => setOpenFilter(toggle)}
-                            />
-                        </div>
+                        <MarketPlaceFilterModal
+                            setOpenFilter={(toggle) => setOpenFilter(toggle)}
+                            counter={newData.length}
+                        />
                     </DialogContent>
                 </Dialog>
             </div>

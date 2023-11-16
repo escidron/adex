@@ -2,13 +2,12 @@
 import React, { useEffect, useState, createContext } from 'react'
 import axios from 'axios';
 import Map from '@/components/map/Map';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import haversine_distance from '@/utils/haversine_distance';
 import toast, { Toaster } from "react-hot-toast";
+import GetFilteredAdvertisements from '@/actions/GetFilteredAdvertisements';
 
 export const MapCoordinatesContext = createContext();
-export const FilterContext = createContext();
-
 
 export default function MarketPlace() {
   const [newData, setNewData] = useState([]);
@@ -18,54 +17,43 @@ export default function MarketPlace() {
     lat:  39.8283,
     lng: -98.5795
   });
-  const [adFilter, setAdFilter] = useState({
-    radius: 50,
-    type: '',
-    adGroup: '',
-    priceMin: 0,
-    priceMax: 1000000
-  });
+
+  const params = useSearchParams()
+  
+  const radius = params.get('radius') ? params.get('radius') : 50
+  const type = params.get('type')
+  const adGroup = params.get('adGroup')
+  const priceMin = params.get('priceMin') ? params.get('priceMin') : 0
+  const priceMax = params.get('priceMax') ? params.get('priceMax') : 1000000
+  const key = params.get("key") ;
+
+
   const router = useRouter();
   useEffect(() => {
     if (located) {
       async function getAds() {
         setNewData([])
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements`,
-          {
-            radius: adFilter.radius,
-            type: adFilter.type,
-            adGroup: adFilter.adGroup,
-            priceMin: adFilter.priceMin,
-            priceMax: adFilter.priceMax,
-          }, {
-          withCredentials: true,
-          headers: {
-            'content-type': 'application/json'
-          }
-        }
-        );
-        if (response.status === 200) {
-          response.data.data.map((ad) => {
-            // Calculate  the distance between markers
+        const response = await GetFilteredAdvertisements( type, adGroup, priceMin, priceMax, key )
+        if (response.length > 0 ) {
+          console.log('entrou no new data')
+          // Calculate  the distance between markers
+          response.map((ad) => {
             var distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
-
-            if (distance < adFilter.radius) {
+            if (distance < radius) {
               setNewData((prevData) => [...prevData, ad])
             }
           })
           setIsDataLoaded(true)
         } else {
-          router.push('/')
+          setNewData([])
         }
       }
       getAds();
     } else {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-          
           setCoords({ lat: position.coords.latitude, lng: position.coords.longitude })
           setLocated(true)
-
         });
 
       } else {
@@ -75,24 +63,21 @@ export default function MarketPlace() {
           style: {
             padding: '8px',
             fontWeight: 500
-
           }
         })
       }
     }
 
 
-  }, [located, coords, adFilter]);
+  }, [located, coords,type, adGroup, priceMin, priceMax,router,radius,key]);
 
-  
+  console.log('newdata',newData)
   return (
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
       <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-        <FilterContext.Provider value={[adFilter, setAdFilter]}>
           <Map newData={newData} isDataLoaded={isDataLoaded} />
-        </FilterContext.Provider>
       </MapCoordinatesContext.Provider>
 
     </div>

@@ -13,8 +13,8 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
   padding: '13px 0',
 
   '& .MuiSlider-thumb': {
-    height: 27,
-    width: 27,
+    height: 25,
+    width: 25,
     backgroundColor: '#000',
     cursor: 'pointer',
     border: '1px solid currentColor',
@@ -56,33 +56,40 @@ AirbnbThumbComponent.propTypes = {
 };
 
 
-export default function PriceSlider({ filters, setFilters }) {
-  const [scale, setScale] = useState([filters.priceMin, filters.priceMax]);
+export default function PriceSlider({ filters, setFilters,priceMin ,priceMax,onClick }) {
+  const [scale, setScale] = useState([0, 999]);
   const [changed, setChanged] = useState(false);
-  // const [adFilter,setFilters] = useContext(FilterContext)
 
-  const handleSliderChange = useCallback((event, value) => {
-    debounceSliderChange(value);
+  const handleSliderChange = useCallback((event, val) => {
+    setScale([val[0] , val[1]])
   }, []);
+    
+    const updateFilter = (e, value)=>{
+    onClick('price',{
+      priceMin:value[0] ,
+      priceMax:value[1] 
+    })
+    
 
-  const debounceSliderChange = debounce((val) => {
-    if (val[1] * 10)
-      setScale([val[0] * 10, val[1] * 10])
-    setFilters((prev) => ({ ...prev, priceMin: val[0] * 10, priceMax: val[1] * 10 }))
-  }, 200)
+  }
 
   const handleScale = (e) => {
     if (e.target.id == 'min') {
       setScale((prev) => [e.target.value, prev[1]])
-      setFilters((prev) => ({ ...prev, priceMin: e.target.value }))
+      onClick('price',{
+        priceMin: e.target.value,
+        priceMax: scale[1]
+      })
     } else {
+      onClick('price',{
+        priceMin: scale[0],
+        priceMax: e.target.value
+      })
       if (e.target.value != 999) {
         setScale((prev) => [prev[0], e.target.value])
-        setFilters((prev) => ({ ...prev, priceMax: e.target.value }))
       } else {
         if (changed) {
           setScale((prev) => [prev[0], e.target.value])
-          setFilters((prev) => ({ ...prev, priceMax: e.target.value }))
         } else {
           setChanged(true)
         }
@@ -97,11 +104,14 @@ export default function PriceSlider({ filters, setFilters }) {
       <label className='mb-2'>Price range</label>
       <AirbnbSlider
         onChange={(e, v) => handleSliderChange(e, v)}
+        onChangeCommitted={(e, value) => updateFilter(e, value)}
         slots={{ thumb: AirbnbThumbComponent }}
         getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
         defaultValue={[0, 100]}
         disableSwap
-        value={[filters.priceMin / 10, filters.priceMax / 10]}
+        value={[scale[0] , scale[1] ]}
+        max={999}
+        step={10}
       />
       <Box className='flex gap-6 w-ful'>
 
@@ -112,7 +122,7 @@ export default function PriceSlider({ filters, setFilters }) {
             id='min'
             type="text"
             className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]'
-            value={filters.priceMin}
+            value={scale[0]}
             onChange={(e) => handleScale(e)}
           />
         </Box>
@@ -123,7 +133,7 @@ export default function PriceSlider({ filters, setFilters }) {
             id='max'
             type="text"
             className='py-3 px-5 rounded-md w-full border-2 border-gray-300 outline-none flex items-center text-[18px]'
-            value={filters.priceMax == 999 && !changed ? `${filters.priceMax}+` : filters.priceMax}
+            value={scale[1] == 999 && !changed ? `${scale[1]}+` : scale[1]}
             onChange={(e) => handleScale(e)}
           />
         </Box>

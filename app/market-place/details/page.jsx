@@ -158,7 +158,7 @@ export default function ListingDetails({ sharedId }) {
                                         <SellerDetails listingProperties={listingProperties} />
 
                                         {
-                                            listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to) && (
+                                            (listingProperties.first_available_date  || (listingProperties.date.from && listingProperties.date.to)) && (
                                                 <>
                                                     <Separator className='my-6' />
                                                     <DateInfo listingProperties={listingProperties} />

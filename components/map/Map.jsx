@@ -1,11 +1,13 @@
 "use client"
-import React,{useState,useContext} from 'react'
-import { GoogleMap, useJsApiLoader, Marker, MapContext } from '@react-google-maps/api';
+import {useState,useContext,useCallback,memo} from 'react'
+import MarketPlaceGrid from '../market place/marketPlaceGrid/MarketPlaceGrid';
 import loading from '../../public/loading.gif'
 import Image from 'next/image';
+
+
+import { GoogleMap, useJsApiLoader, Marker, MapContext } from '@react-google-maps/api';
 import { MapCoordinatesContext } from '@/app/market-place/page';
-import MarketPlaceGrid from '../market place/marketPlaceGrid/MarketPlaceGrid';
-import icon from '../../public/mylocation.ico'
+
 const containerStyle = {
   width: '100%',
   height: '91vh'
@@ -18,11 +20,10 @@ function Map({ newData,isDataLoaded }) {
     libraries: ["places"],
   })
 
-  const [map, setMap] = React.useState(null)
+  const [map, setMap] = useState(null)
   const [coords] = useContext(MapCoordinatesContext)
 
-  const [selected, setSelected] = useState(null);
-  const onUnmount = React.useCallback(function callback(map) {
+  const onUnmount = useCallback(function callback(map) {
     setMap(null)
   }, [])
 
@@ -77,5 +78,5 @@ function Map({ newData,isDataLoaded }) {
     </div>
 }
 
-export default React.memo(Map)
+export default memo(Map)
 
