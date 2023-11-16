@@ -48,29 +48,26 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
   console.log('value', value)
   let cont = 0
   return (
-    <Combobox onSelect={handleSelect} style={{ zIndex: 99 }} className='w-full z-[99] ' onClick={() => alert('combo')}>
+    <Combobox onSelect={handleSelect} className='w-full  ' >
       <ComboboxInput
-        style={{ zIndex: 99 }}
         value={value}
-        onClick={() => alert('ComboboxInput')}
         onChange={(e) => setValue(e.target.value)}
         //   disabled={!ready}
         // className="outline-none w=full"
         placeholder="Search an address"
-        className="z-[99] text-sm rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
+        className=" text-sm rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
       />
 
-        <ComboboxPopover style={{ zIndex: 99 }} className='shadow-popup ComboboxPopover_style w-auto z-[99]' onClick={() => alert('ComboboxPopover')}>
-          <ComboboxList style={{ zIndex: 99 }} className='bg-white mt-4 rounded-md w-[400px] style_combobox z-[99]' sx={{ zIndex: '99' }} onClick={() => alert('ComboboxList')}>
+        <ComboboxPopover  className='shadow-popup ComboboxPopover_style w-auto '>
+          <ComboboxList  className='bg-white mt-4 rounded-md w-[400px] style_combobox '  >
             {
               data.map(({ place_id, description, }) => {
                 cont++
                 return (
-                  <div onClick={() => alert('sssss')} className={` ${cont != 1 ? 'border-t-[1px]' : ''} z-[99] flex items-center border-gray w-auto px-2 py-1 cursor-pointer hover:text-[#FCD33B]`} key={place_id} >
+                  <div className={` ${cont != 1 ? 'border-t-[1px]' : ''}  flex items-center border-gray w-auto px-2 py-1 cursor-pointer hover:text-[#FCD33B]`} key={place_id} >
                     <RoomRoundedIcon fontSize='small' sx={{ color: 'gray', marginRight: '4px' }} />
                     <ComboboxOption
-                      style={{ zIndex: 99 }}
-                      value={description} onClick={() => alert('ComboboxOption')} />
+                      value={description} />
                   </div>
                 )
               })}
