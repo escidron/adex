@@ -55,6 +55,9 @@ export default function EditListing({ params }) {
         async function getInfo() {
             const userData = await GetUserProfile()
             setUserData(userData)
+            if(userData.userType == 1){
+                setStep('select_business')
+            }
             const myListing = await GetMyAdvertisement(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)

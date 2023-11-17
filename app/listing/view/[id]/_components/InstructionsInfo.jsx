@@ -7,11 +7,11 @@ export default function InstructionsInfo({ listingProperties }) {
     return (
         <div>
             {
-                (listingProperties.instructions.length > 12) ? (
+                (listingProperties.instructions?.length > 12) ? (
                     <>
                         <div className='flex flex-col gap-2'>
                             <p className='text-[26px]'>Instructions</p>
-                            <Preview value={listingProperties.instructions} heigth={200} />
+                            <Preview value={listingProperties.instructions} heigth={200} autoHeigth={true}/>
                         </div>
                     </>
                 ) : (

@@ -108,7 +108,7 @@ export default function Listing({ params }) {
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} />
 
                                         <Separator className='my-3' />
-                                        <Preview value={listingProperties.description} heigth={200} />
+                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true}/>
 
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />

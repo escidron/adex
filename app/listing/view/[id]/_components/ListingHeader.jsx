@@ -9,7 +9,7 @@ export default function ListingHeader({ listingProperties, advertisementType, is
     return (
         <>
             <div className='mt-2 flex justify-between items-center'>
-                <h1 className='text-[32px] font-[500]'>{listingProperties.title}</h1>
+                <h1 className='text-[32px] font-[500] line-clamp-1'>{listingProperties.title}</h1>
                 {/* <p className='mt-2 text-[32px] font-[500]'>{formatPrice(listingProperties.price)}</p> */}
                 {
                     !isBuyerView && (

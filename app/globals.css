@@ -310,7 +310,7 @@ input[type=number] {
 }
 .ql-bubble {
   background-color: transparent;
-  height: 70px !important;
+  /* height: 70px !important; */
 }
 .ql-bubble .ql-editor{
   overflow: hidden;
