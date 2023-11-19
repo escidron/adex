@@ -70,7 +70,7 @@ export default function Card({ item, setAdvertisementId, route }) {
                 </div>
                 <div className='flex justify-between items-center mt-auto '>
                     <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
-                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[500] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[500] text-gray-600 flex items-center'>/Unit</p>) : ''}
+                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {
