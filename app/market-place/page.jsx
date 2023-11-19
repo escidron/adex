@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState, createContext, useMemo } from 'react'
+import React, { useEffect, useState, createContext, useContext, useMemo } from 'react'
 import axios from 'axios';
 import Map from '@/components/map/Map';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -7,12 +7,13 @@ import haversine_distance from '@/utils/haversine_distance';
 import toast, { Toaster } from "react-hot-toast";
 import GetFilteredAdvertisements from '@/actions/GetFilteredAdvertisements';
 import { findKeyWords } from '@/utils/findKeyWords';
+import { AllDataContext } from './layout';
 
 export const MapCoordinatesContext = createContext();
 
 export default function MarketPlace() {
   const [newData, setNewData] = useState([]);
-  const [allData, setAllData] = useState([]);
+  const [allData, setAllData] = useContext(AllDataContext);
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [coords, setCoords] = useState({
@@ -34,12 +35,17 @@ export default function MarketPlace() {
   const router = useRouter();
   useEffect(() => {
     if (located) {
+      console.log('alldata inside the effect', allData)
+
       async function getAds() {
         setNewData([])
         const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
         setAllData(response)
       }
-      getAds();
+
+      if(allData.length == 0){
+        getAds();
+      }
     } else {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -62,6 +68,7 @@ export default function MarketPlace() {
 
   }, [located]);
 
+  console.log('dtaaaaaaa',allData)
   // useEffect(() => {
   //   setNewData([])
   //   if (allData.length > 0) {
@@ -92,8 +99,8 @@ export default function MarketPlace() {
   const filteredData = useMemo(() => {
 
     return allData.filter(ad => {
-      
-      
+
+
       let distance
       if (latitude && longitude) {
         const filterCoords = {
@@ -120,7 +127,7 @@ export default function MarketPlace() {
         type ? types.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
         (ad.price >= priceMin && ad.price <= priceMax),
-        key ? findKeyWords(ad,key) : true 
+        key ? findKeyWords(ad, key) : true
 
       ];
 
@@ -133,15 +140,15 @@ export default function MarketPlace() {
     setIsDataLoaded(true);
   }, [filteredData]);
 
-  console.log('newdata', newData)
-  console.log('all', allData)
+  // console.log('newdata', newData)
+  // console.log('all', allData)
   return (
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
-      <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-        <Map newData={newData} isDataLoaded={isDataLoaded} />
-      </MapCoordinatesContext.Provider>
+        <MapCoordinatesContext.Provider value={[coords, setCoords]}>
+          <Map newData={newData} isDataLoaded={isDataLoaded} />
+        </MapCoordinatesContext.Provider>
 
     </div>
 
