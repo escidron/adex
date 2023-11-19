@@ -139,10 +139,8 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                         <Button type="submit" variant='outline' onClick={removeFilter}>
                             <p>Remove Filter</p>
                         </Button>
-                        <DialogTrigger >
-                            <Button type="submit" onClick={applyFilter}>
+                        <DialogTrigger className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                                 <p>{`Filter  (${counter })`}</p>
-                            </Button>
                         </DialogTrigger>
                     </div>
                 </DialogFooter>

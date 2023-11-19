@@ -13,11 +13,13 @@ const containerStyle = {
   height: '91vh'
 };
 
+
+const libraries = "places"
 function Map({ newData,isDataLoaded }) {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM',
-    libraries: ["places"],
+    libraries: libraries,
   })
 
   const [map, setMap] = useState(null)

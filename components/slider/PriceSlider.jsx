@@ -57,7 +57,7 @@ AirbnbThumbComponent.propTypes = {
 
 
 export default function PriceSlider({ filters, setFilters,priceMin ,priceMax,onClick }) {
-  const [scale, setScale] = useState([priceMin, priceMax]);
+  const [scale, setScale] = useState([priceMin ? parseInt(priceMin) : 0, priceMax ? parseInt(priceMax) : 999]);
   const [changed, setChanged] = useState(false);
 
   const handleSliderChange = useCallback((event, val) => {

@@ -54,8 +54,8 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                 priceMin: priceMin,
                 priceMax: priceMax,
                 key: debouncedValue,
-                latitude:latitude,
-                longitude:longitude
+                latitude: latitude,
+                longitude: longitude
             }
         }, { skipEmptyString: true, skipNull: true });
 
@@ -84,13 +84,11 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                     <svg aria-hidden="true" className="absolute top-3 left-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </div>
                 <Dialog className='mt-8 max-h-[80vh] overflow-y-auto z-[60]'>
-                    <DialogTrigger >
-                        <Button className='ml-[20px]'>
-                            <div className='mr-2'>
-                                <SlidersHorizontal size={16} />
-                            </div>
-                            Filters
-                        </Button>
+                    <DialogTrigger className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+                        <div className='mr-2'>
+                            <SlidersHorizontal size={16} />
+                        </div>
+                        Filters
                     </DialogTrigger>
                     <DialogContent className="w-[90%] sm:max-w-[550px] z-[60]" >
                         <DialogHeader>
