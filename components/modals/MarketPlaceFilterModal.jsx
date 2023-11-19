@@ -71,7 +71,6 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
         console.log('coords', coords)
         onClick('coords',coords)
     }
-    console.log('counter',counter)
     return (
         <>
 
