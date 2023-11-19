@@ -1,6 +1,6 @@
 import CurrencyInput from 'react-currency-input-field';
 
-import { useContext,useState,useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import {
     Card,
     CardContent,
@@ -10,20 +10,30 @@ import {
 } from "@/components/ui/card"
 import { Info } from 'lucide-react';
 import { checkCategoryType } from '@/utils/checkCategoryType';
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import PriceTypeSelector from '@/app/listing/create/_components/PriceTypesSelector';
 
 export default function PriceForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
+    const [isOtherType, setIsOtherType] = useState(false);
 
+    const otherListingType = [8, 12, 18]//categories of other
     useEffect(() => {
-
+        if (otherListingType.includes(listingProperties.sub_category)) {
+            setIsOtherType(true)
+        }
         const categoryType = checkCategoryType(listingProperties.sub_category)
         setAdvertisementType(categoryType)
     }, []);
 
-
-    const handleTitle = (value) => {
+    const handlePrice = (value) => {
         let price = value.replace(/[$,]/g, '');
         let pricesParts
         if (price.includes('.')) {
@@ -34,24 +44,60 @@ export default function PriceForm({ ListingContext }) {
         }
         setListingProperties({ ...listingProperties, price: price })
     }
+
+    const handleCurrentPriceType = (type)=>{
+        setListingProperties({ ...listingProperties, otherListingType: type })
+
+    }
     console.log('listing ', listingProperties)
     return (
         <div className='w-full max-w-[800px] flex flex-col items-center'>
-            <div className='w-full flex flex-col  md:flex-row justify-between '>
-                <div>
-                    <div className='flex flex-col'>
+            <div className={`w-full flex flex-col  md:flex-row  ${listingProperties.sub_category === 17 ? 'justify-between' : 'justify-center'}`}>
+                <div className='w-[500px]'>
+                    {
+                        isOtherType && (
+                            <>
+                                <p className='text-[24px]'>Select the type of the price</p>
+                                <PriceTypeSelector
+                                    currentPriceType={listingProperties.otherListingType}
+                                    handleCurrentPriceType={(type) => handleCurrentPriceType(type)}
+                                />
+                            </>
+                        )
+                    }
+                    <div className='flex flex-col mt-[40px]'>
                         <div className='flex gap-1 items-center'>
                             <p className='text-[32px]'>Price</p>
                             {
-                                listingProperties.sub_category === 17 && (
-                                    <p className='mt-1'>/Unit</p>
+                                isOtherType ? (
+                                    <>
+                                        {
+                                            listingProperties.otherListingType == 2 && (
+                                                <p className='mt-1'>/Unit</p>
+                                            )
+                                        }
+                                        {
+                                            listingProperties.otherListingType == 0 && (
+                                                <p className='mt-1'>/Month</p>
+                                            )
+                                        }
+                                    </>
+                                ) : (
+                                    <>
+                                        {
+                                            listingProperties.sub_category === 17 && (
+                                                <p className='mt-1'>/Unit</p>
+                                            )
+                                        }
+                                        {
+                                            advertisementType === 0 && (
+                                                <p className='mt-1'>/Month</p>
+                                            )
+                                        }
+                                    </>
                                 )
                             }
-                            {
-                                advertisementType === 0 && (
-                                    <p className='mt-1'>/Month</p>
-                                )
-                            }
+
 
                         </div>
                         <p className='text-[18px] text-gray-500'>Enter the price of your listing.</p>
@@ -69,7 +115,7 @@ export default function PriceForm({ ListingContext }) {
                             onChange={(e) => {
                                 const inputValue = e.target.value;
                                 const numericValue = inputValue.replace(/[^0-9.,]/g, '');
-                                handleTitle(numericValue);
+                                handlePrice(numericValue);
                             }}
                             prefix='$'
                             value={listingProperties.price ? listingProperties.price : null}

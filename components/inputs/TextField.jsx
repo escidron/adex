@@ -17,6 +17,7 @@ export default function TextField({
   register,
   required,
   errors,
+  maxLength
 }) {
   return (
     <div className="w-full relative shadow-sm">
@@ -32,6 +33,7 @@ export default function TextField({
         onBlur={onBlur ? onBlur : ''}
         onInput={formatPrice?onInput:()=>{}}
         value={value}
+        maxLength={maxLength ? maxLength : ''}
         className={`
           peer
           w-full

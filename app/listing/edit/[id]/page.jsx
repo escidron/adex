@@ -83,6 +83,7 @@ export default function EditListing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
+                    otherListingType:myListing.ad_duration_type
                 }));
             }
             if (categories && myListing) {
@@ -183,7 +184,7 @@ export default function EditListing({ params }) {
                     description: listingProperties.description,
                     price: listingProperties.price,
                     images: listingProperties.images,
-                    ad_duration_type: categoryType,
+                    ad_duration_type: listingProperties.otherListingType ? listingProperties.otherListingType : categoryType,
                     sub_asset_type: listingProperties.building_asset,
                     per_unit_price: advertisementType ? 2 : listingProperties.price,
                     discounts: listingProperties.discounts,

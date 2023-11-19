@@ -184,7 +184,7 @@ export default function Listing({ params }) {
                 description: listingProperties.description,
                 price: listingProperties.price,
                 images: listingProperties.images,
-                ad_duration_type: advertisementType,
+                ad_duration_type: listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType,
                 sub_asset_type: listingProperties.building_asset,
                 per_unit_price: advertisementType ? 2 : listingProperties.price,
                 discounts: listingProperties.discounts,

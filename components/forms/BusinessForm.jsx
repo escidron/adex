@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select"
 import { industries } from '@/utils/industries';
 import CompanyCard from '../infoCard/CompanyCard';
+import GetCompanies from '@/actions/GetCompanies';
 
 export default function BusinessForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -40,26 +41,17 @@ export default function BusinessForm({ ListingContext }) {
     }
 
     useEffect(() => {
-        async function GetCompanies() {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-companies`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            if (response.status === 200) {
-                const res = await response.json()
-                setCompanies(res)
-            }
+        async function GetData() {
+            const companies = await GetCompanies()
+            console.log('xxxxxxx',companies)
+            setCompanies(companies)
+
         }
-        GetCompanies();
+        GetData();
     }, [refetch]);
 
     useEffect(() => {
-
         setIsLoaded(true)
-
     }, []);
 
     if (!isLoaded) {

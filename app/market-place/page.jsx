@@ -14,32 +14,45 @@ export default function MarketPlace() {
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [coords, setCoords] = useState({
-    lat:  39.8283,
+    lat: 39.8283,
     lng: -98.5795
   });
 
   const params = useSearchParams()
-  
+
   const radius = params.get('radius') ? params.get('radius') : 50
   const type = params.get('type')
   const adGroup = params.get('adGroup')
   const priceMin = params.get('priceMin') ? params.get('priceMin') : 0
   const priceMax = params.get('priceMax') ? params.get('priceMax') : 1000000
-  const key = params.get("key") ;
-
+  const key = params.get("key");
+  const latitude = params.get("latitude")
+  const longitude = params.get("longitude")
 
   const router = useRouter();
   useEffect(() => {
     if (located) {
       async function getAds() {
         setNewData([])
-        const response = await GetFilteredAdvertisements( type, adGroup, priceMin, priceMax, key )
-        if (response.length > 0 ) {
+        const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
+        if (response.length > 0) {
           console.log('entrou no new data')
           // Calculate  the distance between markers
           response.map((ad) => {
-            var distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
-            if (distance < radius) {
+            let distance
+            
+            if (latitude && longitude) {
+              const filterCoords = {
+                lat:latitude,
+                lng:longitude
+              }
+              distance = haversine_distance(filterCoords, { lat: ad.lat, lng: ad.long });
+            } else {
+              distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
+
+            }
+
+            if (distance < radius || radius == 2000) {
               setNewData((prevData) => [...prevData, ad])
             }
           })
@@ -69,15 +82,15 @@ export default function MarketPlace() {
     }
 
 
-  }, [located, coords,type, adGroup, priceMin, priceMax,router,radius,key]);
+  }, [located, coords, type, adGroup, priceMin, priceMax, router, radius, key,latitude,longitude]);
 
-  console.log('newdata',newData)
+  console.log('newdata', newData)
   return (
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
       <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-          <Map newData={newData} isDataLoaded={isDataLoaded} />
+        <Map newData={newData} isDataLoaded={isDataLoaded} />
       </MapCoordinatesContext.Provider>
 
     </div>

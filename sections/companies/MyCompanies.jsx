@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import AddCompanyModal from '@/sections/companies/AddCompanyModal'
 import CompanyCard from '@/components/infoCard/CompanyCard';
+import RemoveCompany from '@/actions/RemoveCompany';
+import toast from 'react-hot-toast';
+import GetCompanies from '@/actions/GetCompanies';
 
 
 export default function MyCompanies() {
@@ -10,21 +13,23 @@ export default function MyCompanies() {
     const [refetch, setRefetch] = useState(false);
 
     useEffect(() => {
-        async function GetCompanies() {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-companies`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            if (response.status === 200) {
-                const res = await response.json()
-                setCompanies(res)
-            }
+        async function GetData() {
+            const companies = await GetCompanies()
+            setCompanies(companies)
+
         }
-        GetCompanies();
+        GetData();
     }, [refetch]);
+
+    const removeCompany = async (id) => {
+        const message = await RemoveCompany(id)
+        if (message) {
+            toast.success(message)
+            setRefetch(prev => !prev)
+        } else {
+            toast.error('Something went wrong')
+        }
+    }
 
     if (companies.length === 0) {
         return (
@@ -49,15 +54,13 @@ export default function MyCompanies() {
             </>
         )
     }
-    console.log('addCompany', addCompany)
-    console.log('refetch', refetch)
 
     return (
         <div className={`w-full flex flex-col items-center  min-h-screen py-2`}>
 
             {
                 addCompany ? (
-                    <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} refetch={refetch}/>
+                    <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} refetch={refetch} />
                 ) : (
 
                     <div className="
@@ -84,7 +87,7 @@ export default function MyCompanies() {
                             {
                                 companies.map((company) => (
                                     <div key={company.id}>
-                                        <CompanyCard company={company} />
+                                        <CompanyCard company={company} removeCompany={() => removeCompany(company.id)} />
                                     </div>
                                 ))
                             }

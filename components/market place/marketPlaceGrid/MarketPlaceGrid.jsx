@@ -19,12 +19,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
+import TermsOfUseModal from '@/components/modals/TermsOfUseModal';
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     const [selected, setSelected] = useState(null);
     const [address, setAddress] = useState('');
-
+    const [showFilterModal, setShowFilterModal] = useState(true);
     const [openFilter, setOpenFilter] = useState(false);
 
     const [value, setValue] = useState("")
@@ -40,6 +41,9 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
     const priceMin = searchParams.get("priceMin");
     const priceMax = searchParams.get("priceMax");
     const key = searchParams.get("key");
+    const latitude = searchParams.get("latitude")
+    const longitude = searchParams.get("longitude")
+
     useEffect(() => {
         const url = qs.stringifyUrl({
             url: pathname,
@@ -50,6 +54,8 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                 priceMin: priceMin,
                 priceMax: priceMax,
                 key: debouncedValue,
+                latitude:latitude,
+                longitude:longitude
             }
         }, { skipEmptyString: true, skipNull: true });
 
@@ -77,7 +83,6 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                     />
                     <svg aria-hidden="true" className="absolute top-3 left-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </div>
-
                 <Dialog className='mt-8 max-h-[80vh] overflow-y-auto z-[60]'>
                     <DialogTrigger >
                         <Button className='ml-[20px]'>
@@ -87,7 +92,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                             Filters
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[60]" onClick={() => alert('content')}>
+                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[60]" >
                         <DialogHeader>
                             <DialogTitle>Filters</DialogTitle>
                             <DialogDescription>

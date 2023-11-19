@@ -124,14 +124,14 @@ export default function MyCompanyPage() {
             });
 
     }
-
+console.log('company',company)
     return (
         <>
 
             <div className='bg-black h-[200px] md:h-[180px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99]'>
                 <div className='w-[100px] h-[100px]  sm:w-[140px] sm:h-[140px]   rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
                     <Image
-                        src={company.company_logo ? company.company_logo : '/nouser.png'}
+                        src={company?.company_logo ? company.company_logo : '/nouser.png'}
                         alt="Company Logo"
                         priority
                         width={2000}

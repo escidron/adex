@@ -1,20 +1,30 @@
 import MultiImage from '../multiImage/MultiImage';
 
-import { useContext, useState,useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { MapPin } from 'lucide-react';
 import { formatPrice } from '@/utils/format';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 import { Preview } from '../textarea/TextAreaReader';
 
+
+const otherListingType = [8, 12, 18]//categories of other
+
+
 export default function PreviewForm({ ListingContext }) {
     const [categoryType, setCategoryType] = useState('');
     const [listingProperties, setListingProperties] = useContext(ListingContext)
-    
+
     useEffect(() => {
-        const categoryType = checkCategoryType(listingProperties.sub_category)
-        setCategoryType(categoryType)
+        if (listingProperties.otherListingType &&  otherListingType.includes(listingProperties.sub_category)) {
+            setCategoryType(listingProperties.otherListingType)
+
+        } else {
+
+            const categoryType = checkCategoryType(listingProperties.sub_category)
+            setCategoryType(categoryType)
+        }
     }, []);
-    
+
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full sm:w-[500px]'>
@@ -34,7 +44,7 @@ export default function PreviewForm({ ListingContext }) {
                             <p className='text-[12px] text-gray-500'>{listingProperties.location}</p>
                         </div>
                         <div className='mt-2 text-[14px]'>
-                            <Preview value={listingProperties.description} heigth={80}/>
+                            <Preview value={listingProperties.description} heigth={80} />
                         </div>
                         <div className='flex w-[90%] justify-between items-center mt-[40px]'>
                             <p className='font-[400px] text-gray-500 text-[14px]'>

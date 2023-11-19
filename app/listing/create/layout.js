@@ -30,7 +30,9 @@ export default function ListingLayout({ children }) {
     images: [],
     isDraft : false,
     select_business: '',
-    instructions:''
+    instructions:'',
+    otherListingType: ''
+
   });
 
   useEffect(() => {

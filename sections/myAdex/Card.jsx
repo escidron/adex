@@ -45,7 +45,7 @@ export default function Card({ item, setAdvertisementId, route }) {
             <div className={`relative md:ml-8 flex flex-col w-full`}>
                 <div>
                     <div className='flex justify-between items-center'>
-                        <h1 className='text-[24px] font-[600] line-clamp-1'>{item.title}</h1>
+                        <h1 className='text-[24px] font-[500] line-clamp-1'>{item.title}</h1>
                         <div className={`${item.status === 1 ? 'bg-green-700' : item.status === 2 ? 'bg-orange-700' : item.status === 3 ? 'bg-red-700' : 'bg-gray-700'} px-2 py-1 h-[22px] rounded-2xl flex items-center text-[10px] font-[600] text-white ml-auto`}>
                             <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : 'Pending'}</p>
                         </div>
@@ -58,9 +58,9 @@ export default function Card({ item, setAdvertisementId, route }) {
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                     </div>
-                    <div className='flex gap-2'>
+                    <div className='flex mt-1 gap-2'>
                         <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                        <p className='text-[14px] mt-[-3px] line-clamp-2'>{item.address}</p>
+                        <p className='text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
                     </div>
                     <div className='flex gap-2 items-center '>
                         <div className='text-[14px] mt-2 w-full'>
@@ -69,8 +69,8 @@ export default function Card({ item, setAdvertisementId, route }) {
                     </div>
                 </div>
                 <div className='flex justify-between items-center mt-auto '>
-                    <div className='flex mt-auto text-[20px] justify-between items-center'>
-                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>/Unit</p>) : ''}
+                    <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
+                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[500] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[500] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         <div onClick={(e) => {

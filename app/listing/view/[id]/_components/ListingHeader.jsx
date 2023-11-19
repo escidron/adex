@@ -9,20 +9,39 @@ export default function ListingHeader({ listingProperties, advertisementType, is
     return (
         <>
             <div className='mt-2 flex justify-between items-center'>
-                <h1 className='text-[32px] font-[500] line-clamp-1'>{listingProperties.title}</h1>
+                <h1 className='text-[28px] font-[500] line-clamp-1'>{listingProperties.title}</h1>
                 {/* <p className='mt-2 text-[32px] font-[500]'>{formatPrice(listingProperties.price)}</p> */}
                 {
                     !isBuyerView && (
                         <div className='flex gap-1 items-center'>
                             <p className='text-[32px]'>{formatPrice(listingProperties.price)}</p>
                             {
-                                listingProperties.sub_category === 17 && (
-                                    <p className='mt-1'>/Unit</p>
-                                )
-                            }
-                            {
-                                advertisementType === 0 && (
-                                    <p className='mt-1'>/Month</p>
+                                listingProperties.otherListingType ? (
+                                    <>
+                                        {
+                                            listingProperties.otherListingType == 2 && (
+                                                <p className='mt-1'>/Unit</p>
+                                            )
+                                        }
+                                        {
+                                            listingProperties.otherListingType == 0 && (
+                                                <p className='mt-1'>/Month</p>
+                                            )
+                                        }
+                                    </>
+                                ) : (
+                                    <>
+                                        {
+                                            listingProperties.sub_category === 17 && (
+                                                <p className='mt-1'>/Unit</p>
+                                            )
+                                        }
+                                        {
+                                            advertisementType === 0 && (
+                                                <p className='mt-1'>/Month</p>
+                                            )
+                                        }
+                                    </>
                                 )
                             }
 

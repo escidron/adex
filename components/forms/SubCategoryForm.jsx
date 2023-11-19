@@ -46,7 +46,7 @@ export default function SubCategoryForm({ ListingContext }) {
                             <CategoryCard
                                 item={category}
                                 selected={listingProperties.sub_category == category.id}
-                                setListingProperties={(selectedId) => setListingProperties((prev) => ({ ...prev, sub_category: selectedId }))}
+                                setListingProperties={(selectedId) => setListingProperties((prev) => ({ ...prev, sub_category: selectedId,otherListingType:'' }))}
                             />
                         </div>
                     ))

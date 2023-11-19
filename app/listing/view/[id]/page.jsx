@@ -56,6 +56,7 @@ export default function Listing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
+                    otherListingType:myListing.ad_duration_type
                 }));
                 const categoryType = checkCategoryType(myListing.category_id)
                 setAdvertisementType(categoryType)
@@ -104,8 +105,8 @@ export default function Listing({ params }) {
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w- full gap-4 flex justify-between'>
-                                    <div className='w-full md:w-[60%] '>
-                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} />
+                                    <div className='w-full md:w-[70%] '>
+                                        <ListingHeader listingProperties={listingProperties} advertisementType={listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType} />
 
                                         <Separator className='my-3' />
                                         <Preview value={listingProperties.description} heigth={200} autoHeigth={true}/>

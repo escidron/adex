@@ -37,16 +37,10 @@ export default function MarketPlaceCard({ ad }) {
         <MultiImage images={ad.image} height={'200px'} remove={false} />
         <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1" ? 'bg-green-600' : "bg-orange-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1" ? 'Available' : 'Running'}</span></p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
-          <div className="style_title_row w-full flex items-center justify-between">
-            <p className="font-[600] text-[20px] line-clamp-1">{ad.title}</p>
-            <div className="w-[100px] min-w-[100px]">
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-              <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-            </div>
+          <div className="w-full flex items-center justify-between">
+            <p className="font-[600] text-[18px] ">{ad.title}</p>
           </div>
+
           <div className='flex gap-1'>
             <MapPin size={14} color='gray' />
             <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
@@ -64,10 +58,18 @@ export default function MarketPlaceCard({ ad }) {
               )
             } */}
 
-          <div className='style_price_row flex w-[90%] justify-between items-center absolute bottom-[25px]'>
+          <div className='flex w-[90%] justify-between items-center absolute bottom-[25px]'>
             <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">{formatPrice(ad.price)}</b>{
               ad.ad_duration_type == '0' ? '/ Month' : ad.ad_duration_type == '2' ? '/ Unit' : ''
-            }</p>
+            }
+            </p>
+            <div className=" min-w-[70px]">
+              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+              <StarRoundedIcon sx={{ color: 'gray', fontSize: '15px' }} />
+              <StarRoundedIcon sx={{ color: 'gray', fontSize: '15px' }} />
+            </div>
           </div>
 
         </div>

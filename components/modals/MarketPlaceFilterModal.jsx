@@ -14,12 +14,12 @@ import { MapCoordinatesContext } from '@/app/market-place/page';
 import { Button } from '../ui/button';
 import { DialogFooter, DialogTrigger } from '../ui/dialog';
 import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
+import { NewSearchAddress } from '../placesAutocomplete/NewSearchAddress';
 
 const radiusValues = [100, 500, 1000, 2000]
 const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id: 3, label: 'Thing' }]
 
 export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
-    const [filteredData, setfilteredData] = useState([]);
     const [filters, setFilters] = useState([]);
     const [coords, setCoords] = useState({
         lat: -3.745,
@@ -35,6 +35,8 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const priceMin = searchParams.get("priceMin");
     const priceMax = searchParams.get("priceMax");
     const key = searchParams.get("key");
+    const latitude = searchParams.get("latitude")
+    const longitude = searchParams.get("longitude")
 
     const onClick = (field, value) => {
         console.log(field, value)
@@ -47,6 +49,8 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                 priceMin: field == 'price' ? value.priceMin : null,
                 priceMax: field == 'price' ? value.priceMax : null,
                 key: key,
+                latitude:field == 'coords' ? value.lat : latitude,
+                longitude:field == 'coords' ? value.lng : longitude
             }
         }, { skipNull: true, skipEmptyString: true });
         router.push(url);
@@ -61,11 +65,10 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
         router.push('/market-place');
 
     }
-    const handleAddress = (address) => {
-        console.log('address', address)
-    }
+
     const handleCoords = (coords) => {
         console.log('coords', coords)
+        onClick('coords',coords)
     }
     return (
         <>
@@ -76,11 +79,9 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                 <div className='flex flex-col items-center'>
                     <div className='px-[20px]  flex flex-col items-center  gap-6 w-full'>
                         <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-                            <div className="z-[99] w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
-                                <PlacesAutocomplete
+                            <div onClick={(e) => { e.stopPropagation() }} className="z-[99] w-full border rounded-lg outline-none  flex items-center shadow-sm">
+                                <NewSearchAddress
                                     setSelected={(coords) => handleCoords(coords)}
-                                    setAddress={(ad) => handleAddress(ad)}
-                                    currentLocation={''}
                                 />
                             </div>
                         </MapCoordinatesContext.Provider>
