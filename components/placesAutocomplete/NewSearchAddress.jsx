@@ -57,13 +57,13 @@ export function NewSearchAddress({ setSelected }) {
 
         <Command className='border-none'>
           <CommandInput
+          placeholder='Search address'
             value={value}
             onValueChange={(value) => {
               setValue(value);
               setOpen(true)
             }}
             disabled={!ready}
-            //placeholder="Search an address"
             className=" relative border-b-0"
           />
           <CommandList className={`${(value && open) ? 'absolute top-[190px] bg-white border w-[400px] md:w-[450px] rounded-lg shadow-md'  : 'hidden'}`}>

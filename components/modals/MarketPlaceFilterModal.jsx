@@ -21,6 +21,7 @@ const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id
 
 export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const [filters, setFilters] = useState([]);
+
     const [coords, setCoords] = useState({
         lat: -3.745,
         lng: -38.523
@@ -70,6 +71,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
         console.log('coords', coords)
         onClick('coords',coords)
     }
+    console.log('counter',counter)
     return (
         <>
 
@@ -140,7 +142,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                         </Button>
                         <DialogTrigger >
                             <Button type="submit" onClick={applyFilter}>
-                                <p>{`Filter  (${counter})`}</p>
+                                <p>{`Filter  (${counter })`}</p>
                             </Button>
                         </DialogTrigger>
                     </div>

@@ -102,6 +102,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
                         <MarketPlaceFilterModal
                             setOpenFilter={(toggle) => setOpenFilter(toggle)}
                             counter={newData.length}
+                            isDataLoaded={isDataLoaded}
                         />
                     </DialogContent>
                 </Dialog>
@@ -144,12 +145,12 @@ export default function MarketPlaceGrid({ newData, isDataLoaded }) {
 
             <MarketPlaceFooter isAbsolute={true} />
             {/* <Footer /> */}
-            {openFilter &&
+            {/* {openFilter &&
 
                 <MarketPlaceFilterModal
                     setOpenFilter={(toggle) => setOpenFilter(toggle)}
                 />
-            }
+            } */}
         </div>
     )
 }
