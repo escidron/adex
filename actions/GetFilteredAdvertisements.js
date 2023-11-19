@@ -1,5 +1,5 @@
 
-export default async function GetFilteredAdvertisements( type, adGroup, priceMin, priceMax, key ) {
+export default async function GetFilteredAdvertisements( ) {
     try {
   
       const response = await fetch(
@@ -11,13 +11,6 @@ export default async function GetFilteredAdvertisements( type, adGroup, priceMin
             'Content-Type': 'application/json'        
           },
           credentials: "include",
-          body: JSON.stringify({ 
-            type: type,
-            adGroup: adGroup,
-            priceMin: priceMin,
-            priceMax: priceMax,
-            key:key
-        }),
         }
       );
   
