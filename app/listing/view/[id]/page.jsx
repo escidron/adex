@@ -114,7 +114,7 @@ export default function Listing({ params }) {
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />
 
-                                        {advertisementType != 1 && (
+                                        {( advertisementType != 1 || listingProperties.otherListingType != 1) && (
                                             <>
                                                 <Separator className='my-5' />
                                                 <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
