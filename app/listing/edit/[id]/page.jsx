@@ -62,7 +62,7 @@ export default function EditListing({ params }) {
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             if (myListing) {
-                const categoryType = checkCategoryType(myListing.category_id)
+                const categoryType = checkCategoryType(myListing.ad_duration_type)
                 setListingProperties((prev) => ({
                     ...prev,
                     selectedStep: userData?.userType == 2 ? 'Category' : 'Business',

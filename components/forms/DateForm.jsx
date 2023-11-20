@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from 'react'
 import { Calendar } from '../ui/calendar';
-import { checkCategoryType } from '@/utils/checkCategoryType';
 
 export default function DateForm({ ListingContext }) {
     //sub category == 4 is event type
@@ -9,9 +8,7 @@ export default function DateForm({ ListingContext }) {
 
     useEffect(() => {
 
-        const categoryType = checkCategoryType(listingProperties.sub_category)
-
-        if (categoryType != 1) {
+        if (listingProperties.otherListingType != 1) {
             if (listingProperties.first_available_date) {
 
                 const newDate = new Date(listingProperties.first_available_date)
@@ -53,7 +50,7 @@ export default function DateForm({ ListingContext }) {
                     </div>
                     <p className='text-[18px] text-gray-500'>{listingProperties.sub_category == 4 ? 'Select the Event Start Date and End Date' : 'Asset first available date'}</p>
                 </div>
-                <div className=' mt-8 '>
+                <div className='mt-8'>
                     <Calendar
                         initialFocus
                         mode={listingProperties.sub_category == 4 ? 'range' : 'single'}
