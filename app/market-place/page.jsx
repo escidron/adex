@@ -41,12 +41,15 @@ export default function MarketPlace() {
         setNewData([])
         const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
         setAllData(response)
+        setIsDataLoaded(true);
+
       }
 
       if(allData.length == 0){
         getAds();
+      }else{
+        setIsDataLoaded(true);
       }
-      setIsDataLoaded(true);
 
     } else {
       if (navigator.geolocation) {
