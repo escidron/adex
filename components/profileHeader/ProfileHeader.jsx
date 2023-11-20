@@ -114,9 +114,9 @@ export default function ProfileHeader() {
                         />
                     </div>
                 </div>
-                <button className=' bg-[#FCD33B] mt-3 py-[4px] px-[20px] rounded-md  hover:bg-black hover:text-[#FCD33B] text-lg'>
+                {/* <button className=' bg-[#FCD33B] mt-3 py-[4px] px-[20px] rounded-md  hover:bg-black hover:text-[#FCD33B] text-lg'>
                     <Link href='/dashboard' className='style_banner_button_text font-semibold text-18px]'>View Dashboard</Link>
-                </button>
+                </button> */}
             </div>
         </div>
     )
