@@ -196,7 +196,7 @@ export default function DiscountsForm({ ListingContext }) {
                     }
                 </div>
                 {
-                    advertisementType === 0 && (
+                    advertisementType == 0 && (
                         <Card className='w-full mt-[50px] md:max-w-[450px] h-[260px] md:mt-0'>
                             <CardHeader>
                                 <CardTitle className='flex gap-2 items-center'>

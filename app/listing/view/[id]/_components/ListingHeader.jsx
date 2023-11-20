@@ -37,7 +37,7 @@ export default function ListingHeader({ listingProperties, advertisementType, is
                                             )
                                         }
                                         {
-                                            advertisementType === 0 && (
+                                            advertisementType == 0 && (
                                                 <p className='mt-1'>/Month</p>
                                             )
                                         }

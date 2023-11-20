@@ -85,12 +85,12 @@ export default function PriceForm({ ListingContext }) {
                                 ) : (
                                     <>
                                         {
-                                            listingProperties.sub_category === 17 && (
+                                            listingProperties.sub_category == 17 && (
                                                 <p className='mt-1'>/Unit</p>
                                             )
                                         }
                                         {
-                                            advertisementType === 0 && (
+                                            advertisementType == 0 && (
                                                 <p className='mt-1'>/Month</p>
                                             )
                                         }
