@@ -37,9 +37,10 @@ export default function DiscountsForm({ ListingContext }) {
     useEffect(() => {
 
         const categoryType = checkCategoryType(listingProperties.sub_category)
-        setAdvertisementType(categoryType)
+        setAdvertisementType(listingProperties.otherListingType ? listingProperties.otherListingType : categoryType)
     }, [listingProperties]);
-
+    console.log('advertisementType',advertisementType)
+    console.log('listingProperties',listingProperties)
     const addDiscount = () => {
         setNewDiscount(false)
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
@@ -101,7 +102,7 @@ export default function DiscountsForm({ ListingContext }) {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {
-                                                    advertisementType === 0 && (
+                                                    advertisementType == 0 && (
 
                                                         <SelectGroup>
                                                             {
@@ -113,7 +114,7 @@ export default function DiscountsForm({ ListingContext }) {
                                                     )
                                                 }
                                                 {
-                                                    advertisementType === 2 && (
+                                                    advertisementType == 2 && (
 
                                                         <SelectGroup>
                                                             {
@@ -170,13 +171,13 @@ export default function DiscountsForm({ ListingContext }) {
                                             <div className='flex gap-2 justify-between items-center p-2 w-full border mt-2 rounded-md'>
                                                 <div className='flex w-[90%]'>
                                                     {
-                                                        advertisementType === 2 && (
+                                                        advertisementType == 2 && (
 
                                                             <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book<label className='font-semibold'>{` ${item.duration} units `}</label>or more.</h1>
                                                         )
                                                     }
                                                     {
-                                                        advertisementType === 0 && (
+                                                        advertisementType == 0 && (
 
                                                             <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
                                                         )
@@ -213,7 +214,7 @@ export default function DiscountsForm({ ListingContext }) {
                     )
                 }
                 {
-                    advertisementType === 2 && (
+                    advertisementType == 2 && (
                         <Card className='w-full mt-[50px] md:max-w-[450px] h-[260px] md:mt-0'>
                             <CardHeader>
                                 <CardTitle className='flex gap-2 items-center'>
