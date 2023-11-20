@@ -5,7 +5,7 @@ export default function MarketPlaceCardSkeleton() {
   return (
     <div className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
-        <div className='w-full rounde-[16px] h-[200px]'>
+        <div className='w-full rounded-[16px] h-[200px]'>
 
           <Skeleton variant="rounded" width={'100%'} height={'100%'} sx={{ borderRadius: '16px' }} />
         </div>
