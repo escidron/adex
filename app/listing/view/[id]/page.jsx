@@ -58,8 +58,7 @@ export default function Listing({ params }) {
                     building_asset: myListing.sub_asset_type,
                     otherListingType:myListing.ad_duration_type
                 }));
-                const categoryType = checkCategoryType(myListing.category_id)
-                setAdvertisementType(categoryType)
+                setAdvertisementType(myListing.ad_duration_type)
             }
             if (categories && myListing) {
 
@@ -117,7 +116,9 @@ export default function Listing({ params }) {
                                         {( advertisementType != 1 || listingProperties.otherListingType != 1) && (
                                             <>
                                                 <Separator className='my-5' />
-                                                <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
+                                                <DiscountsInfo 
+                                                listingProperties={listingProperties} 
+                                                advertisementType={advertisementType} />
                                             </>
                                         )}
 

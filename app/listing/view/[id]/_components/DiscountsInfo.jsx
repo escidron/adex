@@ -16,13 +16,13 @@ export default function DiscountsInfo({ listingProperties, advertisementType }) 
                                             <div className='flex gap-2 justify-between items-center p-2 w-full border mt-2 rounded-md'>
                                                 <div className='flex w-[90%]'>
                                                     {
-                                                        advertisementType === 2 && (
+                                                        advertisementType == 2 && (
 
                                                             <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book<label className='font-semibold'>{` ${item.duration} units `}</label>or more.</h1>
                                                         )
                                                     }
                                                     {
-                                                        advertisementType === 0 && (
+                                                        advertisementType == 0 && (
 
                                                             <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
                                                         )
