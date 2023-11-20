@@ -41,6 +41,7 @@ export default function MarketPlace() {
         setNewData([])
         const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
         setAllData(response)
+        setIsDataLoaded(true);
       }
 
       if(allData.length == 0){
@@ -54,6 +55,7 @@ export default function MarketPlace() {
         });
 
       } else {
+
         toast.dismiss()
         toast.error('Please make sure your browser has access to your location', {
           duration: 10000,
@@ -68,39 +70,11 @@ export default function MarketPlace() {
 
   }, [located]);
 
-  console.log('dtaaaaaaa',allData)
-  // useEffect(() => {
-  //   setNewData([])
-  //   if (allData.length > 0) {
-  //     allData.map((ad) => {
-  //       let distance
+  console.log('located',located)
 
-  //       if (latitude && longitude) {
-  //         const filterCoords = {
-  //           lat: latitude,
-  //           lng: longitude
-  //         }
-  //         distance = haversine_distance(filterCoords, { lat: ad.lat, lng: ad.long });
-  //       } else {
-  //         distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
-
-  //       }
-
-  //       if (distance < radius || radius == 2000) {
-  //         setNewData((prevData) => [...prevData, ad])
-  //       }
-  //     })
-  //     setIsDataLoaded(true)
-  //   } else {
-  //     setNewData([])
-  //   }
-  // }, [located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);
-  // //////
   const filteredData = useMemo(() => {
 
     return allData.filter(ad => {
-
-
       let distance
       if (latitude && longitude) {
         const filterCoords = {
@@ -137,17 +111,15 @@ export default function MarketPlace() {
 
   useEffect(() => {
     setNewData(filteredData);
-    setIsDataLoaded(true);
+    // toast.success('data loaded')
   }, [filteredData]);
 
-  // console.log('newdata', newData)
-  // console.log('all', allData)
   return (
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
         <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-          <Map newData={newData} isDataLoaded={isDataLoaded} />
+          <Map newData={newData} isDataLoaded={isDataLoaded} located={located}/>
         </MapCoordinatesContext.Provider>
 
     </div>

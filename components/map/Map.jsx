@@ -15,7 +15,7 @@ const containerStyle = {
 
 
 const libraries = "places"
-function Map({ newData,isDataLoaded }) {
+function Map({ newData,isDataLoaded, located }) {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM',
@@ -33,7 +33,7 @@ function Map({ newData,isDataLoaded }) {
 
     <div className='w-full h-[100vh]'>
       <div className={`h-[100%] fixed  left-0 w-full lg:w-[60%]`}>
-          <MarketPlaceGrid newData = {newData} isDataLoaded={isDataLoaded}/>
+          <MarketPlaceGrid newData = {newData} isDataLoaded={isDataLoaded} located={located}/>
       </div>
       <div className='h-[100%] hidden lg:fixed right-0  lg:flex justify-center items-center w-[40%] mt-[45px]  '>
         <GoogleMap
