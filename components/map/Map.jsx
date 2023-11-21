@@ -17,7 +17,7 @@ const containerStyle = {
 const libraries = "places"
 function Map({ newData,isDataLoaded, located }) {
   
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded,loadError  } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM',
     libraries: libraries,
@@ -31,6 +31,7 @@ function Map({ newData,isDataLoaded, located }) {
   }, [])
 
   console.log( 'map loaded',isLoaded)
+  console.log( 'loadError ',loadError )
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
