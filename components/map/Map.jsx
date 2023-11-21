@@ -1,5 +1,5 @@
 "use client"
-import {useState,useContext,useCallback,memo} from 'react'
+import React,{useState,useContext,useCallback} from 'react'
 import MarketPlaceGrid from '../market place/marketPlaceGrid/MarketPlaceGrid';
 import loading from '../../public/loading.gif'
 import Image from 'next/image';
@@ -16,6 +16,7 @@ const containerStyle = {
 
 const libraries = "places"
 function Map({ newData,isDataLoaded, located }) {
+  
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM',
@@ -81,5 +82,5 @@ function Map({ newData,isDataLoaded, located }) {
     </div>
 }
 
-export default memo(Map)
+export default React.memo(Map)
 
