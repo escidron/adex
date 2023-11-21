@@ -38,9 +38,9 @@ export default function AnyPerson() {
 
     return (
         <div className='bg-black h-auto py-[30px] flex flex-col justify-center items-center'>
-            <h1 className='flex text-[32px] lg:text-[51px] text-white'>Any <span className='text-[#FCD33B] mx-2'>person</span>, place or thing</h1>
+            <h1 className='flex text-[32px] lg:text-[51px] text-white'>Any <span className='text-[#FCD33B] mx-2'>Person</span>, Place or <span className='text-[#FCD33B] mx-2'>Thing</span></h1>
             <div className='lg:w-[70%] text-white mt-6'>
-                <p className='text-center text-[16px] lg:text-[18px] px-[10px]'>By now you know – any person, place, or thing can earn with ADEX. Your creativity is your only limitation.  Good news is, now you’re here ready to create a listing – fantastic! Here are some things to keep in mind so that your listing pops and stands out above the crowd:</p>
+                <p className='text-center text-[18px] lg:text-[18px] px-[10px]'>With ADEX, your creativity is your only limitation. Whether you&apos;re a small business, gig worker, or student - grow and earn with ADEX</p>
             </div>
             <div className=' w-full md:w-[70%] flex mt-6'>
                 <Image
@@ -70,10 +70,10 @@ export default function AnyPerson() {
                     className='hidden md:flex w-1/2 md:w-[33.3%] md:rounded-r-[10px]'
                 />
             </div>
-            <div className='lg:w-[50%] text-white mt-6 px-[15px]'>
+            {/* <div className='lg:w-[50%] text-white mt-6 px-[15px]'>
                 <p className='text-center text-[16px] lg:text-[18px]'>Are you a person that would like to offer yourself as Ad space or, do you have a place or thing you’d like to offer up as Ad space, create a Listing in a few easy steps:</p>
-            </div>
-            <Button variant='secondary' className='mt-4' disabled={isPending} size='lg' onClick={() => {
+            </div> */}
+            <Button variant='secondary' className='mt-8 text-[20px]' disabled={isPending} size='lg' onClick={() => {
                 setIsPending(true)
                 router.push(user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login')
             }}>
