@@ -29,6 +29,7 @@ function Map({ newData,isDataLoaded, located }) {
     setMap(null)
   }, [])
 
+  console.log( 'map loaded',isLoaded)
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
