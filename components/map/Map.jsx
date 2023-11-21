@@ -15,7 +15,7 @@ const containerStyle = {
 
 
 function Map({ newData,isDataLoaded, located }) {
-  const libraries = "places"
+  const libraries = ["places"]
   
   const { isLoaded,loadError  } = useJsApiLoader({
     id: 'google-map-script',
