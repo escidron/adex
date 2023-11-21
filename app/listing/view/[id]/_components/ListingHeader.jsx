@@ -5,7 +5,6 @@ import { formatPrice } from '@/utils/format'
 import { MapPin } from 'lucide-react'
 
 export default function ListingHeader({ listingProperties, advertisementType, isBuyerView }) {
-    console.log('advertuliment type', advertisementType)
     return (
         <>
             <div className='mt-2 flex justify-between items-center'>
