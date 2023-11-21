@@ -82,5 +82,5 @@ function Map({ newData,isDataLoaded, located }) {
     </div>
 }
 
-export default React.memo(Map)
+export default Map
 
