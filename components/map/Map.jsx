@@ -14,8 +14,8 @@ const containerStyle = {
 };
 
 
-const libraries = "places"
 function Map({ newData,isDataLoaded, located }) {
+  const libraries = "places"
   
   const { isLoaded,loadError  } = useJsApiLoader({
     id: 'google-map-script',
@@ -30,8 +30,7 @@ function Map({ newData,isDataLoaded, located }) {
     setMap(null)
   }, [])
 
-  console.log( 'map loaded',isLoaded)
-  console.log( 'loadError ',loadError )
+  console.log( 'load Error ',loadError )
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
