@@ -20,6 +20,7 @@ import { useContext } from 'react'
 import { ListingContext } from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
+import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -31,15 +32,17 @@ export default function Listing({ params }) {
     useEffect(() => {
 
         async function getInfo() {
-            const { myListing } = (await GetMyAdvertisement(id)) || {}
+            const  myListing  = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()
+            console.log('myLisitng',myListing)
             setHasPayout(checkPayout);
 
             if (myListing) {
-                setListingProperties((prev) => ({
-                    ...prev,
+                console.log('sdadsasdasdasdasd',myListing)
+                setListingProperties({
+                 
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,
@@ -57,8 +60,10 @@ export default function Listing({ params }) {
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
                     otherListingType:myListing.ad_duration_type
-                }));
+                });
                 setAdvertisementType(myListing.ad_duration_type)
+                setIsContentLoaded(true)
+
             }
             if (categories && myListing) {
 
@@ -78,7 +83,6 @@ export default function Listing({ params }) {
                     discounts: discounts,
                 }));
             }
-            setIsContentLoaded(true)
         }
         getInfo();
 
@@ -91,6 +95,7 @@ export default function Listing({ params }) {
         handleRouteChange()
     }, []);
 
+    console.log('listingProperties',listingProperties)
     return (
         <>
             <TopBar />
