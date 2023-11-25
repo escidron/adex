@@ -62,10 +62,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
         setOpenFilter(false)
     }
 
-    const removeFilter = () => {
-        router.push('/market-place');
 
-    }
 
     const handleCoords = (coords) => {
         console.log('coords', coords)
@@ -76,7 +73,6 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
 
             <div className='  bg-white    rounded-xl'>
 
-                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '10px', marginBottom: '20px' }} />
                 <div className='flex flex-col items-center'>
                     <div className='px-[20px]  flex flex-col items-center  gap-6 w-full'>
                         <MapCoordinatesContext.Provider value={[coords, setCoords]}>
@@ -133,17 +129,16 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                     </div>
 
                 </div>
-                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
-                <DialogFooter className='flex flex-row justify-between w-full'>
+                {/* <DialogFooter className='flex flex-row justify-between w-full'>
                     <div className='w-full flex justify-between items-center'>
                         <Button type="submit" variant='outline' onClick={removeFilter}>
                             <p>Remove Filter</p>
                         </Button>
                         <DialogTrigger className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
-                                <p>{`Filter  (${counter })`}</p>
+                                <p>{`Apply Filter  (${counter })`}</p>
                         </DialogTrigger>
                     </div>
-                </DialogFooter>
+                </DialogFooter> */}
             </div>
 
         </>

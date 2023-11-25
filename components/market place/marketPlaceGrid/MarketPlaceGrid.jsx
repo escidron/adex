@@ -11,6 +11,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -21,6 +22,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
 import TermsOfUseModal from '@/components/modals/TermsOfUseModal';
 import MarketPlaceCardSkeleton from '../marketPlaceCard/MarketPlaceCardSkeleton';
+import { Divider } from '@mui/material';
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
@@ -63,6 +65,11 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
         router.push(url);
     }, [debouncedValue, router, pathname])
 
+    const removeFilter = () => {
+        router.push('/market-place');
+
+    }
+
     // const handleKeyDown = (event)=>{
     //     if (event.key === 'Enter') {
     //         // Ação que você deseja executar quando a tecla Enter é pressionada
@@ -84,25 +91,42 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                     />
                     <svg aria-hidden="true" className="absolute top-3 left-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                 </div>
-                <Dialog className='mt-8 max-h-[80vh] overflow-y-auto z-[60]'>
+                <Dialog className='mt-8 max-h-[80vh] overflow-y-auto '>
                     <DialogTrigger className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                         <div className='mr-2'>
                             <SlidersHorizontal size={16} />
                         </div>
                         Filters
                     </DialogTrigger>
-                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[60]" >
+                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[98] h-[85vh]" >
                         <DialogHeader>
                             <DialogTitle>Filters</DialogTitle>
                             <DialogDescription>
                                 Use the filter modal to narrow down your listing search and discover the perfect advertisements with ease.
                             </DialogDescription>
                         </DialogHeader>
-                        <MarketPlaceFilterModal
-                            setOpenFilter={(toggle) => setOpenFilter(toggle)}
-                            counter={newData.length}
-                            isDataLoaded={isDataLoaded}
-                        />
+                        <Divider variant="" sx={{ color: 'black', width: '95%', marginTop: '10px'}} />
+
+                        <div className='overflow-y-auto '>
+
+                            <MarketPlaceFilterModal
+                                setOpenFilter={(toggle) => setOpenFilter(toggle)}
+                                counter={newData.length}
+                                isDataLoaded={isDataLoaded}
+                            />
+                        </div>
+                        <Divider variant="" sx={{ color: 'black', width: '95%', marginBottom: '20px' }} />
+
+                        <DialogFooter className='flex flex-row justify-between w-full'>
+                            <div className='w-full flex justify-between items-center'>
+                                <Button type="submit" variant='outline' onClick={removeFilter}>
+                                    <p>Remove Filter</p>
+                                </Button>
+                                <DialogTrigger className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+                                    <p>{`Apply Filter  (${newData.length})`}</p>
+                                </DialogTrigger>
+                            </div>
+                        </DialogFooter>
                     </DialogContent>
                 </Dialog>
             </div>
@@ -146,23 +170,23 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                             <h1 className="text-[26px]">Browser location restriction</h1>
                             <p className='text-center'>Please make sure your browser has access to your location and reload the page</p>
                         </div>
-                    ): (
+                    ) : (
 
-                            <>
-                        <div className = {`justify-between h-[80vh] mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
-            {newData.map((ad) => (
-                <MarketPlaceCard key={ad.id} ad={ad} />
-            ))}
-            <MarketPlaceFooter />
+                        <>
+                            <div className={`justify-between h-[80vh] mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+                                {newData.map((ad) => (
+                                    <MarketPlaceCard key={ad.id} ad={ad} />
+                                ))}
+                                {/* <MarketPlaceFooter /> */}
 
-        </div>
-                    </>
+                            </div>
+                        </>
                     )
-}
+            }
 
-<MarketPlaceFooter isAbsolute={true} />
-{/* <Footer /> */ }
-{/* {openFilter &&
+            {/* <MarketPlaceFooter isAbsolute={true} /> */}
+            {/* <Footer /> */}
+            {/* {openFilter &&
 
                 <MarketPlaceFilterModal
                     setOpenFilter={(toggle) => setOpenFilter(toggle)}
