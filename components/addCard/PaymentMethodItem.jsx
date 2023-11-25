@@ -2,14 +2,27 @@ import React from 'react'
 import Image from 'next/image'
 import axios from 'axios'
 import { Trash } from 'lucide-react';
-export default function PaymentMethodItem({ item, setCheckDefault, setShowDeleteModal,setDeleteId }) {
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
     const handleSelected = (e) => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/set-default-card`,
             { cardId: item.id }, {
             withCredentials: true,
         })
             .then(function (response) {
-                setCheckDefault(true)
+                setRefetch(prev => !prev)
+
             })
             .catch(function (error) {
                 console.log(error)
@@ -53,12 +66,31 @@ export default function PaymentMethodItem({ item, setCheckDefault, setShowDelete
                     </div>
                 </div>
             </div>
-            <div onClick={(e) => {
-                e.stopPropagation()
-                setDeleteId(item.id)
-                setShowDeleteModal(true)
-            }} className='p-2 rounded-md hover:bg-slate-100 cursor-pointer'>
-                <Trash />
+
+            <div onClick={(e)=>e.stopPropagation()}>
+
+                <AlertDialog>
+                    <AlertDialogTrigger>
+                        <div className="p-2 rounded-md hover:bg-slate-100 cursor-pointer" >
+                            <Trash size={20} />
+                        </div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent >
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this payment method.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={(e) => {
+                                deleteElement(item.id)
+                                setRefetch(prev => !prev)
+                            }}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
 
         </div>

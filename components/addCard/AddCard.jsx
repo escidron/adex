@@ -15,6 +15,8 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 export default function AddCard() {
   const [showModal, setShowModal] = useState(false);
   const [refetch, setRefetch] = useState(false);
+
+  //todo:request cards
   return (
     <div>
       <div>
@@ -24,7 +26,7 @@ export default function AddCard() {
       <button onClick={() => setShowModal(true)} className='style_banner_button  mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
                                  lg:py-[10px] lg:px-[30px] lg:mt-10 '><p className='style_banner_button_text font-medium'>Add Payment Method</p>
       </button>
-      <PaymentMethodList refetch={refetch} setRefetch={setRefetch}/>
+      <PaymentMethodList refetch={refetch} setRefetch={setRefetch} data={[]}/>
       {showModal && (
         <Elements stripe={stripePromise}>
           <StripeForm setShowModal={(show)=>setShowModal(show)} setRefetch={(refetch)=>setRefetch(refetch)}/>

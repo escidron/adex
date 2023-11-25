@@ -1,35 +1,32 @@
 'use client'
 
 import Footer from '@/components/footer/Footer'
-import TopBar from '../../listing/view/[id]/_components/TopBar'
-import PayoutWarningBanner from '../../listing/view/[id]/_components/PayoutWarningBanner'
 import ImagesBox from '../../listing/view/[id]/_components/ImagesBox'
 import ListingHeader from '../../listing/view/[id]/_components/ListingHeader'
 import DateInfo from '../../listing/view/[id]/_components/DateInfo'
 import DiscountsInfo from '../../listing/view/[id]/_components/DiscountsInfo'
 import InstructionsInfo from '../../listing/view/[id]/_components/InstructionsInfo'
 import PageSkeleton from '../../listing/view/[id]/_components/PageSkeleton'
-import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
+import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
+import Reservation from '@/components/reservation/Reservation'
+import SellerDetails from './_components/SellerDetails'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
-import { useContext } from 'react'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import { useSearchParams } from 'next/navigation'
-import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
-import Reservation from '@/components/reservation/Reservation'
 import { Button } from '@/components/ui/button'
 import { SendHorizontal } from 'lucide-react'
-import SellerDetails from './_components/SellerDetails'
+import { Toaster } from 'react-hot-toast'
+
+
 
 export default function ListingDetails({ sharedId }) {
     const [listingProperties, setListingProperties] = useState({})
     const [advertisementType, setAdvertisementType] = useState('')
-    const [hasPayout, setHasPayout] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const [discounts, setDiscounts] = useState([]);
     const [isChatOpen, setIsChatOpen] = useState(false)
@@ -37,6 +34,8 @@ export default function ListingDetails({ sharedId }) {
     const [hasCard, setHasCard] = useState(false)
     const [isBooked, setIsBooked] = useState(false)
     const [isRequested, setIsRequested] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const [refetch, setRefetch] = useState(false);
 
     const searchParams = useSearchParams()
     const id = sharedId ? sharedId : searchParams.get('id')
@@ -50,8 +49,6 @@ export default function ListingDetails({ sharedId }) {
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             setDiscounts(discounts)
-            const categoryType = checkCategoryType(myListing.category_id)
-            setAdvertisementType(categoryType)
 
             if (myListing) {
                 setListingProperties((prev) => ({
@@ -76,7 +73,8 @@ export default function ListingDetails({ sharedId }) {
                     seller_name: myListing.seller_name,
                     seller_image: myListing.seller_image,
                     seller_id: myListing.created_by,
-                    ad_duration_type: categoryType
+                    ad_duration_type: myListing.ad_duration_type,
+                    id:id
                 }));
 
             }
@@ -140,11 +138,11 @@ export default function ListingDetails({ sharedId }) {
 
     return (
         <>
+            <Toaster />
             <div className={`h-full w-full mt-[80px] py-4 flex flex-col items-center justify-center`}>
                 {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1100px]'>
-                            {/* todo:add seller card */}
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w-full flex justify-between mt-4'>
@@ -158,7 +156,7 @@ export default function ListingDetails({ sharedId }) {
                                         <SellerDetails listingProperties={listingProperties} />
 
                                         {
-                                            (listingProperties.first_available_date  || (listingProperties.date.from && listingProperties.date.to)) && (
+                                            (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (
                                                 <>
                                                     <Separator className='my-6' />
                                                     <DateInfo listingProperties={listingProperties} />

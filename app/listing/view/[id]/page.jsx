@@ -31,7 +31,7 @@ export default function Listing({ params }) {
     useEffect(() => {
 
         async function getInfo() {
-            const myListing = await GetMyAdvertisement(id)
+            const { myListing } = (await GetMyAdvertisement(id)) || {}
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()

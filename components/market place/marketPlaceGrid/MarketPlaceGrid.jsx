@@ -98,7 +98,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                         </div>
                         Filters
                     </DialogTrigger>
-                    <DialogContent className="w-[90%] sm:max-w-[550px] z-[98] h-[85vh]" >
+                    <DialogContent className="w-[90%] sm:max-w-[550px] h-[85vh]" >
                         <DialogHeader>
                             <DialogTitle>Filters</DialogTitle>
                             <DialogDescription>

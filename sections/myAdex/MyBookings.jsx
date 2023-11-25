@@ -2,9 +2,11 @@
 import { useState } from 'react'
 import Card from './Card'
 import Link from 'next/link'
+import CardSkeleton from './_components/CardSkeleton'
 
-export default function MyBookings({ data }) {
-  if (data.length === 0) {
+export default function MyBookings({ data, isContentLoaded }) {
+
+  if (data.length == 0 && isContentLoaded ) {
     return (
       <>
         <h1 className='text-[20px]'>There are not exist any Booking yet</h1>
@@ -12,7 +14,14 @@ export default function MyBookings({ data }) {
       </>
     )
   }
-
+  if (!isContentLoaded) {
+    return (
+      <>
+        <CardSkeleton />
+        <CardSkeleton />
+      </>
+    )
+  }
   return (
     <div className='flex flex-col items-center justify-center mt-8'>
       {

@@ -186,7 +186,7 @@ export default function Listing({ params }) {
                 images: listingProperties.images,
                 ad_duration_type: listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType,
                 sub_asset_type: listingProperties.building_asset,
-                per_unit_price: advertisementType ? 2 : listingProperties.price,
+                per_unit_price: advertisementType == '2' ? listingProperties.price : null,
                 discounts: listingProperties.discounts,
                 company_id: selectedCompany,
                 importFromGallery: importFromGallery,

@@ -22,7 +22,7 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
 
-  if (data.length && isContentLoaded === 0) {
+  if (data?.length == 0 && isContentLoaded ) {
     return (
       <>
         <h1 className='text-[20px]'>There are not exist any Listing yet</h1>

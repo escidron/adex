@@ -17,15 +17,26 @@ import { HelpCircle, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { DateFieldComponent } from '../datePicker/DateFieldComponent';
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Elements } from '@stripe/react-stripe-js';
+import StripeForm from '../addCard/StripeForm';
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentMethodList from '../addCard/PaymentMethodList';
+import GetPaymentMethod from '@/actions/GetPaymentMethod';
 
+const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
 
 export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts, isContentLoaded }) {
 
-    const currentDate = new Date();
-    let currentDateDay = currentDate.getDate();
-    let currentDateMonth = currentDate.getMonth() > 0 ? currentDate.getMonth() - 1 : currentDate.getMonth();
-    let currentDateYear = currentDate.getFullYear()
     const [date, setDate] = useState('');
     const [counter, setCounter] = useState(1);
     const [incomplete, setIncomplete] = useState(false);
@@ -33,8 +44,33 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [currentDiscount, setCurrentDiscount] = useState(0);
     const [discountOptions, setDiscountOptions] = useState(false);
     const [user, setUser] = useContext(UserContext)
+    const [paymentMethods, setPaymentMethods] = useState([]);
+    const [refetch, setRefetch] = useState(false);
+    const [addCard, setAddCard] = useState(false);
+
     const router = useRouter();
-    console.log('date', date)
+
+    useEffect(() => {
+        async function getInfo() {
+            const cards = await GetPaymentMethod()
+            setPaymentMethods(cards)
+        }
+        getInfo();
+
+    }, [refetch]);
+
+    useEffect(() => {
+        if( !date ){
+            if( data.ad_duration_type != '1' ){
+
+                setDate(new Date(data.first_available_date))
+            }else{
+                setDate(new Date(data.date.from))
+            }
+        }
+
+    }, []);
+
     useEffect(() => {
         let hasDiscount = false
         discounts.map((item) => {
@@ -50,56 +86,34 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [counter]);
 
     const Booking = () => {
-        if (user.isLogged) {
-            if (hasCard) {
-                setIsPending(true)
-                //not using now
-                if (data.is_automatic === '1') {
-                    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/create-payment-intent`,
-                        {
-                            data: data,
-                            duration: counter,
-                            start_date: date,
-                            current_discount: currentDiscount
-                        }, {
-                        withCredentials: true,
-                    })
-                        .then(function (response) {
-                            setIsPending(false)
-                            setIsBooked(true)
-                            console.log('set is booked')
+        router.push('my-profile?tab=5&sub-tab=1')
 
-                        })
-                        .catch(function (error) {
-                            console.log('error', error.response.data.message)
-                            toast.error(error.response.data.message)
-                            setIsPending(false)
-
-                        });
-                    return
-                }
-                axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/request-reserve`,
-                    {
-                        data: data,
-                        duration: counter,
-                        start_date: data.ad_duration_type !== '0' ? date : data.category_id != 17 ? data.start_date : null
-                    }, {
-                    withCredentials: true,
-                })
-                    .then(function (response) {
-                        setIsPending(false)
-                        setIsRequested(true)
-                    })
-                    .catch(function (error) {
-                        console.log('error', error)
-                    });
-                return
-            }
-            setIncomplete(true)
-        } else {
-            console.log('entrou no false')
-            router.push('/login')
-        }
+        // if (user.isLogged) {
+        //     if (paymentMethods.length > 0) {
+        //         setIsPending(true)
+        //         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/request-reserve`,
+        //             {
+        //                 data: data,
+        //                 duration: counter,
+        //                 start_date: date
+        //             }, {
+        //             withCredentials: true,
+        //         })
+        //             .then(function (response) {
+        //                 setIsPending(false)
+        //                 setIsRequested(true)
+        //                 router.push('/my-profile?tab=5')
+        //             })
+        //             .catch(function (error) {
+        //                 console.log('error', error)
+        //             });
+        //         return
+        //     }
+        //     setIncomplete(true)
+        // } else {
+        //     console.log('entrou no false')
+        //     router.push('/login')
+        // }
     }
 
 
@@ -122,6 +136,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         )
     }
     console.log('data', data)
+    console.log('refetch', refetch)
+    console.log('DATE', date)
     return (
         <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
@@ -146,7 +162,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                 />
                             </div>
                             <div className='w-[35%] flex flex-col items-center justify-end'>
-                                <label htmlFor="date" className='mb-1'>{data.category_id == 17 ? 'Units' : 'Duration'}</label>
+                                <label htmlFor="date" className='mb-1'>{data.ad_duration_type == '2' ? 'Units' : 'Duration'}</label>
                                 <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
                             </div>
                         </>
@@ -204,19 +220,67 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     // <Button onClick={Booking} className='mt-4 '>
                     //     Request
                     // </Button>
-                    <Button  className='mt-4' disabled={isPending} onClick={() => {
-                        setIsPending(true)
-                        Booking()
+                    <Dialog className='w-full '>
+                        <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+                            Request Booking
+                        </DialogTrigger>
+                        <DialogContent className='w-full max-w-[550px]'>
+                            {
+                                (paymentMethods?.length == 0 || addCard) && (
+                                    <>
+                                        <DialogHeader>
+                                            <DialogTitle>Add Card Details</DialogTitle>
+                                            <DialogDescription>
+                                                You will only be charge if your request is approved.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <Elements stripe={stripePromise}>
+                                            <StripeForm
+                                                setRefetch={(toggle) => setRefetch(toggle)}
+                                                setAddCard={(toggle) => setAddCard(toggle)}
+                                            />
+                                        </Elements>
+                                    </>
+                                )
+                            }
+                            {
+                                (paymentMethods?.length > 0 && !addCard) && (
+                                    <>
+                                        <DialogHeader>
+                                            <DialogTitle>Confirm the Payment Method</DialogTitle>
+                                            <DialogDescription>
+                                                You will only be charge if your request is approved.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className='max-h-[400px] overflow-y-auto invisible_scroll_bar'>
 
-                    }}>
-                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                        Request Booking
-                    </Button>
+                                            <PaymentMethodList
+                                                data={paymentMethods}
+                                                setRefetch={(toggle) => setRefetch(toggle)}
+
+                                            />
+                                        </div>
+                                        <DialogFooter className='mt-4'>
+                                            <div className='w-full flex justify-around items-center'>
+                                                <Button variant='outline' onClick={() => setAddCard(true)}>Add Card</Button>
+                                                {/* <Button type="submit" onClick={Booking}>Send Request</Button> */}
+                                                <Button disabled={isPending} type='submit' onClick={Booking}>
+                                                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                        
+                                                    Send Request
+                                                </Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </>
+                                )
+                            }
+                        </DialogContent>
+                    </Dialog>
                 )
             }
-            {data.status == '1' && (
+            {/* {data.status == '1' && (
                 <p className='text-[12px] mt-2'>You will only be charge if your reserve request is aproved</p>
-            )}
+            )} */}
             {incomplete && !hasCard && (
                 <div className='flex gap-2 items-center mt-2'>
                     <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />

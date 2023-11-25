@@ -37,6 +37,8 @@ export default function TabsComponent({children,value,setValue}) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log('valuee tab',value)
   return (
     
     <Box sx={{ width: '100%' }}>

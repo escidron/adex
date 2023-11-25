@@ -3,69 +3,45 @@ import PaymentMethodItem from './PaymentMethodItem'
 import axios from 'axios';
 import DeleteConfirmationModal from '../modals/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
+import RemovePaymentMethod from '@/actions/RemovePaymentMethod';
 
 
 
-export default function PaymentMethodList({ refetch,setRefetch }) {
-    const [data, setData] = useState([]);
+export default function PaymentMethodList({ setRefetch, data }) {
+    // const [data, setData] = useState([]);
     const [checkDefault, setCheckDefault] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [deletedId, setDeleteId] = useState('');
+    // const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    useEffect(() => {
 
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-cards`,
-            {}, {
-            withCredentials: true,
-
-        })
-            .then(function (response) {
-                setData(response.data.data)
-                setRefetch(false)
-                setCheckDefault(false)
-                console.log('response',response)
-
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
-    }, [refetch,checkDefault]);
-
-    const deleteElement = () => {
-        setShowDeleteModal(false)
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/delete-card`,
-            { cardId: deletedId }, {
-            withCredentials: true,
-        })
-            .then(function (response) {
-                setCheckDefault(true)
-                toast.success(response.data.message)
-            })
-            .catch(function (error) {
-                toast.error(error.response.data.error, {
-                    duration: 10000
-                })
-
-            });
+    const deleteElement = async (id) => {
+        console.log('remove card',id)
+        const message = await RemovePaymentMethod(id)
+        if (message) {
+            toast.success(message)
+            setRefetch(prev => !prev)
+        } else {
+            toast.error('Something went wrong')
+        }
     }
+
     return (
         <div className={`mt-4  flex flex-col gap-2`}>
             {data.map((item) => 
                 <PaymentMethodItem 
                     key={item.id} 
                     item={item} 
-                    setCheckDefault={(d)=>setCheckDefault(d)}
-                    setShowDeleteModal={(toggle)=>setShowDeleteModal(toggle)}
-                    setDeleteId={(id)=>setDeleteId(id)}
+                    setRefetch={(toggle)=>setRefetch(toggle)}
+                    deleteElement={(id)=>deleteElement(id)}
+
                     />
             )}
-            {showDeleteModal && (
+            {/* {showDeleteModal && (
                 <DeleteConfirmationModal 
                 label='Payment Method'
                 setShowDeleteModal={(toggle)=>setShowDeleteModal(toggle)}
                 deleteElement={deleteElement}
                 />
-            )}
+            )} */}
         </div>
     )
 }

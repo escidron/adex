@@ -1,36 +1,13 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import StarRoundedIcon from '@mui/icons-material/StarRounded';// import path from '../../public/ad_images/6456fd7bc5413.png'
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import Link from 'next/link';
-import CloseIcon from '@mui/icons-material/Close';
 import MultiImage from '@/components/multiImage/MultiImage';
 import { MapPin } from 'lucide-react';
 import { Preview } from '@/components/textarea/TextAreaReader';
-import { add } from 'date-fns';
 import { formatPrice } from '@/utils/format';
 
-
-
-
 export default function MarketPlaceCard({ ad }) {
-  const [src, setSrc] = useState('/ad_images/' + ad.image);
-  const [showModal, setShowModal] = useState(false)
-  const [bulletPoints, setBulletPoints] = useState([]);
-  const path = '/ad_images/'
-  //duration type
-  // '1'=>'Daily',
-  // '2'=>'Weekly',
-  // '3'=>'Monthly',
-  // '4'=>'Unit',
-  // '5'=>'Year' 
 
-  useEffect(() => {
-    if (ad) {
-      const bulletPoints = ad.description.split('\n');
-      setBulletPoints(bulletPoints)
-    }
-
-  }, []);
   return (
     <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
@@ -46,17 +23,6 @@ export default function MarketPlaceCard({ ad }) {
             <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
           </div>
           <Preview value={ad.description} heigth={80} />
-
-          {/* {
-              showModal && (
-                <div className='absolute top-0 left-0 w-full h-full bg-slate-200 z-[99] p-2'>
-                  <CloseIcon onClick={() => setShowModal(false)} sx={{ "&:hover": { color: "#FCD33B", cursor: 'pointer' } }} className='flex ml-auto' />
-                  <div className='mt-2'>
-                    {ad.description}
-                  </div>
-                </div>
-              )
-            } */}
 
           <div className='flex w-[90%] justify-between items-center absolute bottom-[25px]'>
             <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">{formatPrice(ad.price)}</b>{
