@@ -8,11 +8,13 @@ import toast, { Toaster } from "react-hot-toast";
 import GetFilteredAdvertisements from '@/actions/GetFilteredAdvertisements';
 import { findKeyWords } from '@/utils/findKeyWords';
 import { AllDataContext } from './layout';
+import GetCategories from '@/actions/GetCategories';
 
 export const MapCoordinatesContext = createContext();
 
 export default function MarketPlace() {
   const [newData, setNewData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [allData, setAllData] = useContext(AllDataContext);
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -41,6 +43,8 @@ export default function MarketPlace() {
         setNewData([])
         const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
         setAllData(response)
+        const categories = await GetCategories()
+        setCategories(categories)
         setIsDataLoaded(true);
 
       }
@@ -100,12 +104,14 @@ export default function MarketPlace() {
         types = "17,18";
       }
 
+      const isKeyFound =  findKeyWords(ad, key,categories)
+      console.log(  'isKeyFound',isKeyFound)
       const filterConditions = [
         distance < radius || radius == 2000,
         type ? types.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
         (ad.price >= priceMin && ad.price <= priceMax),
-        key ? findKeyWords(ad, key) : true
+        key ?  isKeyFound : true
 
       ];
 
@@ -114,7 +120,7 @@ export default function MarketPlace() {
   }, [allData, located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);
 
   useEffect(() => {
-    setNewData(filteredData);
+    setNewData(()=>(filteredData));
     // toast.success('data loaded')
   }, [filteredData]);
 
