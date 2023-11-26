@@ -11,6 +11,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-map
 import { MapCoordinatesContext } from '@/app/market-place/page';
 import MultiImage from '../multiImage/MultiImage';
 import { formatPrice } from '@/utils/format';
+import { MapPin } from 'lucide-react';
 
 const containerStyle = {
   width: '100%',
@@ -89,7 +90,7 @@ function Map({ newData, isDataLoaded, located }) {
               position={{ lat: parseFloat(selectedMarker.lat), lng: parseFloat(selectedMarker.long) }}
               onCloseClick={handleInfoWindowClose}
             >
-              <div className='w-[200px] p-0'>
+              <div className='w-[240px] p-0'>
                 <Image
                   src={selectedMarker.image[0].data_url}
                   alt="Adex item"
@@ -100,7 +101,11 @@ function Map({ newData, isDataLoaded, located }) {
                 />
                 <div className='mt-2'>
                   <p className='text-[15px] font-[600]'>{selectedMarker.title}</p>
-                  <div className='w-full flex justify-between mt-2'>
+                  <div className='flex gap-1 mt-1'>
+                    <MapPin size={14} color='gray' />
+                    <p className='text-[12px] text-gray-500 line-clamp-2'>{selectedMarker.address}</p>
+                  </div>
+                  <div className='w-full flex justify-between mt-3'>
                     <p className='text-[16px] font-[600]' >{formatPrice(selectedMarker.price)}</p>
                     <div className="flex items-center justify-start">
                       <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
