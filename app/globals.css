@@ -360,3 +360,10 @@ input[type=number] {
   width: 105% !important;
   left: -10px !important;
 }
+
+.gm-style-iw {
+  padding: 0;
+}
+.gm-style-iw-tc {
+  display: none !important;
+}

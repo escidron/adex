@@ -1,12 +1,16 @@
 "use client"
-import React,{useState,useContext,useCallback} from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import MarketPlaceGrid from '../market place/marketPlaceGrid/MarketPlaceGrid';
 import loading from '../../public/loading.gif'
+
 import Image from 'next/image';
+import StarRoundedIcon from '@mui/icons-material/StarRounded'
 
 
-import { GoogleMap, useJsApiLoader, Marker, MapContext } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import { MapCoordinatesContext } from '@/app/market-place/page';
+import MultiImage from '../multiImage/MultiImage';
+import { formatPrice } from '@/utils/format';
 
 const containerStyle = {
   width: '100%',
@@ -14,10 +18,11 @@ const containerStyle = {
 };
 
 
-function Map({ newData,isDataLoaded, located }) {
+function Map({ newData, isDataLoaded, located }) {
   const libraries = ["places"]
-  
-  const { isLoaded,loadError  } = useJsApiLoader({
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM',
     libraries: libraries,
@@ -30,12 +35,21 @@ function Map({ newData,isDataLoaded, located }) {
     setMap(null)
   }, [])
 
-  console.log( 'load Error ',loadError )
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker);
+  };
+
+  const handleInfoWindowClose = () => {
+    setSelectedMarker(null);
+  };
+
+  console.log('load Error ', loadError)
+  console.log('selectedMarker ', selectedMarker)
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
       <div className={`h-[100%] fixed  left-0 w-full lg:w-[60%]`}>
-          <MarketPlaceGrid newData = {newData} isDataLoaded={isDataLoaded} located={located}/>
+        <MarketPlaceGrid newData={newData} isDataLoaded={isDataLoaded} located={located} />
       </div>
       <div className='h-[100%] hidden lg:fixed right-0  lg:flex justify-center items-center w-[40%] mt-[45px]  '>
         <GoogleMap
@@ -45,40 +59,73 @@ function Map({ newData,isDataLoaded, located }) {
           onLoad={map => setMap(map)}
           onUnmount={onUnmount}
         >
-          <Marker position={coords} 
-          map={map}
-          icon={{ 
-                url: '/mylocation.ico',
-              }}/>
+          <Marker position={coords}
+            map={map}
+            icon={{
+              url: '/mylocation.ico',
+            }} />
 
-          {newData.map((marker)=>{
+          {newData.map((marker) => {
 
-            return(
-              <Marker key={marker.id } 
+            return (
 
-              className='h-4'
-              position={{lat:parseFloat(marker.lat),lng:parseFloat(marker.long)}} 
-              map={map} 
-              onMouseOver={() => alert('qwe')}         
-              icon={{ 
-                url: marker.status==1?'/greenPin.ico':'/redPin.ico',
-              }}
+              <Marker key={marker.id}
+
+                className='h-4'
+                position={{ lat: parseFloat(marker.lat), lng: parseFloat(marker.long) }}
+                map={map}
+                // onMouseOver={() => onOpenChange(true)}
+                onClick={() => handleMarkerClick(marker)}
+
+                icon={{
+                  url: marker.status == 1 ? '/greenPin.ico' : '/redPin.ico',
+                }}
               />
-              )
+            )
 
           })}
+          {selectedMarker && (
+            <InfoWindow
+              position={{ lat: parseFloat(selectedMarker.lat), lng: parseFloat(selectedMarker.long) }}
+              onCloseClick={handleInfoWindowClose}
+            >
+              <div className='w-[200px] p-0'>
+                <Image
+                  src={selectedMarker.image[0].data_url}
+                  alt="Adex item"
+                  id='image-loaded'
+                  width={2000}
+                  height={2000}
+                  className={`rounded-[8px] w-full h-[100px] object-cover `}
+                />
+                <div className='mt-2'>
+                  <p className='text-[15px] font-[600]'>{selectedMarker.title}</p>
+                  <div className='w-full flex justify-between mt-2'>
+                    <p className='text-[16px] font-[600]' >{formatPrice(selectedMarker.price)}</p>
+                    <div className="flex items-center justify-start">
+                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
+                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
+                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
+                      <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
+                      <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </InfoWindow>
+          )}
         </GoogleMap>
       </div>
     </div>
-  ) : <div className='w-full flex justify-center items-center h-[100vh]'> 
-        <Image
-        src={loading}
-        alt="loading"
-        width={50}
-        height={50}
-        priority
-        />
-    </div>
+  ) : <div className='w-full flex justify-center items-center h-[100vh]'>
+    <Image
+      src={loading}
+      alt="loading"
+      width={50}
+      height={50}
+      priority
+    />
+  </div>
 }
 
 export default Map
