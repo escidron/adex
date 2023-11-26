@@ -12,7 +12,10 @@ import axios from 'axios';
 import CancelBooking from '../modals/CancelBooking';
 import toast from 'react-hot-toast';
 import Countdown, { zeroPad } from 'react-countdown';
-import { HelpCircle, Info } from 'lucide-react';
+import { CalendarIcon, HelpCircle, Info, Loader2 } from 'lucide-react';
+import { Button } from '../ui/button';
+import { format } from 'date-fns';
+import { formatPrice } from '@/utils/format';
 
 
 
@@ -38,7 +41,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     let hasStarted = false
     let countDownDays
-    
+
     if (currentDate >= startDate) {
         hasStarted = true
     } else {
@@ -50,7 +53,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     useEffect(() => {
-        console.log('get contract',advertisement)
+        console.log('get contract', advertisement)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
                 advertisementId: advertisement.id,
@@ -75,7 +78,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             {
                 data: advertisement,
                 duration: advertisement.duration,
-                start_date: advertisement.start_date
+                start_date: advertisement.date.from
             }, {
             withCredentials: true,
         })
@@ -208,64 +211,78 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             </div>
         )
     }
-
-    console.log('finishCountdown', finishCountdown)
+    console.log('advertisement', advertisement)
     return (
-        <div className={`w-[400px] min-w-[400px] h-auto flex flex-col   shadow-lg rounded-lg border p-4 `}>
+        <div className={`w-[400px] min-w-[400px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
 
             {
-                advertisement?.price && advertisement.category_id != 17 && (
+                advertisement?.price && (
                     <div className='flex justify-center'>
                         <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
                         <p className='flex items-center text-gray-500 '>
-                            {advertisement.ad_duration_type === '1' ? '/months' : advertisement.ad_duration_type === '2' ? '/quarters' : advertisement.ad_duration_type === '3' ? '/years' : ''}
+                            {advertisement.ad_duration_type == '0' ? '/month' : advertisement.ad_duration_type === '2' ? '/unit' : ''}
                         </p>
                     </div>
                 )
             }
-            <div className={` flex items-center ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
+            <div className={`w-full flex flex-col  ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
                 {
-                    advertisement.category_id == 17 ? (
-                        <div className='flex gap-1 items-end'>
-                            <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''} x ${advertisement.duration}`}</p>
-                            <p className='mb-1'>Units</p>
-                        </div>
-
-                    ) : (
+                    advertisement.ad_duration_type == '2' && (
 
                         <div className='w-[50%]'>
                             <label htmlFor="date" className='mb-1'>Start date</label>
-                            <DatePickerComponent
-                                id='date'
-                                setDate={(date) => setDate(date)}
-                                disabled={true}
-                                currentValue={dayjs(`${advertisement?.start_date}`)}
-                            />
+                            <Button
+                                variant={"outline"}
+                                className="w-[240px] justify-start text-left font-normal"
+                            >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {format(new Date(advertisement.date.from), "PPP")}
+                            </Button>
                         </div>
                     )
                 }
+                {/* todo:implement the rest of ad durations */}
                 {
-                    advertisement.ad_duration_type !== '0' && (
-                        <div className='w-[50%]'>
-                            <label htmlFor="date" className='mb-1'>End date</label>
-                            <DatePickerComponent
-                                id='date'
-                                setDate={(date) => setDate(date)}
-                                disabled={true}
-                                currentValue={dayjs(`${advertisement?.end_date}`)}
-                            />
+                    advertisement.ad_duration_type == '0' && (
+                        <div className='w-full mt-2'>
+                            <div className='flex justify-between px-2'>
+                                <label htmlFor="date" className='mb-1'>Start date</label>
+                                <label htmlFor="date" className='mb-1'>End date</label>
+                            </div>
+                            <Button
+                                variant={"outline"}
+                                className="w-full justify-start text-left font-normal"
+                            >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <div className='w-full flex justify-between'>
+                                    <div>
+                                        {format(new Date(advertisement.date.from), "PPP")}
+                                    </div>
+                                    <p>-</p>
+                                    <div>
+                                        {format(new Date(advertisement.date.to), "PPP")}
+                                    </div>
+                                </div>
+                            </Button>
                         </div>
                     )
                 }
 
             </div>
-            <div className='w-[90%] '>
+            <div className='w-full mt-4'>
 
                 {
-                    advertisement.ad_duration_type !== '0' && (
-                        <div className='mt-8 flex justify-between items-center'>
-                            <p className='font-[600]'>{`$${advertisement?.price ? formatNumberInput(advertisement?.price.toString()) : ''} ${advertisement.ad_duration_type !== "0" ? `x ${advertisement.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''}` : ''}`}</p>
-                            <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement?.duration).toString()) : ''}`}</p>
+                    advertisement.ad_duration_type == '0' && (
+                        <div className='mt-4 flex justify-between items-center'>
+                            <div className='flex gap-2'>
+                                <p>{formatPrice(advertisement.price)}</p>
+                                <p>x</p>
+                                <div className='flex gap-1 '>
+                                    <p>{advertisement.duration}</p>
+                                    <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
+                                </div>
+                            </div>
+                            <p>{formatPrice(advertisement.price * advertisement.duration)}</p>
                         </div>
                     )
                 }
@@ -307,40 +324,28 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
                 <div className='mt-2 flex justify-between items-center'>
                     <p className='text-[20px] font-[600]'>Total</p>
-                    <p>{`$${advertisement?.price ? formatNumberInput((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)).toString()) : ''}`}</p>
+                    <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)))}</p>
                 </div>
             </div>
             {
                 advertisement?.status == 4 && (
-                    <div className='mt-auto'>
-                        <button disabled={isPending1 || isPending2 ? true : false} onClick={Booking} className={`z-10  flex advertisement justify-center bg-black text-[#FCD33B] py-[8px] w-full px-[30px] rounded-md font-[600] ${!isPending1 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
+                    <div className='mt-8'>
+                        <Button onClick={Booking} disabled={isPending1 || isPending2 ? true : false} className='w-full'>
                             {
-                                isPending1 ? (
-                                    <ThreeDots
-                                        height="30"
-                                        width="40"
-                                        radius="9"
-                                        color="#FCD33B"
-                                        ariaLabel="three-dots-loading"
-                                        visible={true}
-                                    />
-                                ) : 'Accept'
+                                isPending1 && (
+                                    <Loader2 size={18} className='animate-spin' />
+                                )
                             }
-                        </button>
-                        <button disabled={isPending2 || isPending1 ? true : false} onClick={Decline} className={`z-10 flex mt-2 advertisement justify-center border border-black text-black  py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                            Accept
+                        </Button>
+                        <Button variant='outline' onClick={Decline} disabled={isPending2 || isPending1 ? true : false} className='w-full mt-2'>
                             {
-                                isPending2 ? (
-                                    <ThreeDots
-                                        height="30"
-                                        width="40"
-                                        radius="9"
-                                        color="black"
-                                        ariaLabel="three-dots-loading"
-                                        visible={true}
-                                    />
-                                ) : 'Decline'
+                                isPending2 && (
+                                    <Loader2 size={18} className='animate-spin' />
+                                )
                             }
-                        </button>
+                            Decline
+                        </Button>
                     </div>
                 )
             }

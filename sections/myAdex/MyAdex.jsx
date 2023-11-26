@@ -31,6 +31,7 @@ export default function MyAdex() {
     async function getInfo() {
       const { myListing,status } = (await GetMyAdvertisement()) || {}
       const myBookings = await GetMyBookings()
+      console.log('myBookings',myBookings)
       if(myListing?.length > 0){
         setListingData(myListing)
         setStatus(status)

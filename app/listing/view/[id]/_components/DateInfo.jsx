@@ -6,7 +6,6 @@ import { format, parseISO  } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
 export default function DateInfo({ listingProperties }) {
-    console.log('listingProperties.first_available_date',listingProperties.first_available_date)
     return (
         <div>
             {

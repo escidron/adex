@@ -23,7 +23,7 @@ export default function MyBookings({ data, isContentLoaded }) {
   return (
     <div className='flex flex-col items-center justify-center mt-8'>
       {
-        data.map((item) => {
+        data.map((item,index) => {
 
           return (
             <section key={item.id + index} className='w-full justify-center'>

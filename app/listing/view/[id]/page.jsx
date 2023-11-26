@@ -31,6 +31,8 @@ export default function Listing({ params }) {
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const [bookingAccepted, setBookingAccepted] = useState(false)
     const [bookingRejected, setBookingRejected] = useState(false)
+    const [currentDiscount, setCurrentDiscount] = useState(0)
+
     const id = params.id
 
     useEffect(() => {
@@ -40,15 +42,12 @@ export default function Listing({ params }) {
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()
-
+            setHasPayout(checkPayout)
             if (myListing) {
-                if (myListing.status == 4) {
-                    setStatusPending(true)
-                }
                 setListingProperties({
-                    id:myListing.id,
-                    created_by : myListing.created_by,
-                    requested_by:myListing.requested_by,
+                    id: myListing.id,
+                    created_by: myListing.created_by,
+                    requested_by: myListing.requested_by,
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,
@@ -65,8 +64,25 @@ export default function Listing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
-                    otherListingType: myListing.ad_duration_type
+                    otherListingType: myListing.ad_duration_type,
+                    ad_duration_type: myListing.ad_duration_type,
+                    status: myListing.status,
+                    duration: myListing.duration,
+                    stripe_price:myListing.stripe_price
                 });
+                if (myListing.status == 4) {
+                    setStatusPending(true)
+                }
+                {
+                    discounts.length > 0 && (
+
+                        discounts.map((item) => {
+                            if (myListing.duration >= item.duration) {
+                                setCurrentDiscount(item.discount)
+                            }
+                        })
+                    )
+                }
                 setAdvertisementType(myListing.ad_duration_type)
                 setIsContentLoaded(true)
 
@@ -147,7 +163,7 @@ export default function Listing({ params }) {
                                                 <ApproveReservation
                                                     advertisement={listingProperties}
                                                     discounts={listingProperties.discounts}
-                                                    //currentDiscount={currentDiscount}
+                                                    currentDiscount={currentDiscount}
                                                     setBookingAccepted={(accepted) => setBookingAccepted(accepted)}
                                                     setBookingRejected={(rejected) => setBookingRejected(rejected)}
                                                 />

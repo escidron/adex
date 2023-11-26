@@ -172,7 +172,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
             <div className='w-full'>
                 <div className='mt-4 flex justify-between items-center'>
-                    <p className=''>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type != "1" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
+                    <p className=''>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type != "1" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'units' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {
