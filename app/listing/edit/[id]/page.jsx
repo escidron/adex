@@ -30,6 +30,7 @@ import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
 import FormSkeleton from './_components/FormSkeleton'
 import Footer from '@/components/footer/Footer'
 import { checkCategoryType } from '@/utils/checkCategoryType'
+import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -58,7 +59,8 @@ export default function EditListing({ params }) {
             if(userData.userType == 1){
                 setStep('select_business')
             }
-            const { myListing } = (await GetMyAdvertisement(id)) || {}
+            const myListing  = await GetAdvertisementDetails(id)
+            console.log('mylisiitng',myListing)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             if (myListing) {

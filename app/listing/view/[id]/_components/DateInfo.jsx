@@ -9,7 +9,7 @@ export default function DateInfo({ listingProperties }) {
     return (
         <div>
             {
-                listingProperties.date.from && listingProperties.date.to && (
+                listingProperties.date.from && listingProperties.date.to && listingProperties.ad_duration_type == '1' && (
                     <>
                         <div className='flex flex-col gap-2'>
                             <p className='text-[26px]'>Start and End Date</p>
