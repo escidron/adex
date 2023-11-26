@@ -8,16 +8,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Info } from 'lucide-react';
 import { checkCategoryType } from '@/utils/checkCategoryType';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import PriceTypeSelector from '@/app/listing/create/_components/PriceTypesSelector';
+import Image from 'next/image';
 
 export default function PriceForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -45,7 +39,7 @@ export default function PriceForm({ ListingContext }) {
         setListingProperties({ ...listingProperties, price: price })
     }
 
-    const handleCurrentPriceType = (type)=>{
+    const handleCurrentPriceType = (type) => {
         setListingProperties({ ...listingProperties, otherListingType: type })
 
     }
@@ -128,7 +122,17 @@ export default function PriceForm({ ListingContext }) {
                         <Card className='w-full mt-[50px] md:max-w-[400px]  md:mt-0'>
                             <CardHeader>
                                 <CardTitle className='flex gap-2 items-center'>
-                                    <Info />
+                                    <div className='w-[50px]'>
+                                        <Image
+                                            src='/note.png'
+                                            alt="note icon"
+                                            priority
+                                            width={2000}
+                                            height={2000}
+                                            className='w-full'
+
+                                        />
+                                    </div>
                                     Unit Pricing
                                 </CardTitle>
                                 <CardDescription>Unit pricing is for Unit-based listings such as pizza boxes. One flyer goes out with each pizza box. For this type of listing, ADEX has implemented a minimum of 100 items/Unit. Use the following examples when creating a Unit-based listing:</CardDescription>

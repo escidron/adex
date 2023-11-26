@@ -24,6 +24,7 @@ import { Separator } from '../ui/separator';
 import { checkCategoryType } from '@/utils/checkCategoryType';
 import toast from 'react-hot-toast';
 import { monthsOptions, unitOptions } from '@/utils/discountsOptions';
+import Image from 'next/image';
 
 
 export default function DiscountsForm({ ListingContext }) {
@@ -39,8 +40,8 @@ export default function DiscountsForm({ ListingContext }) {
         const categoryType = checkCategoryType(listingProperties.sub_category)
         setAdvertisementType(listingProperties.otherListingType ? listingProperties.otherListingType : categoryType)
     }, [listingProperties]);
-    console.log('advertisementType',advertisementType)
-    console.log('listingProperties',listingProperties)
+    console.log('advertisementType', advertisementType)
+    console.log('listingProperties', listingProperties)
     const addDiscount = () => {
         setNewDiscount(false)
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))
@@ -50,7 +51,7 @@ export default function DiscountsForm({ ListingContext }) {
         if (id) {
             newDiscounts = listingProperties.discounts.filter((item) => item.id != id);
         } else {
-            newDiscounts = listingProperties.discounts.filter((item,index) => index != deleteIndex);
+            newDiscounts = listingProperties.discounts.filter((item, index) => index != deleteIndex);
         }
         setListingProperties((prev) => ({ ...prev, discounts: newDiscounts }))
         if (listingProperties.discounts[0].id) {
@@ -200,7 +201,17 @@ export default function DiscountsForm({ ListingContext }) {
                         <Card className='w-full mt-[50px] md:max-w-[450px] h-[260px] md:mt-0'>
                             <CardHeader>
                                 <CardTitle className='flex gap-2 items-center'>
-                                    <Info />
+                                    <div className='w-[50px]'>
+                                        <Image
+                                            src='/note.png'
+                                            alt="note icon"
+                                            priority
+                                            width={2000}
+                                            height={2000}
+                                            className='w-full'
+
+                                        />
+                                    </div>
                                     Long Duration Bookings
                                 </CardTitle>
                                 <CardDescription>Much like many (if not all) of the big companies, ADEX encourages you to offer duration discounts. This incentivizes buyers to book your ad for longer durations. For example: </CardDescription>
