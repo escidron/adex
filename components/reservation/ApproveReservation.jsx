@@ -50,6 +50,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     useEffect(() => {
+        console.log('get contract',advertisement)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
                 advertisementId: advertisement.id,

@@ -4,14 +4,14 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { formatPrice } from '@/utils/format'
 import { MapPin } from 'lucide-react'
 
-export default function ListingHeader({ listingProperties, advertisementType, isBuyerView }) {
+export default function ListingHeader({ listingProperties, advertisementType, hasPaymentBox }) {
     return (
         <>
             <div className='mt-2 flex justify-between items-center'>
                 <h1 className='text-[28px] font-[500] line-clamp-1'>{listingProperties.title}</h1>
                 {/* <p className='mt-2 text-[32px] font-[500]'>{formatPrice(listingProperties.price)}</p> */}
                 {
-                    !isBuyerView && (
+                    !hasPaymentBox && (
                         <div className='flex gap-1 items-center'>
                             <p className='text-[32px]'>{formatPrice(listingProperties.price)}</p>
                             {

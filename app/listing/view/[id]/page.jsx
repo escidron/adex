@@ -21,28 +21,34 @@ import { ListingContext } from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
+import ApproveReservation from '@/components/reservation/ApproveReservation'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
     const [hasPayout, setHasPayout] = useState(false);
+    const [statusPending, setStatusPending] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
+    const [bookingAccepted, setBookingAccepted] = useState(false)
+    const [bookingRejected, setBookingRejected] = useState(false)
     const id = params.id
 
     useEffect(() => {
 
         async function getInfo() {
-            const  myListing  = await GetAdvertisementDetails(id)
+            const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()
-            console.log('myLisitng',myListing)
-            setHasPayout(checkPayout);
 
             if (myListing) {
-                console.log('sdadsasdasdasdasd',myListing)
+                if (myListing.status == 4) {
+                    setStatusPending(true)
+                }
                 setListingProperties({
-                 
+                    id:myListing.id,
+                    created_by : myListing.created_by,
+                    requested_by:myListing.requested_by,
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,
@@ -59,7 +65,7 @@ export default function Listing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
-                    otherListingType:myListing.ad_duration_type
+                    otherListingType: myListing.ad_duration_type
                 });
                 setAdvertisementType(myListing.ad_duration_type)
                 setIsContentLoaded(true)
@@ -95,7 +101,7 @@ export default function Listing({ params }) {
         handleRouteChange()
     }, []);
 
-    console.log('listingProperties',listingProperties)
+    console.log('listingProperties', listingProperties)
     return (
         <>
             <TopBar />
@@ -109,27 +115,45 @@ export default function Listing({ params }) {
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w- full gap-4 flex justify-between'>
-                                    <div className='w-full md:w-[70%] '>
-                                        <ListingHeader listingProperties={listingProperties} advertisementType={listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType} />
+                                    <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
+                                        <ListingHeader
+                                            listingProperties={listingProperties}
+                                            advertisementType={listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType}
+                                            hasPaymentBox={statusPending}
+                                        />
 
                                         <Separator className='my-3' />
-                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true}/>
+                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
 
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />
 
-                                        {( advertisementType != 1 || listingProperties.otherListingType != 1) && (
+                                        {(advertisementType != 1 || listingProperties.otherListingType != 1) && (
                                             <>
                                                 <Separator className='my-5' />
-                                                <DiscountsInfo 
-                                                listingProperties={listingProperties} 
-                                                advertisementType={advertisementType} />
+                                                <DiscountsInfo
+                                                    listingProperties={listingProperties}
+                                                    advertisementType={advertisementType} />
                                             </>
                                         )}
 
                                         <Separator className='my-5' />
                                         <InstructionsInfo listingProperties={listingProperties} />
                                     </div>
+                                    {
+                                        statusPending && (
+
+                                            <div className='w-full md:w-[40%] flex justify-end mt-2' >
+                                                <ApproveReservation
+                                                    advertisement={listingProperties}
+                                                    discounts={listingProperties.discounts}
+                                                    //currentDiscount={currentDiscount}
+                                                    setBookingAccepted={(accepted) => setBookingAccepted(accepted)}
+                                                    setBookingRejected={(rejected) => setBookingRejected(rejected)}
+                                                />
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>

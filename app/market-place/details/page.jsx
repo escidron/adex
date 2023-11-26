@@ -147,7 +147,7 @@ export default function ListingDetails({ sharedId }) {
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w-full flex justify-between mt-4'>
                                     <div className='w-full md:w-[50%]'>
-                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} isBuyerView={true} />
+                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
                                         <Separator className='my-6' />
                                         <Preview value={listingProperties.description} heigth={200} />

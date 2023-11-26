@@ -88,32 +88,32 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const Booking = () => {
         router.push('my-profile?tab=5&sub-tab=1')
 
-        // if (user.isLogged) {
-        //     if (paymentMethods.length > 0) {
-        //         setIsPending(true)
-        //         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/request-reserve`,
-        //             {
-        //                 data: data,
-        //                 duration: counter,
-        //                 start_date: date
-        //             }, {
-        //             withCredentials: true,
-        //         })
-        //             .then(function (response) {
-        //                 setIsPending(false)
-        //                 setIsRequested(true)
-        //                 router.push('/my-profile?tab=5')
-        //             })
-        //             .catch(function (error) {
-        //                 console.log('error', error)
-        //             });
-        //         return
-        //     }
-        //     setIncomplete(true)
-        // } else {
-        //     console.log('entrou no false')
-        //     router.push('/login')
-        // }
+        if (user.isLogged) {
+            if (paymentMethods.length > 0) {
+                setIsPending(true)
+                axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/request-reserve`,
+                    {
+                        data: data,
+                        duration: counter,
+                        start_date: date
+                    }, {
+                    withCredentials: true,
+                })
+                    .then(function (response) {
+                        setIsPending(false)
+                        setIsRequested(true)
+                        router.push('/my-profile?tab=5')
+                    })
+                    .catch(function (error) {
+                        console.log('error', error)
+                    });
+                return
+            }
+            setIncomplete(true)
+        } else {
+            console.log('entrou no false')
+            router.push('/login')
+        }
     }
 
 
@@ -172,7 +172,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
             <div className='w-full'>
                 <div className='mt-4 flex justify-between items-center'>
-                    <p className=''>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type !== "0" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
+                    <p className=''>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''} ${data.ad_duration_type != "1" ? `x ${counter} ${data.ad_duration_type === '1' ? 'months' : data.ad_duration_type === '2' ? 'quarters' : data.ad_duration_type === '3' ? 'years' : ''}` : data.category_id == 17 ? `x ${counter}` : ''}`}</p>
                     <p>{`$${data?.price ? formatNumberInput((data.price * counter).toString()) : ''}`}</p>
                 </div>
                 {
