@@ -1,15 +1,14 @@
 'use client'
 
 import Footer from '@/components/footer/Footer'
-import TopBar from './_components/TopBar'
-import PayoutWarningBanner from './_components/PayoutWarningBanner'
-import ImagesBox from './_components/ImagesBox'
-import ListingHeader from './_components/ListingHeader'
-import DateInfo from './_components/DateInfo'
-import DiscountsInfo from './_components/DiscountsInfo'
-import InstructionsInfo from './_components/InstructionsInfo'
-import PageSkeleton from './_components/PageSkeleton'
-import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
+import TopBar from '../../listing/view/[id]/_components/TopBar'
+import PayoutWarningBanner from '../../listing/view/[id]/_components/PayoutWarningBanner'
+import ImagesBox from '../../listing/view/[id]/_components/ImagesBox'
+import ListingHeader from '../../listing/view/[id]/_components/ListingHeader'
+import DateInfo from '../../listing/view/[id]/_components/DateInfo'
+import DiscountsInfo from '../../listing/view/[id]/_components/DiscountsInfo'
+import InstructionsInfo from '../../listing/view/[id]/_components/InstructionsInfo'
+import PageSkeleton from '../../listing/view/[id]/_components/PageSkeleton'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
 import GetPayoutMethod from '@/actions/getPayoutMethod'
@@ -18,19 +17,16 @@ import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { ListingContext } from './layout'
-import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import ApproveReservation from '@/components/reservation/ApproveReservation'
+import SellerDetails from '@/app/market-place/details/_components/SellerDetails'
 
-export default function Listing({ params }) {
+export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
-    const [hasPayout, setHasPayout] = useState(false);
     const [statusPending, setStatusPending] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
-    const [bookingAccepted, setBookingAccepted] = useState(false)
-    const [bookingRejected, setBookingRejected] = useState(false)
     const [currentDiscount, setCurrentDiscount] = useState(0)
 
     const id = params.id
@@ -41,8 +37,6 @@ export default function Listing({ params }) {
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
-            const checkPayout = await GetPayoutMethod()
-            setHasPayout(checkPayout)
             if (myListing) {
                 setListingProperties({
                     id: myListing.id,
@@ -68,8 +62,12 @@ export default function Listing({ params }) {
                     ad_duration_type: myListing.ad_duration_type,
                     status: myListing.status,
                     duration: myListing.duration,
-                    stripe_price:myListing.stripe_price,
-                    units:myListing.units
+                    stripe_price: myListing.stripe_price,
+                    units: myListing.units,
+                    seller_name: myListing.seller_name,
+                    seller_image: myListing.seller_image,
+                    seller_id: myListing.created_by,
+                    ad_duration_type: myListing.ad_duration_type,
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
@@ -121,41 +119,48 @@ export default function Listing({ params }) {
     console.log('listingProperties', listingProperties)
     return (
         <>
-            <TopBar />
+            <TopBar route={'/my-profile?tab=5&sub-tab=1'}/>
             <div className={`h-full w-full mt-[80px] py-4 flex flex-col items-center justify-center`}>
                 {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
-                            {
-                                !hasPayout && <PayoutWarningBanner />
-                            }
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
                                 <div className='w- full gap-4 flex justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
-                                        <ListingHeader
-                                            listingProperties={listingProperties}
-                                            advertisementType={listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType}
-                                            hasPaymentBox={statusPending}
-                                        />
+                                        <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
-                                        <Separator className='my-3' />
-                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
+                                        <Separator className='my-6' />
+                                        <Preview value={listingProperties.description} heigth={200} />
 
-                                        <Separator className='my-3' />
-                                        <DateInfo listingProperties={listingProperties} />
+                                        <Separator className='my-6' />
+                                        <SellerDetails listingProperties={listingProperties} />
 
-                                        {(advertisementType != 1 || listingProperties.otherListingType != 1) && (
+                                        {
+                                            (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (
+                                                <>
+                                                    <Separator className='my-6' />
+                                                    <DateInfo listingProperties={listingProperties} />
+                                                </>
+                                            )
+                                        }
+
+                                        {advertisementType != 1 && listingProperties.discounts.length > 0 && (
                                             <>
-                                                <Separator className='my-5' />
-                                                <DiscountsInfo
-                                                    listingProperties={listingProperties}
-                                                    advertisementType={advertisementType} />
+                                                <Separator className='my-6' />
+                                                <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
                                             </>
-                                        )}
+                                        )
+                                        }
 
-                                        <Separator className='my-5' />
-                                        <InstructionsInfo listingProperties={listingProperties} />
+
+                                        {listingProperties.instructions?.length > 12 && (
+                                            <>
+                                                <Separator className='my-6' />
+                                                <InstructionsInfo listingProperties={listingProperties} />
+                                            </>
+                                        )
+                                        }
                                     </div>
                                     {
                                         statusPending && (

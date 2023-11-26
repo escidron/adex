@@ -136,7 +136,7 @@ export default function NavBar() {
     }
 
     return (
-        <div className={`bg-black  ${pathname.includes('listing') ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
+        <div className={`bg-black  ${ (pathname.includes('listing') || pathname.includes('booking')) ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
 
             <div><Toaster /></div>

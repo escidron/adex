@@ -29,7 +29,7 @@ export default function MyBookings({ data, isContentLoaded }) {
             <section key={item.id + index} className='w-full justify-center'>
               <Card
                 item={item}
-                route={`/my-booking?id=${item.id}`}
+                route={`/my-booking/${item.id}`}
               />
               <div className='w-[90%] h-[1px] mx-auto bg-gray-200 mt-8 mb-8'></div>
             </section>

@@ -22,6 +22,7 @@ import { formatPrice } from '@/utils/format';
 export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
+    const [isCancelPending, setIsCancelPending] = useState(false)
     const [discountOptions, setDiscountOptions] = useState(false);
     const [openCancelBookingModal, setOpenCancelBookingModal] = useState(false);
     const [cancelMessage, setCancelMessage] = useState('');
@@ -287,6 +288,35 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     )
                 }
                 {
+                    advertisement.ad_duration_type == '2' && (
+                        <div className='mt-4 flex justify-between items-center'>
+                            <div className='flex gap-2'>
+                                <p>{formatPrice(advertisement.price)}</p>
+                                <p>x</p>
+                                <div className='flex gap-1 '>
+                                    <p>{advertisement.units}</p>
+                                    <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
+                                </div>
+                            </div>
+                            <p>{formatPrice(advertisement.price * advertisement.units)}</p>
+                        </div>
+                    )
+                }
+                {
+                    advertisement.ad_duration_type == '1' && (
+                        <div className='mt-4 flex justify-between items-center'>
+                            <div className='flex gap-2'>
+                                <p>{formatPrice(advertisement.price)}</p>
+                                <p>x</p>
+                                <div className='flex gap-1 '>
+                                    <p>{1}</p>
+                                </div>
+                            </div>
+                            <p>{formatPrice(advertisement.price)}</p>
+                        </div>
+                    )
+                }
+                {
                     currentDiscount > 0 && (
 
                         <div className='relative mt-2 flex justify-between items-center'>
@@ -324,7 +354,22 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
                 <div className='mt-2 flex justify-between items-center'>
                     <p className='text-[20px] font-[600]'>Total</p>
-                    <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)))}</p>
+                    {
+                        advertisement.ad_duration_type == '0' && (
+                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)))}</p>
+                        )
+                    }
+                    {
+                        advertisement.ad_duration_type == '1' && (
+
+                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price))}</p>
+                        )
+                    }
+                    {
+                        advertisement.ad_duration_type == '2' && (
+                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.units - (advertisement.price * advertisement.units) * (currentDiscount / 100)))}</p>
+                        )
+                    }
                 </div>
             </div>
             {
@@ -352,7 +397,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             {
                 advertisement?.status == 2 && (!finishCountdown || hasStarted) && (
                     <>
-                        <button disabled={isPending2 || isPending1 ? true : false} onClick={() => setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
+                        {/* <button disabled={isPending2 || isPending1 ? true : false} onClick={() => setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
                             {
                                 isPending2 ? (
                                     <ThreeDots
@@ -365,7 +410,15 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                     />
                                 ) : 'Cancel Booking'
                             }
-                        </button>
+                        </button> */}
+                        <Button variant='outline' onClick={() => setOpenCancelBookingModal(true)} disabled={isCancelPending} className='w-full mt-4'>
+                            {
+                                isCancelPending && (
+                                    <Loader2 size={18} className='animate-spin' />
+                                )
+                            }
+                            Cancel Booking
+                        </Button>
                     </>
                 )
             }
@@ -381,7 +434,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 )
             }
 
-
+            {/* 
             {
                 advertisement.status == 2 && !hasStarted && (
                     <>
@@ -394,9 +447,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 <>
                                     <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
                                         <p>Time Remaining for Cancellation</p>
-                                        {/* <Countdown date={Date.now() + 10000} renderer={renderer} /> */}
                                         <Countdown date={Date.now() + (countDownDays)} renderer={renderer} />
-                                        {/* <Countdown date={Date.now() + (fiveDaysMiliseconds - millisecondsDifference)} renderer={renderer} /> */}
                                         <div className='flex mt-[-10px] text-[14px]'>
                                             <p className='absolute bottom-[12px] left-[60px]'>Days</p>
                                             <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
@@ -417,7 +468,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </>
 
                 )
-            }
+            } */}
 
         </div>
     )

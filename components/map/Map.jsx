@@ -47,7 +47,6 @@ function Map({ newData,isDataLoaded, located }) {
         >
           <Marker position={coords} 
           map={map}
-          onClick={() => alert('qwe')}         
           icon={{ 
                 url: '/mylocation.ico',
               }}/>
@@ -60,7 +59,7 @@ function Map({ newData,isDataLoaded, located }) {
               className='h-4'
               position={{lat:parseFloat(marker.lat),lng:parseFloat(marker.long)}} 
               map={map} 
-              onClick={() => alert('qwe')} 
+              onMouseOver={() => alert('qwe')}         
               icon={{ 
                 url: marker.status==1?'/greenPin.ico':'/redPin.ico',
               }}

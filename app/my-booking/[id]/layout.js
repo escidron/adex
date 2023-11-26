@@ -2,9 +2,9 @@
 export const ListingContext = createContext();
 export const MachineStatesContext = createContext();
 
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
-export default function BookingLayout({ children }) {
+export default function ListingLayout({ children }) {
 
   const [listingProperties, setListingProperties] = useState({});
   
