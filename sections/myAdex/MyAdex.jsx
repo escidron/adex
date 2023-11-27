@@ -8,6 +8,8 @@ import axios from 'axios'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetMyBookings from '@/actions/GetMyBookings'
+import GetFilteredAdvertisements from '@/actions/GetFilteredAdvertisements'
+import GetPendingBookings from '@/actions/GetPendingBookins'
 
 export const RefreshContext = createContext();
 
@@ -31,12 +33,15 @@ export default function MyAdex() {
     async function getInfo() {
       const { myListing,status } = (await GetMyAdvertisement()) || {}
       const myBookings = await GetMyBookings()
+      const pendingListing = await GetPendingBookings()
+
       console.log('myBookings',myBookings)
+      console.log('pendingListing',pendingListing)
       if(myListing?.length > 0){
         setListingData(myListing)
         setStatus(status)
       }
-      setBookingData(myBookings)
+      setBookingData([...pendingListing,...myBookings])
       setIsContentLoaded(true)
       if( subTab == '1'){
         setValue(1)

@@ -41,7 +41,7 @@ export default function MarketPlace() {
 
       async function getAds() {
         setNewData([])
-        const response = await GetFilteredAdvertisements(type, adGroup, priceMin, priceMax, key)
+        const response = await GetFilteredAdvertisements()
         setAllData(response)
         const categories = await GetCategories()
         setCategories(categories)
