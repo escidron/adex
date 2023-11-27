@@ -60,11 +60,11 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [refetch]);
 
     useEffect(() => {
-        if( !date ){
-            if( data.ad_duration_type != '1' ){
+        if (!date) {
+            if (data.ad_duration_type != '1') {
 
                 setDate(new Date(data.first_available_date))
-            }else{
+            } else {
                 setDate(new Date(data.date.from))
             }
         }
@@ -86,7 +86,6 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [counter]);
 
     const Booking = () => {
-        router.push('my-profile?tab=5&sub-tab=1')
 
         if (user.isLogged) {
             if (paymentMethods.length > 0) {
@@ -100,9 +99,11 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     withCredentials: true,
                 })
                     .then(function (response) {
-                        setIsPending(false)
                         setIsRequested(true)
-                        router.push('/my-profile?tab=5')
+                        router.push('/my-profile?tab=5&sub-tab=1')
+                        setTimeout(() => {
+                            setIsPending(false);
+                        }, 1000);
                     })
                     .catch(function (error) {
                         console.log('error', error)
@@ -266,7 +267,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                                 {/* <Button type="submit" onClick={Booking}>Send Request</Button> */}
                                                 <Button disabled={isPending} type='submit' onClick={Booking}>
                                                     {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                        
+
                                                     Send Request
                                                 </Button>
                                             </div>
