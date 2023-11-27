@@ -100,9 +100,9 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                 })
                     .then(function (response) {
                         setIsRequested(true)
-                        router.push('/my-profile?tab=5&sub-tab=1')
                         setTimeout(() => {
                             setIsPending(false);
+                            router.push('/my-profile?tab=5&sub-tab=1')
                         }, 1000);
                     })
                     .catch(function (error) {

@@ -84,11 +84,11 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             withCredentials: true,
         })
             .then(function (response) {
-                setIsPending1(false)
                 setBookingAccepted(true)
-                // setBookingModalOpen(false)
-                // setRefresh(prev=>!prev)
-
+                setTimeout(() => {
+                    setIsPending1(false)
+                    router.push('/my-profile?tab=5&sub-tab=0')
+                }, 1000);
             })
             .catch(function (error) {
                 console.log(error)
@@ -107,10 +107,11 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             withCredentials: true,
         })
             .then(function (response) {
-                setIsPending2(false)
                 setBookingRejected(true)
-                // setBookingModalOpen(false)
-                // setRefresh(prev=>!prev)
+                router.push('/my-profile?tab=5&sub-tab=0')
+                setTimeout(() => {
+                    setIsPending2(false)
+                }, 1000);
             })
             .catch(function (error) {
                 console.log(error)
