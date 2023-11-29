@@ -16,11 +16,11 @@ export default function Categories() {
     }, []);
 
     return (
-        <div className='w-full xl:w-[60%] flex flex-col justify-center items-center mx-auto mt-10 px-4'>
+        <div className='w-full xl:w-[1100px] flex flex-col justify-center items-center mx-auto mt-10 px-4'>
 
-            <p className='text-center text-[25px] lg:text-[28px] xl:text-[35px] '>Listing´s <span className='text-[#FCD33B] mx-2'>Types</span></p>
-            {/* <div className=' w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'> */}
-            <div className='mx-auto w-full mt-4 flex flex-wrap gap-2'>
+            <p className='text-center text-[25px] lg:text-[28px] xl:text-[35px] '>Some of our <span className='text-[#FCD33B] mx-2'>Listing Categories</span></p>
+            <div className=' w-full mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 grid-rows-2 gap-4'>
+            {/* <div className='mx-auto w-full mt-4 flex flex-wrap gap-2'> */}
 
                 {
                     categories.map((category) => {
@@ -29,8 +29,8 @@ export default function Categories() {
                             return null
                         }   
                         return (
-                            <div key={category.id} className='flex justify-center'>
-                                <div className={`flex flex-col items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg hover:opacity-80 cursor-pointer`}>
+                            <div key={category.id} className='flex justify-center items-center h-[120px] w-[120px]  max-h-[150px]'>
+                                <div className={`flex flex-col  items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg hover:opacity-80 cursor-pointer`}>
                                     <div className='h-[40px] md:h-[74px] aspect-square'>
                                         <Image
                                             src={'/' + category.image}
