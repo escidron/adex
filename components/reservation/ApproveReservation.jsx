@@ -10,13 +10,21 @@ import formatNumberInput from '@/utils/formatInputNumbers';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import CancelBooking from '../modals/CancelBooking';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import Countdown, { zeroPad } from 'react-countdown';
 import { CalendarIcon, HelpCircle, Info, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { format } from 'date-fns';
 import { formatPrice } from '@/utils/format';
-
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTrigger,
+    DialogTitle,
+    DialogDescription
+} from "@/components/ui/dialog"
+import { AlertDialogHeader } from '../ui/alert-dialog';
 
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
@@ -119,8 +127,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     const cancelBooking = () => {
-        setOpenCancelBookingModal(false)
-
+        console.log('asdasdadasdasdasdasdasd')
+        setIsCancelPending(true)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/cancel-booking`,
             {
                 advertisementId: advertisement.id,
@@ -133,12 +141,17 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         })
             .then(function (response) {
                 toast.success('Booking sucessfuly canceled.')
-
                 router.push('/my-profile?tab=5&sub-tab=1')
+                setTimeout(() => {
+                    setIsCancelPending(true)
+                }, 1000);
 
             })
             .catch(function (error) {
+                console.log('aqui erorrrr', error.response.data.error)
                 toast.error(error.response.data.error)
+                setIsCancelPending(false)
+
             });
     }
 
@@ -197,6 +210,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     if (!isContentLoaded) {
         return (
+
             <div className={`w-[400px] min-w-[400px] h-[450px] flex flex-col   shadow-lg rounded-lg border p-4 `}>
                 <Skeleton variant="rounded" width={'100%'} height={120} />
                 <div className='mt-8'>
@@ -215,227 +229,234 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
     console.log('advertisement', advertisement)
     return (
-        <div className={`w-[400px] min-w-[400px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
+        <>
+            <Toaster />
+            <div className={`w-[400px] min-w-[400px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
 
-            {
-                advertisement?.price && (
-                    <div className='flex justify-center'>
-                        <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
-                        <p className='flex items-center text-gray-500 '>
-                            {advertisement.ad_duration_type == '0' ? '/month' : advertisement.ad_duration_type === '2' ? '/unit' : ''}
-                        </p>
-                    </div>
-                )
-            }
-            <div className={`w-full flex flex-col  ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
                 {
-                    advertisement.ad_duration_type == '2' && (
-
-                        <div className='w-[50%]'>
-                            <label htmlFor="date" className='mb-1'>Start date</label>
-                            <Button
-                                variant={"outline"}
-                                className="w-[240px] justify-start text-left font-normal"
-                            >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {format(new Date(advertisement.date.from), "PPP")}
-                            </Button>
+                    advertisement?.price && (
+                        <div className='flex justify-center'>
+                            <p className='text-[25px] font-[500]'>{`$${advertisement?.price ? formatNumberInput(advertisement.price.toString()) : ''}`}</p>
+                            <p className='flex items-center text-gray-500 '>
+                                {advertisement.ad_duration_type == '0' ? '/month' : advertisement.ad_duration_type === '2' ? '/unit' : ''}
+                            </p>
                         </div>
                     )
                 }
-                {/* todo:implement the rest of ad durations */}
-                {
-                    advertisement.ad_duration_type == '0' && (
-                        <div className='w-full mt-2'>
-                            <div className='flex justify-between px-2'>
-                                <label htmlFor="date" className='mb-1'>Start date</label>
-                                <label htmlFor="date" className='mb-1'>End date</label>
-                            </div>
-                            <Button
-                                variant={"outline"}
-                                className="w-full justify-start text-left font-normal"
-                            >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                <div className='w-full flex justify-between'>
-                                    <div>
-                                        {format(new Date(advertisement.date.from), "PPP")}
-                                    </div>
-                                    <p>-</p>
-                                    <div>
-                                        {format(new Date(advertisement.date.to), "PPP")}
-                                    </div>
-                                </div>
-                            </Button>
-                        </div>
-                    )
-                }
-
-            </div>
-            <div className='w-full mt-4'>
-
-                {
-                    advertisement.ad_duration_type == '0' && (
-                        <div className='mt-4 flex justify-between items-center'>
-                            <div className='flex gap-2'>
-                                <p>{formatPrice(advertisement.price)}</p>
-                                <p>x</p>
-                                <div className='flex gap-1 '>
-                                    <p>{advertisement.duration}</p>
-                                    <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
-                                </div>
-                            </div>
-                            <p>{formatPrice(advertisement.price * advertisement.duration)}</p>
-                        </div>
-                    )
-                }
-                {
-                    advertisement.ad_duration_type == '2' && (
-                        <div className='mt-4 flex justify-between items-center'>
-                            <div className='flex gap-2'>
-                                <p>{formatPrice(advertisement.price)}</p>
-                                <p>x</p>
-                                <div className='flex gap-1 '>
-                                    <p>{advertisement.units}</p>
-                                    <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
-                                </div>
-                            </div>
-                            <p>{formatPrice(advertisement.price * advertisement.units)}</p>
-                        </div>
-                    )
-                }
-                {
-                    advertisement.ad_duration_type == '1' && (
-                        <div className='mt-4 flex justify-between items-center'>
-                            <div className='flex gap-2'>
-                                <p>{formatPrice(advertisement.price)}</p>
-                                <p>x</p>
-                                <div className='flex gap-1 '>
-                                    <p>{1}</p>
-                                </div>
-                            </div>
-                            <p>{formatPrice(advertisement.price)}</p>
-                        </div>
-                    )
-                }
-                {
-                    currentDiscount > 0 && (
-
-                        <div className='relative mt-2 flex justify-between items-center'>
-                            <div className='flex items-center gap-1'>
-                                <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
-                                    {/* <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' /> */}
-                                    <HelpCircle size={17} className='cursor-pointer' />
-
-                                </div>
-                                <p className='font-[600]'>Long contract discount</p>
-                            </div>
-                            <p className='text-green-700'>{`-$${advertisement.price * advertisement.duration * currentDiscount / 100}`}</p>
-                            {
-                                discountOptions && (
-                                    <div className='absolute bg-black top-10 py-2 left-0 w-[360px] rounded-lg  text-white'>
-                                        {discounts.map((discount, index) => (
-                                            <div key={index}>
-                                                <div className='flex justify-between px-2'>
-                                                    <div className='flex'>
-                                                        <h1 className='text-[12px]'>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''} `}</label>have a </h1>
-                                                        <h1 className='text-[12px] font-bold ml-1'>{` ${discount.discount}% discount`}</h1>
-                                                    </div>
-                                                </div>
-                                                <Divider variant="" sx={{ color: 'white', width: '100%', marginTop: '5px', marginBottom: '5px' }} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )
-                            }
-                        </div>
-                    )
-                }
-
-                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
-
-                <div className='mt-2 flex justify-between items-center'>
-                    <p className='text-[20px] font-[600]'>Total</p>
+                <div className={`w-full flex flex-col  ${advertisement.category_id == 17 ? 'justify-center' : 'justify-between'} gap-2 mt-4`} disabled={true}>
                     {
-                        advertisement.ad_duration_type == '0' && (
-                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)))}</p>
+                        advertisement.ad_duration_type == '2' && (
+
+                            <div className='w-[50%]'>
+                                <label htmlFor="date" className='mb-1'>Start date</label>
+                                <Button
+                                    variant={"outline"}
+                                    className="w-[240px] justify-start text-left font-normal"
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {format(new Date(advertisement.date.from), "PPP")}
+                                </Button>
+                            </div>
                         )
                     }
+                    {/* todo:implement the rest of ad durations */}
                     {
-                        advertisement.ad_duration_type == '1' && (
+                        advertisement.ad_duration_type == '0' && (
+                            <div className='w-full mt-2'>
+                                <div className='flex justify-between px-2'>
+                                    <label htmlFor="date" className='mb-1'>Start date</label>
+                                    <label htmlFor="date" className='mb-1'>End date</label>
+                                </div>
+                                <Button
+                                    variant={"outline"}
+                                    className="w-full justify-start text-left font-normal"
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    <div className='w-full flex justify-between'>
+                                        <div>
+                                            {format(new Date(advertisement.date.from), "PPP")}
+                                        </div>
+                                        <p>-</p>
+                                        <div>
+                                            {format(new Date(advertisement.date.to), "PPP")}
+                                        </div>
+                                    </div>
+                                </Button>
+                            </div>
+                        )
+                    }
 
-                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price))}</p>
+                </div>
+                <div className='w-full mt-4'>
+
+                    {
+                        advertisement.ad_duration_type == '0' && (
+                            <div className='mt-4 flex justify-between items-center'>
+                                <div className='flex gap-2'>
+                                    <p>{formatPrice(advertisement.price)}</p>
+                                    <p>x</p>
+                                    <div className='flex gap-1 '>
+                                        <p>{advertisement.duration}</p>
+                                        <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
+                                    </div>
+                                </div>
+                                <p>{formatPrice(advertisement.price * advertisement.duration)}</p>
+                            </div>
                         )
                     }
                     {
                         advertisement.ad_duration_type == '2' && (
-                            <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.units - (advertisement.price * advertisement.units) * (currentDiscount / 100)))}</p>
+                            <div className='mt-4 flex justify-between items-center'>
+                                <div className='flex gap-2'>
+                                    <p>{formatPrice(advertisement.price)}</p>
+                                    <p>x</p>
+                                    <div className='flex gap-1 '>
+                                        <p>{advertisement.units}</p>
+                                        <p>{advertisement.ad_duration_type == '0' ? 'months' : advertisement.ad_duration_type == '2' ? 'units' : ''}</p>
+                                    </div>
+                                </div>
+                                <p>{formatPrice(advertisement.price * advertisement.units)}</p>
+                            </div>
                         )
                     }
-                </div>
-            </div>
-            {
-                advertisement?.status == 4 && (
-                    <div className='mt-8'>
-                        <Button onClick={Booking} disabled={isPending1 || isPending2 ? true : false} className='w-full'>
-                            {
-                                isPending1 && (
-                                    <Loader2 size={18} className='animate-spin' />
-                                )
-                            }
-                            Accept
-                        </Button>
-                        <Button variant='outline' onClick={Decline} disabled={isPending2 || isPending1 ? true : false} className='w-full mt-2'>
-                            {
-                                isPending2 && (
-                                    <Loader2 size={18} className='animate-spin' />
-                                )
-                            }
-                            Decline
-                        </Button>
+                    {
+                        advertisement.ad_duration_type == '1' && (
+                            <div className='mt-4 flex justify-between items-center'>
+                                <div className='flex gap-2'>
+                                    <p>{formatPrice(advertisement.price)}</p>
+                                    <p>x</p>
+                                    <div className='flex gap-1 '>
+                                        <p>{1}</p>
+                                    </div>
+                                </div>
+                                <p>{formatPrice(advertisement.price)}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        currentDiscount > 0 && (
+
+                            <div className='relative mt-2 flex justify-between items-center'>
+                                <div className='flex items-center gap-1'>
+                                    <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
+                                        {/* <HelpIcon sx={{ fontSize: '16px' }} className='cursor-pointer opacity-80 ' /> */}
+                                        <HelpCircle size={17} className='cursor-pointer' />
+
+                                    </div>
+                                    <p className='font-[600]'>Long contract discount</p>
+                                </div>
+                                <p className='text-green-700'>{`-$${advertisement.price * advertisement.duration * currentDiscount / 100}`}</p>
+                                {
+                                    discountOptions && (
+                                        <div className='absolute bg-black top-10 py-2 left-0 w-[360px] rounded-lg  text-white'>
+                                            {discounts.map((discount, index) => (
+                                                <div key={index}>
+                                                    <div className='flex justify-between px-2'>
+                                                        <div className='flex'>
+                                                            <h1 className='text-[12px]'>Contract duration from<label className='font-semibold'>{` ${discount.duration} ${advertisement.ad_duration_type === '1' ? 'months' : advertisement.ad_duration_type === '2' ? 'quarters' : advertisement.ad_duration_type === '3' ? 'years' : ''} `}</label>have a </h1>
+                                                            <h1 className='text-[12px] font-bold ml-1'>{` ${discount.discount}% discount`}</h1>
+                                                        </div>
+                                                    </div>
+                                                    <Divider variant="" sx={{ color: 'white', width: '100%', marginTop: '5px', marginBottom: '5px' }} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+
+                    <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '20px', marginBottom: '20px' }} />
+
+                    <div className='mt-2 flex justify-between items-center'>
+                        <p className='text-[20px] font-[600]'>Total</p>
+                        {
+                            advertisement.ad_duration_type == '0' && (
+                                <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.duration - (advertisement.price * advertisement.duration) * (currentDiscount / 100)))}</p>
+                            )
+                        }
+                        {
+                            advertisement.ad_duration_type == '1' && (
+
+                                <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price))}</p>
+                            )
+                        }
+                        {
+                            advertisement.ad_duration_type == '2' && (
+                                <p className='text-[20px] font-[600]'>{formatPrice((advertisement.price * advertisement.units - (advertisement.price * advertisement.units) * (currentDiscount / 100)))}</p>
+                            )
+                        }
                     </div>
-                )
-            }
-            {
-                advertisement?.status == 2 && (!finishCountdown || hasStarted) && (
-                    <>
-                        {/* <button disabled={isPending2 || isPending1 ? true : false} onClick={() => setOpenCancelBookingModal(true)} className={`z-10 flex mt-auto advertisement justify-center border border-black text-black py-[8px] w-full px-[30px] rounded-md  font-[600] ${!isPending2 ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg `}>
-                            {
-                                isPending2 ? (
-                                    <ThreeDots
-                                        height="30"
-                                        width="40"
-                                        radius="9"
-                                        color="black"
-                                        ariaLabel="three-dots-loading"
-                                        visible={true}
+                </div>
+                {
+                    advertisement?.status == 4 && (
+                        <div className='mt-8'>
+                            <Button onClick={Booking} disabled={isPending1 || isPending2 ? true : false} className='w-full'>
+                                {
+                                    isPending1 && (
+                                        <Loader2 size={18} className='animate-spin' />
+                                    )
+                                }
+                                Accept
+                            </Button>
+                            <Button variant='outline' onClick={Decline} disabled={isPending2 || isPending1 ? true : false} className='w-full mt-2'>
+                                {
+                                    isPending2 && (
+                                        <Loader2 size={18} className='animate-spin' />
+                                    )
+                                }
+                                Decline
+                            </Button>
+                        </div>
+                    )
+                }
+                {
+                    advertisement?.status == 2 && (!finishCountdown || hasStarted) && (
+                        <>
+                            <Dialog>
+                                <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50' >
+                                    Cancel Booking
+                                </DialogTrigger>
+                                <DialogContent className='w-full sm:w-[600px]'>
+                                    <DialogHeader>
+                                        <DialogTitle>Cancel Booking</DialogTitle>
+                                        <DialogDescription>
+                                            Why do you want to cancel this booking?
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <CancelBooking
+                                        cancelBooking={cancelBooking}
+                                        setCancelMessage={(message) => setCancelMessage(message)}
+                                        cancelMessage={cancelMessage}
+                                        isCancelPending={isCancelPending}
                                     />
-                                ) : 'Cancel Booking'
-                            }
-                        </button> */}
-                        <Button variant='outline' onClick={() => setOpenCancelBookingModal(true)} disabled={isCancelPending} className='w-full mt-4'>
+                                </DialogContent>
+                            </Dialog>
+                            {/* <Button variant='outline' onClick={() => setOpenCancelBookingModal(true)} disabled={isCancelPending} className='w-full mt-4'>
                             {
                                 isCancelPending && (
                                     <Loader2 size={18} className='animate-spin' />
                                 )
                             }
                             Cancel Booking
-                        </Button>
-                    </>
-                )
-            }
+                        </Button> */}
+                        </>
+                    )
+                }
 
-            {
-                openCancelBookingModal && (
-                    <CancelBooking
-                        cancelBooking={cancelBooking}
-                        setCancelMessage={(message) => setCancelMessage(message)}
-                        cancelMessage={cancelMessage}
-                        setOpenCancelBookingModal={(closeModal) => setOpenCancelBookingModal(closeModal)}
-                    />
-                )
-            }
+                {
+                    openCancelBookingModal && (
+                        <CancelBooking
+                            cancelBooking={cancelBooking}
+                            setCancelMessage={(message) => setCancelMessage(message)}
+                            cancelMessage={cancelMessage}
+                            setOpenCancelBookingModal={(closeModal) => setOpenCancelBookingModal(closeModal)}
+                        />
+                    )
+                }
 
-            {/* 
+                {/* 
             {
                 advertisement.status == 2 && !hasStarted && (
                     <>
@@ -471,6 +492,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 )
             } */}
 
-        </div>
+            </div>
+        </>
     )
 }
