@@ -110,7 +110,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
 
       <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
         <div><Toaster /></div>
-        <form className="text-black  z-[91] px-10 py-4 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
+        <form className="text-black  z-[45] px-10 py-4 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
           <p className=" text-[24px]">Personal Details</p>
           <div className=" w-full  flex gap-[20px] ">
             <div className="w-[50%] relative ">
