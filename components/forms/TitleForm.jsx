@@ -56,7 +56,7 @@ export default function TitleForm({ ListingContext }) {
                         </div>
                         Titles
                     </CardTitle>
-                    <CardDescription>Give your listing a creative, unique, and descriptive title. This will distinguish your listing nad draw more attention from buyers.</CardDescription>
+                    <CardDescription>Give your listing a creative, unique, and descriptive title. This will distinguish your listing and draw more attention from buyers.</CardDescription>
                 </CardHeader>
             </Card>
         </div>
