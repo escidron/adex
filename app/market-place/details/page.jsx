@@ -12,19 +12,22 @@ import GetDiscounts from '@/actions/GetDiscounts'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import Reservation from '@/components/reservation/Reservation'
 import SellerDetails from './_components/SellerDetails'
-
+import axios from 'axios'
 import { Preview } from '@/components/textarea/TextAreaReader'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { SendHorizontal } from 'lucide-react'
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
+import { UserContext } from '@/app/layout'
 
 
 
 export default function ListingDetails({ sharedId }) {
+    const [user, setUser] = useContext(UserContext)
+
     const [listingProperties, setListingProperties] = useState({})
     const [advertisementType, setAdvertisementType] = useState('')
     const [isContentLoaded, setIsContentLoaded] = useState(false);
@@ -41,6 +44,8 @@ export default function ListingDetails({ sharedId }) {
     const id = sharedId ? sharedId : searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
     const rejectedId = searchParams.get('rejected')
+
+    const router = useRouter();
 
     useEffect(() => {
 
@@ -110,25 +115,28 @@ export default function ListingDetails({ sharedId }) {
     }, []);
 
     const sendMessage = () => {
-
+        console.log('sender user',user)
+        console.log('slisitng propertire',listingProperties)
         if (user.isLogged) {
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-message`,
                 {
                     sended_by: user.userId,
-                    seller_id: data.created_by,
+                    seller_id: listingProperties.seller_id,
                     buyer_id: user.userId,
-                    advertisement_id: data.id,
+                    advertisement_id: listingProperties.id,
                     message: message
                 }, {
                 withCredentials: true,
             })
                 .then(function (response) {
                     console.log('res', response)
+                    toast.success('Message sended')
+                    setMessage(prev => '')
                 })
                 .catch(function (error) {
                     console.log(error)
                 });
-            setIsChatOpen(true)
+            //setIsChatOpen(true)
             setRefetch(prev => !prev)
         } else {
             router.push('/login')
@@ -136,6 +144,7 @@ export default function ListingDetails({ sharedId }) {
 
     }
 
+    console.log('message',message)
     return (
         <>
             <Toaster />
@@ -223,6 +232,7 @@ export default function ListingDetails({ sharedId }) {
                                                 type="textarea"
                                                 id="message"
                                                 name="message"
+                                                value={message}
                                                 className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none  focus:border-black`}
                                             />
                                             <div className='flex gap-2 justify-end'>
