@@ -80,7 +80,7 @@ export default function DiscountsForm({ ListingContext }) {
                             <h1 className='text-[32px]'>Discounts</h1>
                             <p className='mb-2 text-[14px]'>{`(optional)`}</p>
                         </div>
-                        <p className='text-[18px] text-gray-500'>Attract more buyers! Offering exclusive discounts can boost your sales and attract a wider audience to your listings.</p>
+                        {/* <p className='text-[18px] text-gray-500'>Attract more buyers! Offering exclusive discounts can boost your sales and attract a wider audience to your listings.</p> */}
                     </div>
                     <div className='mt-4'>
                         <Button disabled={newDiscount} onClick={() => setNewDiscount(true)}>
