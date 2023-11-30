@@ -100,11 +100,17 @@ export default function SignUppage() {
           .then(function (response) {
             if (response.status === 200) {
               setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false, userId: response.data.userId, hasPayout: false })
-              router.push('/')
+              setTimeout(() => {
+                router.push('/')
+                setIsPending(false)
+              }, 1000);
             } else if (response.status === 401) {
+              setTimeout(() => {
+                setIsPending(false)
+              }, 1000);
               console.log(response.data.error)
             }
-            setIsPending(false)
+
           })
           .catch(function (error) {
             setIsPending(false)

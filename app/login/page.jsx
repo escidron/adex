@@ -60,8 +60,10 @@ export default function LoginPage() {
                             userId: response.data.userId,
                             hasPayout: response.data.hasPayout ? true : false
                         }))
-                    router.push('/')
-                    setIsPending(false)
+                        setTimeout(() => {
+                            router.push('/')
+                            setIsPending(false)
+                        }, 1000);
                 })
 
                 .catch(function (error) {
