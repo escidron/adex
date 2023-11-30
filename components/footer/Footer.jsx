@@ -11,7 +11,7 @@ import { Separator } from '../ui/separator';
 
 export default function Footer() {
     return (
-        <div className="h-[850px] bg-[#252525] flex flex-col justify-between items-center mt-[200px]">
+        <div className="h-[850px] bg-[#252525] flex flex-col justify-between items-center mt-[80px]">
             <div className='w-full'>
                 <div className='w-full mt-[50px] flex flex-col items-center justify-center'>
                     <Separator className='w-[80%]' />
