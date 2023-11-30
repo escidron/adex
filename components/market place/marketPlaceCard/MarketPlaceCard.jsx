@@ -5,21 +5,29 @@ import MultiImage from '@/components/multiImage/MultiImage';
 import { MapPin } from 'lucide-react';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { formatPrice } from '@/utils/format';
+import { useContext } from 'react';
+import { UserContext } from '@/app/layout';
 
 export default function MarketPlaceCard({ ad }) {
-
+  const [user, setUser] = useContext(UserContext)
+  console.log('user', user)
+  console.log('adddd', ad)
   return (
     <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards w-[360px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
         <MultiImage images={ad.image} height={'200px'} remove={false} />
-        <p><span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1" ? 'bg-green-600' : ad.status == "2" ? "bg-orange-600" : "bg-gray-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>{ad.status == "1" ? 'Available' :ad.status == "2" ? 'Running' : 'Pending'}</span></p>
+        <p>
+          <span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1" ? 'bg-green-600' : ad.status == "2" ? "bg-orange-600" : "bg-gray-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>
+            {ad.status == "1" ? 'Available' : ad.status == "2" ? 'Running' : (ad.status == "4" && user.userId == ad.requested_by) ? 'Pending' :'Currently Unavailable'}
+          </span>
+        </p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
           <div className="w-full flex items-center justify-between">
             <p className="font-[600] text-[18px] ">{ad.title}</p>
           </div>
 
           <div className='flex gap-1'>
-            <MapPin size={14} color='gray' className='min-w-[14px]'/>
+            <MapPin size={14} color='gray' className='min-w-[14px]' />
             <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
           </div>
           <Preview value={ad.description} heigth={80} />
