@@ -41,12 +41,13 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
     const createdDate = new Date(advertisement.created_at);
     const currentDate = new Date();
-    const startDate = new Date(advertisement.start_date);
+    const startDate = new Date(advertisement.date.from);
 
     const interval1 = Math.abs(startDate - currentDate);
     const interval2 = Math.abs(currentDate - createdDate);
     const fiveDaysInterval = 5 * 24 * 60 * 60 * 1000;
     const availableDays = interval1 / (1000 * 60 * 60 * 24)
+
 
     let hasStarted = false
     let countDownDays
@@ -60,7 +61,11 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             countDownDays = fiveDaysInterval - interval2
         }
     }
-
+    console.log('startDate',startDate)
+    console.log('interval1',interval1)
+    console.log('interval2',interval2)
+    console.log('countDownDays',countDownDays)
+    console.log('hasStarted',hasStarted)
     useEffect(() => {
         console.log('get contract', advertisement)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
@@ -433,14 +438,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                     />
                                 </DialogContent>
                             </Dialog>
-                            {/* <Button variant='outline' onClick={() => setOpenCancelBookingModal(true)} disabled={isCancelPending} className='w-full mt-4'>
-                            {
-                                isCancelPending && (
-                                    <Loader2 size={18} className='animate-spin' />
-                                )
-                            }
-                            Cancel Booking
-                        </Button> */}
                         </>
                     )
                 }
@@ -456,7 +453,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     )
                 }
 
-                {/* 
+                 
             {
                 advertisement.status == 2 && !hasStarted && (
                     <>
@@ -490,7 +487,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </>
 
                 )
-            } */}
+            } 
 
             </div>
         </>

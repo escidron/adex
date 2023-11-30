@@ -41,6 +41,7 @@ export default function Booking({ params }) {
                 setListingProperties({
                     id: myListing.id,
                     created_by: myListing.created_by,
+                    created_at:myListing.created_at,
                     requested_by: myListing.requested_by,
                     sub_category: myListing.category_id,
                     title: myListing.title,
