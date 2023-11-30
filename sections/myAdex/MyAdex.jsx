@@ -79,7 +79,7 @@ export default function MyAdex() {
   // }, []);
 
   return (
-    <div className='w-full flex flex-col items-center '>
+    <div className='w-full flex flex-col items-center px-[20px]'>
       <div>
         <h1 className='text-[30px] mt-8'>My ADEX</h1>
       </div>

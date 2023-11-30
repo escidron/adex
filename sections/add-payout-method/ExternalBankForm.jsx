@@ -96,7 +96,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
         <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
             <div><Toaster /></div>
             <form className="text-black z-[91] relative px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
-                <Link href='/my-profile' className='absolute top-4 right-4'>
+                <Link href='/my-profile?tab=4' className='absolute top-4 right-4'>
                     <CloseIcon sx={{ "&:hover": { color: "#FCD33B" } }} />
                 </Link>
                 <p className=" text-[36px]">Bank Account</p>
