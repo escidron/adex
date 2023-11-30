@@ -7,7 +7,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast';
 
 import { useState } from 'react';
-import { Copy, Edit, Share2, Trash, X } from 'lucide-react';
+import { Copy, Edit, MapPin, Share2, Trash, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { formatPrice } from '@/utils/format';
@@ -30,7 +30,7 @@ export default function Card({ item, setAdvertisementId, route }) {
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div  onClick={() => router.push(route, undefined, { scroll: false })} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
+        <div onClick={() => router.push(route, undefined, { scroll: false })} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -59,7 +59,7 @@ export default function Card({ item, setAdvertisementId, route }) {
                         <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
                     </div>
                     <div className='flex mt-1 gap-2'>
-                        <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
+                        <MapPin size={14} color='gray' className='min-w-[14px]' />
                         <p className='text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
                     </div>
                     <div className='flex gap-2 items-center '>
