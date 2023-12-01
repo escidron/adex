@@ -21,6 +21,9 @@ import ImageLoader from '@/components/ImageLoader/ImageLoader'
 import ImageImporter from '@/components/gallery-image/imageImporter'
 import { BookmarkCheck, ImageIcon, LineChart, MapPin } from 'lucide-react'
 import { menuOptions } from '@/utils/companyAccountOptions'
+import GetMyBookings from '@/actions/GetMyBookings'
+import GetPendingBookings from '@/actions/GetPendingBookins'
+import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 
 
 
@@ -37,6 +40,7 @@ export default function MyCompanyPage() {
     const [images, setImages] = useState([]);
     const [gallery, setGallery] = useState([]);
     const [balance, setBalance] = useState(null);
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     const [status, setStatus] = useState({
         available: 0,
@@ -47,6 +51,25 @@ export default function MyCompanyPage() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const selectedOption = searchParams.get('option')
+
+
+    
+  useEffect(() => {
+    async function getInfo() {
+      const { myListing, status } = (await GetMyAdvertisement()) || {}
+      const myBookings = await GetMyBookings()
+      const pendingListing = await GetPendingBookings()
+
+      if (myListing?.length > 0) {
+        setListingData(myListing)
+        setStatus(status)
+      }
+      setBookingData([...pendingListing, ...myBookings])
+      setIsContentLoaded(true)
+
+    }
+    getInfo();
+  }, []);
 
     useEffect(() => {
 
@@ -124,7 +147,7 @@ export default function MyCompanyPage() {
             });
 
     }
-console.log('company',company)
+    console.log('company', company)
     return (
         <>
 
@@ -262,9 +285,9 @@ console.log('company',company)
                     {
                         selectedOption == 3 && (
                             <CompanyRefreshContext.Provider value={[refresh, setRefresh]}>
-                                <TabsComponent value={value2} setValue={(value) => setValue2(value)}>
-                                    <MyListing label='My Listing' data={listingData} status={status} isCompanyPage={true} />
-                                    <MyBookings label='My Booking' data={bookingData} />
+                                <TabsComponent value={value2} setValue={(value2) => setValue2(value2)}>
+                                    <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} isCompanyPage={true}/>
+                                    <MyBookings label='My Booking' data={bookingData} isContentLoaded={isContentLoaded} />
                                 </TabsComponent>
                             </CompanyRefreshContext.Provider>
                         )
@@ -280,9 +303,9 @@ console.log('company',company)
                                         </>
                                     ) : (
                                         <div className='mt-8 w-full bg-slate-200 h-[200px] rounded-lg flex flex-col justify-center items-center'>
-                                        <LineChart color='gray' size={30}/>
-                                        <h1 className='mt-2 text-xl text-gray-500'>No balance available</h1>
-                                      </div>                                    )
+                                            <LineChart color='gray' size={30} />
+                                            <h1 className='mt-2 text-xl text-gray-500'>No balance available</h1>
+                                        </div>)
                                 }
                             </>
                         )
