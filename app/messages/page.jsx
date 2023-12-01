@@ -10,7 +10,7 @@ import { io } from "socket.io-client";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSearchParams, useRouter } from 'next/navigation'
 import MultiImage from '@/components/multiImage/MultiImage';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, MapPin } from 'lucide-react';
 
 
 
@@ -131,7 +131,7 @@ export default function MessagesPage() {
             }
         })
     }
-
+    console.log('selected chat',selectedChat)
     return (
         <div className={`mt-[120px] w-full flex justify-center `}>
             <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>
@@ -171,21 +171,21 @@ export default function MessagesPage() {
                         {
                             selectedChat.advertisementImage && (
                                 <>
-                                    <div className='h-full w-[35%] aspect-auto'>
+                                    <div className='h-full min-w-[35%] aspect-auto'>
                                         <MultiImage images={selectedChat.advertisementImage} height={'180px'} remove={false} />
                                     </div>
                                     <div className='relative hidden lg:block '>
                                         <h1 className='text-[24px] font-[600]'>{selectedChat.advertisementTitle}</h1>
                                         <div className='flex gap-2 ml-[-5px]'>
-                                            <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                            <p className='text-[14px] mt-[-3px]'>{selectedChat.advertisementAddress}</p>
+                                            <MapPin />
+                                            <p className='text-[12px] mt-[-3px] text-gray-600'>{selectedChat.advertisementAddress}</p>
                                         </div>
-                                        <p className='text-[14px] mt-4 w-full'>
+                                        {/* <p className='text-[14px] mt-4 w-full'>
                                             {selectedChat.advertisementDescription.length > 125 ? selectedChat.advertisementDescription.split(' ').slice(0, 15).join(' ') + "..."
                                                 : selectedChat.advertisementDescription}
-                                        </p>
-                                        <div className='flex mt-auto text-[20px] absolute bottom-0'>
-                                            ${selectedChat.advertisementPrice}/{selectedChat?.advertisementDurationType === '1' ? (<p className='text-[15px] text-gray-600 flex items-center'>Month</p>) : selectedChat.advertisementDurationType === '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>Quarter</p>) : (<p className='text-[15px] text-gray-600 flex items-center'>Year</p>)}
+                                        </p> */}
+                                        <div className='flex mt-auto text-[20px] absolute bottom-[20px]'>
+                                            ${selectedChat.advertisementPrice}/{selectedChat?.advertisementDurationType == '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>Month</p>) : selectedChat?.advertisementDurationType == '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>Units</p>) : ''}
                                         </div>
                                     </div>
                                 </>
