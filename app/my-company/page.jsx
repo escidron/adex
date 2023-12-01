@@ -184,7 +184,7 @@ export default function MyCompanyPage() {
                 </div>
 
             </div>
-            <div className={`mt-4 flex flex-col items-center  md:h-[60vh] `}>
+            <div className={`mt-4 flex flex-col items-center `}>
                 {/* <div className='w-[50%] mt-4 flex flex-col items-center'>
                     <h1 className='text-[26px]'>Payments & Payouts</h1>
                     <TabsComponent value={value1} setValue={(value) => setValue1(value)}>
