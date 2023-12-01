@@ -80,7 +80,7 @@ export default function MyAdex() {
           </RefreshContext.Provider>
         </div>
         {
-          isContentLoaded && !hasPayoutMethod && listingData.length > 0 && (
+          isContentLoaded && !hasPayoutMethod && listingData.length > 0 && value == '0' && (
 
             <Card className='w-full mt-[50px] md:max-w-[550px] h-fit ml-[80px] mx-auto'>
               <CardHeader>
