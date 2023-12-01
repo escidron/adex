@@ -142,14 +142,14 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                                 <p>or</p>
                                                 <p className="font-[600]">Import images from :</p>
                                                 <div className=" h-full w-full max-w-[400px] rounded-lg ">
-                                                    <div className={`flex ${gallery.length > 0 ? 'justify-between' : 'justify-center'}  w-[80%] items-center mx-auto mt-4`}>
-                                                        {
-                                                            gallery.length > 0 && (
+                                                    <div className={`flex ${gallery.length > 0 ? 'justify-between' : 'justify-between'}  w-[80%] items-center mx-auto mt-4`}>
+                                                        {/* {
+                                                            gallery.length > 0 && ( */}
                                                                 <Button variant='secondary' onClick={() => setOpenGalleryModal(true)}>
                                                                     ADEX gallery
                                                                 </Button>
-                                                            )
-                                                        }
+                                                            {/* )
+                                                        } */}
                                                         <Button variant='secondary' onClick={() => {
                                                             onImageUpload()
                                                             setShowOptions(false)
