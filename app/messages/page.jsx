@@ -177,7 +177,7 @@ export default function MessagesPage() {
                                     <div className='relative hidden lg:block '>
                                         <h1 className='text-[24px] font-[600]'>{selectedChat.advertisementTitle}</h1>
                                         <div className='flex gap-2 ml-[-5px]'>
-                                            <MapPin />
+                                            <MapPin className='min-w-[14px] max-w-[14px]'/>
                                             <p className='text-[12px] mt-[-3px] text-gray-600'>{selectedChat.advertisementAddress}</p>
                                         </div>
                                         {/* <p className='text-[14px] mt-4 w-full'>
