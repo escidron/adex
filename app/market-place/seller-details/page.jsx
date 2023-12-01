@@ -39,7 +39,7 @@ export default function SellerDetailsPage() {
         };
         handleRouteChange()
     }, []);
-
+    console.log('seller details',seller)
     return (
         <>
         
@@ -69,7 +69,7 @@ export default function SellerDetailsPage() {
                             <div className='flex flex-col justify-start h-auto' >
                                 <h1 className='text-[35px]'>{`${seller.name}`}</h1>
                                 {
-                                    seller.handleIsPublic == "1" && seller.handle && (
+                                    seller.handle_is_public == "1" && seller.handle && (
                                         <div className='mt-1 flex items-center gap-3'>
                                             <AccountCircleIcon sx={{ fontSize: '18px', color: 'gray' }} />
                                             <h1>{seller.handle}</h1>
@@ -78,7 +78,7 @@ export default function SellerDetailsPage() {
                                     )
                                 }
                                 {
-                                    seller.cityIsPublic == '1' && seller.city && (
+                                    seller.city_is_public == '1' && seller.city && (
 
                                         <div className='mt-1 flex items-center gap-3'>
                                             <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
@@ -87,7 +87,7 @@ export default function SellerDetailsPage() {
                                     )
                                 }
                                 {
-                                    seller.professionIsPublic == '1' && seller.profession && (
+                                    seller.profession_is_public == '1' && seller.profession && (
 
                                         <div className='mt-1 flex items-center gap-3'>
                                             <WorkIcon sx={{ fontSize: '18px', color: 'gray' }} />
@@ -96,7 +96,7 @@ export default function SellerDetailsPage() {
                                     )
                                 }
                                 {
-                                    seller.bioIsPublic == '1' && (
+                                    seller.bio_is_public == '1' && (
 
                                         <p className='mt-2 max-w-full'>{seller.bio != 'null' ? seller.bio : ''}</p>
                                     )
