@@ -159,7 +159,7 @@ export default function ListingDetails({ sharedId }) {
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
                                         <Separator className='my-6' />
-                                        <Preview value={listingProperties.description} heigth={200} />
+                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true}/>
 
                                         <Separator className='my-6' />
                                         <SellerDetails listingProperties={listingProperties} />
