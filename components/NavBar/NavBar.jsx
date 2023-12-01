@@ -10,7 +10,7 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2 } from 'lucide-react';
+import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2, Wallet } from 'lucide-react';
 import { Button } from '../ui/button';
 
 export default function NavBar() {
@@ -21,7 +21,7 @@ export default function NavBar() {
     const [finishRequests, setFinishRequests] = useState(false);
     const router = useRouter();
 
-    
+
     async function hasPayoutMethod() {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
@@ -136,7 +136,7 @@ export default function NavBar() {
     }
 
     return (
-        <div className={`bg-black  ${ (pathname.includes('listing') || pathname.includes('booking')) ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
+        <div className={`bg-black  ${(pathname.includes('listing') || pathname.includes('booking')) ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
 
             <div><Toaster /></div>
@@ -160,7 +160,7 @@ export default function NavBar() {
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
                 <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
             </section>
-            {user.isLogged 
+            {user.isLogged
                 ? (
                     <div className=' cursor-pointer 
                             flex items-center  absolute top-0 right-4 lg:right-[80px]
@@ -206,10 +206,10 @@ export default function NavBar() {
                     </div>
                 )
                 : pathname !== '/login' && pathname !== '/sign-up' && user.checkLogin && finishRequests &&
-                    (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
-                        <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button> 
-                        <Button className='hidden lg:flex ml-4' variant='outline2' onClick={() => router.push('/sign-up')}>Sign Up</Button>
-                    </div>) 
+                (<div className='hidden h-[90px] md:absolute md:top-0 md:right-[100px] md:flex md:justify-between items-center'>
+                    <Button className='hidden lg:flex ml-4' variant='secondary' onClick={() => router.push('/login')}>Login</Button>
+                    <Button className='hidden lg:flex ml-4' variant='outline2' onClick={() => router.push('/sign-up')}>Sign Up</Button>
+                </div>)
 
             }
 
@@ -265,6 +265,10 @@ export default function NavBar() {
                         <Link href="/my-profile?tab=5&sub-tab=1" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <BookmarkCheck size={20} />
                             My Bookings
+                        </Link>
+                        <Link href="/my-profile?tab=4" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
+                            <Wallet size={20} />
+                            My Wallet
                         </Link>
                         <Link href="/messages" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <MessageSquare size={20} />
