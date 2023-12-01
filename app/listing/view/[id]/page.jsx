@@ -12,7 +12,6 @@ import PageSkeleton from './_components/PageSkeleton'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
-import GetPayoutMethod from '@/actions/GetPayoutMethod'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
@@ -22,7 +21,7 @@ import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import ApproveReservation from '@/components/reservation/ApproveReservation'
-
+import GetPayoutMethod from '@/actions/GetPayoutMethod'
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
