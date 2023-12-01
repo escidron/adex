@@ -11,7 +11,6 @@ import InstructionsInfo from '../../listing/view/[id]/_components/InstructionsIn
 import PageSkeleton from '../../listing/view/[id]/_components/PageSkeleton'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
-import GetPayoutMethod from '@/actions/GetPayoutMethod'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
