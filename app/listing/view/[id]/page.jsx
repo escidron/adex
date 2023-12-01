@@ -21,7 +21,7 @@ import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import ApproveReservation from '@/components/reservation/ApproveReservation'
-import GetPayoutMethod from '@/actions/GetPayoutMethod'
+import GetPayoutMethod from '@/actions/getPayoutMethod'
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')

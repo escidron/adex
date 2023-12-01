@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card"
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import GetPayoutMethod from '@/actions/GetPayoutMethod'
+import GetPayoutMethod from '@/actions/getPayoutMethod'
 
 export const RefreshContext = createContext();
 
