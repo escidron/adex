@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card"
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
+import GetPayoutMethod from '@/actions/GetPayoutMethod'
 
 export const RefreshContext = createContext();
 
@@ -62,7 +62,7 @@ export default function MyAdex() {
       }
     }
     getInfo();
-  }, []);
+  }, [refresh]);
 
 
   return (

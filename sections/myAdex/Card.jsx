@@ -12,7 +12,19 @@ import { useRouter } from 'next/navigation';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { formatPrice } from '@/utils/format';
 
-export default function Card({ item, setAdvertisementId, route }) {
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+export default function Card({ item, route, deleteListing }) {
     const router = useRouter();
     const [sharingOptions, setSharingOptions] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -47,7 +59,7 @@ export default function Card({ item, setAdvertisementId, route }) {
                     <div className='flex justify-between items-center'>
                         <h1 className='text-[24px] font-[500] line-clamp-1'>{item.title}</h1>
                         <div className={`${item.status === 1 ? 'bg-green-700' : item.status === 2 ? 'bg-orange-700' : item.status === 3 ? 'bg-red-700' : 'bg-gray-700'} px-2 py-1 h-[22px] rounded-2xl flex items-center text-[10px] font-[600] text-white ml-auto`}>
-                            <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : item.status === 0 ? 'Draft' :'Pending'}</p>
+                            <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : item.status === 0 ? 'Draft' : 'Pending'}</p>
                         </div>
 
                     </div>
@@ -89,11 +101,36 @@ export default function Card({ item, setAdvertisementId, route }) {
                                         <Edit />
                                     </div>
 
-                                    <div onClick={(e) => {
+                                    {/* <div onClick={(e) => {
                                         e.stopPropagation()
                                         setAdvertisementId(item.id)
                                     }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                                         <Trash />
+                                    </div> */}
+
+                                    <div onClick={(e) => e.stopPropagation()}>
+
+                                        <AlertDialog>
+                                            <AlertDialogTrigger>
+                                                <div className="hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer" >
+                                                    <Trash />
+                                                </div>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent >
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete this listing.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => {
+                                                        deleteListing(item.id)
+                                                    }}>Delete</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
                                     </div>
                                 </>
                             )

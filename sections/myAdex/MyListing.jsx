@@ -12,6 +12,7 @@ import { CompanyRefreshContext } from '@/app/my-company/page';
 import StatusTabBar from './_components/StatusTabBar';
 import { Skeleton } from '@mui/material';
 import CardSkeleton from './_components/CardSkeleton';
+import RemoveListing from '@/actions/RemoveListing';
 
 
 
@@ -46,19 +47,10 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
   }
 
 
-  const deleteAdvertisement = () => {
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/delete-advertisement`,
-      { id: advertisementId }, {
-      withCredentials: true,
-    })
-      .then(function (response) {
-        setAdvertisementId('')
-        setRefresh(prev => (!prev))
-        toast.success('Advertisement deleted successfully')
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
+  const deleteListing = async (id)=> {
+      const response = await RemoveListing(id)
+      toast.success('Advertisement deleted successfully')
+      setRefresh(prev => !prev)
   }
   return (
     <div className='flex flex-col items-center '>
@@ -78,6 +70,7 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
                       item={item}
                       setAdvertisementId={(id) => setAdvertisementId(id)}
                       route={`/listing/view/${item.id}`}
+                      deleteListing={(id)=>deleteListing(id)}
                     />
                   </div>
                 </>
@@ -86,27 +79,6 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
             return null
           })
         }
-      {
-        advertisementId != '' && (
-          <>
-            <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center' onClick={() => setAdvertisementId('')}>
-            </div>
-            <div className='card-payment-modal px-[60px] py-[30px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[400px]'>
-              <h1 className='text-[25px]'>
-                Are you sure you want to delete this listing?
-              </h1>
-              <div className='flex items-center justify-between mt-2 w-full'>
-                <div onClick={() => setAdvertisementId('')}>
-                  <SecondaryButton label='Cancel' dark={true} />
-                </div>
-                <div onClick={deleteAdvertisement}>
-                  <BlackButton label='Delete' />
-                </div>
-              </div>
-            </div>
-          </>
-        )
-      }
     </div>
   )
 }

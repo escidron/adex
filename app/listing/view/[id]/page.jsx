@@ -12,7 +12,7 @@ import PageSkeleton from './_components/PageSkeleton'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
+import GetPayoutMethod from '@/actions/GetPayoutMethod'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'

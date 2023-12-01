@@ -24,7 +24,7 @@ import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
 import BusinessForm from '@/components/forms/BusinessForm'
 import InstructionsForm from '@/components/forms/InstructionsForm'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
+import GetPayoutMethod from '@/actions/GetPayoutMethod'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
