@@ -171,7 +171,7 @@ export default function MessagesPage() {
                         {
                             selectedChat.advertisementImage && (
                                 <>
-                                    <div className='h-full min-w-[35%] aspect-auto'>
+                                    <div className='h-full min-w-[35%] max-w-[35%] aspect-auto'>
                                         <MultiImage images={selectedChat.advertisementImage} height={'180px'} remove={false} />
                                     </div>
                                     <div className='relative hidden lg:block '>
