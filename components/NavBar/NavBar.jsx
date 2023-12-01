@@ -266,10 +266,15 @@ export default function NavBar() {
                             <BookmarkCheck size={20} />
                             My Bookings
                         </Link>
-                        <Link href="/my-profile?tab=4" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
-                            <Wallet size={20} />
-                            My Wallet
-                        </Link>
+                        {
+                            userData.userType == '2' && (
+                                <Link href="/my-profile?tab=4" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
+                                    <Wallet size={20} />
+                                    My Wallet
+                                </Link>
+                            )
+                        }
+
                         <Link href="/messages" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <MessageSquare size={20} />
                             Messages
