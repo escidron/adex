@@ -24,7 +24,7 @@ export default function GalleryImage({ gallery, isSelectable, selected, setSelec
       {
         gallery.length > 0 ? (
 
-          <div className='mt-6 grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-full max-h-[400px] overflow-y-auto'>
+          <div className='mt-6 grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-full '>
             {
               gallery[0].company_gallery.map((item, index) => (
                 <div key={index} id={index} className='relative hover:cursor-pointer max-w-[250px] hover:scale-[1.1] shadow-md border rounded-lg' onClick={() => handleSelected(index)}>
