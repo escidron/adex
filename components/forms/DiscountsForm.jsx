@@ -40,8 +40,7 @@ export default function DiscountsForm({ ListingContext }) {
         const categoryType = checkCategoryType(listingProperties.sub_category)
         setAdvertisementType(listingProperties.otherListingType ? listingProperties.otherListingType : categoryType)
     }, [listingProperties]);
-    console.log('advertisementType', advertisementType)
-    console.log('listingProperties', listingProperties)
+
     const addDiscount = () => {
         setNewDiscount(false)
         setListingProperties((prev) => ({ ...prev, discounts: [...prev.discounts, { duration: selectedMonth, discount: percentage }] }))

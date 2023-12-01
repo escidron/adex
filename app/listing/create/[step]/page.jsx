@@ -24,6 +24,7 @@ import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
 import BusinessForm from '@/components/forms/BusinessForm'
 import InstructionsForm from '@/components/forms/InstructionsForm'
+import GetPayoutMethod from '@/actions/getPayoutMethod'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -37,6 +38,7 @@ export default function Listing({ params }) {
     const [advertisementType, setAdvertisementType] = useState('')
     const [selectedCompany, setSelectedCompany] = useState('')
     const [userData, setUserData] = useState({});
+    const [hasPayoutMethod, setHasPayoutMethod] = useState(false);
     const [importFromGallery, setImportFromGallery] = useState(false);
 
     const step = params.step
@@ -57,6 +59,9 @@ export default function Listing({ params }) {
 
     useEffect(() => {
         async function GetUserProfile() {
+            const checkPayout = await GetPayoutMethod()
+            setHasPayoutMethod(checkPayout)
+            
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
                 {
@@ -193,7 +198,8 @@ export default function Listing({ params }) {
                 first_available_date: listingProperties.first_available_date,
                 date: listingProperties.date,
                 company_id: listingProperties.select_business,
-                instructions: listingProperties.instructions
+                instructions: listingProperties.instructions,
+                has_payout_method:hasPayoutMethod
             }, {
             withCredentials: true,
         })

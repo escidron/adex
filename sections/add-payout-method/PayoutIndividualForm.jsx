@@ -8,8 +8,9 @@ import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 
 import ImageLoader from "@/components/ImageLoader/ImageLoader";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import Footer from "@/components/footer/Footer";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -50,7 +51,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       errors.images = 'Required';
     }
 
-    console.log('errors',errors)
+    console.log('errors', errors)
     return errors;
   };
 
@@ -62,7 +63,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       city: '',
       state: state,
       zip: '',
-      image:images
+      image: images
     },
     validate,
     onSubmit: values => {
@@ -77,7 +78,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
           city: values.city,
           state: state,
           zip: values.zip,
-          verificationImage:images[0].data_url
+          verificationImage: images[0].data_url
         }, {
         withCredentials: true,
       })
@@ -104,7 +105,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
     },
   });
 
-  console.log('images',images)
+  console.log('images', images)
   return (
     <>
 
@@ -133,10 +134,8 @@ export default function PayoutIndividualForm({ setHasAccount }) {
                 {
                   isVisible ? (
 
-                    // <VisibilityIcon fontSize="small" sx={{ opacity: '0.6' }} />
                     <Eye className="w-5 h-5 opacity-60" />
                   ) : (
-                    // <VisibilityOffIcon fontSize="small" sx={{ opacity: '0.6' }} />
                     <EyeOff className="w-5 h-5 opacity-60" />
                   )
                 }
@@ -240,26 +239,18 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               />
             </div>
             <p className="mt-1 text-[13px] text-slate-600">Upload a photo of the front side of your identification document</p>
-            { formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
+            {formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
           </div>
-          <div className=" w-full">
-            <button type="submit" className={`flex  gap-2 justify-center min-h-[50px] items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-4 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''}  text-lg`}>
-              {/* <LockIcon sx={{ fontSize: '18px' }} /> */}
-              <Lock size={18} />
-              <div className='style_banner_button_text font-semibold text-[18px]'>
-                {isPending ? (
-                  <ThreeDots
-                    height="30"
-                    width="40"
-                    radius="9"
-                    color="#FCD33B"
-                    ariaLabel="three-dots-loading"
-                    visible={true}
-                  />
-                ) : 'Continue'}
-              </div>
-            </button>
-          </div>
+            <Button disabled={isPending} type="submit"  className='w-full mt-4 text-[16px] flex gap-2'>
+              {
+                isPending ? (
+                  <Loader2 size={18} className='animate-spin' />
+                ) : (
+                  <Lock size={18} />
+                )
+              }
+              Next
+            </Button>
           <p className=" mt-2 text-[14px]">Disclaimer: This information is not being stored by ADEX. It is only used for the Stripe Verification process.</p>
         </form>
       </div>

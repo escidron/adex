@@ -1,5 +1,5 @@
 "use client"
-import { useState,useContext } from 'react'
+import { useState, useContext } from 'react'
 import { UserContext } from '../../app/layout';
 
 import axios from 'axios'
@@ -9,6 +9,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
 import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
+import { Button } from '@/components/ui/button';
+import { Loader2, Lock } from 'lucide-react';
 
 
 
@@ -71,7 +73,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                     if (response.status == 200) {
                         setIsPending(false)
                         setFinish(true)
-                        setUser((prev) => ({ ...prev, hasPayout:true }))
+                        setUser((prev) => ({ ...prev, hasPayout: true }))
 
                     }
                 })
@@ -85,7 +87,7 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                             padding: '16px',
                             minWidth: '550px',
                             fontWeight: 500
-          
+
                         }
                     })
                 });
@@ -173,21 +175,16 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
                     {formik.touched.confirmAccount && formik.errors.confirmAccount ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.confirmAccount}</div> : null}
                 </div>
 
-                <button type="submit" className={`flex gap-2 relative justify-center items-center w-full bg-black text-[#FCD33B] py-[8px] px-[30px] rounded-md mt-8  md:mt-7 ${!isPending ? 'hover:bg-[#FCD33B] hover:text-black' : ''} text-lg`}>
-                    <LockIcon sx={{ fontSize: '18px' }} />
-                    <div type="submit" className='style_banner_button_text font-semibold text-[18px] cursor-pointer'>
-                        {isPending ? (
-                            <ThreeDots
-                                height="30"
-                                width="40"
-                                radius="9"
-                                color="#FCD33B"
-                                ariaLabel="three-dots-loading"
-                                visible={true}
-                            />
-                        ) : 'Submit'}
-                    </div>
-                </button>
+                <Button disabled={isPending} type="submit" className='w-full mt-6 text-[16px] flex gap-2'>
+                    {
+                        isPending ? (
+                            <Loader2 size={18} className='animate-spin' />
+                        ) : (
+                            <Lock size={18} />
+                        )
+                    }
+                    Add Payout Method
+                </Button>
             </form>
         </div>
     );

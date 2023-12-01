@@ -47,7 +47,7 @@ export default function Card({ item, setAdvertisementId, route }) {
                     <div className='flex justify-between items-center'>
                         <h1 className='text-[24px] font-[500] line-clamp-1'>{item.title}</h1>
                         <div className={`${item.status === 1 ? 'bg-green-700' : item.status === 2 ? 'bg-orange-700' : item.status === 3 ? 'bg-red-700' : 'bg-gray-700'} px-2 py-1 h-[22px] rounded-2xl flex items-center text-[10px] font-[600] text-white ml-auto`}>
-                            <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : 'Pending'}</p>
+                            <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : item.status === 0 ? 'Draft' :'Pending'}</p>
                         </div>
 
                     </div>

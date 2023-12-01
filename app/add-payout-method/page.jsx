@@ -6,6 +6,7 @@ import PayoutIndividualForm from '@/sections/add-payout-method/PayoutIndividualF
 import PayoutCompanyForm from '@/sections/add-payout-method/PayoutCompanyForm';
 
 import { useEffect,useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AddPayoutMethod() {
   const [hasBankAccount, setHasBankAccount] = useState(false);
@@ -13,7 +14,7 @@ export default function AddPayoutMethod() {
   const [finish, setFinish] = useState(false);
   const [hasAccount, setHasAccount] = useState(false);
   const [userData, setUserData] = useState({});
-
+  const router = useRouter()
   useEffect(() => {
     async function GetAddress() {
       const response = await fetch(
@@ -83,7 +84,7 @@ export default function AddPayoutMethod() {
               <ExternalBankForm
                 setHasBankAccount={(has) => setHasBankAccount(has)}
                 stripeAccount={seller.stripe_account}
-                setFinish={(finish) => setFinish(finish)} />
+                setFinish={() => router.push('/my-profile?tab=5&sub-tab=0')} />
             )
             : seller?.user_type == '2' ? (
 

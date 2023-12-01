@@ -18,11 +18,11 @@ import CardSkeleton from './_components/CardSkeleton';
 
 
 export default function MyListing({ data, status, isCompanyPage, isContentLoaded }) {
-  const [currentStatus, setCurrentStatus] = useState('0');
+  const [currentStatus, setCurrentStatus] = useState('');
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
 
-  if (data?.length == 0 && isContentLoaded ) {
+  if (data?.length == 0 && isContentLoaded) {
     return (
       <>
         <h1 className='text-[20px]'>There are not exist any Listing yet</h1>
@@ -68,26 +68,24 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
         currentStatus={currentStatus}
         handleCurrentStatus={(current) => handleCurrentStatus(current)}
       />
-      {
-        data.map((item, index) => {
-          if (item.status == currentStatus || currentStatus === '0') {
-            return (
-              <>
-                <div key={item.id + index} className='w-full flex gap-4 items-center'>
-                  <Card
-                    item={item}
-                    setAdvertisementId={(id) => setAdvertisementId(id)}
-                    route={`/listing/view/${item.id}`}
-                  />
-                </div>
-
-              </>
-            )
-          }
-          return null
-        })
-      }
-
+        {
+          data.map((item, index) => {
+            if (item.status == currentStatus || currentStatus == '') {
+              return (
+                <>
+                  <div key={item.id + index} className='w-full flex gap-4 items-center'>
+                    <Card
+                      item={item}
+                      setAdvertisementId={(id) => setAdvertisementId(id)}
+                      route={`/listing/view/${item.id}`}
+                    />
+                  </div>
+                </>
+              )
+            }
+            return null
+          })
+        }
       {
         advertisementId != '' && (
           <>
