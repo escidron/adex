@@ -21,11 +21,12 @@ const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id
 
 export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const [filters, setFilters] = useState([]);
+    const [coords, setCoords] = useContext(MapCoordinatesContext)
 
-    const [coords, setCoords] = useState({
-        lat: -3.745,
-        lng: -38.523
-    });
+    // const [coords, setCoords] = useState({
+    //     lat: -3.745,
+    //     lng: -38.523
+    // });
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -67,6 +68,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const handleCoords = (coords) => {
         console.log('coords', coords)
         onClick('coords',coords)
+        setCoords(coords)
     }
     return (
         <>
