@@ -72,7 +72,7 @@ export default function MessagesPage() {
 
         const interval = setInterval(() => {
             setRefetch(prev => !prev);
-        }, 10000);
+        }, 30000);
 
         return () => {
             clearInterval(interval);
