@@ -67,9 +67,9 @@ export default function Listing({ params }) {
                     ad_duration_type: myListing.ad_duration_type,
                     status: myListing.status,
                     duration: myListing.duration,
-                    stripe_price:myListing.stripe_price,
-                    units:myListing.units,
-                    created_at:myListing.created_at
+                    stripe_price: myListing.stripe_price,
+                    units: myListing.units,
+                    created_at: myListing.created_at
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
@@ -150,7 +150,8 @@ export default function Listing({ params }) {
                                                 <Separator className='my-5' />
                                                 <DiscountsInfo
                                                     listingProperties={listingProperties}
-                                                    advertisementType={advertisementType} />
+                                                    advertisementType={advertisementType}
+                                                />
                                             </>
                                         )}
 

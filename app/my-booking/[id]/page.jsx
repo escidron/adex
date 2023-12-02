@@ -2,7 +2,6 @@
 
 import Footer from '@/components/footer/Footer'
 import TopBar from '../../listing/view/[id]/_components/TopBar'
-import PayoutWarningBanner from '../../listing/view/[id]/_components/PayoutWarningBanner'
 import ImagesBox from '../../listing/view/[id]/_components/ImagesBox'
 import ListingHeader from '../../listing/view/[id]/_components/ListingHeader'
 import DateInfo from '../../listing/view/[id]/_components/DateInfo'
@@ -163,7 +162,7 @@ export default function Booking({ params }) {
                                         }
                                     </div>
                                     {
-                                        statusPending && (
+                                        statusPending  && (
 
                                             <div className='w-full md:w-[40%] flex justify-end mt-2' >
                                                 <ApproveReservation

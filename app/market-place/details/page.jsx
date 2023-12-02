@@ -56,6 +56,7 @@ export default function ListingDetails({ sharedId }) {
             setDiscounts(discounts)
 
             if (myListing) {
+                setAdvertisementType(myListing.ad_duration_type)
                 setListingProperties((prev) => ({
                     ...prev,
                     status: myListing.status,
@@ -157,7 +158,10 @@ export default function ListingDetails({ sharedId }) {
                                         {advertisementType != 1 && listingProperties.discounts.length > 0 && (
                                             <>
                                                 <Separator className='my-6' />
-                                                <DiscountsInfo listingProperties={listingProperties} advertisementType={advertisementType} />
+                                                <DiscountsInfo
+                                                    listingProperties={listingProperties}
+                                                    advertisementType={advertisementType}
+                                                />
                                             </>
                                         )
                                         }

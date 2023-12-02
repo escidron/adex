@@ -2,6 +2,7 @@
 
 
 export default function DiscountsInfo({ listingProperties, advertisementType }) {
+    console.log('advetisement type',advertisementType)
     return (
         <div>
             {
@@ -18,13 +19,13 @@ export default function DiscountsInfo({ listingProperties, advertisementType }) 
                                                     {
                                                         advertisementType == 2 && (
 
-                                                            <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book<label className='font-semibold'>{` ${item.duration} units `}</label>or more.</h1>
+                                                            <h1 className='text-[14px]'>Get<label className='font-semibold'>{` ${item.discount}% discount `}</label>when book<label className='font-semibold'>{` ${item.duration} units `}</label>or more.</h1>
                                                         )
                                                     }
                                                     {
                                                         advertisementType == 0 && (
 
-                                                            <h1 className='text-[14px]'>Buyers gets<label className='font-semibold'>{` ${item.discount}% discount `}</label>when they book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
+                                                            <h1 className='text-[14px]'>Get<label className='font-semibold'>{` ${item.discount}% discount `}</label>when book for<label className='font-semibold'>{` ${item.duration} months `}</label>or more.</h1>
                                                         )
                                                     }
                                                 </div>

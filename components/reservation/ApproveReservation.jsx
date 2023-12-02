@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import DatePickerComponent from '../datePicker/DatePickerComponent';
@@ -25,9 +25,12 @@ import {
     DialogDescription
 } from "@/components/ui/dialog"
 import { AlertDialogHeader } from '../ui/alert-dialog';
+import { UserContext } from '@/app/layout';
 
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
+    const [user] = useContext(UserContext)
+
     const [isPending1, setIsPending1] = useState(false)
     const [isPending2, setIsPending2] = useState(false)
     const [isCancelPending, setIsCancelPending] = useState(false)
@@ -395,7 +398,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     </div>
                 </div>
                 {
-                    advertisement?.status == 4 && (
+                    advertisement?.status == 4 && user.userId == advertisement.created_by && (
                         <div className='mt-8'>
                             <Button onClick={Booking} disabled={isPending1 || isPending2 ? true : false} className='w-full'>
                                 {
