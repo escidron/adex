@@ -217,10 +217,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
 
             {
-                data.status == '1' && (
-                    // <Button onClick={Booking} className='mt-4 '>
-                    //     Request
-                    // </Button>
+                data.status == '1' && user.isLogged && (
+
                     <Dialog className='w-full '>
                         <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                             Request Booking
@@ -264,10 +262,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                         <DialogFooter className='mt-4'>
                                             <div className='w-full flex justify-around items-center'>
                                                 <Button variant='outline' onClick={() => setAddCard(true)}>Add Card</Button>
-                                                {/* <Button type="submit" onClick={Booking}>Send Request</Button> */}
                                                 <Button disabled={isPending} type='submit' onClick={Booking}>
                                                     {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-
                                                     Send Request
                                                 </Button>
                                             </div>
@@ -279,15 +275,13 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     </Dialog>
                 )
             }
-            {/* {data.status == '1' && (
-                <p className='text-[12px] mt-2'>You will only be charge if your reserve request is aproved</p>
-            )} */}
-            {incomplete && !hasCard && (
-                <div className='flex gap-2 items-center mt-2'>
-                    <WarningIcon className='text-red-700' sx={{ fontSize: '15px' }} />
-                    <h1 className='text-[15px] font-[600]  text-red-700'>Please, provide a <label onClick={() => setShowModal(true)} className='font-[800] cursor-pointer border-b-[1px] border-black'>Payment Method</label></h1>
-                </div>
-            )}
+            {
+                !user.isLogged && (
+                    <Button className='mt-2' onClick={()=>router.push('/login')}>
+                        Request Booking
+                    </Button>
+                )
+            }
         </div>
     )
 }

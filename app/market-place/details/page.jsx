@@ -12,17 +12,16 @@ import GetDiscounts from '@/actions/GetDiscounts'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import Reservation from '@/components/reservation/Reservation'
 import SellerDetails from './_components/SellerDetails'
-import axios from 'axios'
+import SendChatMessage from '@/actions/SendChatMessage'
+
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect, useContext } from 'react'
-import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { SendHorizontal } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from '@/app/layout'
-import SendChatMessage from '@/actions/SendChatMessage'
 
 
 
