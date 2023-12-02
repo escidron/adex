@@ -1,24 +1,19 @@
 'use client'
-import Image from 'next/image';
-import { useState, useEffect, useRef, useContext } from 'react'
-import { UserContext } from "@/app/layout";
 import axios from 'axios';
-import { Divider } from '@mui/material';
 import ChatListBox from '@/components/chat/ChatListBox';
 import Chat from '@/components/chat/Chat';
-import { io } from "socket.io-client";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { useSearchParams, useRouter } from 'next/navigation'
+import Image from 'next/image';
 import MultiImage from '@/components/multiImage/MultiImage';
+
+import { useState, useEffect, useRef, useContext } from 'react'
+import { UserContext } from "@/app/layout";
+import { Divider } from '@mui/material';
+import { useSearchParams, useRouter } from 'next/navigation'
 import { ChevronLeft, MapPin } from 'lucide-react';
-
-
-
+import GetNotifications from '@/actions/GetNotifications';
+import GetChatMessages from '@/actions/GetChatMessages';
 
 export default function MessagesPage() {
-    // var socket = io.connect('http://localhost:4400')
-    //var socket = io.connect('http://test.adexconnect.com:4500');
-    // console.log(socket)
 
     const [messages, setMessages] = useState([]);
     const [allChats, setallChats] = useState([]);
@@ -42,42 +37,35 @@ export default function MessagesPage() {
     const router = useRouter()
     let chatKey = []
     let lastMessages = []
-    // socket.on('resend-data', () => {
-    //     setRefetch(!refetch)
-    // })
 
     useEffect(() => {
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/chat-info`,
-            { key: key }, {
-            withCredentials: true,
-        })
-            .then(function (response) {
-                GetNotifications()
+        async function GetInfo() {
+            const response = await GetNotifications()
+            const allMessages = await GetChatMessages(key)
+            setUser((prev) => ({ ...prev, notificationQuantity: response.length, notifications: response }))
+            setallChats(allMessages)
+            
+            const privateMessages = allMessages.filter(message => message.advertisement_id + message.seller_id + message.buyer_id == key);
+            console.log('privateMessages',privateMessages);
+            setMessages(privateMessages)
+            if (selectedChat.advertisementId == '' && privateMessages.length > 0) {
+                setSelectedChat({
+                    advertisementId: privateMessages[0].advertisement_id,
+                    createdBy: privateMessages[0].seller_id,
+                    buyerId: privateMessages[0].buyer_id,
+                    advertisementImage: privateMessages[0].image,
+                    advertisementPrice: privateMessages[0].price,
+                    advertisementTitle: privateMessages[0].title,
+                    advertisementDescription: privateMessages[0].description,
+                    advertisementAddress: privateMessages[0].address,
+                    advertisementDurationType: privateMessages[0].ad_duration_type,
+                    avatar: privateMessages[0].profile_image,
+                    name: privateMessages[0].name
+                })
+            }
+        }
+        GetInfo()
 
-                const allMessages = response.data.messages
-                setallChats(allMessages)
-                const privateMessages = allMessages.filter(message => message.advertisement_id + message.seller_id + message.buyer_id == key);
-                setMessages(privateMessages)
-                if (selectedChat.advertisementId == '' && privateMessages.length > 0) {
-                    setSelectedChat({
-                        advertisementId: privateMessages[0].advertisement_id,
-                        createdBy: privateMessages[0].seller_id,
-                        buyerId: privateMessages[0].buyer_id,
-                        advertisementImage: privateMessages[0].image,
-                        advertisementPrice: privateMessages[0].price,
-                        advertisementTitle: privateMessages[0].title,
-                        advertisementDescription: privateMessages[0].description,
-                        advertisementAddress: privateMessages[0].address,
-                        advertisementDurationType: privateMessages[0].ad_duration_type,
-                        avatar: privateMessages[0].profile_image,
-                        name: privateMessages[0].name
-                    })
-                }
-
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
     }, [refetch]);
 
     useEffect(() => {
@@ -85,28 +73,15 @@ export default function MessagesPage() {
         const interval = setInterval(() => {
             setRefetch(prev => !prev);
         }, 10000);
-        
+
         return () => {
             clearInterval(interval);
         };
 
     }, []);
 
-    async function GetNotifications() {
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/notifications`,
-            {}, {
-            withCredentials: true,
 
-        })
-            .then(function (response) {
 
-                setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length }))
-                setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
-    }
     const selectChat = (advertisementId, sellerId, buyerId) => {
         const privateMessages = allChats.filter(message => message.advertisement_id == advertisementId && message.seller_id == sellerId && message.buyer_id == buyerId);
         setMessages(privateMessages)
@@ -131,7 +106,8 @@ export default function MessagesPage() {
             }
         })
     }
-    console.log('selected chat',selectedChat)
+
+    console.log('messages asadasd',messages);
     return (
         <div className={`mt-[120px] w-full flex justify-center `}>
             <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>
@@ -177,13 +153,9 @@ export default function MessagesPage() {
                                     <div className='relative hidden lg:block '>
                                         <h1 className='text-[24px] font-[600]'>{selectedChat.advertisementTitle}</h1>
                                         <div className='flex gap-2 ml-[-5px] items-center'>
-                                            <MapPin className='min-w-[14px] max-w-[14px]'/>
+                                            <MapPin className='min-w-[14px] max-w-[14px]' />
                                             <p className='text-[12px] mt-[-3px] text-gray-600'>{selectedChat.advertisementAddress}</p>
                                         </div>
-                                        {/* <p className='text-[14px] mt-4 w-full'>
-                                            {selectedChat.advertisementDescription.length > 125 ? selectedChat.advertisementDescription.split(' ').slice(0, 15).join(' ') + "..."
-                                                : selectedChat.advertisementDescription}
-                                        </p> */}
                                         <div className='flex mt-auto text-[20px] absolute bottom-[20px]'>
                                             ${selectedChat.advertisementPrice}/{selectedChat?.advertisementDurationType == '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>Month</p>) : selectedChat?.advertisementDurationType == '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>Units</p>) : ''}
                                         </div>
@@ -245,6 +217,7 @@ export default function MessagesPage() {
 
                     <Chat
                         messages={messages}
+                        setMessages={(newMessage)=>setMessages(newMessage)}
                         userId={user.userId}
                         createdBy={selectedChat.createdBy}
                         advertisementId={selectedChat.advertisementId}
