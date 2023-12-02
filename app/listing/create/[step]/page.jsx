@@ -77,6 +77,7 @@ export default function Listing({ params }) {
         GetUserProfile();
     }, []);
     const handleNext = () => {
+        setIsPending(true)
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
         const isValid = listingMachine.states[nextRoute].ISVALID
         if (!isValid) {
@@ -84,10 +85,14 @@ export default function Listing({ params }) {
         }
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
-        controlSteps()
+        controlSteps()        
+        setIsPending(false)
+
     }
 
     const handlePrevious = () => {
+        setIsPending(true)
+
         let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
 
         const isValid = listingMachine.states[nextRoute].ISVALID
@@ -98,6 +103,8 @@ export default function Listing({ params }) {
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep - 1 }))
         controlSteps()
+        setIsPending(false)
+
     }
 
     const validRoute = (url, direction) => {
