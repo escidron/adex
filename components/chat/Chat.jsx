@@ -6,6 +6,7 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import ChatBox from './ChatBox';
 import { useEffect, useRef } from "react";
 import { Divider } from '@mui/material';
+import SendChatMessage from '@/actions/SendChatMessage';
 
 export default function Chat({ messages, userId, setRefetch, advertisementId, createdBy, setMessages }) {
   const [message, setMessage] = useState('');
@@ -22,24 +23,10 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
     }
   }, [messages])
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault()
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-message`,
-      {
-        sended_by: userId,
-        seller_id: createdBy,
-        buyer_id: messages[0].buyer_id,
-        advertisement_id: advertisementId,
-        message: message
-      }, {
-      withCredentials: true,
-    })
-      .then(function (response) {
-        console.log('res', response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
+    const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message)
+
     setMessages(prev=>([...prev, {
       ...prev[prev.length - 1], sended_by: userId,
       seller_id: createdBy,
@@ -51,9 +38,9 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
     //setRefetch(prev => !prev)
     setMessage('')
   }
+
   let dates = ''
 
-  console.log('messages',messages);
   return (
     <div className='flex-col w-full'>
       <div className='border shadow-sm w-full h-[600px] md:h-[745px] lg:h-[540px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >

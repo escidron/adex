@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button'
 import { SendHorizontal } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from '@/app/layout'
+import SendChatMessage from '@/actions/SendChatMessage'
 
 
 
@@ -79,7 +80,7 @@ export default function ListingDetails({ sharedId }) {
                     seller_image: myListing.seller_image,
                     seller_id: myListing.created_by,
                     ad_duration_type: myListing.ad_duration_type,
-                    id:id
+                    id: id
                 }));
 
             }
@@ -114,29 +115,11 @@ export default function ListingDetails({ sharedId }) {
         handleRouteChange()
     }, []);
 
-    const sendMessage = () => {
-        console.log('sender user',user)
-        console.log('slisitng propertire',listingProperties)
+    const sendMessage = async () => {
         if (user.isLogged) {
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/send-message`,
-                {
-                    sended_by: user.userId,
-                    seller_id: listingProperties.seller_id,
-                    buyer_id: user.userId,
-                    advertisement_id: listingProperties.id,
-                    message: message
-                }, {
-                withCredentials: true,
-            })
-                .then(function (response) {
-                    console.log('res', response)
-                    toast.success('Message sended')
-                    setMessage(prev => '')
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
-            //setIsChatOpen(true)
+            const response = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message)
+            toast.success('Message sended')
+            setMessage(prev => '')
             setRefetch(prev => !prev)
         } else {
             router.push('/login')
@@ -144,7 +127,6 @@ export default function ListingDetails({ sharedId }) {
 
     }
 
-    console.log('message',message)
     return (
         <>
             <Toaster />
@@ -159,7 +141,7 @@ export default function ListingDetails({ sharedId }) {
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
                                         <Separator className='my-6' />
-                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true}/>
+                                        <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
 
                                         <Separator className='my-6' />
                                         <SellerDetails listingProperties={listingProperties} />
