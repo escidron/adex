@@ -1,22 +1,15 @@
 "use client"
+import axios from 'axios'
+
 import { useState, useContext } from 'react'
 import { UserContext } from '../../app/layout';
 
-import axios from 'axios'
-import Link from 'next/link';
 import { useFormik } from 'formik';
-import LockIcon from '@mui/icons-material/Lock';
-import CloseIcon from '@mui/icons-material/Close';
-import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 import { Button } from '@/components/ui/button';
 import { Loader2, Lock } from 'lucide-react';
 
-
-
-
-
-export default function ExternalBankForm({ setAccount, stripeAccount, setFinish }) {
+export default function ExternalBankForm({ stripeAccount, setFinish }) {
     const [isPending, setIsPending] = useState(false)
     const [user, setUser] = useContext(UserContext)
 
@@ -95,98 +88,91 @@ export default function ExternalBankForm({ setAccount, stripeAccount, setFinish 
     });
 
     return (
-        <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
-            <div><Toaster /></div>
-            <form className="text-black z-[91] relative px-10 py-8 border border-black rounded-lg flex flex-col justify-center items-center  max-w-[500px] min-w-[400px] h-auto " onSubmit={formik.handleSubmit}>
-                <Link href='/my-profile?tab=4' className='absolute top-4 right-4'>
-                    <CloseIcon sx={{ "&:hover": { color: "#FCD33B" } }} />
-                </Link>
-                <p className=" text-[36px]">Bank Account</p>
-                <p className=" text-[18px] font-normal mb-6">Enter your bank account details</p>
-                <div className=" w-full relative">
-                    <div className="flex">
-                        <label htmlFor="bankName" className="block  mb-1">
-                            Bank Name
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        id="bankName"
-                        name="bankName"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.bankName}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-                    />
-                    {formik.touched.bankName && formik.errors.bankName ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bankName}</div> : null}
-                </div>
 
-                <div className=" mt-4 w-full relative ">
-                    <div className="flex">
-                        <label htmlFor="routingNumber" className="block  mb-1">
-                            Routing number
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        id="routingNumber"
-                        name="routingNumber"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.routingNumber}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-                    />
-                    {formik.touched.routingNumber && formik.errors.routingNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.routingNumber}</div> : null}
+        <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
+            <div className=" w-full relative">
+                <div className="flex">
+                    <label htmlFor="bankName" className="block  mb-1">
+                        Bank Name
+                    </label>
                 </div>
+                <input
+                    type="text"
+                    id="bankName"
+                    name="bankName"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.bankName}
+                    className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+                />
+                {formik.touched.bankName && formik.errors.bankName ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bankName}</div> : null}
+            </div>
 
-                <div className=" mt-4 w-full relative">
-                    <div className="flex">
-                        <label htmlFor="accountNumber" className="block   mb-1">
-                            Account number
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        id="accountNumber"
-                        name="accountNumber"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.accountNumber}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-                    />
-                    {formik.touched.accountNumber && formik.errors.accountNumber ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.accountNumber}</div> : null}
+            <div className=" mt-4 w-full relative ">
+                <div className="flex">
+                    <label htmlFor="routingNumber" className="block  mb-1">
+                        Routing number
+                    </label>
                 </div>
+                <input
+                    type="text"
+                    id="routingNumber"
+                    name="routingNumber"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.routingNumber}
+                    className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+                />
+                {formik.touched.routingNumber && formik.errors.routingNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.routingNumber}</div> : null}
+            </div>
 
-                <div className=" mt-4 w-full relative">
-                    <div className="flex">
-                        <label htmlFor="confirmAccount" className="block   mb-1">
-                            Confirm account number
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        id="confirmAccount"
-                        name="confirmAccount"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.confirmAccount}
-                        className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-                    />
-                    {formik.touched.confirmAccount && formik.errors.confirmAccount ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.confirmAccount}</div> : null}
+            <div className=" mt-4 w-full relative">
+                <div className="flex">
+                    <label htmlFor="accountNumber" className="block   mb-1">
+                        Account number
+                    </label>
                 </div>
+                <input
+                    type="text"
+                    id="accountNumber"
+                    name="accountNumber"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.accountNumber}
+                    className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+                />
+                {formik.touched.accountNumber && formik.errors.accountNumber ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.accountNumber}</div> : null}
+            </div>
 
-                <Button disabled={isPending} type="submit" className='w-full mt-6 text-[16px] flex gap-2'>
-                    {
-                        isPending ? (
-                            <Loader2 size={18} className='animate-spin' />
-                        ) : (
-                            <Lock size={18} />
-                        )
-                    }
-                    Add Payout Method
-                </Button>
-            </form>
-        </div>
+            <div className=" mt-4 w-full relative">
+                <div className="flex">
+                    <label htmlFor="confirmAccount" className="block   mb-1">
+                        Confirm account number
+                    </label>
+                </div>
+                <input
+                    type="text"
+                    id="confirmAccount"
+                    name="confirmAccount"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.confirmAccount}
+                    className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+                />
+                {formik.touched.confirmAccount && formik.errors.confirmAccount ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.confirmAccount}</div> : null}
+            </div>
+
+            <Button disabled={isPending} type="submit" className='w-full mt-6 text-[16px] flex gap-2'>
+                {
+                    isPending ? (
+                        <Loader2 size={18} className='animate-spin' />
+                    ) : (
+                        <Lock size={18} />
+                    )
+                }
+                Add Payout Method
+            </Button>
+        </form>
     );
 }
 

@@ -4,9 +4,6 @@ import AddCard from '@/components/addCard/AddCard';
 import AddAccount from '@/components/addAccount/AddAccount';
 import { useSearchParams } from 'next/navigation'
 
-
-
-
 export default function MyWallet() {
   const searchParams = useSearchParams()
   const subTab = searchParams.get('sub-tab')

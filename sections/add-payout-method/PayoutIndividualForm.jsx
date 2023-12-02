@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useFormik } from 'formik';
 import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
-import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
 
 import ImageLoader from "@/components/ImageLoader/ImageLoader";
@@ -15,7 +14,6 @@ import { Button } from "@/components/ui/button";
 
 
 export default function PayoutIndividualForm({ setHasAccount }) {
-  // const [user,setUser] = useContext(UserContext)
   const [bod, setBod] = useState('');
   const [state, setState] = useState('AL');
   const [isPending, setIsPending] = useState(false)
@@ -107,156 +105,148 @@ export default function PayoutIndividualForm({ setHasAccount }) {
 
   console.log('images', images)
   return (
-    <>
 
-      <div className={` flex flex-col items-center justify-center  py-2   p-2 `}>
-        <div><Toaster /></div>
-        <form className="text-black  z-[45] px-10 py-4 border border-black rounded-lg flex gap-3 flex-col justify-center items-center  max-w-[500px] h-auto " onSubmit={formik.handleSubmit}>
-          <p className=" text-[24px]">Personal Details</p>
-          <div className=" w-full  flex gap-[20px] ">
-            <div className="w-[50%] relative ">
-              <div className="flex">
-                <label htmlFor="idNumber" className="block text-[14px]  mb-1">
-                  Social Security Number
-                </label>
-              </div>
-              <input
-                id="idNumber"
-                name="idNumber"
-                type={isVisible ? 'text' : 'password'}
-                maxLength="9"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.idNumber}
-                className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-              />
-              <div className="absolute top-9 right-2 cursor-pointer" onClick={() => setIsVisible(!isVisible)}>
-                {
-                  isVisible ? (
 
-                    <Eye className="w-5 h-5 opacity-60" />
-                  ) : (
-                    <EyeOff className="w-5 h-5 opacity-60" />
-                  )
-                }
-              </div>
-              {formik.touched.idNumber && formik.errors.idNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.idNumber}</div> : null}
-
-            </div>
-            <div className="w-[50%] relative max-h-[42px]">
-              <div className="flex">
-                <label htmlFor="bod" className="block text-[14px]   mb-1">
-                  Date of Birth
-                </label>
-              </div>
-              <DatePickerComponent
-                id='bod'
-                setDate={(bod) => setBod(bod)}
-                maxHeight='42px'
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.bod && formik.errors.bod ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bod}</div> : null}
-            </div>
+    <form className="flex flex-col gap-3" onSubmit={formik.handleSubmit}>
+      <div className=" w-full  flex gap-[20px] ">
+        <div className="w-[50%] relative ">
+          <div className="flex">
+            <label htmlFor="idNumber" className="block text-[14px]  mb-1">
+              Social Security Number
+            </label>
           </div>
+          <input
+            id="idNumber"
+            name="idNumber"
+            type={isVisible ? 'text' : 'password'}
+            maxLength="9"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.idNumber}
+            className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+          />
+          <div className="absolute top-9 right-2 cursor-pointer" onClick={() => setIsVisible(!isVisible)}>
+            {
+              isVisible ? (
 
-          <div className="  w-full relative">
-            <div className="flex">
-              <label htmlFor="street" className="block text-[14px]   mb-1">
-                Street address
-              </label>
-            </div>
-            <input
-              type="text"
-              id="street"
-              name="street"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.street}
-              className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-            />
-            {formik.touched.street && formik.errors.street ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.street}</div> : null}
+                <Eye className="w-5 h-5 opacity-60" />
+              ) : (
+                <EyeOff className="w-5 h-5 opacity-60" />
+              )
+            }
           </div>
+          {formik.touched.idNumber && formik.errors.idNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.idNumber}</div> : null}
 
-          <div className="  w-full relative">
-            <div className="flex">
-              <label htmlFor="city" className="block text-[14px]   mb-1">
-                City
-              </label>
-            </div>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.city}
-              className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-            />
-            {formik.touched.city && formik.errors.city ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.city}</div> : null}
+        </div>
+        <div className="w-[50%] relative max-h-[42px]">
+          <div className="flex">
+            <label htmlFor="bod" className="block text-[14px]   mb-1">
+              Date of Birth
+            </label>
           </div>
-
-          <div className=" w-full  flex gap-[20px]">
-            <div className="w-[70%] relative">
-              <div className="flex">
-                <label htmlFor="state" className="block text-[14px]   mb-1">
-                  State
-                </label>
-              </div>
-              <div >
-                <SelectUSState
-                  className={`dropdown w-full border focus:border-black p-2 rounded-lg outline-none `}
-                  name="state"
-                  value={state}
-                  onChange={state => setState(state)} />
-              </div>
-              {formik.touched.state && formik.errors.state ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.state}</div> : null}
-            </div>
-            <div className="w-[30%] relative">
-              <div className="flex">
-                <label htmlFor="zip" className="block text-[14px]   mb-1">
-                  ZIP code
-                </label>
-              </div>
-              <input
-                id="zip"
-                name="zip"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.zip}
-                className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
-              />
-              {formik.touched.zip && formik.errors.zip ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.zip}</div> : null}
-            </div>
-          </div>
-          {/* stripe image verification */}
-          <div className=" w-full relative flex flex-col">
-            <p className="text-[14px]">Identity Document</p>
-            <div className=" h-[160px]  mt-1">
-              <ImageLoader
-                images={images}
-                setImages={(image) => setImages(image)}
-              />
-            </div>
-            <p className="mt-1 text-[13px] text-slate-600">Upload a photo of the front side of your identification document</p>
-            {formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
-          </div>
-            <Button disabled={isPending} type="submit"  className='w-full mt-4 text-[16px] flex gap-2'>
-              {
-                isPending ? (
-                  <Loader2 size={18} className='animate-spin' />
-                ) : (
-                  <Lock size={18} />
-                )
-              }
-              Next
-            </Button>
-          <p className=" mt-2 text-[14px]">Disclaimer: This information is not being stored by ADEX. It is only used for the Stripe Verification process.</p>
-        </form>
+          <DatePickerComponent
+            id='bod'
+            setDate={(bod) => setBod(bod)}
+            maxHeight='42px'
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.bod && formik.errors.bod ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bod}</div> : null}
+        </div>
       </div>
-      <div className="w-full"  >
-        <Footer />
+
+      <div className="  w-full relative">
+        <div className="flex">
+          <label htmlFor="street" className="block text-[14px]   mb-1">
+            Street address
+          </label>
+        </div>
+        <input
+          type="text"
+          id="street"
+          name="street"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.street}
+          className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+        />
+        {formik.touched.street && formik.errors.street ? <div className="absolute top-[70px] text-red-600 text-[12px]  font-bold">{formik.errors.street}</div> : null}
       </div>
-    </>
+
+      <div className="  w-full relative">
+        <div className="flex">
+          <label htmlFor="city" className="block text-[14px]   mb-1">
+            City
+          </label>
+        </div>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.city}
+          className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+        />
+        {formik.touched.city && formik.errors.city ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.city}</div> : null}
+      </div>
+
+      <div className=" w-full  flex gap-[20px]">
+        <div className="w-[70%] relative">
+          <div className="flex">
+            <label htmlFor="state" className="block text-[14px]   mb-1">
+              State
+            </label>
+          </div>
+          <div >
+            <SelectUSState
+              className={`dropdown w-full border focus:border-black p-2 rounded-lg outline-none `}
+              name="state"
+              value={state}
+              onChange={state => setState(state)} />
+          </div>
+          {formik.touched.state && formik.errors.state ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.state}</div> : null}
+        </div>
+        <div className="w-[30%] relative">
+          <div className="flex">
+            <label htmlFor="zip" className="block text-[14px]   mb-1">
+              ZIP code
+            </label>
+          </div>
+          <input
+            id="zip"
+            name="zip"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.zip}
+            className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
+          />
+          {formik.touched.zip && formik.errors.zip ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.zip}</div> : null}
+        </div>
+      </div>
+      {/* stripe image verification */}
+      <div className=" w-full relative flex flex-col">
+        <p className="text-[14px]">Identity Document</p>
+        <div className=" h-[160px]  mt-1">
+          <ImageLoader
+            images={images}
+            setImages={(image) => setImages(image)}
+          />
+        </div>
+        <p className="mt-1 text-[13px] text-slate-600">Upload a photo of the front side of your identification document</p>
+        {formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
+      </div>
+      <Button disabled={isPending} type="submit" className='w-full mt-8 text-[16px] flex gap-2'>
+        {
+          isPending ? (
+            <Loader2 size={18} className='animate-spin' />
+          ) : (
+            <Lock size={18} />
+          )
+        }
+        Next
+      </Button>
+    </form>
+
   );
 }
