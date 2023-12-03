@@ -21,6 +21,7 @@ import {
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import GetPayoutMethod from '@/actions/getPayoutMethod'
+import AddAccountModals from '@/components/addAccount/AddAccountModals'
 
 export const RefreshContext = createContext();
 
@@ -101,7 +102,7 @@ export default function MyAdex() {
                 <CardDescription className='mt-3'>To ensure the visibility of your advertisements and allow potential viewers to explore and book them, it&apos;s mandatory to set up at least one Payout Method. Without a registered Payout Method, your advertisements will not be visible to others. After register, all your listings will automatically become visible.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button onClick={()=>router.push('add-payout-method')}>Add Payout Method</Button>
+                <AddAccountModals setRefetch={(toggle)=>setRefresh(toggle)}/>
               </CardContent>
             </Card>
           )
