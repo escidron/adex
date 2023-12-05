@@ -3,25 +3,18 @@
 import { useContext } from 'react'
 import { UserContext } from '../../app/layout';
 import NotificationCard from './NotificationCard';
-import axios from 'axios';
+import RemoveNotifications from '@/actions/RemoveNotifications';
 
-export default function Notifications({ notifications, notificationsQtd }) {
+export default function Notifications() {
     const [user, setUser] = useContext(UserContext)
 
-    const clearNotifications = () => {
-        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/clear-notifications`,
-            {
-                notifications: user.notifications,
-            },
-            {
-                withCredentials: true,
-            })
-            .then(function (response) {
+    const clearNotifications = async () => {
+            const notificationsCleared = await RemoveNotifications(user.notifications)
+            if( notificationsCleared ){
                 setUser((prev) => ({ ...prev, notificationQuantity: 0, notifications: [] }))
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
+            }else{
+                console.log('[ERROR-NOTIFICATIONS]')
+            }
     }
     return (
         <div className='w-full py-2'>
@@ -29,7 +22,7 @@ export default function Notifications({ notifications, notificationsQtd }) {
                 {
                     user.notificationQuantity > 0 ? (
 
-                        <p onClick={clearNotifications} className='flex  ml-auto text-[#FCD33B] text-[12px]'>Mark all as read</p>
+                        <p onClick={clearNotifications} className='flex cursor-pointer ml-auto text-[#FCD33B] text-[12px]'>Mark all as read</p>
                     ) : (
 
                         <p className='flex mx-auto text-[15px]'>You have no notifications.</p>

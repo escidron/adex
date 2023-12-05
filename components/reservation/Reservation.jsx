@@ -62,8 +62,12 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     useEffect(() => {
         if (!date) {
             if (data.ad_duration_type != '1') {
-
-                setDate(new Date(data.first_available_date))
+                console.log('data.first_available_date',data.first_available_date)
+                if( data.first_available_date ){
+                    setDate(new Date(data.first_available_date))
+                }else{
+                    setDate(new Date())
+                }
             } else {
                 setDate(new Date(data.date.from))
             }

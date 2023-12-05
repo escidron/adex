@@ -12,6 +12,9 @@ import PhotosForm from '@/components/forms/PhotosForm'
 import BuildingAssetsForm from '@/components/forms/BuildingAssetsForm'
 import PreviewForm from '@/components/forms/PreviewForm'
 import toast, { Toaster } from 'react-hot-toast'
+import BusinessForm from '@/components/forms/BusinessForm'
+import InstructionsForm from '@/components/forms/InstructionsForm'
+import GetPayoutMethod from '@/actions/getPayoutMethod'
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -22,9 +25,6 @@ import { useContext } from 'react'
 import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
-import BusinessForm from '@/components/forms/BusinessForm'
-import InstructionsForm from '@/components/forms/InstructionsForm'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']

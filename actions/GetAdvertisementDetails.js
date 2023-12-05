@@ -1,5 +1,5 @@
 
-export default async function GetAdvertisementDetails( id) {
+export default async function GetAdvertisementDetails( id,notificationId) {
   try {
 
     const response = await fetch(
@@ -11,7 +11,11 @@ export default async function GetAdvertisementDetails( id) {
           'Content-Type': 'application/json'        
         },
         credentials: "include",
-        body: JSON.stringify({ id: id }),
+        body: JSON.stringify({ 
+          id: id,
+          notificationId: notificationId 
+        
+        }),
       }
     );
 

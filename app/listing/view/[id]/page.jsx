@@ -9,19 +9,19 @@ import DateInfo from './_components/DateInfo'
 import DiscountsInfo from './_components/DiscountsInfo'
 import InstructionsInfo from './_components/InstructionsInfo'
 import PageSkeleton from './_components/PageSkeleton'
-import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
+import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
+import ApproveReservation from '@/components/reservation/ApproveReservation'
+import GetPayoutMethod from '@/actions/getPayoutMethod'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { ListingContext } from './layout'
-import { checkCategoryType } from '@/utils/checkCategoryType'
 import { Separator } from '@/components/ui/separator'
-import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
-import ApproveReservation from '@/components/reservation/ApproveReservation'
-import GetPayoutMethod from '@/actions/getPayoutMethod'
+import { useSearchParams } from 'next/navigation'
+
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [advertisementType, setAdvertisementType] = useState('')
@@ -33,11 +33,13 @@ export default function Listing({ params }) {
     const [currentDiscount, setCurrentDiscount] = useState(0)
 
     const id = params.id
-
+    const searchParams = useSearchParams()
+    const notificationId = searchParams.get('notification_id') 
+    console.log('params',notificationId);
     useEffect(() => {
 
         async function getInfo() {
-            const myListing = await GetAdvertisementDetails(id)
+            const myListing = await GetAdvertisementDetails(id,notificationId)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()
