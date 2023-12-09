@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useEffect, useState, createContext } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import GetCompanies from '@/actions/GetCompanies'
 import GetUserProfile from '@/actions/GetUserProfile'
 import { Separator } from '@/components/ui/separator'
@@ -57,7 +57,6 @@ export default function MyAdex() {
     finished: 0,
     pending: 0
   });
-  const router = useRouter();
 
   useEffect(() => {
     async function getInfo() {
@@ -72,13 +71,13 @@ export default function MyAdex() {
         setAllListings(myListing)
       }
       if (user.userType == 1 && myListing?.length > 0) {
-        const newListing = myListing.filter(item => item.company_id == myListing[0].company_id)
+        const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : myListing[0].company_id) )
         setListingData(() => newListing)
         const newStatus = filterStatus(newListing)
         setStatus(newStatus)
         setSelectedCompany(() => companies[0].company_name)
         setSelectedCompanyId(() => companies[0].id)
-        checkPayout = await GetPayoutMethod(companies[0].id)
+        checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
         setStatus(status)
@@ -97,7 +96,7 @@ export default function MyAdex() {
       }
     }
     getInfo();
-  }, []);
+  }, [refresh]);
 
   const filterStatus = (companyListings)=>{
     const status = {
@@ -157,15 +156,12 @@ export default function MyAdex() {
 
           <div className='w-full flex flex-col items-start gap-2 md:px-8 '>
             <p className='font-[600]'>Select Business</p>
-            <Select onValueChange={(value) => filterListing(value)} className='overflow-y-scroll'>
+            <Select defaultValue={companies[0].id} onValueChange={(value) => filterListing(value)} className='overflow-y-scroll'>
               <SelectTrigger className='shadow-md w-[300px]'>
-
                 <SelectValue className='text-[12px]' placeholder={selectedCompany} />
-
-
               </SelectTrigger>
               <SelectContent >
-                <SelectGroup>
+                <SelectGroup >
                   {
                     companies.map((item) => (
                       <SelectItem key={item.id} value={item.id}>{item.company_name}</SelectItem>

@@ -16,7 +16,6 @@ export const MerchantCategories = [
     { value: '7531', label: 'Auto Body Repair Shops' },
     { value: '7535', label: 'Auto Paint Shops' },
     { value: '7538', label: 'Auto Service Shops' },
-    { value: '5531', label: 'Auto and Home Supply Stores' },
     { value: '6011', label: 'Automated Cash Disburse' },
     { value: '5542', label: 'Automated Fuel Dispensers' },
     { value: '8675', label: 'Automobile Associations' },

@@ -8,11 +8,12 @@ import { useFormik } from 'formik';
 import toast, { Toaster } from "react-hot-toast";
 import { Button } from '@/components/ui/button';
 import { Loader2, Lock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function ExternalBankForm({ stripeAccount, setFinish, selectedCompanyId, setHasPayoutMethod }) {
     const [isPending, setIsPending] = useState(false)
     const [user, setUser] = useContext(UserContext)
-
+    const router = useRouter()
     const validate = values => {
         const errors = {};
 
