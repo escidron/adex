@@ -1,14 +1,17 @@
-export default async function GetPayoutMethod() {
+export default async function GetPayoutMethod(companyId) {
+  console.log('[GetPayoutMethod]',companyId)
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify({ companyId: companyId }),
+
       }
     );
     if (response.status === 200) {

@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 
 
 
-export default function PayoutCompanyForm({ setHasAccount }) {
+export default function PayoutCompanyForm({ setHasAccount, selectedCompany, selectedCompanyId }) {
   // const [user,setUser] = useContext(UserContext)
   const [state, setState] = useState('');
   const [ownerState, setOwnerState] = useState('');
@@ -96,7 +96,7 @@ export default function PayoutCompanyForm({ setHasAccount }) {
   const formik = useFormik({
     initialValues: {
       idNumber: '',
-      name: '',
+      name: selectedCompany,
       street: '',
       city: '',
       state: state,
@@ -134,7 +134,8 @@ export default function PayoutCompanyForm({ setHasAccount }) {
             ownerState: ownerState,
             ownerZip: values.ownerZip,
             verificationImage: images[0].data_url,
-            dob: dob
+            dob: dob,
+            companyId : selectedCompanyId
           }, {
           withCredentials: true,
         })
@@ -164,7 +165,7 @@ export default function PayoutCompanyForm({ setHasAccount }) {
     },
   });
 
-
+console.log('selectedCompany',selectedCompany)
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
@@ -181,9 +182,8 @@ export default function PayoutCompanyForm({ setHasAccount }) {
                   id="name"
                   name="name"
                   type='text'
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.name}
+                  disabled
+                  value={selectedCompany}
                   className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                 />
                 {formik.touched.name && formik.errors.name ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.name}</div> : null}

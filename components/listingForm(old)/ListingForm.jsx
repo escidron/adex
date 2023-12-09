@@ -11,7 +11,7 @@ export default function ListingForm({ categoryId, typeId, isPeriodic, setSelecte
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         }
       );

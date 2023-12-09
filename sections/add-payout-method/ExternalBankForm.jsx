@@ -9,7 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Button } from '@/components/ui/button';
 import { Loader2, Lock } from 'lucide-react';
 
-export default function ExternalBankForm({ stripeAccount, setFinish }) {
+export default function ExternalBankForm({ stripeAccount, setFinish, selectedCompanyId, setHasPayoutMethod }) {
     const [isPending, setIsPending] = useState(false)
     const [user, setUser] = useContext(UserContext)
 
@@ -55,7 +55,8 @@ export default function ExternalBankForm({ stripeAccount, setFinish }) {
                     routingNumber: values.routingNumber,
                     accountNumber: values.accountNumber,
                     stripeAccount: stripeAccount,
-                    bankAccountName: values.bankName
+                    bankAccountName: values.bankName,
+                    companyId : selectedCompanyId
                 }, {
                 withCredentials: true,
                 headers: {
@@ -67,7 +68,7 @@ export default function ExternalBankForm({ stripeAccount, setFinish }) {
                         setIsPending(false)
                         setFinish(true)
                         setUser((prev) => ({ ...prev, hasPayout: true }))
-
+                        setHasPayoutMethod(true)
                     }
                 })
                 .catch(function (error) {

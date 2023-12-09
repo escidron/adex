@@ -1,14 +1,16 @@
-export default async function GetSellerProfile() {
+export default async function GetSellerProfile(companyId) {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/seller-profile`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           credentials: "include",
+          body: JSON.stringify({ companyId: companyId }),
+
         }
       );
       if (response.status === 200) {
