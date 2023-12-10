@@ -318,7 +318,7 @@ export default function SignUppage() {
               <>
                 <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
                 </div>
-                <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-full md:w-[80%] min-w-[800px] h-[80vh]'>
+                <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-full md:w-[80%] lg:min-w-[800px] h-[80vh]'>
                   <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
                     <TermsOfUseModal/>
                   </div>
