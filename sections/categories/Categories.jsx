@@ -30,7 +30,7 @@ export default function Categories() {
                         }   
                         return (
                             <div key={category.id} className='flex justify-center items-center h-[120px] w-[120px]  max-h-[150px]'>
-                                <div className={`flex flex-col  items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg hover:opacity-80 cursor-pointer`}>
+                                <div className={`flex flex-col  items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg `}>
                                     <div className='h-[40px] md:h-[74px] aspect-square'>
                                         <Image
                                             src={'/' + category.image}
