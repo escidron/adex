@@ -48,7 +48,9 @@ export default function Listing({ params }) {
                 setListingProperties({
                     id: myListing.id,
                     created_by: myListing.created_by,
+                    company_id:myListing.company_id,
                     requested_by: myListing.requested_by,
+                    requested_by_company:myListing.requested_by_company,
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,

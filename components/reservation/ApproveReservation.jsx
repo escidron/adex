@@ -64,11 +64,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             countDownDays = fiveDaysInterval - interval2
         }
     }
-    console.log('startDate',startDate)
-    console.log('interval1',interval1)
-    console.log('interval2',interval2)
-    console.log('countDownDays',countDownDays)
-    console.log('hasStarted',hasStarted)
     useEffect(() => {
         console.log('get contract', advertisement)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
@@ -95,7 +90,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             {
                 data: advertisement,
                 duration: advertisement.duration,
-                start_date: advertisement.date.from
+                start_date: advertisement.date.from,
+                companyId:advertisement.requested_by_company
             }, {
             withCredentials: true,
         })
@@ -135,7 +131,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     }
 
     const cancelBooking = () => {
-        console.log('asdasdadasdasdasdasdasd')
         setIsCancelPending(true)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/cancel-booking`,
             {

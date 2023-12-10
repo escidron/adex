@@ -49,6 +49,7 @@ export default function MyAdex() {
   const [selectedCompany, setSelectedCompany] = useState('');
   const [selectedCompanyId, setSelectedCompanyId] = useState('');
   const [allListings, setAllListings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
   const [user, setUser] = useState({});
   const [status, setStatus] = useState({
     available: 0,
@@ -61,35 +62,47 @@ export default function MyAdex() {
   useEffect(() => {
     async function getInfo() {
       let checkPayout
-      const { myListing, status } = (await GetMyAdvertisement()) || {}
+
+      const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
       const myBookings = await GetMyBookings()
       const pendingListing = await GetPendingBookings()
       const user = await GetUserProfile()
       const companies = await GetCompanies()
-      if (myListing?.length > 0) {
-        setListingData(myListing)
-        setAllListings(myListing)
-      }
-      if (user.userType == 1 && myListing?.length > 0) {
-        const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : myListing[0].company_id) )
-        setListingData(() => newListing)
-        const newStatus = filterStatus(newListing)
-        setStatus(newStatus)
-        setSelectedCompany(() => companies[0].company_name)
-        setSelectedCompanyId(() => companies[0].id)
-        checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
+      console.log('cbookings',myBookings);
+      console.log('pendingListing',pendingListing);
+      setAllBookings([...pendingListing, ...myBookings])
+      if (user.userType == 1) {
+        
+        if (companies.length > 0) {
+          checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
+
+          const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+          const newStatus = filterStatus(newListing)
+          const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+          const newPendings = pendingListing.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+
+          setBookingData([...newPendings, ...newBookings])
+          setListingData(() => newListing)
+          setStatus(newStatus)
+          setSelectedCompany(() => companies[0].company_name)
+          setSelectedCompanyId(() => companies[0].id)
+        }
+
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
+        if (myListing.length > 0) {
+          setListingData(myListing)
+        }
         setStatus(status)
+        setBookingData([...pendingListing, ...myBookings])
 
       }
+
       setUser(user)
+      setAllListings(myListing)
       setHasPayoutMethod(checkPayout)
-      setBookingData([...pendingListing, ...myBookings])
       setIsContentLoaded(true)
       setCompanies(companies)
-
-      console.log('status',status)
 
       if (subTab == '1') {
         setValue(1)
@@ -98,7 +111,7 @@ export default function MyAdex() {
     getInfo();
   }, [refresh]);
 
-  const filterStatus = (companyListings)=>{
+  const filterStatus = (companyListings) => {
     const status = {
       all: 0,
       draft: 0,
@@ -130,29 +143,31 @@ export default function MyAdex() {
   }
 
   const filterListing = async (id) => {
+    //use for listing filter
     const newListing = allListings.filter(item => item.company_id == id)
     const selectedCompany = companies.find(item => item.id === id)
     const checkPayout = await GetPayoutMethod(id)
     const newStatus = filterStatus(newListing)
     setStatus(newStatus)
-    //to do
-    //const newBooking = allBookings.filter(item=>item.company_id == id)
     setListingData(newListing)
-    setSelectedCompany(selectedCompany.company_name)
-    setSelectedCompanyId(selectedCompany.id)
     setHasPayoutMethod(checkPayout)
 
+    //use for booking filter
+    const newBookings = allBookings.filter(item => item.requested_by_company == id)
+    setBookingData(newBookings)
+
+    //use for both
+    setSelectedCompany(selectedCompany.company_name)
+    setSelectedCompanyId(selectedCompany.id)
 
   }
-  console.log('selectedCompany', selectedCompany);
-  console.log('companies', companies);
   return (
     <div className='w-full flex flex-col items-center px-[20px]'>
       <div>
         <h1 className='text-[30px] mt-8'>My ADEX</h1>
       </div>
       {
-        user.userType == 1 && (
+        user.userType == 1 && companies.length > 0 && (
 
           <div className='w-full flex flex-col items-start gap-2 md:px-8 '>
             <p className='font-[600]'>Select Business</p>
@@ -210,7 +225,7 @@ export default function MyAdex() {
                   setRefetch={(toggle) => setRefresh(toggle)}
                   selectedCompany={selectedCompany}
                   selectedCompanyId={selectedCompanyId}
-                  setHasPayoutMethod={(hasPayout)=>setHasPayoutMethod(hasPayout)}
+                  setHasPayoutMethod={(hasPayout) => setHasPayoutMethod(hasPayout)}
                 />
               </CardContent>
             </Card>

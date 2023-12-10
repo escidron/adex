@@ -59,7 +59,7 @@ export default function Listing({ params }) {
 
     useEffect(() => {
         async function GetUserProfile() {
-            const checkPayout = await GetPayoutMethod()
+            const checkPayout = await GetPayoutMethod(listingProperties.select_business)
             setHasPayoutMethod(checkPayout)
             
             const response = await fetch(
@@ -75,7 +75,8 @@ export default function Listing({ params }) {
             }
         }
         GetUserProfile();
-    }, []);
+    }, [listingProperties.select_business]);
+    
     const handleNext = () => {
         setIsPending(true)
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT

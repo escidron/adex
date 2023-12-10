@@ -31,6 +31,9 @@ import StripeForm from '../addCard/StripeForm';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentMethodList from '../addCard/PaymentMethodList';
 import GetPaymentMethod from '@/actions/GetPaymentMethod';
+import GetCompanies from '@/actions/GetCompanies';
+import GetUserProfile from '@/actions/GetUserProfile';
+import CompanyList from './CompanyList';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
@@ -44,16 +47,28 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [currentDiscount, setCurrentDiscount] = useState(0);
     const [discountOptions, setDiscountOptions] = useState(false);
     const [user, setUser] = useContext(UserContext)
+    const [allPaymentsMethod, setAllPaymentsMethod] = useState([]);
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [refetch, setRefetch] = useState(false);
     const [addCard, setAddCard] = useState(false);
-
+    const [isCompanyProfile, setIsCompanyProfile] = useState(false);
+    const [companies, setCompanies] = useState();
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [hasCompanySelected, setHasCompanySelected] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         async function getInfo() {
             const cards = await GetPaymentMethod()
+            const myProfile = await GetUserProfile()
+            if (myProfile.userType == '1') {
+                const myCompanies = await GetCompanies()
+                setCompanies(myCompanies)
+                setIsCompanyProfile(true)
+            }
+
             setPaymentMethods(cards)
+            setAllPaymentsMethod(cards)
         }
         getInfo();
 
@@ -62,10 +77,9 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     useEffect(() => {
         if (!date) {
             if (data.ad_duration_type != '1') {
-                console.log('data.first_available_date',data.first_available_date)
-                if( data.first_available_date ){
+                if (data.first_available_date) {
                     setDate(new Date(data.first_available_date))
-                }else{
+                } else {
                     setDate(new Date())
                 }
             } else {
@@ -98,7 +112,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     {
                         data: data,
                         duration: counter,
-                        start_date: date
+                        start_date: date,
+                        companyId: selectedCompany
                     }, {
                     withCredentials: true,
                 })
@@ -121,6 +136,11 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         }
     }
 
+    const handleSelectedCompany = async (id) => {
+        const cards = await GetPaymentMethod(id)
+        setPaymentMethods(cards)
+        setSelectedCompany(id)
+    }
 
     if (!isContentLoaded) {
         return (
@@ -140,9 +160,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
         )
     }
-    console.log('data', data)
-    console.log('refetch', refetch)
-    console.log('DATE', date)
+    console.log('companies', companies)
     return (
         <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
@@ -229,7 +247,34 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         </DialogTrigger>
                         <DialogContent className='w-full max-w-[550px]'>
                             {
-                                (paymentMethods?.length == 0 || addCard) && (
+                                isCompanyProfile && !hasCompanySelected && (
+                                    <>
+                                        <DialogHeader>
+                                            <DialogTitle>Select Company</DialogTitle>
+                                            <DialogDescription>
+                                                On behalf of which of your companies would you like to request the booking?
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className='max-h-[400px] overflow-y-auto invisible_scroll_bar'>
+                                            <CompanyList
+                                                companies={companies}
+                                                handleSelectedCompany={(id)=>handleSelectedCompany(id)}
+                                                selectedCompany={selectedCompany}
+                                            />
+                                        </div>
+                                        <DialogFooter className='mt-4'>
+                                            <div className='w-full flex justify-end items-center'>
+                                                <Button disabled={!selectedCompany} type='submit' onClick={()=>setHasCompanySelected(true)}>
+                                                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                                                    Next
+                                                </Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </>
+                                )
+                            }
+                            {
+                                (paymentMethods.length == 0 || addCard) && (isCompanyProfile ? (hasCompanySelected ? true : false) : true) && (
                                     <>
                                         <DialogHeader>
                                             <DialogTitle>Add Card Details</DialogTitle>
@@ -241,13 +286,19 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                             <StripeForm
                                                 setRefetch={(toggle) => setRefetch(toggle)}
                                                 setAddCard={(toggle) => setAddCard(toggle)}
+                                                companyId={selectedCompany}
                                             />
                                         </Elements>
+                                        {
+                                            isCompanyProfile && (
+                                                <Button className='mt-[-10px]' variant='outline' onClick={()=>setHasCompanySelected(false)}>Select Company</Button>
+                                            )
+                                        }
                                     </>
                                 )
                             }
                             {
-                                (paymentMethods?.length > 0 && !addCard) && (
+                                (paymentMethods.length > 0 && !addCard) && (isCompanyProfile ? (hasCompanySelected ? true : false) : true) && (
                                     <>
                                         <DialogHeader>
                                             <DialogTitle>Confirm the Payment Method</DialogTitle>
@@ -281,7 +332,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             }
             {
                 !user.isLogged && (
-                    <Button className='mt-2' onClick={()=>router.push('/login')}>
+                    <Button className='mt-2' onClick={() => router.push('/login')}>
                         Request Booking
                     </Button>
                 )

@@ -25,15 +25,13 @@ export default function AddAccountModals({ setRefetch, selectedCompany, selected
         async function GetInfo() {
             const sellerInfo = await GetSellerProfile(selectedCompanyId)
             setSeller(sellerInfo)
-            console.log('seller info',sellerInfo)
-            console.log('selectedCompanyId',selectedCompanyId)
             if (sellerInfo.stripe_account) {
                 setHasAccount(true)
             }
         }
         GetInfo();
     }, [hasAccount]);
-
+    console.log('seller',seller)
     return (
         <>
             <Toaster />
@@ -73,7 +71,7 @@ export default function AddAccountModals({ setRefetch, selectedCompany, selected
                             )
                         }
                         {
-                            hasAccount && (
+                            hasAccount && seller.stripe_account && (
                                 <ExternalBankForm
                                     stripeAccount={seller.stripe_account}
                                     selectedCompanyId={selectedCompanyId}

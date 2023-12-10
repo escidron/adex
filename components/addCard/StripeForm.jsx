@@ -19,7 +19,7 @@ import { Loader2, Plus } from 'lucide-react';
 
 
 
-export default function StripeForm({ setRefetch, setAddCard }) {
+export default function StripeForm({ setRefetch, setAddCard, companyId }) {
     const stripe = useStripe();
     const elements = useElements();
     const [nameOnCard, setNameOnCard] = useState('');
@@ -44,6 +44,7 @@ export default function StripeForm({ setRefetch, setAddCard }) {
                 {
                     cardId: paymentMethod.id,
                     nameOnCard: nameOnCard,
+                    companyId:companyId
                 }, {
                 withCredentials: true,
             })

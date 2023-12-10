@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import Footer from "@/components/footer/Footer";
-import SelectSearchComponent from "@/components/select-search/SelectSearch";
+import SelectIndustryComponent from "@/components/select-search/SelectSearch";
 import { MerchantCategories } from "@/utils/MerchantCategories";
 import { Button } from "@/components/ui/button";
 
@@ -39,7 +39,8 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       if (!values.idNumber) {
         errors.idNumber = 'Required';
       }
-      if (!selectedMerchant?.value) {
+      console.log('selectedMerchant',selectedMerchant)
+      if (!selectedMerchant) {
         errors.mcc = 'Required';
       }
 
@@ -165,7 +166,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
     },
   });
 
-console.log('selectedCompany',selectedCompany)
+console.log('selectedMerchant',selectedMerchant)
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
@@ -249,10 +250,13 @@ console.log('selectedCompany',selectedCompany)
               <label htmlFor="idNumber" className="block text-[14px]  mb-1">
                 Industry
               </label>
-              <SelectSearchComponent
+              <SelectIndustryComponent
                 options={MerchantCategories}
                 selectedMerchant={selectedMerchant}
-                setSelectedMerchant={(selected) => setSelectedMerchant(selected)}
+                setSelectedMerchant={(selected) => {
+                  setSelectedMerchant(selected)
+                  formik.errors.mcc = null
+                }}
               />
               {formik.errors.mcc ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.mcc}</div> : null}
 

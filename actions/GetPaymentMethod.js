@@ -1,5 +1,5 @@
 
-export default async function GetPaymentMethod() {
+export default async function GetPaymentMethod(companyId) {
     try {
   
       const response = await fetch(
@@ -10,7 +10,9 @@ export default async function GetPaymentMethod() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'        
           },
-          credentials: "include"
+          credentials: "include",
+          body: JSON.stringify({ companyId: companyId }),
+
         }
       );
   

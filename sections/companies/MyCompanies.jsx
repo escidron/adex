@@ -16,7 +16,6 @@ export default function MyCompanies() {
         async function GetData() {
             const companies = await GetCompanies()
             setCompanies(companies)
-
         }
         GetData();
     }, [refetch]);
