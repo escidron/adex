@@ -185,49 +185,6 @@ export default function MyCompanyPage() {
 
             </div>
             <div className={`mt-4 flex flex-col items-center `}>
-                {/* <div className='w-[50%] mt-4 flex flex-col items-center'>
-                    <h1 className='text-[26px]'>Payments & Payouts</h1>
-                    <TabsComponent value={value1} setValue={(value) => setValue1(value)}>
-                        <AddCard label='Payments' />
-                        <AddAccount label='Payouts' />
-                    </TabsComponent>
-
-                    <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
-
-                    <h1 className='text-[26px]'>Listings & Bookings</h1>
-
-                    <CompanyRefreshContext.Provider value={[refresh, setRefresh]}>
-                        <TabsComponent value={value2} setValue={(value) => setValue2(value)}>
-                            <MyListing label='My Listing' data={listingData} status={status} isCompanyPage={true} />
-                            <MyBookings label='My Booking' data={bookingData} />
-                        </TabsComponent>
-                    </CompanyRefreshContext.Provider>
-
-                    <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
-
-                    {
-                        balance && (
-                            <>
-                                <h1 className='text-[26px] mb-4'>Company Financial Balance</h1>
-                                <DashboardPanel balance={balance} />
-                            </>
-                        )
-                    }
-
-                    <h1 className='text-[26px] mb-4 mt-6'>Image Gallery</h1>
-                    <div className='w-full flex justify-start'>
-                        <div>
-                            <ImageImporter
-                                images={images}
-                                setImages={(image) => setImages(image)}
-                            />
-                        </div>
-                    </div>
-                    <GalleryImage gallery={gallery} />
-
-
-                </div> */}
-
                 {
                     selectedOption ? (
                         <>
@@ -240,7 +197,7 @@ export default function MyCompanyPage() {
                         <p className='text-[36px] mt-8'>Company Account</p>
                     )
                 }
-                <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%]'>
+                <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%]'>
                     {
                         !selectedOption && (
 
@@ -261,8 +218,8 @@ export default function MyCompanyPage() {
                         selectedOption == 1 && (
                             <>
                                 <TabsComponent value={value1} setValue={(value) => setValue1(value)}>
-                                    <AddCard label='Payments' />
-                                    <AddAccount label='Payouts' />
+                                    <AddCard label='Payments' companyId={id}/>
+                                    <AddAccount label='Payouts' companyId={id}/>
                                 </TabsComponent>
                             </>
                         )
@@ -282,7 +239,7 @@ export default function MyCompanyPage() {
                             </>
                         )
                     }
-                    {
+                    {/* {
                         selectedOption == 3 && (
                             <CompanyRefreshContext.Provider value={[refresh, setRefresh]}>
                                 <TabsComponent value={value2} setValue={(value2) => setValue2(value2)}>
@@ -291,9 +248,9 @@ export default function MyCompanyPage() {
                                 </TabsComponent>
                             </CompanyRefreshContext.Provider>
                         )
-                    }
+                    } */}
                     {
-                        selectedOption == 4 && (
+                        selectedOption == 3 && (
                             <>
                                 {
                                     balance ? (

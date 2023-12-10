@@ -1,38 +1,30 @@
 import { useState,useEffect } from 'react'
-import Image from 'next/image';
-import BlackButton from '../buttons/BlackButton';
-import CloseIcon from '@mui/icons-material/Close';
 import StripeForm from './StripeForm';
 import {
   Elements,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentMethodList from './PaymentMethodList';
-import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Loader2 } from 'lucide-react';
 import GetPaymentMethod from '@/actions/GetPaymentMethod';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
-export default function AddCard() {
+export default function AddCard({ companyId }) {
   const [refetch, setRefetch] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [open, setOpen] = useState(false);
 
-  //todo:request cards
   useEffect(() => {
     async function getInfo() {
-      const cards = await GetPaymentMethod()
+      const cards = await GetPaymentMethod(companyId)
       setPaymentMethods(cards)
     }
     getInfo();

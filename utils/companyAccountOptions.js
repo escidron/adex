@@ -11,13 +11,13 @@ export  const menuOptions = [
         icon: <ImageIcon color='#FCD33B' size={30}/>,
         label: 'Image gallery'
     },
+    // {
+    //     id: 3,
+    //     icon: <BookmarkCheck color='#FCD33B' size={30}/>,
+    //     label: 'Listings & Bookings'
+    // },
     {
         id: 3,
-        icon: <BookmarkCheck color='#FCD33B' size={30}/>,
-        label: 'Listings & Bookings'
-    },
-    {
-        id: 4,
         icon: <LineChart color='#FCD33B' size={30}/>,
         label: 'Company Balance'
     }

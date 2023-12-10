@@ -1,7 +1,7 @@
-export default async function GetPayoutMethod(companyId) {
+export default async function GetBankAccounts(companyId) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-bank-accounts`,
       {
         method: "POST",
         headers: {
@@ -10,18 +10,15 @@ export default async function GetPayoutMethod(companyId) {
         },
         credentials: "include",
         body: JSON.stringify({ companyId: companyId }),
-
       }
     );
     if (response.status === 200) {
       const res = await response.json();
-      if (res.data) {
-        return true;
-      } else {
-        return false;
-      }
+      console.log("resss", res);
+      const bakAccounts = res.data;
+      return bakAccounts;
     } else {
-      return null;
+      return [];
     }
   } catch (error) {
     console.log(error);

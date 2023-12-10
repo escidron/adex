@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import BankAccountList from './BankAccountList'
 import AddAccountModals from './AddAccountModals';
 
-export default function AddAccount() {
+export default function AddAccount({ companyId }) {
   const [refetch, setRefetch] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function AddAccount() {
         <p className={`text-[18px]  mt-4`}>Choose your preferred payment method to receive your funds</p>
       </div>
       <AddAccountModals setRefetch={setRefetch}/>
-      <BankAccountList refetch={refetch} setRefetch={setRefetch} />
+      <BankAccountList refetch={refetch} setRefetch={setRefetch} companyId={companyId}/>
     </div>
   )
 }
