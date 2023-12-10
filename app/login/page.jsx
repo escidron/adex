@@ -94,7 +94,7 @@ export default function LoginPage() {
         },
     });
     return (
-        <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
+        <div className=" style_login flex flex-col items-center pt-[150px] md:justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
             <div><Toaster /></div>
             <div onClick={() => router.push('/')} className="z-[91] absolute top-[40px] cursor-pointer">
@@ -106,7 +106,7 @@ export default function LoginPage() {
                     priority
                 />
             </div>
-            <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `} onSubmit={formik.handleSubmit} >
+            <form className={`z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `} onSubmit={formik.handleSubmit} >
                 <p className="text-white text-[36px]">Login</p>
                 <p className="text-white text-[18px] font-normal mt-2">Sign in to <span className="text-[#FCD33B]">continue.</span></p>
                 <div className=" mt-6 w-full relative text-black ">
