@@ -85,14 +85,19 @@ export default function Card({ item, route, deleteListing }) {
                         {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
-                        <div onClick={(e) => {
-                            setSharingOptions(true)
-                            e.stopPropagation()
-                        }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer z-[20]'>
-                            <Share2 />
-                        </div>
                         {
-                            ( item.status == 1 || item.status == 0 ) && (
+                            (item.status == 1 || item.status == 2) && (
+
+                                <div onClick={(e) => {
+                                    setSharingOptions(true)
+                                    e.stopPropagation()
+                                }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer z-[20]'>
+                                    <Share2 />
+                                </div>
+                            )
+                        }
+                        {
+                            (item.status == 1 || item.status == 0) && (
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()
