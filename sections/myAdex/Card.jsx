@@ -92,7 +92,7 @@ export default function Card({ item, route, deleteListing }) {
                             <Share2 />
                         </div>
                         {
-                            item.status == 1 && (
+                            ( item.status == 1 || item.status == 0 ) && (
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()
