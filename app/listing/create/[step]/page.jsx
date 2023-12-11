@@ -257,7 +257,7 @@ export default function Listing({ params }) {
             </div>
             <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
                 {/* form div */}
-                <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
+                <div className='w-full  px-6 h-full flex justify-center md:pt-[100px]'>
                     {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                     {step === 'category' && <CategoryForm ListingContext={ListingContext}/>}
                     {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext}/>}
