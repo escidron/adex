@@ -236,7 +236,7 @@ export default function Listing({ params }) {
     return (
         <>
             <Toaster />
-            <div className='h-[80px] border  flex items-center justify-between px-8 fixed top-0 w-full'>
+            <div className='h-[80px] bg-white border  flex items-center justify-between px-8 fixed top-0 w-full'>
                 <div className='flex gap-2'>
                     <ClipboardList />
                     <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Listing'}</p>
