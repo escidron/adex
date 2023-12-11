@@ -45,9 +45,9 @@ export default function PriceForm({ ListingContext }) {
     }
     console.log('listing ', listingProperties)
     return (
-        <div className='w-full max-w-[800px] flex flex-col items-center'>
-            <div className={`w-full flex flex-col  md:flex-row  ${listingProperties.sub_category === 17 ? 'justify-between' : 'justify-center'}`}>
-                <div className='w-[500px]'>
+        <div className='w-full max-w-[800px] flex flex-col items-center '>
+            <div className={`w-full flex flex-col px-[20px] md:flex-row  ${listingProperties.sub_category === 17 ? 'justify-between' : 'justify-center'}`}>
+                <div className='w-full'>
                     {
                         isOtherType && (
                             <>
