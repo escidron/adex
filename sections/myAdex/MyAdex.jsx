@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -23,7 +22,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -68,8 +66,7 @@ export default function MyAdex() {
       const pendingListing = await GetPendingBookings()
       const user = await GetUserProfile()
       const companies = await GetCompanies()
-      console.log('cbookings',myBookings);
-      console.log('pendingListing',pendingListing);
+
       setAllBookings([...pendingListing, ...myBookings])
       if (user.userType == 1) {
         

@@ -2,9 +2,8 @@ import React from 'react'
 
 export default function StatusTabBar({ status, currentStatus, handleCurrentStatus }) {
     return (
-        <div className=" mt-2 w-full flex gap-4">
-            <div className={`w-full`}>
-                <div className="flex gap-2">
+        <div className=" mt-2 w-full flex gap-4 flex-wrap">
+                <div className="flex gap-2 pb-2 overflow-x-auto ">
                     <div
                         type="text"
                         id=""
@@ -75,7 +74,6 @@ export default function StatusTabBar({ status, currentStatus, handleCurrentStatu
                         <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.pending}</p>
                     </div>
                 </div>
-            </div>
         </div>
     )
 }

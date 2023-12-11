@@ -1,5 +1,6 @@
 "use Client"
-import { useSearchParams } from 'next/navigation'
+
+
 import Link from 'next/link'
 import PersonalInfo from '@/sections/personalInformations/PersonalInfo';
 import Security from '@/sections/security/Security';
@@ -7,6 +8,8 @@ import Notifications from '@/sections/notifications/Notifications';
 import MyWallet from '@/sections/myWallet/MyWallet';
 import MyAdex from '@/sections/myAdex/MyAdex';
 import MyCompanies from '@/sections/companies/MyCompanies'
+
+import { useSearchParams } from 'next/navigation'
 import { Bell, Building2, ScrollText, Shield, UserSquare2, Wallet } from 'lucide-react'
 
 
@@ -14,7 +17,6 @@ import { Bell, Building2, ScrollText, Shield, UserSquare2, Wallet } from 'lucide
 export default function FolderComponent({ userType }) {
     const searchParams = useSearchParams()
     const tab = searchParams.get('tab')
-
 
     return (
         <>

@@ -3,11 +3,11 @@ import { useEffect, useState,useContext } from 'react'
 import { UserContext } from '@/app/layout';
 
 import Image from 'next/image'
-import Link from 'next/link';
 import axios from 'axios';
 import ImageUploading from "react-images-uploading";
 import RatingComponent from '../rating/RatingComponent';
 import { ImageIcon } from 'lucide-react';
+import GetUserProfile from '@/actions/GetUserProfile';
 
 export default function ProfileHeader() {
     const [rating, setRating] = useState(0);
@@ -39,24 +39,15 @@ export default function ProfileHeader() {
     };
 
     useEffect(() => {
-        async function GetUserProfile() {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            if (response.status === 200) {
-                const res = await response.json()
-                setUserData(res)
-                setSrc(res.image)
-            }
+        async function GetInfo() {
+            const userData = await GetUserProfile()
+            setUserData(userData)
+            setSrc(userData.image)
         }
-        GetUserProfile();
+        GetInfo();
     }, []);
     return (
-        <div className='bg-black h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99] px-6'>
+        <div className='bg-black h-[180px] md:h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99] px-6'>
             <div className='w-[100px] h-[100px]  sm:w-[140px] sm:h-[140px]  md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
                 {
                     src ? (
@@ -114,9 +105,6 @@ export default function ProfileHeader() {
                         />
                     </div>
                 </div>
-                {/* <button className=' bg-[#FCD33B] mt-3 py-[4px] px-[20px] rounded-md  hover:bg-black hover:text-[#FCD33B] text-lg'>
-                    <Link href='/dashboard' className='style_banner_button_text font-semibold text-18px]'>View Dashboard</Link>
-                </button> */}
             </div>
         </div>
     )

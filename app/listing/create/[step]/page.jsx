@@ -273,7 +273,7 @@ export default function Listing({ params }) {
                     {step === 'preview' && <PreviewForm ListingContext={ListingContext}/>}
                 </div>
             </div>
-            <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full '>
+            <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full bg-white'>
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
                     <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>

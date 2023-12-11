@@ -1,22 +1,16 @@
 
 'use client'
+
+
 import Card from './Card'
-import { useState, useContext } from 'react';
 import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
-import SecondaryButton from '@/components/buttons/SecondaryButton';
-import BlackButton from '@/components/buttons/BlackButton';
-import axios from 'axios';
-import { RefreshContext } from './MyAdex';
-import { CompanyRefreshContext } from '@/app/my-company/page';
 import StatusTabBar from './_components/StatusTabBar';
-import { Skeleton } from '@mui/material';
 import CardSkeleton from './_components/CardSkeleton';
 import RemoveListing from '@/actions/RemoveListing';
 
-
-
-
+import { useState, useContext } from 'react';
+import { RefreshContext } from './MyAdex';
+import { CompanyRefreshContext } from '@/app/my-company/page';
 
 export default function MyListing({ data, status, isCompanyPage, isContentLoaded }) {
   const [currentStatus, setCurrentStatus] = useState('');
