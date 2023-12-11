@@ -239,7 +239,7 @@ export default function Listing({ params }) {
             <div className='h-[80px] border  flex items-center justify-between px-8 fixed top-0 w-full'>
                 <div className='flex gap-2'>
                     <ClipboardList />
-                    <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Your Listing'}</p>
+                    <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Listing'}</p>
                 </div>
                 <div className='flex gap-2 items-center'>
                     <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/')} className='flex gap-2 items-center'>
