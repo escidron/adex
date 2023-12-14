@@ -22,12 +22,12 @@ export default function Banner() {
       <Image
         src='/adex-home-banner.jpg'
         alt="banner image"
-        priority ={true}
+        priority={true}
         width={3000}
         height={3000}
         className=' h-full w-full object-cover mt-[80px]'
       />
-      <div className=' max-h-[350px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+      <div className=' max-h-[350px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[200px] md:top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
                         md:w-[70%] md:max-w-[600px]
                         lg:max-w-[550px] lg:h-[450px] lg:top-[30%] lg:left-[10%] lg:translate-x-0 lg:translate-y-0' >
         <h1 className='text-2xl font-bold z-10 md:text-3xl lg:text-[34px]'>Connect with your Community and grow your business.</h1>

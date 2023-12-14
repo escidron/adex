@@ -18,7 +18,7 @@ export default function Categories() {
     return (
         <div className='w-full xl:w-[1100px] flex flex-col justify-center items-center mx-auto mt-10 px-4'>
 
-            <p className='text-center text-[25px] lg:text-[28px] xl:text-[35px] '>Some of our <span className='text-[#FCD33B] mx-2'>Listing Categories</span></p>
+            <p className='text-center text-[20px] sm:text-[25px] lg:text-[28px] xl:text-[35px] '>Some of our <span className='text-[#FCD33B] mx-2'>Listing Categories</span></p>
             <div className=' w-full mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 grid-rows-2 gap-4'>
             {/* <div className='mx-auto w-full mt-4 flex flex-wrap gap-2'> */}
 
