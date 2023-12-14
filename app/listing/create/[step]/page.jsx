@@ -257,9 +257,9 @@ export default function Listing({ params }) {
             </div>
 
             {/* Conteúdo Dinâmico */}
-            <div className="flex-1 overflow-y-auto p-4 bg-green-400">
+            <div className="flex-1 overflow-y-auto p-4">
                 {/* Seu conteúdo vai aqui */}
-                {step === 'select_business' && <PhotosForm ListingContext={ListingContext} />}
+                {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                 {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
                 {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
                 {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
