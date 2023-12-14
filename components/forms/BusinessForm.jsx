@@ -36,78 +36,78 @@ export default function BusinessForm({ ListingContext }) {
         return null
     }
     return (
-        <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
-            <div className='w-full flex justify-center'>
-                {
-                    companies.length === 0 || addCompany ? (
-                        <>
-                            {
-                                addCompany ? (
-                                    <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
-                                ) : (
-                                    <div className={`flex justify-center items-center mt-8`}>
+        <div className='w-full h-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
+            {
+                companies.length === 0 || addCompany ? (
+                    <>
+                        {
+                            addCompany ? (
+                                <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} />
+                            ) : (
+                                <div className={`flex justify-center items-center mt-8`}>
 
-                                        <Card className='mt-4 max-w-[400px]'>
-                                            <CardHeader>
-                                                <CardTitle>My Business</CardTitle>
-                                                <CardDescription>You haven&apos;t registered any business yet. </CardDescription>
-                                            </CardHeader>
+                                    <Card className='mt-4 max-w-[400px]'>
+                                        <CardHeader>
+                                            <CardTitle>My Business</CardTitle>
+                                            <CardDescription>You haven&apos;t registered any business yet. </CardDescription>
+                                        </CardHeader>
 
-                                            <CardFooter>
-                                                <Button className='w-full' onClick={() => {
-                                                    setAddCompany(true)
-                                                    setRefetch((prev) => !prev)
-                                                }}>
-                                                    <div className='mr-2'>
-                                                        <Plus size={20} />
-                                                    </div>
-                                                    Add Business
-                                                </Button>
-
-                                            </CardFooter>
-                                        </Card>
-                                    </div>
-                                )
-                            }
-                        </>
-                    ) : (
-                        <div className='w-full max-w-[800px] h-[200px] mt-4 flex flex-wrap gap-8 justify-center'>
-                            {
-                                companies.map((company) => (
-                                    <div key={company.id} className={` hover:cursor-pointer p-2 border  rounded-lg ${listingProperties.select_business == company.id ? 'border-black' : 'border-transparent'}`} onClick={() => handleSelectedCompany(company.id)}>
-                                        {
-                                            company.company_logo ? (
-                                                <div className='border rounded-lg h-[150px] w-[150px] sm:h-[200px] sm:w-[200px] max-h-[200px] max-w-[200px]'>
-                                                    <Image
-                                                        src={company.company_logo}
-                                                        alt="Company Logo"
-                                                        width={2000}
-                                                        height={2000}
-
-                                                        className='w-full h-full rounded-lg object-cover'
-                                                    />
+                                        <CardFooter>
+                                            <Button className='w-full' onClick={() => {
+                                                setAddCompany(true)
+                                                setRefetch((prev) => !prev)
+                                            }}>
+                                                <div className='mr-2'>
+                                                    <Plus size={20} />
                                                 </div>
-                                            ) : (
-                                                <div className='w-full h-[150px]  sm:h-[200px] sm:w-[200px] max-h-[200px] aspect-square bg-slate-200 flex justify-center items-center rounded-lg'>
-                                                    <ImageIcon />
-                                                </div>
-                                            )
-                                        }
-                                        <h1 className='mt-2 font-bold text-center' >
-                                            {company.company_name}
-                                        </h1>
-                                    </div>
+                                                Add Business
+                                            </Button>
 
-                                ))
-                            }
+                                        </CardFooter>
+                                    </Card>
+                                </div>
+                            )
+                        }
+                    </>
+                ) : (
+                    <div className='w-full max-w-[1000px] h-[200px] mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 justify-center'>
+                        {
+                            companies.map((company) => (
+                                <div key={company.id} className={`flex flex-col items-center justify-center hover:cursor-pointer p-2 border  rounded-lg ${listingProperties.select_business == company.id ? 'border-black' : 'border-transparent'}`} onClick={() => handleSelectedCompany(company.id)}>
+                                    {
+                                        company.company_logo ? (
+                                            <div className='border rounded-lg h-[150px] w-[150px] sm:h-[200px] sm:w-[200px] max-h-[200px] max-w-[200px]'>
+                                                <Image
+                                                    src={company.company_logo}
+                                                    alt="Company Logo"
+                                                    width={2000}
+                                                    height={2000}
 
-                            <div onClick={() => setAddCompany(true)} className='mt-2 cursor-pointer h-[150px] w-[150px] sm:h-[200px] sm:w-[200px] max-h-[200px] aspect-square bg-slate-200 flex justify-center items-center rounded-lg'>
+                                                    className='w-full h-full rounded-lg object-cover'
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className='h-[150px] w-[150px] sm:h-[200px] sm:w-[200px] max-h-[200px] max-w-[200px] bg-slate-200 flex justify-center items-center rounded-lg'>
+                                                <ImageIcon />
+                                            </div>
+                                        )
+                                    }
+                                    <h1 className='mt-2 font-bold text-center' >
+                                        {company.company_name}
+                                    </h1>
+                                </div>
+
+                            ))
+                        }
+                        <div className='w-full flex justify-center '>
+
+                            <div onClick={() => setAddCompany(true)} className='mt-2 cursor-pointer h-[150px] w-[150px] sm:h-[200px] sm:w-[200px] max-h-[200px] max-w-[200px] bg-slate-200 flex justify-center items-center rounded-lg'>
                                 <Plus size={30} />
                             </div>
                         </div>
-                    )
-                }
-            </div >
+                    </div>
+                )
+            }
         </div >
     )
 }

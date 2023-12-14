@@ -16,8 +16,8 @@ export default function PhotosForm({ ListingContext }) {
     setListingProperties((prev) => ({ ...prev, images: images }))
   }
   return (
-    <div className='w-full max-w-[800px] flex flex-col items-center overflow-y-auto invisible_scroll_bar mt-[-50px]'>
-      <Card className='w-full h-[150px] '>
+    <div className='w-full max-w-[800px] flex flex-col items-center overflow-y-auto invisible_scroll_bar mx-auto'>
+      <Card className='w-full h-fit '>
         <CardHeader>
           <CardTitle className='flex gap-2 items-center'>
             <div className='w-[50px]'>
@@ -36,12 +36,9 @@ export default function PhotosForm({ ListingContext }) {
           <CardDescription>Across nearly every industry and every major platform, profiles and listings with more pics have been proven to attract more interest, views, likes, and bookings. Be sure to add plenty of pics to your profile and to your listings.</CardDescription>
         </CardHeader>
       </Card>
-      <div className='w-full h-full mt-6'>
-        <div className='flex flex-col'>
-          <h1 className='text-[32px]'>Add some photos</h1>
-          <p className='text-[18px] text-gray-500'>Pick images to highlight your Listing</p>
-        </div>
-        <div className='h-[400px]  mt-2'>
+      <div className='w-full h-full mt-6 min-h-[500px]'>
+        <h1 className='text-[28px] md:text-[32px]'>Pick some photos</h1>
+        <div className='flex-1 h-[250px] md:h-[400px] mt-2'>
           <DropImageArea
             images={listingProperties.images}
             setImages={(image) => handleImages(image)}

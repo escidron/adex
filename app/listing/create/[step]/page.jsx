@@ -61,7 +61,7 @@ export default function Listing({ params }) {
         async function GetUserProfile() {
             const checkPayout = await GetPayoutMethod(listingProperties.select_business)
             setHasPayoutMethod(checkPayout)
-            
+
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
                 {
@@ -76,7 +76,7 @@ export default function Listing({ params }) {
         }
         GetUserProfile();
     }, [listingProperties.select_business]);
-    
+
     const handleNext = () => {
         setIsPending(true)
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
@@ -86,7 +86,7 @@ export default function Listing({ params }) {
         }
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
-        controlSteps()        
+        controlSteps()
         setIsPending(false)
 
     }
@@ -207,7 +207,7 @@ export default function Listing({ params }) {
                 date: listingProperties.date,
                 company_id: listingProperties.select_business,
                 instructions: listingProperties.instructions,
-                has_payout_method:hasPayoutMethod
+                has_payout_method: hasPayoutMethod
             }, {
             withCredentials: true,
         })
@@ -234,12 +234,12 @@ export default function Listing({ params }) {
             })
     }
     return (
-        <>
-            <Toaster />
-            <div className='h-[80px] bg-white border  flex items-center justify-between px-8 fixed top-0 w-full'>
+        <div className="flex flex-col h-screen">
+            {/* Navbar */}
+            <div className="bg-white p-4 h-[80px] flex justify-between items-center border shadow-sm">
                 <div className='flex gap-2'>
                     <ClipboardList />
-                    <p className='font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Listing'}</p>
+                    <p className='hidden sm:flex sm:text-[18px] font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Listing'}</p>
                 </div>
                 <div className='flex gap-2 items-center'>
                     <Button variant='outline' disabled={isDraftPending} onClick={() => router.push('/')} className='flex gap-2 items-center'>
@@ -255,27 +255,29 @@ export default function Listing({ params }) {
                     </Button>
                 </div>
             </div>
-            <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex flex-col items-center justify-center `}>
-                {/* form div */}
-                <div className='w-full  px-6 h-full flex justify-center md:pt-[100px]'>
-                    {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
-                    {step === 'category' && <CategoryForm ListingContext={ListingContext}/>}
-                    {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext}/>}
-                    {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext}/>}
-                    {step === 'title' && <TitleForm ListingContext={ListingContext}/>}
-                    {step === 'location' && <LocationForm ListingContext={ListingContext}/>}
-                    {step === 'description' && <DescriptionForm ListingContext={ListingContext}/>}
-                    {step === 'price' && <PriceForm ListingContext={ListingContext}/>}
-                    {step === 'discounts' && <DiscountsForm ListingContext={ListingContext}/>}
-                    {step === 'date' && <DateForm ListingContext={ListingContext}/>}
-                    {step === 'images' && <PhotosForm ListingContext={ListingContext}/>}
-                    {step === 'instructions' && <InstructionsForm ListingContext={ListingContext}/>}
-                    {step === 'preview' && <PreviewForm ListingContext={ListingContext}/>}
-                </div>
+
+            {/* Conteúdo Dinâmico */}
+            <div className="flex-1 overflow-y-auto p-4 bg-green-400">
+                {/* Seu conteúdo vai aqui */}
+                {step === 'select_business' && <PhotosForm ListingContext={ListingContext} />}
+                {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
+                {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
+                {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
+                {step === 'title' && <TitleForm ListingContext={ListingContext} />}
+                {step === 'location' && <LocationForm ListingContext={ListingContext} />}
+                {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}
+                {step === 'price' && <PriceForm ListingContext={ListingContext} />}
+                {step === 'discounts' && <DiscountsForm ListingContext={ListingContext} />}
+                {step === 'date' && <DateForm ListingContext={ListingContext} />}
+                {step === 'images' && <PhotosForm ListingContext={ListingContext} />}
+                {step === 'instructions' && <InstructionsForm ListingContext={ListingContext} />}
+                {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
             </div>
-            <div className='h-[120px] flex flex-col items-center fixed bottom-0 w-full bg-white'>
+
+            {/* Footer */}
+            <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end">
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
-                <div className='mt-4 w-full md:w-[600px] flex justify-between px-6'>
+                <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
                     <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
                         Back
@@ -290,7 +292,9 @@ export default function Listing({ params }) {
                     </Button>
                 </div>
             </div>
-        </>
+        </div>
+
+
     )
 }
 

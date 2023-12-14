@@ -28,8 +28,8 @@ export default function CategoryForm({ ListingContext }) {
     return (
         <div className='w-full max-w-[800px] overflow-y-auto invisible_scroll_bar'>
             <div className='flex flex-col'>
-                <h1 className='text-[32px]'>Category</h1>
-                <p className='text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>
+                <h1 className='text-[28px] md:text-[32px]'>Category</h1>
+                <p className='text-[15px] md:text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>
             </div>
             <div className='w-full mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
 

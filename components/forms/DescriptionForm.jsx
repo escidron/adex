@@ -10,8 +10,8 @@ export default function DescriptionForm({ ListingContext }) {
         <div className='w-full flex flex-col items-center'>
             <div className='w-full sm:w-[500px]'>
                 <div className='flex flex-col'>
-                    <h1 className='text-[32px]'>Description</h1>
-                    <p className='text-[18px] text-gray-500'>Enter a description for your listing.</p>
+                    <h1 className='text-[28px] md:text-[32px]'>Description</h1>
+                    <p className='text-[15px] md:text-[18px] text-gray-500'>Enter a description for your listing.</p>
                 </div>
                 <div className=' mt-4'>
                     <TextAreaEditor
