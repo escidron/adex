@@ -38,7 +38,7 @@ export default function PhotosForm({ ListingContext }) {
       </Card>
       <div className='w-full h-full mt-6 min-h-[500px]'>
         <h1 className='text-[28px] md:text-[32px]'>Pick some photos</h1>
-        <div className='flex-1 h-[250px] md:h-[400px] mt-2'>
+        <div className='flex-1 h-[400px] mt-2'>
           <DropImageArea
             images={listingProperties.images}
             setImages={(image) => handleImages(image)}

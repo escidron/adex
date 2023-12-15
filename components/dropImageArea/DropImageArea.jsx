@@ -129,7 +129,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                         }
                         <div
                             id="image-loader"
-                            className={`mt-3 relative  shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer bg-slate-100  ${isDragging && 'bg-slate-300'}`}
+                            className={`mt-3 relative  shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer ${images.length == 0 && `bg-slate-100`}   ${isDragging && 'bg-slate-300'}`}
                             {...dragProps}
                         >
                             {
@@ -163,7 +163,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                             <div className={`w-full h-[400px] ${images.length > 0 ? 'grid grid-cols-2 gap-4' : ''}`}>
                                                 {
                                                     images.map((image, index) => (
-                                                        <div key={index} className={`${index == 0 ? 'col-span-full' : 'h-[250px]'} relative`}>
+                                                        <div key={index} className={`${index == 0 ? 'col-span-full ' : 'h-[250px]'} relative`}>
                                                             <Image
                                                                 src={image.data_url}
                                                                 alt="Listing images"
