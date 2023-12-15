@@ -10,7 +10,7 @@ export default function GalleryModal({ setOpenGalleryModal,gallery,selected,setS
             <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-50 flex justify-center items-center'
                 onClick={() => setOpenGalleryModal(false)}>
             </div>
-            <div className='card-payment-modal px-[60px] py-[30px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[1000px]'>
+            <div className='card-payment-modal px-[60px] py-[30px]  bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl min-w-[90%] lg:min-w-[1000px]'>
                 <div className='w-full flex justify-end'>
                     <CloseIcon
                         onClick={() => setOpenGalleryModal(false)}
