@@ -27,13 +27,13 @@ export default function PreviewForm({ ListingContext }) {
 
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
-            <div className='w-full sm:w-[500px]'>
+            <div className='w-full sm:w-[500px] flex flex-col items-center'>
 
                 <div className='flex flex-col'>
-                    <h1 className='text-[32px]'>How your listing will look like.</h1>
-                    <p className='text-[18px] text-gray-500'>We are almost done, before you finalize your listing, take a moment to review and confirm the details.</p>
+                    <h1 className='text-[24px] md:text-[32px]'>How your listing will look like.</h1>
+                    <p className='text-[15px] md:text-[18px] text-gray-500'>We are almost done, before you finalize your listing, take a moment to review and confirm the details.</p>
                 </div>
-                <div className="p-2 mt-6 rounded-[24px] w-[80%] border shadow-sm">
+                <div className="p-2 mt-6 rounded-[24px] w-[90%] sm:w-[80%] border shadow-sm">
                     <MultiImage images={listingProperties.images} height={'200px'} remove={false} />
                     <div className='w-full p-[10px] mt-1'>
                         <div className="w-full flex items-center justify-between">
