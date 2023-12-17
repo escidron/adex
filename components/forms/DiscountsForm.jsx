@@ -25,6 +25,7 @@ import { checkCategoryType } from '@/utils/checkCategoryType';
 import toast from 'react-hot-toast';
 import { monthsOptions, unitOptions } from '@/utils/discountsOptions';
 import Image from 'next/image';
+import DiscountNote from './notes/DiscountNote';
 
 
 export default function DiscountsForm({ ListingContext }) {
@@ -71,9 +72,12 @@ export default function DiscountsForm({ ListingContext }) {
     }
 
     return (
-        <div className='w-full max-w-[1000px] flex flex-col items-center overflow-y-auto invisible_scroll_bar mx-auto'>
-            <div className='w-full flex flex-col  md:flex-row justify-between '>
-                <div className='w-full sm:w-[400px]'>
+        <div className='w-full max-w-[1000px] flex flex-col items-center  mx-auto'>
+            <div className='w-full flex flex-col  lg:flex-row justify-between '>
+                <div className='w-full flex lg:hidden justify-center'>
+                    <DiscountNote advertisementType={advertisementType} />
+                </div>
+                <div className='w-full sm:w-[400px] mx-auto mt-6'>
                     <div className='flex flex-col'>
                         <div className='flex gap-1 items-end'>
                             <h1 className='text-[28px] md:text-[32px]'>Discounts</h1>
@@ -195,52 +199,9 @@ export default function DiscountsForm({ ListingContext }) {
                         )
                     }
                 </div>
-                {
-                    advertisementType == 0 && (
-                        <Card className='w-full mt-[50px] md:max-w-[450px] h-[260px] md:mt-0'>
-                            <CardHeader>
-                                <CardTitle className='flex gap-2 items-center'>
-                                    <div className='w-[50px]'>
-                                        <Image
-                                            src='/note.png'
-                                            alt="note icon"
-                                            priority
-                                            width={2000}
-                                            height={2000}
-                                            className='w-full'
-
-                                        />
-                                    </div>
-                                    Long Duration Bookings
-                                </CardTitle>
-                                <CardDescription>Much like many (if not all) of the big companies, ADEX encourages you to offer duration discounts. This incentivizes buyers to book your ad for longer durations. For example: </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p>• 3 months earns the buyer a 10% discount,</p>
-                                <p>• 6 months earns the buyer a 15% discount, and </p>
-                                <p>• 12 months ears the buyer a 20% discount. </p>
-                            </CardContent>
-                        </Card>
-                    )
-                }
-                {
-                    advertisementType == 2 && (
-                        <Card className='w-full mt-[50px] md:max-w-[450px] h-[260px] md:mt-0'>
-                            <CardHeader>
-                                <CardTitle className='flex gap-2 items-center'>
-                                    <Info />
-                                    Quantity Discount
-                                </CardTitle>
-                                <CardDescription>Much like many (if not all) of the big companies, ADEX encourages you to offer discounts. This incentivizes buyers to book more units. For example: </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p>• 5 units earns the buyer a 10% discount,</p>
-                                <p>• 6 units earns the buyer a 15% discount, and </p>
-                                <p>• 12 units ears the buyer a 20% discount. </p>
-                            </CardContent>
-                        </Card>
-                    )
-                }
+                <div className='w-full hidden lg:flex justify-center'>
+                    <DiscountNote advertisementType={advertisementType} />
+                </div>
             </div>
         </div>
     )

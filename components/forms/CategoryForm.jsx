@@ -26,7 +26,7 @@ export default function CategoryForm({ ListingContext }) {
             });
     }, [])
     return (
-        <div className='w-full max-w-[800px] overflow-y-auto invisible_scroll_bar'>
+        <div className='w-full h-full max-w-[800px] overflow-y-auto invisible_scroll_bar mx-auto flex flex-col '>
             <div className='flex flex-col'>
                 <h1 className='text-[28px] md:text-[32px]'>Category</h1>
                 <p className='text-[15px] md:text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>

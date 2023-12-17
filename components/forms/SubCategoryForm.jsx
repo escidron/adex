@@ -34,7 +34,7 @@ export default function SubCategoryForm({ ListingContext }) {
             });
     }, [])
     return (
-        <div className='w-full max-w-[800px] overflow-y-auto invisible_scroll_bar'>
+        <div className='w-full max-w-[800px] overflow-y-auto invisible_scroll_bar flex flex-col mx-auto'>
             <div className='flex flex-col'>
                 <h1 className='text-[28px] md:text-[32px]'>Sub-Category</h1>
                 <p className='text-[15px] md:text-[18px] text-gray-500'>Choose which category best suits your needs or interests.</p>

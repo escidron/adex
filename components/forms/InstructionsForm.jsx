@@ -17,7 +17,7 @@ export default function InstructionsForm({ ListingContext }) {
         setListingProperties({ ...listingProperties, instructions: instructions })
     }
     return (
-        <div className='w-full flex flex-col items-center lg:flex-row lg:justify-around lg:items-start max-w-[1000px]'>
+        <div className='w-full flex flex-col items-center lg:flex-row lg:justify-around lg:items-start max-w-[1000px] mx-auto'>
             <div className='w-full sm:w-[500px]'>
                 <div className='flex flex-col'>
                     <div className='flex gap-1 items-end'>
