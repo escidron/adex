@@ -257,7 +257,7 @@ export default function Listing({ params }) {
             </div>
 
             {/* Conteúdo Dinâmico */}
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 overflow-y-auto p-4 mb-[130px]">
                 {/* Seu conteúdo vai aqui */}
                 {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                 {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
@@ -275,7 +275,7 @@ export default function Listing({ params }) {
             </div>
 
             {/* Footer */}
-            <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end">
+            <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end fixed bottom-0 left-0 w-full">
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
                     <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>

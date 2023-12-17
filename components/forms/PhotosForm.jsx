@@ -16,7 +16,7 @@ export default function PhotosForm({ ListingContext }) {
     setListingProperties((prev) => ({ ...prev, images: images }))
   }
   return (
-    <div className='w-full max-w-[800px] flex flex-col items-center overflow-y-auto invisible_scroll_bar mx-auto'>
+    <div className='w-full max-w-[800px] flex flex-col items-center  mx-auto'>
       <Card className='w-full h-fit '>
         <CardHeader>
           <CardTitle className='flex gap-2 items-center'>
@@ -38,7 +38,7 @@ export default function PhotosForm({ ListingContext }) {
       </Card>
       <div className='w-full h-full mt-6 min-h-[500px]'>
         <h1 className='text-[28px] md:text-[32px]'>Pick some photos</h1>
-        <div className='flex-1 h-[400px] mt-2'>
+        <div className='flex-1 mt-2'>
           <DropImageArea
             images={listingProperties.images}
             setImages={(image) => handleImages(image)}
