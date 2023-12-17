@@ -11,7 +11,7 @@ export default function ImagesBox({ listingProperties }) {
     return (
         <>
 
-            <div className='relative w-full mt-4 flex gap-1 h-[400px]'>
+            <div className='relative w-full mt-4 flex gap-1 h-[200px] md:h-[300px] lg:h-[400px]'>
                 <div className={`w-full  rounded-lg ${listingProperties.images.length < 3 ? 'md:w-full' : 'md:w-[70%]'}`}>
                     <Image
                         src={listingProperties.images[0] ? listingProperties.images[0].data_url : ''}

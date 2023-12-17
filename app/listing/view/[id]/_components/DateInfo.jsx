@@ -13,7 +13,7 @@ export default function DateInfo({ listingProperties }) {
                     <>
                         <div className='flex flex-col gap-2'>
                             <p className='text-[26px]'>Start and End Date</p>
-                            <div className='flex items-center gap-2'>
+                            <div className='flex flex-col md:flex-row md:items-center gap-2'>
                                 <Button
                                     variant={"outline"}
                                     className="w-[240px] justify-start text-left font-normal"
@@ -21,7 +21,8 @@ export default function DateInfo({ listingProperties }) {
                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                     { format(new Date(listingProperties.date.from), "PPP")}
                                 </Button>
-                                <p>-</p>
+                                <p className='hidden md:flex'>-</p>
+                                <p className=' md:hidden w-[240px] flex justify-center'>To</p>
                                 <Button
                                     variant={"outline"}
                                     className="w-[240px] justify-start text-left font-normal"

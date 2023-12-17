@@ -5,7 +5,7 @@ import { Skeleton } from '@mui/material'
 export default function PageSkeleton() {
     return (
         <div className={`w-full  px-6 h-full max-w-[1000px]`}>
-            <div className='w-full mt-4 flex gap-1 h-[400px]'>
+            <div className='w-full mt-4 flex gap-1 h-[200px] md:h-[300px]  lg:h-[400px]'>
                 <div className='w-full md:w-[70%] rounded-lg'>
                     <Skeleton variant="rounded" width={'100%'} height={'100%'} />
                 </div>
