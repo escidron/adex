@@ -49,20 +49,25 @@ export default function MarketPlace() {
 
       }
 
-      if(allData.length == 0){
+      if (allData.length == 0) {
         getAds();
-      }else{
+      } else {
         setIsDataLoaded(true);
       }
 
     } else {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          setCoords({ lat: position.coords.latitude, lng: position.coords.longitude })
-          setLocated(true)
-        });
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setCoords({ lat: position.coords.latitude, lng: position.coords.longitude });
+            setLocated(true);
+          },
+          (error) => {
+            console.error('Error getting geolocation:', error.message);
+          })
 
       } else {
+        console.log('line 67');
 
         toast.dismiss()
         toast.error('Please make sure your browser has access to your location', {
@@ -78,7 +83,7 @@ export default function MarketPlace() {
 
   }, [located]);
 
-  console.log('located',located)
+  console.log('located', located)
 
   const filteredData = useMemo(() => {
 
@@ -104,14 +109,14 @@ export default function MarketPlace() {
         types = "17,18";
       }
 
-      const isKeyFound =  findKeyWords(ad, key,categories)
-      console.log(  'isKeyFound',isKeyFound)
+      const isKeyFound = findKeyWords(ad, key, categories)
+      console.log('isKeyFound', isKeyFound)
       const filterConditions = [
         distance < radius || radius == 2000,
         type ? types.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
         (ad.price >= priceMin && ad.price <= priceMax),
-        key ?  isKeyFound : true
+        key ? isKeyFound : true
 
       ];
 
@@ -120,7 +125,7 @@ export default function MarketPlace() {
   }, [allData, located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);
 
   useEffect(() => {
-    setNewData(()=>(filteredData));
+    setNewData(() => (filteredData));
     // toast.success('data loaded')
   }, [filteredData]);
 
@@ -128,9 +133,9 @@ export default function MarketPlace() {
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
-        <MapCoordinatesContext.Provider value={[coords, setCoords]}>
-          <Map newData={newData} isDataLoaded={isDataLoaded} located={located}/>
-        </MapCoordinatesContext.Provider>
+      <MapCoordinatesContext.Provider value={[coords, setCoords]}>
+        <Map newData={newData} isDataLoaded={isDataLoaded} located={located} />
+      </MapCoordinatesContext.Provider>
 
     </div>
 

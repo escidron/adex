@@ -44,8 +44,6 @@ function Map({ newData, isDataLoaded, located }) {
     setSelectedMarker(null);
   };
 
-  console.log('load Error ', loadError)
-  console.log('selectedMarker ', selectedMarker)
   return isLoaded ? (
 
     <div className='w-full h-[100vh]'>
