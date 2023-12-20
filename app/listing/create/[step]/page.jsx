@@ -235,7 +235,6 @@ export default function Listing({ params }) {
     }
     return (
         <div className="flex flex-col h-screen">
-            {/* Navbar */}
             <div className="bg-white p-4 h-[80px] flex justify-between items-center border shadow-sm">
                 <div className='flex gap-2'>
                     <ClipboardList />
@@ -256,9 +255,7 @@ export default function Listing({ params }) {
                 </div>
             </div>
 
-            {/* Conteúdo Dinâmico */}
             <div className="flex-1 overflow-y-auto p-4 mb-[130px]">
-                {/* Seu conteúdo vai aqui */}
                 {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                 {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
                 {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
@@ -274,7 +271,6 @@ export default function Listing({ params }) {
                 {step === 'preview' && <PreviewForm ListingContext={ListingContext} />}
             </div>
 
-            {/* Footer */}
             <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end fixed bottom-0 left-0 w-full">
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>

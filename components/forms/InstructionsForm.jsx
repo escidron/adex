@@ -12,7 +12,7 @@ export default function InstructionsForm({ ListingContext }) {
         setListingProperties({ ...listingProperties, instructions: instructions })
     }
     return (
-        <div className='w-full flex flex-col justify-start items-center lg:flex-row lg:justify-around lg:items-start max-w-[1000px] mx-auto'>
+        <div className='w-full flex flex-col justify-start items-center lg:flex-row lg:justify-around lg:items-start max-w-[1000px] mx-auto mb-4'>
             <div className=' lg:hidden '>
                 <InstructionNote />
             </div>

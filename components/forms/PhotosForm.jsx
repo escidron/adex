@@ -16,7 +16,7 @@ export default function PhotosForm({ ListingContext }) {
     setListingProperties((prev) => ({ ...prev, images: images }))
   }
   return (
-    <div className='w-full max-w-[800px] flex flex-col items-center  mx-auto'>
+    <div className='w-full max-w-[800px] flex flex-col items-center  mx-auto mb-[100px]'>
       <Card className='w-full h-fit '>
         <CardHeader>
           <CardTitle className='flex gap-2 items-center'>

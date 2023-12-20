@@ -14,7 +14,7 @@ export default function DiscountNote({ advertisementType }) {
         <div>
             {
                 advertisementType == 0 && (
-                    <Card className='w-full mt-[50px] md:max-w-[450px] h-fit md:mt-0'>
+                    <Card className='w-full md:max-w-[450px] h-fit '>
                         <CardHeader>
                             <CardTitle className='flex gap-2 items-center'>
                                 <div className='w-[50px]'>

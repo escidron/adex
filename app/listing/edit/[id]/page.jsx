@@ -15,22 +15,19 @@ import toast, { Toaster } from 'react-hot-toast'
 import BusinessForm from '@/components/forms/BusinessForm'
 import InstructionsForm from '@/components/forms/InstructionsForm'
 import TopBar from './_components/TopBar'
+import StepList from './_components/StepList'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetCategories from '@/actions/GetCategories'
+import GetDiscounts from '@/actions/GetDiscounts'
+import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
+import FormSkeleton from './_components/FormSkeleton'
+import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
 import { ListingContext } from './layout'
-import { Separator } from '@/components/ui/separator'
-import StepList from './_components/StepList'
-import GetUserProfile from '@/actions/GetUserProfile'
-import GetCategories from '@/actions/GetCategories'
-import GetDiscounts from '@/actions/GetDiscounts'
-import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
-import ListDetailsSkeleton from './_components/ListDetailsSkeleton'
-import FormSkeleton from './_components/FormSkeleton'
-import Footer from '@/components/footer/Footer'
 import { checkCategoryType } from '@/utils/checkCategoryType'
-import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
@@ -56,11 +53,11 @@ export default function EditListing({ params }) {
         async function getInfo() {
             const userData = await GetUserProfile()
             setUserData(userData)
-            if(userData.userType == 1){
+            if (userData.userType == 1) {
                 setStep('select_business')
             }
-            const myListing  = await GetAdvertisementDetails(id)
-            console.log('mylisiitng',myListing)
+            const myListing = await GetAdvertisementDetails(id)
+            console.log('mylisiitng', myListing)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             if (myListing) {
@@ -69,7 +66,7 @@ export default function EditListing({ params }) {
                     ...prev,
                     selectedStep: userData?.userType == 2 ? 'Category' : 'Business',
                     sub_category: myListing.category_id,
-                    ad_duration_type:categoryType,
+                    ad_duration_type: categoryType,
                     title: myListing.title,
                     location: myListing.address,
                     latitude: myListing.lat,
@@ -85,7 +82,7 @@ export default function EditListing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
-                    otherListingType:myListing.ad_duration_type
+                    otherListingType: myListing.ad_duration_type
                 }));
             }
             if (categories && myListing) {
@@ -115,7 +112,7 @@ export default function EditListing({ params }) {
     const checkPendingInformations = () => {
         let pendingInformations = false
         //manage the logic for required fields
-        
+
         if (!listingProperties.title) {
             pendingInformations = true
             if (!requiredInformations.includes('Title')) {
@@ -133,7 +130,7 @@ export default function EditListing({ params }) {
             if (!requiredInformations.includes('Description')) {
                 setRequiredInformations(prev => ([...prev, 'Description']))
             }
-        }else {
+        } else {
             if (requiredInformations.includes('Description')) {
                 const newRequiredInformations = requiredInformations.filter(item => item != "Description")
                 setRequiredInformations(newRequiredInformations)
@@ -145,7 +142,7 @@ export default function EditListing({ params }) {
             if (!requiredInformations.includes('Description')) {
                 setRequiredInformations(prev => ([...prev, 'Price']))
             }
-        }else {
+        } else {
             if (requiredInformations.includes('Price')) {
                 const newRequiredInformations = requiredInformations.filter(item => item != "Price")
                 setRequiredInformations(newRequiredInformations)
@@ -157,7 +154,7 @@ export default function EditListing({ params }) {
             if (!requiredInformations.includes('Description')) {
                 setRequiredInformations(prev => ([...prev, 'Photos']))
             }
-        }else {
+        } else {
             if (requiredInformations.includes('Photos')) {
                 const newRequiredInformations = requiredInformations.filter(item => item != "Photos")
                 setRequiredInformations(newRequiredInformations)
@@ -166,7 +163,7 @@ export default function EditListing({ params }) {
 
         return pendingInformations
     }
-    
+
     const editListing = () => {
         setIsPending(true)
 
@@ -217,10 +214,10 @@ export default function EditListing({ params }) {
     }
 
     return (
-        <>
+        <div className='flex flex-col h-screen '>
             <Toaster />
             <TopBar isPending={isPending} editListing={() => editListing()} />
-            <div className={` w-full h-[calc(100vh-200px)] mt-[80px] py-4 flex items-center justify-center `}>
+            <div className={`flex-1 py-4 flex flex-col lg:flex-row items-start`}>
                 {
                     isContentLoaded ? (
 
@@ -236,7 +233,7 @@ export default function EditListing({ params }) {
 
                 {
                     isContentLoaded ? (
-                        <div className='w-full  px-6 h-full flex justify-center pt-[100px]'>
+                        <div className='pt-[50px] pb-[50px] lg:pt-[110px] w-full h-full px-6'>
                             {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                             {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
                             {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
@@ -257,7 +254,7 @@ export default function EditListing({ params }) {
                 }
 
             </div>
-        </>
+        </div>
     )
 }
 
