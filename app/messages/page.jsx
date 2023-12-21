@@ -109,7 +109,7 @@ export default function MessagesPage() {
 
     console.log('messages asadasd',messages);
     return (
-        <div className={`mt-[120px] w-full flex justify-center `}>
+        <div className={`h-screen w-full flex justify-center pt-[120px]`}>
             <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>
                 <div className={` md:block ${showMessages ? 'block h-[680px] w-[90%] md:w-[40%]' : 'hidden'} border shadow-sm w-[40%] md:h-[800px] bg-slate-100 rounded-lg overflow-y-scroll text-right`}>
                     {

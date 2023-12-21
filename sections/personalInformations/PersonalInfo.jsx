@@ -179,7 +179,7 @@ export default function PersonalInfo() {
 
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
-      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-1/2 max-w-[650px] min-w-[480px]">
+      <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-[80%] max-w-[650px] ">
         <h1 className="text-[30px]">Personal Informations</h1>
         <div className={`mt-2 w-full flex flex-col gap-3 `}>
 
@@ -206,9 +206,8 @@ export default function PersonalInfo() {
                     <p className='font-[600]'>Name</p>
                     <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.name != 'null' && user.name ? user.name : 'Not Provided'}</p>
                   </div>
-                  <div onClick={() => setCurrentInfo('name')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                    <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray' />
+                  <div onClick={() => { setCurrentInfo('name') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                    <Edit color='gray' size={18} />
                   </div>
                 </>
               )
@@ -238,10 +237,8 @@ export default function PersonalInfo() {
                     <p className='font-[600]'>Last Name</p>
                     <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.lastName != 'null' && user.lastName ? user.lastName : 'Not Provided'}</p>
                   </div>
-                  <div onClick={() => setCurrentInfo('lastname')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                    <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray' />
-
+                  <div onClick={() => { setCurrentInfo('lastname') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                    <Edit color='gray' size={18} />
                   </div>
                 </>
               )
@@ -271,10 +268,8 @@ export default function PersonalInfo() {
                     <p className='font-[600]'>Email</p>
                     <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap '>{user.email != 'null' && user.email ? user.email : 'Not Provided'}</p>
                   </div>
-                  <div onClick={() => setCurrentInfo('email')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                    <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray' />
-
+                  <div onClick={() => { setCurrentInfo('email') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                    <Edit color='gray' size={18} />
                   </div>
                 </>
               )
@@ -304,10 +299,8 @@ export default function PersonalInfo() {
                     <p className='font-[600]'>Phone Number</p>
                     <p className='font-[300] text-gray-600'>{user.phone != 'null' && user.phone ? user.phone : 'Not Provided'}</p>
                   </div>
-                  <div onClick={() => setCurrentInfo('phone')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                    <p className='text-gray-600 '>Edit</p>
-                    <Edit size={16} color='gray' />
-
+                  <div onClick={() => { setCurrentInfo('phone') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                    <Edit color='gray' size={18} />
                   </div>
                 </>
               )
@@ -343,12 +336,7 @@ export default function PersonalInfo() {
                     <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('handle')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray' />
-
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('handle')}>
+                    <div onClick={() => handlePublicInfo('handle')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                       {
                         user.handleIsPublic == '1' ? (
 
@@ -357,6 +345,9 @@ export default function PersonalInfo() {
                           <EyeOff size={16} color='gray' />
                         )
                       }
+                    </div>
+                    <div onClick={() => { setCurrentInfo('handle') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
                     </div>
                   </div>
                 </>
@@ -388,12 +379,7 @@ export default function PersonalInfo() {
                     <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('city')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray' />
-
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('city')}>
+                    <div onClick={() => handlePublicInfo('city')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                       {
                         user.cityIsPublic == '1' ? (
 
@@ -402,6 +388,9 @@ export default function PersonalInfo() {
                           <EyeOff size={16} color='gray' />
                         )
                       }
+                    </div>
+                    <div onClick={() => { setCurrentInfo('city') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
                     </div>
                   </div>
                 </>
@@ -433,12 +422,7 @@ export default function PersonalInfo() {
                     <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap' >{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('profession')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray' />
-
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('profession')}>
+                    <div onClick={() => handlePublicInfo('profession')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                       {
                         user.professionIsPublic == '1' ? (
 
@@ -448,7 +432,11 @@ export default function PersonalInfo() {
                         )
                       }
                     </div>
+                    <div onClick={() => { setCurrentInfo('profession') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
+                    </div>
                   </div>
+                  
                 </>
               )
             }
@@ -496,12 +484,7 @@ export default function PersonalInfo() {
                     <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? (user.sex == 1 ? 'Male' : user.sex == 2 ? 'Female' : user.sex == 3 ? 'Other' : '') : 'Not Provided'}</p>
                   </div>
                   <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('sex')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray' />
-
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('sex')}>
+                    <div onClick={() => handlePublicInfo('sex')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                       {
                         user.sexIsPublic == '1' ? (
 
@@ -510,6 +493,9 @@ export default function PersonalInfo() {
                           <EyeOff size={16} color='gray' />
                         )
                       }
+                    </div>
+                    <div onClick={() => { setCurrentInfo('sex') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
                     </div>
                   </div>
                 </>
@@ -540,13 +526,9 @@ export default function PersonalInfo() {
                     <p className='font-[600]'>Who I Am</p>
                     <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.bio != 'null' && user.bio ? user.bio : 'Not Provided'}</p>
                   </div>
-                  <div className='flex gap-2'>
-                    <div onClick={() => setCurrentInfo('bio')} className='flex gap-1 rounded-xl border items-center justify-between py-2 px-4 cursor-pointer hover:border-black'>
-                      <p className='text-gray-600 '>Edit</p>
-                      <Edit size={16} color='gray' />
 
-                    </div>
-                    <div className="flex gap-1 rounded-xl border items-center justify-between py-2 px-2 cursor-pointer hover:border-black" onClick={() => handlePublicInfo('bio')}>
+                  <div className='flex gap-2'>
+                    <div onClick={() => handlePublicInfo('bio')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                       {
                         user.bioIsPublic == '1' ? (
 
@@ -556,7 +538,11 @@ export default function PersonalInfo() {
                         )
                       }
                     </div>
+                    <div onClick={() => { setCurrentInfo('bio') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
+                    </div>
                   </div>
+
                 </>
               )
             }

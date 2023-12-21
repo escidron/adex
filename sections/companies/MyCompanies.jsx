@@ -62,16 +62,7 @@ export default function MyCompanies() {
                     <AddCompanyModal setAddCompany={(show) => setAddCompany(show)} setRefetch={(refresh) => setRefetch(refresh)} refetch={refetch} />
                 ) : (
 
-                    <div className="
-                    flex 
-                    flex-col
-                    items-center
-                    rounded-lg 
-                    p-6
-                    w-1/2
-                    max-w-[600px]
-                    min-w-[400px]
-                ">
+                    <div className="flex flex-col items-center rounded-lg p-6 w-full lg:w-1/2 max-w-[600px] min-w-[400px] ">
                         <h1 className="text-[30px]">My Companies</h1>
                         <div className={`flex justify-start w-full `}>
                             <div>

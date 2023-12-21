@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useState, useRef } from "react";
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
 
 
 
@@ -180,7 +181,7 @@ export default function ForgotPasswordPage() {
         }
     };
     return (
-        <div className=" style_login flex flex-col items-center justify-center min-h-screen py-2 fixed z-[99] top-0 left-0 ">
+        <div className="style_login flex flex-col items-center pt-[150px] md:justify-start min-h-screen py-2 fixed z-[99] top-0 left-0  ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
             <div><Toaster /></div>
             <div onClick={() => router.push('/')} className="z-[91] absolute top-[40px] cursor-pointer">
@@ -195,7 +196,7 @@ export default function ForgotPasswordPage() {
             {
                 steps === 1 && (
 
-                    <form className={` z-[91] flex flex-col justify-center  items-center  w-[400px] h-auto `} onSubmit={formik.handleSubmit} >
+                    <form className={` z-[91] flex flex-col justify-center  items-center w-full px-8 max-w-[500px] h-fit `} onSubmit={formik.handleSubmit} >
                         <p className="text-white text-[36px]">Forgot password?</p>
                         <p className="text-white text-[16px] mt-2">We will send you reset instructions</p>
                         <div className=" mt-6 w-full relative text-black ">
@@ -212,14 +213,9 @@ export default function ForgotPasswordPage() {
                             {emailError && !formik.errors.email ? <div className="absolute top-[50px]  text-red-600 font-bold ">{emailError}</div> : null}
                         </div>
 
-                        <button className='mt-6 cursor-pointer flex justify-center items-center bg-[#FCD33B] py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-black text-lg
-                                   '>Send email
-                        </button>
-                        <div onClick={() => {
-                            router.push('/login')
-                        }} className='mt-3 cursor-pointer border-2 flex justify-center items-center border-[#FCD33B] text-[#FCD33B]  py-[8px] w-full px-[30px] rounded-md  font-[600]  hover:bg-black hover:text-[#FCD33B] text-lg'>
-                            Back to Login
-                        </div>
+                        <Button variant='secondary' className='w-full text-lg font-[600] mt-6'>Send Email</Button>
+                        <Button variant='outline2' className='w-full text-lg font-[600] mt-3' onClick={()=>router.push('/login')}>Back to Login</Button>
+
 
                     </form>
                 )

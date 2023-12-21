@@ -12,8 +12,8 @@ export default function page() {
   return (
     <div className='text-black pt-[120px]'>
       <div className='w-full flex  flex-col items-center'>
-        <h1 className='flex text-[51px] '>How <span className='text-[#FCD33B] mx-2'>ADEX</span> Works</h1>
-        <p className='text-[25px]'>Advertising Reimagined</p>
+        <h1 className='flex text-[40px] md:text-[46px] lg:text-[51px] '>How <span className='text-[#FCD33B] mx-2'>ADEX</span> Works</h1>
+        <p className='text-[20px] lg:text-[25px]'>Advertising Reimagined</p>
         <VideoComponent />
         <GetPaid />
         <div className='bg-black p-5 w-full flex justify-center mt-8'>

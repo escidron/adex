@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import TextField from '@/components/inputs/TextField';
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
+import { Button } from '@/components/ui/button';
 
 
 
@@ -65,10 +66,10 @@ export default function ContactPage() {
   return (
     <div className='style_contact_us flex flex-col items-center justify-center min-h-screen py-2 px-4 relative'>
       <div><Toaster /></div>
-      <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
-      <form className=" z-[91] flex flex-col justify-center items-center w-[90%] max-w-[500px] md:w-[500px] h-auto " onSubmit={formik.handleSubmit} >
-        <h1 className='text-white z-[99] text-[51px]'>Contact</h1>
-        <p className='text-white text-[25px] z-[99]'>How we can  <span className='text-[#FCD33B] mx-2'>assist</span> you?</p>
+      <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black  opacity-70'></div>
+      <form className="z-[40] flex flex-col justify-center items-center w-[90%] max-w-[500px] md:w-[500px] h-auto " onSubmit={formik.handleSubmit} >
+        <h1 className='text-white  text-[40px] md:text-[48px] lg:text-[51px]'>Contact</h1>
+        <p className='text-white text-[25px] '>How we can  <span className='text-[#FCD33B] mx-2'>assist</span> you?</p>
         <div className=" mt-6 w-full relative">
           <TextField
             id='name'
@@ -94,18 +95,7 @@ export default function ContactPage() {
         </div>
 
         <div className=" mt-6 w-full relative">
-          {/* <label htmlFor="number" className="block text-white  mb-1">
-            Phone Number
-          </label>
-          <input
-            type="text"
-            id="number"
-            name="number"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.number}
-            className={`w-full border  p-3 rounded-lg outline-none `}
-          /> */}
+
           <TextField
             id='number'
             label='Phone Number'
@@ -131,9 +121,7 @@ export default function ContactPage() {
           {formik.touched.message && formik.errors.message ? <div className="absolute  top-[140px] text-red-600 font-bold">{formik.errors.message}</div> : null}
         </div>
 
-        <button className='z-10 bg-[#FCD33B] w-full py-[8px] px-[40px] rounded-md mt-4  md:mt-5 hover:bg-black hover:text-[#FCD33B] text-lg
-                                    lg:mt-10 '><p className='style_banner_button_text font-semibold text-18px]'>Send message</p>
-        </button>
+        <Button variant='secondary' className='w-full text-lg font-[600] mt-4'>Send Message</Button>
       </form>
 
     </div>

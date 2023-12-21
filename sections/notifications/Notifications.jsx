@@ -101,7 +101,7 @@ export default function Notifications() {
       </div>
 
       <Divider variant="middle" sx={{color:'black',width:'100%',marginTop:'20px',marginBottom:'20px'}} />
-      <label htmlFor="privacy" className="text-[30px]">Marketing Communications</label>
+      <label htmlFor="privacy" className="text-[24px] sm:text-[26px] md:text-[30px]">Marketing Communications</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">
           <h1 className="text-[18px] font-bold ">Sales & Promotions</h1>

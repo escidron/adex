@@ -47,10 +47,10 @@ export default function SignUppage() {
     if (!values.accountType) {
       errors.accountType = 'Required';
     }
-    
+
     if (!values.password) {
       errors.password = 'Required';
-    }else if (values.password.length < 8){
+    } else if (values.password.length < 8) {
       errors.password = 'The password must have more than 8 caracters.';
     }
 
@@ -154,10 +154,10 @@ export default function SignUppage() {
     }
   }
   return (
-    <div className={` style_login flex flex-col h-full w-full items-center px-2 justify-center py-4 overflow-y-scroll fixed z-[99] top-0 left-0 `}>
+    <div className={`bg-black style_login flex flex-col h-screen w-full items-center px-2 justify-center py-4 overflow-y-scroll fixed z-[99] top-0 left-0 `}>
       <div><Toaster />
       </div>
-      <div className=' fixed top-0 left-0 w-full h-full   bg-black z-[90] opacity-70'></div>
+      <div className=' fixed top-0 left-0 w-full h-full bg-black z-[90] opacity-70'></div>
       <div onClick={() => {
         toast.dismiss()
         router.push('/')
@@ -170,11 +170,11 @@ export default function SignUppage() {
           priority
         />
       </div>
-      <form className=" z-[91] flex flex-col  justify-center items-center text-black font-[400] w-[100%] absolute top-[60px] py-2  mt-[30px]" onSubmit={formik.handleSubmit}>
-        <div className="w-[400px]">
+      <form className=" z-[91] flex flex-col  justify-center items-center text-black font-[400] w-[100%] absolute top-[60px] pt-2 pb-6  mt-[30px]" onSubmit={formik.handleSubmit}>
+        <div className="w-full px-8 sm:w-[400px] sm:px-0 max-w-[500px]">
 
           <p className="text-white text-[36px]">Register</p>
-          <p className="text-white text-[18px] font-normal mb-6 mt-2">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
+          <p className="text-white text-[16px]  sm:text-[18px] font-normal mb-6 mt-2">Register to access the <span className="text-[#FCD33B]">ADEX</span> Market Place</p>
 
           <div className=" w-full relative">
             <TextField
@@ -271,17 +271,7 @@ export default function SignUppage() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 onClick={(e) => handleAccountType(e)}
-                className={`
-              w-[48%] 
-              flex 
-              justify-center 
-              items-center 
-              p-2 
-              rounded-lg 
-              outline-none 
-              cursor-pointer
-              hover:text-black 
-              hover:bg-[#FCD33B] 
+                className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none cursor-pointer  hover:text-black hover:bg-[#FCD33B] 
               ${accountType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'} 
               `}
               >Business
@@ -291,17 +281,8 @@ export default function SignUppage() {
                 id="2"
                 name="account-2"
                 value={formik.values.accountType}
-
                 onClick={(e) => handleAccountType(e)}
-                className={`
-                w-[48%] 
-                flex 
-                justify-center  
-                items-center 
-                p-2 rounded-lg 
-                outline-none 
-                hover:text-black hover:bg-[#FCD33B] 
-                cursor-pointer
+                className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none  hover:text-black hover:bg-[#FCD33B] cursor-pointer
                 ${accountType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}   
                 `}
               >Individual
@@ -311,7 +292,7 @@ export default function SignUppage() {
 
           <div className={`flex rounded-lg items-center gap-4 mt-2`}>
             <input className="cursor-pointer" type="checkbox" onChange={() => setCheckTerms(!checkTerms)} checked={checkTerms ? true : false} />
-            <p className="text-white ">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
+            <p className="text-white text-[14px] sm:text-[16px]">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
           </div>
           {
             showTerms && (
@@ -320,7 +301,7 @@ export default function SignUppage() {
                 </div>
                 <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-full md:w-[80%] lg:min-w-[800px] h-[80vh]'>
                   <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
-                    <TermsOfUseModal/>
+                    <TermsOfUseModal />
                   </div>
                   <div className="w-full h-[10%] flex justify-around items-center">
                     <div onClick={() => setShowterms(false)}>
@@ -337,10 +318,10 @@ export default function SignUppage() {
               </>
             )
           }
-                <Button variant='secondary' disabled={isPending}  type='submit' className='w-full mt-4 text-lg font-[600]'>
-                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                    Sign Up
-                </Button>
+          <Button variant='secondary' disabled={isPending} type='submit' className='w-full mt-4 text-lg font-[600]'>
+            {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+            Sign Up
+          </Button>
           <p className="text-white mt-5 ">Have an account?
             <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
               router.push('/login')
