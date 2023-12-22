@@ -141,12 +141,24 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                     <p className='text-center'>Please choose another location or adjust the filter parameters</p>
                 </div> :
                 !isDataLoaded && located ? (
-                    <div className={` h-[80vh] mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
-                        <MarketPlaceCardSkeleton />
-                        <div className='hidden md:flex flex-col'>
+                    <div className={` h-[80vh] pb-[50px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+                        <div className='w-full flex justify-center '>
                             <MarketPlaceCardSkeleton />
+                        </div>
+                        <div className='w-full flex justify-center '>
                             <MarketPlaceCardSkeleton />
-
+                        </div>
+                        <div className='w-full flex justify-center '>
+                            <MarketPlaceCardSkeleton />
+                        </div>
+                        <div className='w-full flex justify-center '>
+                            <MarketPlaceCardSkeleton />
+                        </div>
+                        <div className='w-full flex justify-center '>
+                            <MarketPlaceCardSkeleton />
+                        </div>
+                        <div className='w-full flex justify-center '>
+                            <MarketPlaceCardSkeleton />
                         </div>
                     </div>
                 )
@@ -164,9 +176,12 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                     ) : (
 
                         <>
-                            <div className={`justify-center h-[80vh] mb-[400px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+                            <div className={` justify-center h-[80vh] pb-[50px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+
                                 {newData.map((ad) => (
-                                    <MarketPlaceCard key={ad.id} ad={ad} />
+                                    <div key={ad.id} className='w-full flex justify-center'>
+                                        <MarketPlaceCard key={ad.id} ad={ad} />
+                                    </div>
                                 ))}
 
                             </div>

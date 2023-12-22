@@ -42,7 +42,7 @@ export default function Card({ item, route, deleteListing }) {
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div onClick={() => router.push(route, undefined, { scroll: false })} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[400px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
+        <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
                 <MultiImage images={item.image} height={'210px'} remove={false} />
                 {
@@ -57,22 +57,22 @@ export default function Card({ item, route, deleteListing }) {
             <div className={`relative md:ml-8 flex flex-col w-full`}>
                 <div>
                     <div className='flex justify-between items-center'>
-                        <h1 className='text-[24px] font-[500] line-clamp-1'>{item.title}</h1>
+                        <h1 className='text-[18px] md:text-[24px] font-[500] line-clamp-1'>{item.title}</h1>
                         <div className={`${item.status === 1 ? 'bg-green-700' : item.status === 2 ? 'bg-orange-700' : item.status === 3 ? 'bg-red-700' : 'bg-gray-700'} px-2 py-1 h-[22px] rounded-2xl flex items-center text-[10px] font-[600] text-white ml-auto`}>
                             <p>{item.status === 1 ? 'Available' : item.status === 2 ? 'Running' : item.status === 3 ? 'Finished' : item.status === 0 ? 'Draft' : 'Pending'}</p>
                         </div>
 
                     </div>
                     <div className="flex items-center justify-start">
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
+                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
                     </div>
                     <div className='flex mt-1 gap-2'>
                         <MapPin size={14} color='gray' className='min-w-[14px]' />
-                        <p className='text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
+                        <p className='text-[12px] md:text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
                     </div>
                     <div className='flex gap-2 items-center '>
                         <div className='text-[14px] mt-2 w-full'>

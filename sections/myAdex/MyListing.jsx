@@ -13,7 +13,7 @@ import { RefreshContext } from './MyAdex';
 import { CompanyRefreshContext } from '@/app/my-company/page';
 
 export default function MyListing({ data, status, isCompanyPage, isContentLoaded }) {
-  const [currentStatus, setCurrentStatus] = useState('');
+  const [currentStatus, setCurrentStatus] = useState('all');
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
 
@@ -33,8 +33,8 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
       </>
     )
   }
-  const handleCurrentStatus = (e) => {
-    const id = e.currentTarget.id
+  const handleCurrentStatus = (e,statusValue) => {
+    const id = statusValue ? statusValue : e.currentTarget.id
     if (id !== currentStatus) {
       setCurrentStatus(id);
     }
@@ -52,14 +52,14 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
       <StatusTabBar
         status={status}
         currentStatus={currentStatus}
-        handleCurrentStatus={(current) => handleCurrentStatus(current)}
+        handleCurrentStatus={(e,current) => handleCurrentStatus(e,current)}
       />
         {
           data.map((item, index) => {
-            if (item.status == currentStatus || currentStatus == '') {
+            if (item.status == currentStatus || currentStatus == 'all') {
               return (
                 <>
-                  <div key={item.id + index} className='w-full flex gap-4 items-center'>
+                  <div key={item.id + index} className='w-full flex gap-4 items-center' onClick={(e)=>{e.stopPropagation()}} > 
                     <Card
                       item={item}
                       setAdvertisementId={(id) => setAdvertisementId(id)}
