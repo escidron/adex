@@ -31,7 +31,7 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
 
 
     return (
-        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[30px] py-[15px] rounded-md max-w-[450px] cursor-pointer`}>
+        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[30px] py-[15px] rounded-md min-w-[350px] max-w-[450px] cursor-pointer`}>
             <div className='flex gap-2 items-center'>
                 <div className='w-[40px] h-[40px] '>
                     <Image

@@ -33,7 +33,7 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
       </>
     )
   }
-  const handleCurrentStatus = (e,statusValue) => {
+  const handleCurrentStatus = (e, statusValue) => {
     const id = statusValue ? statusValue : e.currentTarget.id
     if (id !== currentStatus) {
       setCurrentStatus(id);
@@ -41,38 +41,36 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
   }
 
 
-  const deleteListing = async (id)=> {
-      const response = await RemoveListing(id)
-      toast.success('Advertisement deleted successfully')
-      setRefresh(prev => !prev)
+  const deleteListing = async (id) => {
+    const response = await RemoveListing(id)
+    toast.success('Advertisement deleted successfully')
+    setRefresh(prev => !prev)
   }
   return (
     <div className='flex flex-col items-center '>
       {/* <div><Toaster /></div> */}
-      <StatusTabBar
-        status={status}
-        currentStatus={currentStatus}
-        handleCurrentStatus={(e,current) => handleCurrentStatus(e,current)}
-      />
-        {
-          data.map((item, index) => {
-            if (item.status == currentStatus || currentStatus == 'all') {
-              return (
-                <>
-                  <div key={item.id + index} className='w-full flex gap-4 items-center' onClick={(e)=>{e.stopPropagation()}} > 
-                    <Card
-                      item={item}
-                      setAdvertisementId={(id) => setAdvertisementId(id)}
-                      route={`/listing/view/${item.id}`}
-                      deleteListing={(id)=>deleteListing(id)}
-                    />
-                  </div>
-                </>
-              )
-            }
-            return null
-          })
-        }
+        <StatusTabBar
+          status={status}
+          currentStatus={currentStatus}
+          handleCurrentStatus={(e, current) => handleCurrentStatus(e, current)}
+        />
+      {
+        data.map((item, index) => {
+          if (item.status == currentStatus || currentStatus == 'all') {
+            return (
+              <div key={item.id + index} className='w-full flex gap-4 items-center'  >
+                <Card
+                  item={item}
+                  setAdvertisementId={(id) => setAdvertisementId(id)}
+                  route={`/listing/view/${item.id}`}
+                  deleteListing={(id) => deleteListing(id)}
+                />
+              </div>
+            )
+          }
+          return null
+        })
+      }
     </div>
   )
 }

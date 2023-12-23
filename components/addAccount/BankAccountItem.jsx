@@ -34,17 +34,19 @@ export default function BankAccountItem({ item, setCheckDefault, setShowDeleteMo
 
                             </div>
 
-                            <div className='flex gap-2'>
+                            <div className='flex gap-2 flex-col sm:flex-row'>
                                 <p>{item.routing_number}</p>
-                                <p>{`**** ${item.last4}`}</p>
-                                {
-                                    item.default_for_currency == 1 ? (
+                                <div className='flex gap-2'>
+                                    <p>{`**** ${item.last4}`}</p>
+                                    {
+                                        item.default_for_currency == 1 ? (
 
-                                        <div className='ml-3 bg-black rounded-lg py-1 px-3 '>
-                                            <p className='text-white text-[10px]'>Default</p>
-                                        </div>
-                                    ) : ''
-                                }
+                                            <div className='sm:ml-3 bg-black rounded-lg py-1 px-3 max-w-[50px] flex justify-center'>
+                                                <p className='text-white text-[10px]'>Default</p>
+                                            </div>
+                                        ) : ''
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -69,7 +69,7 @@ export default function MyAdex() {
 
       setAllBookings([...pendingListing, ...myBookings])
       if (user.userType == 1) {
-        
+
         if (companies.length > 0) {
           checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
 
@@ -172,7 +172,13 @@ export default function MyAdex() {
               <SelectTrigger className='shadow-md w-[300px]'>
                 <SelectValue className='text-[12px]' placeholder={selectedCompany} />
               </SelectTrigger>
-              <SelectContent >
+              <SelectContent ref={(ref) => {
+                //prevent bubbling
+                if (!ref) return;
+                ref.ontouchstart = (e) => {
+                  e.preventDefault();
+                };
+              }}>
                 <SelectGroup >
                   {
                     companies.map((item) => (

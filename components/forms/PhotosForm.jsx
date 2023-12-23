@@ -1,6 +1,6 @@
 import DropImageArea from '../dropImageArea/DropImageArea';
 
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import {
   Card,
   CardDescription,
@@ -15,6 +15,9 @@ export default function PhotosForm({ ListingContext }) {
   const handleImages = (images) => {
     setListingProperties((prev) => ({ ...prev, images: images }))
   }
+
+
+
   return (
     <div className='w-full max-w-[800px] flex flex-col items-center  mx-auto mb-[100px]'>
       <Card className='w-full h-fit '>

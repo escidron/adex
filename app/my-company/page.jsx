@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, createContext } from 'react'
 import axios from 'axios'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import RatingComponent from '@/components/rating/RatingComponent'
@@ -19,7 +19,7 @@ import GalleryImage from '../../components/gallery-image/GalleryImage'
 import GalleryCarrousel from '@/components/gallery-image/GalleryCarrousel'
 import ImageLoader from '@/components/ImageLoader/ImageLoader'
 import ImageImporter from '@/components/gallery-image/imageImporter'
-import { BookmarkCheck, ImageIcon, LineChart, MapPin } from 'lucide-react'
+import { ArrowLeft, BookmarkCheck, ImageIcon, LineChart, MapPin } from 'lucide-react'
 import { menuOptions } from '@/utils/companyAccountOptions'
 import GetMyBookings from '@/actions/GetMyBookings'
 import GetPendingBookings from '@/actions/GetPendingBookins'
@@ -51,25 +51,25 @@ export default function MyCompanyPage() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const selectedOption = searchParams.get('option')
+    const router = useRouter()
 
 
-    
-  useEffect(() => {
-    async function getInfo() {
-      const { myListing, status } = (await GetMyAdvertisement()) || {}
-      const myBookings = await GetMyBookings()
-      const pendingListing = await GetPendingBookings()
+    useEffect(() => {
+        async function getInfo() {
+            const { myListing, status } = (await GetMyAdvertisement()) || {}
+            const myBookings = await GetMyBookings()
+            const pendingListing = await GetPendingBookings()
 
-      if (myListing?.length > 0) {
-        setListingData(myListing)
-        setStatus(status)
-      }
-      setBookingData([...pendingListing, ...myBookings])
-      setIsContentLoaded(true)
+            if (myListing?.length > 0) {
+                setListingData(myListing)
+                setStatus(status)
+            }
+            setBookingData([...pendingListing, ...myBookings])
+            setIsContentLoaded(true)
 
-    }
-    getInfo();
-  }, []);
+        }
+        getInfo();
+    }, []);
 
     useEffect(() => {
 
@@ -187,14 +187,17 @@ export default function MyCompanyPage() {
             <div className={`mt-4 flex flex-col items-center `}>
                 {
                     selectedOption ? (
-                        <>
-                            <p className='text-[30px] mt-8'>
+                        <div className='flex justify-between items-center mt-8 gap-[50px]'>
+                            <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
+                            <p className='text-[28px] md:text-[36px]'>
                                 {menuOptions.find((opt) => opt.id == selectedOption).label}
                             </p>
-                        </>
+                        </div>
                     ) : (
-
-                        <p className='text-[36px] mt-8'>Company Account</p>
+                        <div className='flex justify-between items-center mt-8 gap-[50px]'>
+                            <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
+                            <p className='text-[28px] md:text-[36px] '>Company Account</p>
+                        </div>
                     )
                 }
                 <div className='mt-6 grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%]'>
@@ -202,7 +205,7 @@ export default function MyCompanyPage() {
                         !selectedOption && (
 
                             menuOptions.map((option) => (
-                                <Link href={`my-company?id=${id}&option=${option.id}`} key={option.id} className='flex flex-col items-center justify-center w-full min-w-[190px]  max-h-[150px] bg-black px-4 py-[24px] rounded-lg hover:scale-[1.1] cursor-pointer'>
+                                <Link href={`my-company?id=${id}&option=${option.id}`} key={option.id} className='flex flex-col items-center justify-center w-full min-w-[190px]  max-h-[150px] bg-black px-4 py-[24px] rounded-lg hover:opacity-80 cursor-pointer'>
                                     <div className='h-[74px] aspect-square flex items-center justify-center'>
                                         {option.icon}
                                     </div>
@@ -218,8 +221,8 @@ export default function MyCompanyPage() {
                         selectedOption == 1 && (
                             <>
                                 <TabsComponent value={value1} setValue={(value) => setValue1(value)}>
-                                    <AddCard label='Payments' companyId={id}/>
-                                    <AddAccount label='Payouts' companyId={id}/>
+                                    <AddCard label='Payments' companyId={id} />
+                                    <AddAccount label='Payouts' companyId={id} />
                                 </TabsComponent>
                             </>
                         )

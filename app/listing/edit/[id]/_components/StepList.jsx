@@ -103,7 +103,13 @@ export default function StepList({ userData, setStep, requiredInformations }) {
                     <SelectTrigger className='shadow-md w-[300px]'>
                         <SelectValue className='text-[12px]' />
                     </SelectTrigger>
-                    <SelectContent >
+                    <SelectContent ref={(ref) => {
+                        //prevent bubbling
+                        if (!ref) return;
+                        ref.ontouchstart = (e) => {
+                            e.preventDefault();
+                        };
+                    }}>
                         <SelectGroup >
                             {
                                 editSteps.map((step) => {

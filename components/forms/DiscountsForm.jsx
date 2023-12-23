@@ -104,7 +104,13 @@ export default function DiscountsForm({ ListingContext }) {
                                             <SelectTrigger className='shadow-md'>
                                                 <SelectValue className='text-[12px]' placeholder="Select ..." />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent ref={(ref) => {
+                                                //prevent bubbling
+                                                if (!ref) return;
+                                                ref.ontouchstart = (e) => {
+                                                    e.preventDefault();
+                                                };
+                                            }}>
                                                 {
                                                     advertisementType == 0 && (
 

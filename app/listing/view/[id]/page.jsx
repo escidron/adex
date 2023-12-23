@@ -122,7 +122,6 @@ export default function Listing({ params }) {
         handleRouteChange()
     }, []);
 
-    console.log('listingProperties', listingProperties)
     return (
         <>
             <TopBar />
@@ -135,7 +134,7 @@ export default function Listing({ params }) {
                             }
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
-                                <div className='w- full gap-4 flex justify-between'>
+                                <div className='w- full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
                                         <ListingHeader
                                             listingProperties={listingProperties}
@@ -165,7 +164,7 @@ export default function Listing({ params }) {
                                     {
                                         statusPending && (
 
-                                            <div className='w-full md:w-[40%] flex justify-end mt-2' >
+                                            <div className='w-full md:w-[40%] flex justify-center md:justify-end mt-2' >
                                                 <ApproveReservation
                                                     advertisement={listingProperties}
                                                     discounts={listingProperties.discounts}

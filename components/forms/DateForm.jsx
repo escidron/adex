@@ -42,7 +42,7 @@ export default function DateForm({ ListingContext }) {
     console.log('date', date)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
-            <div className={`w-full  ${listingProperties.sub_category == 4 ? 'max-w-[550px]' : 'max-w-[280px]'}`}>
+            <div className={`w-full flex flex-col items-center ${listingProperties.sub_category == 4 ? 'max-w-[550px]' : 'max-w-[280px]'}`}>
                 <div className='flex flex-col'>
                     <div className='flex gap-1 items-end'>
                         <h1 className='text-[32px]'>Date</h1>
@@ -50,7 +50,7 @@ export default function DateForm({ ListingContext }) {
                     </div>
                     <p className='text-[18px] text-gray-500'>{listingProperties.sub_category == 4 ? 'Select the Event Start Date and End Date' : 'Asset first available date'}</p>
                 </div>
-                <div className='mt-8'>
+                <div className='mt-8 w-[80%] sm:w-auto flex justify-center'>
                     <Calendar
                         initialFocus
                         mode={listingProperties.sub_category == 4 ? 'range' : 'single'}

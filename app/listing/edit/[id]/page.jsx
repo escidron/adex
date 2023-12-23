@@ -217,7 +217,7 @@ export default function EditListing({ params }) {
         <div className='flex flex-col h-screen '>
             <Toaster />
             <TopBar isPending={isPending} editListing={() => editListing()} />
-            <div className={`flex-1 py-4 flex flex-col lg:flex-row items-start`}>
+            <div className={`flex-1 overflow-y-auto  py-4 flex flex-col lg:flex-row items-start `}>
                 {
                     isContentLoaded ? (
 
@@ -233,7 +233,7 @@ export default function EditListing({ params }) {
 
                 {
                     isContentLoaded ? (
-                        <div className='pt-[50px] pb-[50px] lg:pt-[110px] w-full h-full px-6'>
+                        <div className='mt-[50px] lg:mt-0 pb-[50px] lg:pt-[110px] w-full h-full px-6 overflow-y-auto'>
                             {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                             {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
                             {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}

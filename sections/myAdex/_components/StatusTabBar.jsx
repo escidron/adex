@@ -5,19 +5,26 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
+} from "@/components/ui/select"
+import { useState } from "react";
+
 
 export default function StatusTabBar({ status, currentStatus, handleCurrentStatus }) {
-    console.log(status);
     return (
-        <div onClick={(e)=>alert('outer div')}>
+        <div>
             <div className='md:hidden w-full flex justify-center gap-2 md:px-8 ' >
-                <Select defaultValue={'all'} onValueChange={(value) => handleCurrentStatus('',value)} className='overflow-y-scroll' onClick={(e)=>{e.stopPropagation()}}>
-                    <SelectTrigger className='shadow-md w-[200px]' onClick={(e)=>{e.stopPropagation()}}>
+                <Select defaultValue={'all'} onValueChange={(value) => handleCurrentStatus('', value)} className='overflow-y-scroll'>
+                    <SelectTrigger className='shadow-md w-[200px]'>
                         <SelectValue className='text-[12px]' />
-                    </SelectTrigger> 
-                    <SelectContent onClick={(e)=>alert('SelectContent')} >
-                        <SelectGroup onClick={(e)=>alert('SelectGroup')}>
+                    </SelectTrigger>
+                    <SelectContent ref={(ref) => {
+                        //prevent bubbling
+                        if (!ref) return;
+                        ref.ontouchstart = (e) => {
+                            e.preventDefault();
+                        };
+                    }}>
+                        <SelectGroup>
                             <SelectItem value='all'>Show All</SelectItem>
                             <SelectItem value='0'>Draft</SelectItem>
                             <SelectItem value='1'>Available</SelectItem>
@@ -28,7 +35,7 @@ export default function StatusTabBar({ status, currentStatus, handleCurrentStatu
                     </SelectContent >
                 </Select>
             </div>
-            
+
             <div className="hidden md:flex mt-2 w-full gap-4 flex-wrap">
                 <div className="flex gap-2 pb-2 overflow-x-auto ">
                     <div
