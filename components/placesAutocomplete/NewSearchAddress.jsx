@@ -52,7 +52,6 @@ export function NewSearchAddress({ setSelected }) {
     setPlaceName(address)
   };
 
-  console.log('valuee',value)
   return (
 
         <Command className='border-none'>

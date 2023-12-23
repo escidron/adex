@@ -132,7 +132,6 @@ export default function ForgotPasswordPage() {
 
             })
                 .then(function (response) {
-                    console.log('response', response)
                     setSteps(4)
                     toast.success(response.data.message)
 

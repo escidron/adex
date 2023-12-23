@@ -35,7 +35,6 @@ export default function Listing({ params }) {
     const id = params.id
     const searchParams = useSearchParams()
     const notificationId = searchParams.get('notification_id') 
-    console.log('params',notificationId);
     useEffect(() => {
 
         async function getInfo() {

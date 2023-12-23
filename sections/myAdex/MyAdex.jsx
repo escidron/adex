@@ -66,7 +66,6 @@ export default function MyAdex() {
       const pendingListing = await GetPendingBookings()
       const user = await GetUserProfile()
       const companies = await GetCompanies()
-      console.log('my listingsss',myListing)
       setAllBookings([...pendingListing, ...myBookings])
       if (user.userType == 1) {
 

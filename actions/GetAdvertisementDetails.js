@@ -21,7 +21,6 @@ export default async function GetAdvertisementDetails( id,notificationId) {
 
     if (response.status === 200) {
       const res = await response.json();
-      console.log('response',res.data)
       const myListing = res.data
       return myListing;
     } else {

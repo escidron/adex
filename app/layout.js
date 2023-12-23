@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
                 const currentUser = await response.json()
                 setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
             } else {
-                console.log('response error', response)
+                console.log('error', response)
             }
         }
         autoLogin();

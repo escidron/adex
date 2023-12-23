@@ -4,7 +4,6 @@ import CardSkeleton from './_components/CardSkeleton'
 
 export default function MyBookings({ data, isContentLoaded }) {
 
-  console.log('data',data)
   if (data?.length == 0 && isContentLoaded ) {
     return (
       <>

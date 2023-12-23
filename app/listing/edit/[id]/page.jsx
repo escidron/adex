@@ -57,7 +57,6 @@ export default function EditListing({ params }) {
                 setStep('select_business')
             }
             const myListing = await GetAdvertisementDetails(id)
-            console.log('mylisiitng', myListing)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             if (myListing) {

@@ -115,7 +115,6 @@ export default function Booking({ params }) {
         handleRouteChange()
     }, []);
 
-    console.log('listingProperties', listingProperties)
     return (
         <>
             <TopBar route={'/my-profile?tab=5&sub-tab=1'}/>

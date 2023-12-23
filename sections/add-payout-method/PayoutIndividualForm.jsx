@@ -49,7 +49,6 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       errors.images = 'Required';
     }
 
-    console.log('errors', errors)
     return errors;
   };
 
@@ -103,7 +102,6 @@ export default function PayoutIndividualForm({ setHasAccount }) {
     },
   });
 
-  console.log('images', images)
   return (
 
 

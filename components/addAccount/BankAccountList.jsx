@@ -13,22 +13,6 @@ export default function BankAccountList({ refetch, setRefetch, companyId }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deletedId, setDeleteId] = useState('');
 
-    // useEffect(() => {
-
-    //     axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-bank-accounts`,
-    //         {}, {
-    //         withCredentials: true,
-    //     })
-    //         .then(function (response) {
-    //             setData(response.data.data)
-    //             setRefetch(false)
-    //             setCheckDefault(false)
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error)
-    //         });
-    // }, [refetch, checkDefault]);
-
     useEffect(() => {
         async function getInfo() {
             const bankAccounts = await GetBankAccounts(companyId)

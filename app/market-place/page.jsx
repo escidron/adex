@@ -37,7 +37,6 @@ export default function MarketPlace() {
   const router = useRouter();
   useEffect(() => {
     if (located) {
-      console.log('alldata inside the effect', allData)
 
       async function getAds() {
         setNewData([])
@@ -67,8 +66,6 @@ export default function MarketPlace() {
           })
 
       } else {
-        console.log('line 67');
-
         toast.dismiss()
         toast.error('Please make sure your browser has access to your location', {
           duration: 10000,
@@ -82,8 +79,6 @@ export default function MarketPlace() {
 
 
   }, [located]);
-
-  console.log('located', located)
 
   const filteredData = useMemo(() => {
 
@@ -110,7 +105,6 @@ export default function MarketPlace() {
       }
 
       const isKeyFound = findKeyWords(ad, key, categories)
-      console.log('isKeyFound', isKeyFound)
       const filterConditions = [
         distance < radius || radius == 2000,
         type ? types.includes(ad.category_id) : true,

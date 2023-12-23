@@ -157,7 +157,6 @@ export default function AdDetails({ sharedId }) {
         withCredentials: true,
       })
         .then(function (response) {
-          console.log('res', response)
         })
         .catch(function (error) {
           console.log(error)
@@ -196,7 +195,6 @@ export default function AdDetails({ sharedId }) {
       })
       .then(function (response) {
         setCompany(response.data[0])
-        console.log('company response', response)
       })
       .catch(function (error) {
         console.log(error)

@@ -28,7 +28,6 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
   } = usePlacesAutocomplete();
 
   const handleSelect = async (address) => {
-    console.log('handle address')
     setValue(address, false);
     clearSuggestions();
     const results = await getGeocode({ address });
@@ -45,7 +44,6 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
 
   }, []);
 
-  console.log('value', value)
   let cont = 0
   return (
     <Combobox onSelect={handleSelect} className='w-full  ' >
@@ -62,7 +60,6 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
           <ComboboxList  className='bg-white mt-4 rounded-md w-[400px] style_combobox '  >
             {
               data.map(({ place_id, description, }) => {
-                console.log('description',description)
                 cont++
                 return (
                   <div className={` ${cont != 1 ? 'border-t-[1px]' : ''}  flex items-center border-gray w-auto px-2 py-1 cursor-pointer hover:text-[#FCD33B]`} key={place_id} >

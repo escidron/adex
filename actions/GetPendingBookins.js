@@ -13,11 +13,9 @@ export default async function GetPendingBookings() {
       );
       if (response.status === 200) {
         const res = await response.json();
-        console.log('pending',res)
         const pendingBookings = res.data;
         return pendingBookings;
       } else {
-        console.log('entrou no else');
         return [];
       }
     } catch (error) {

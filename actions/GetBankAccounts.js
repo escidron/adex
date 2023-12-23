@@ -14,7 +14,6 @@ export default async function GetBankAccounts(companyId) {
     );
     if (response.status === 200) {
       const res = await response.json();
-      console.log("resss", res);
       const bakAccounts = res.data;
       return bakAccounts;
     } else {

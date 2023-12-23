@@ -14,7 +14,6 @@ export default async function GetSellerListing(id) {
     );
     if (response.status === 200) {
       const res = await response.json();
-      console.log('resss',res)
       const listings = res;
       return listings;
     } else {

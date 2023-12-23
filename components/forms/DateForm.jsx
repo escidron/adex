@@ -39,7 +39,6 @@ export default function DateForm({ ListingContext }) {
             setDate(date)
         }
     }
-    console.log('date', date)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className={`w-full flex flex-col items-center ${listingProperties.sub_category == 4 ? 'max-w-[550px]' : 'max-w-[280px]'}`}>

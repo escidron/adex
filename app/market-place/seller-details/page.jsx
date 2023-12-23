@@ -39,7 +39,6 @@ export default function SellerDetailsPage() {
         };
         handleRouteChange()
     }, []);
-    console.log('seller details', seller)
     return (
         <>
 

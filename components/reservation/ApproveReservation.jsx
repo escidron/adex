@@ -65,7 +65,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         }
     }
     useEffect(() => {
-        console.log('get contract', advertisement)
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
                 advertisementId: advertisement.id,
@@ -151,7 +150,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
             })
             .catch(function (error) {
-                console.log('aqui erorrrr', error.response.data.error)
+                console.log('error', error.response.data.error)
                 toast.error(error.response.data.error)
                 setIsCancelPending(false)
 
@@ -230,7 +229,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             </div>
         )
     }
-    console.log('advertisement', advertisement)
     return (
         <>
             <Toaster />

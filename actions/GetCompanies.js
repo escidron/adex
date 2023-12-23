@@ -13,7 +13,6 @@ export default async function GetCompanies() {
       );
       if (response.status === 200) {
         const res = await response.json();
-        console.log('resss',res)
         const companies = res;
         return companies;
       } else {

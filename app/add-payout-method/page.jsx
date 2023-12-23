@@ -27,24 +27,6 @@ export default function AddPayoutMethod() {
     GetInfo();
   }, [hasAccount]);
 
-  // useEffect(() => {
-  //   async function GetUserProfile() {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
-  //       {
-  //         method: "GET",
-  //         credentials: "include",
-  //       }
-  //     );
-  //     if (response.status === 200) {
-  //       const res = await response.json()
-  //       setUserData(res)
-  //     }
-  //   }
-  //   GetUserProfile();
-  // }, []);
-
-  console.log('seller',seller);
   return (
     <div className={`w-full h-full mt-[100px]  flex flex-col justify-center items-center `}>
 

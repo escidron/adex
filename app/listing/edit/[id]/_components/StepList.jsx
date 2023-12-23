@@ -66,7 +66,6 @@ const editSteps = [
 ]
 export default function StepList({ userData, setStep, requiredInformations }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
-    console.log('required', requiredInformations)
     return (
         <div className='w-[350px] lg:pt-[100px] flex flex-col items-start px-6 lg:h-full lg:ml-[100px]'>
             <p className='text-[32px]'>Listing Details</p>

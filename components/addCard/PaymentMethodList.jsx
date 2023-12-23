@@ -14,7 +14,6 @@ export default function PaymentMethodList({ setRefetch, data }) {
 
 
     const deleteElement = async (id) => {
-        console.log('remove card',id)
         const message = await RemovePaymentMethod(id)
         if (message) {
             toast.success(message)

@@ -41,7 +41,6 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const longitude = searchParams.get("longitude")
 
     const onClick = (field, value) => {
-        console.log(field, value)
         const url = qs.stringifyUrl({
             url: pathname,
             query: {
@@ -66,7 +65,6 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
 
 
     const handleCoords = (coords) => {
-        console.log('coords', coords)
         onClick('coords',coords)
         setCoords(coords)
     }

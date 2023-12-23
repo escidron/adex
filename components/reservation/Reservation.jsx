@@ -131,7 +131,6 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             }
             setIncomplete(true)
         } else {
-            console.log('entrou no false')
             router.push('/login')
         }
     }

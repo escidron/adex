@@ -147,7 +147,6 @@ export default function MyCompanyPage() {
             });
 
     }
-    console.log('company', company)
     return (
         <>
 

@@ -18,7 +18,6 @@ export default async function GetPaymentMethod(companyId) {
   
       if (response.status === 200) {
         const res = await response.json();
-        console.log('res payment',res)
         const paymentmethods = res.data
         if(paymentmethods.length > 0){
             return paymentmethods

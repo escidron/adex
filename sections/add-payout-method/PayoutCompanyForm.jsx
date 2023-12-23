@@ -39,7 +39,6 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       if (!values.idNumber) {
         errors.idNumber = 'Required';
       }
-      console.log('selectedMerchant',selectedMerchant)
       if (!selectedMerchant) {
         errors.mcc = 'Required';
       }

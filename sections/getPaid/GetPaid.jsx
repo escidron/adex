@@ -17,7 +17,6 @@ export default function GetPaid() {
     useEffect(() => {
         async function GetInfo() {
             const userData = await GetUserProfile()
-            console.log(userData)
             setUserData(userData)
             if( user.isLogged ){
                 setPath(`/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}`)

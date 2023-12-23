@@ -17,7 +17,6 @@ export default async function RemoveCompany( id) {
   
       if (response.status === 200) {
         const res = await response.json();
-        console.log('response',res)
         const message = res.message
         return message;
       } else {

@@ -16,7 +16,6 @@ export default async function GetFilteredAdvertisements( ) {
   
       if (response.status === 200) {
         const res = await response.json();
-        console.log('res',res)
         const listings = res.data
         return listings;
       } else {

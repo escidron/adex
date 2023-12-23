@@ -2,7 +2,6 @@
 
 
 export default function DiscountsInfo({ listingProperties, advertisementType }) {
-    console.log('advetisement type',advertisementType)
     return (
         <div>
             {

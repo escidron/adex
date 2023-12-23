@@ -10,8 +10,7 @@ import { UserContext } from '@/app/layout';
 
 export default function MarketPlaceCard({ ad }) {
   const [user, setUser] = useContext(UserContext)
-  console.log('user', user)
-  console.log('adddd', ad)
+
   return (
     <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards min-w-[360px] max-w-[360px] md:min-w-[300px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">

@@ -46,7 +46,6 @@ export default function MessagesPage() {
             setallChats(allMessages)
             
             const privateMessages = allMessages.filter(message => message.advertisement_id + message.seller_id + message.buyer_id == key);
-            console.log('privateMessages',privateMessages);
             setMessages(privateMessages)
             if (selectedChat.advertisementId == '' && privateMessages.length > 0) {
                 setSelectedChat({
@@ -107,7 +106,6 @@ export default function MessagesPage() {
         })
     }
 
-    console.log('messages asadasd',messages);
     return (
         <div className={`h-screen w-full flex justify-center pt-[120px]`}>
             <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>

@@ -86,7 +86,7 @@ export default function NavBar() {
                 hasPayoutMethod()
                 setFinishRequests(true)
             } else {
-                console.log('response error', response)
+                console.log('error', response)
                 setFinishRequests(true)
             }
         }

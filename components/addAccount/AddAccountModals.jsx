@@ -31,7 +31,6 @@ export default function AddAccountModals({ setRefetch, selectedCompany, selected
         }
         GetInfo();
     }, [hasAccount]);
-    console.log('seller',seller)
     return (
         <>
             <Toaster />
