@@ -6,7 +6,12 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import { Separator } from '../ui/separator';
-
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import TermsOfUseModal from '../modals/TermsOfUseModal';
 
 
 export default function Footer() {
@@ -24,9 +29,17 @@ export default function Footer() {
                             <p className='text-white mt-2 text-center'>Contact Us</p>
                         </Link>
 
-                        <Link href="#" className='hover:scale-[1.1]'>
-                            <p className='text-white mt-2 text-center'>Terms Of Use</p>
-                        </Link>
+
+                        <Dialog className='max-w-[90%]'>
+                            <DialogTrigger >
+                                <div  className='hover:scale-[1.1]'>
+                                    <p className='text-white mt-2 text-center'>Terms Of Use</p>
+                                </div>
+                            </DialogTrigger>
+                            <DialogContent className='max-w-[90%] h-[90vh] overflow-y-auto'>
+                                <TermsOfUseModal />
+                            </DialogContent>
+                        </Dialog>
 
                         <Link href="/market-place" className='hover:scale-[1.1]'>
                             <p className='text-white mt-2 text-center ml-4'>ADEX Market Place</p>
@@ -65,7 +78,7 @@ export default function Footer() {
                         </Link>
 
                     </div>
-                    <p className={`mt-4 text-white `}>Copyright © 2023 ADEX CONNECT</p> 
+                    <p className={`mt-4 text-white `}>Copyright © 2023 ADEX CONNECT</p>
 
                 </div>
             </div>
