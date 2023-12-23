@@ -61,7 +61,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         async function getInfo() {
             const cards = await GetPaymentMethod()
             const myProfile = await GetUserProfile()
-            if (myProfile.userType == '1') {
+            if (myProfile?.userType == '1') {
                 const myCompanies = await GetCompanies()
                 setCompanies(myCompanies)
                 setIsCompanyProfile(true)

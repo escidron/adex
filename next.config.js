@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    images : {
+      domains : ['localhost','test.adexconnect.com','192.168.19.5'] // <== Domain name
+    },
     experimental: {
       appDir: true,
       typedRoutes: true,

@@ -222,7 +222,7 @@ export default function MyCompanyPage() {
                             <>
                                 <TabsComponent value={value1} setValue={(value) => setValue1(value)}>
                                     <AddCard label='Payments' companyId={id} />
-                                    <AddAccount label='Payouts' companyId={id} />
+                                    <AddAccount label='Payouts' companyId={id} companyName={company.company_name}/>
                                 </TabsComponent>
                             </>
                         )

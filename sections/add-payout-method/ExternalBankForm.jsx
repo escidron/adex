@@ -57,7 +57,7 @@ export default function ExternalBankForm({ stripeAccount, setFinish, selectedCom
                     accountNumber: values.accountNumber,
                     stripeAccount: stripeAccount,
                     bankAccountName: values.bankName,
-                    companyId : selectedCompanyId
+                    companyId: selectedCompanyId
                 }, {
                 withCredentials: true,
                 headers: {
@@ -69,7 +69,9 @@ export default function ExternalBankForm({ stripeAccount, setFinish, selectedCom
                         setIsPending(false)
                         setFinish(true)
                         setUser((prev) => ({ ...prev, hasPayout: true }))
-                        setHasPayoutMethod(true)
+                        if (setHasPayoutMethod) {
+                            setHasPayoutMethod(true)
+                        }
                     }
                 })
                 .catch(function (error) {

@@ -19,6 +19,7 @@ export default function MultiImage({ images, setImageName, height, remove }) {
 
         <div key={index} className='w-full h-full relative rounded-[16px]'>
             <Image
+                // src="http://localhost:5000/images/1699032333632.png"
                 src={item.data_url}
                 alt="Adex item"
                 id='image-loaded'
