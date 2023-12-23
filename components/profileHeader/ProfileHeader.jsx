@@ -8,6 +8,7 @@ import ImageUploading from "react-images-uploading";
 import RatingComponent from '../rating/RatingComponent';
 import { ImageIcon } from 'lucide-react';
 import GetUserProfile from '@/actions/GetUserProfile';
+import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
 
 export default function ProfileHeader() {
     const [rating, setRating] = useState(0);
@@ -41,6 +42,9 @@ export default function ProfileHeader() {
     useEffect(() => {
         async function GetInfo() {
             const userData = await GetUserProfile()
+            console.log(
+                'name',userData
+            );
             setUserData(userData)
             setSrc(userData.image)
         }

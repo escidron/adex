@@ -41,6 +41,7 @@ export default function CompanyCard({ company, removeCompany }) {
         })
     }, [company]);
 
+    console.log('company item ',company);
     return (
         <div onClick={()=>router.push(`/my-company?id=${company.id}`)} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border  cursor-pointer hover:border-black`}>
             <div className="card_element w-1/4 rounded-lg">

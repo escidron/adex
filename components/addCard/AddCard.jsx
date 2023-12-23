@@ -1,3 +1,4 @@
+'use client'
 import { useState,useEffect } from 'react'
 import StripeForm from './StripeForm';
 import {
@@ -13,6 +14,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import GetPaymentMethod from '@/actions/GetPaymentMethod';
+import AddCardNote from './AddCardNote';
+import { Separator } from '../ui/separator';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
@@ -33,11 +36,7 @@ export default function AddCard({ companyId }) {
 
   return (
     <div>
-      <div>
-        <h1 className={`text-[25px] `}>Payment methods</h1>
-        <p className={`text-[18px]  mt-4`}>Once you&apos;ve securely added a payment method through our reliable payment system, you can embark on planning your upcoming journey.</p>
-      </div>
-
+      <AddCardNote />
       <Dialog className='w-full ' open={open} onOpenChange={setOpen}>
         <DialogTrigger className='w-[200px] mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
           Add Payment Method
@@ -59,6 +58,7 @@ export default function AddCard({ companyId }) {
           </>
         </DialogContent>
       </Dialog>
+      <Separator className='my-4' />
       <PaymentMethodList refetch={refetch} setRefetch={setRefetch} data={paymentMethods} />
     </div>
   )

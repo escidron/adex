@@ -1,3 +1,4 @@
+'use client'
 import {
     Card,
     CardDescription,
@@ -6,11 +7,11 @@ import {
 } from "@/components/ui/card"
 import Image from 'next/image';
 
-export default function InstructionNote() {
+export default function AddAccountNote() {
     return (
-        <Card className='w-full max-w-[450px] h-fit lg:mt-[90px]'>
+        <Card className='w-full  h-fit '>
             <CardHeader>
-                <CardTitle className='flex gap-2 items-center'>
+                <CardTitle className='flex gap-2 items-center text-[28px] md:text-[32px] font-[500]'>
                     <div className='w-[50px]'>
                         <Image
                             src='/note.png'
@@ -22,9 +23,9 @@ export default function InstructionNote() {
 
                         />
                     </div>
-                    <h1 className='text-[28px] md:text-[32px]'>Instructions</h1>
+                    Payout methods
                 </CardTitle>
-                <CardDescription>As needed, provide instructions for buyers such as ad drop location, other logistical details, or simply tell buyers to message you with questions. </CardDescription>
+                <CardDescription>Payout methods are how you receive the money you&apos;ve earned from your listings.</CardDescription>
             </CardHeader>
         </Card>
     )
