@@ -209,7 +209,7 @@ export default function ListingDetails({ sharedId }) {
                                         </div>
 
                                     ) : (
-                                        <div className='w-full lg:w-[600px]'>
+                                        <div className='w-full max-w-[600px] '>
                                             <h1 className='text-[20px] font-[500]'>{rejectedId ? 'Any question about the rejected booking request?' : 'Need further clarification?'}</h1>
                                             <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${listingProperties.seller_name} via a message.`}</p>
                                             <textarea
