@@ -136,7 +136,7 @@ export default function ListingDetails({ sharedId }) {
                         <div className='w-full  px-6 h-full max-w-[1100px]'>
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
-                                <div className='w-full flex justify-between mt-4'>
+                                <div className='w-full flex flex-col-reverse  md:flex-row justify-between mt-4'>
                                     <div className='w-full md:w-[50%]'>
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
@@ -176,7 +176,7 @@ export default function ListingDetails({ sharedId }) {
                                         }
                                     </div>
 
-                                    <div className='w-full md:w-[40%] flex justify-end' >
+                                    <div className='w-full md:w-[40%] flex justify-center md:justify-end' >
                                         {
                                             !rejectedId && (
 
