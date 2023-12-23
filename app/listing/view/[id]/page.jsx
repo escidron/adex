@@ -21,6 +21,10 @@ import { useContext } from 'react'
 import { ListingContext } from './layout'
 import { Separator } from '@/components/ui/separator'
 import { useSearchParams } from 'next/navigation'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetCompanies from '@/actions/GetCompanies'
+import GetCompany from '@/actions/GetCompany'
+import BuyerDetails from '@/app/market-place/details/_components/BuyerDetails'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -31,25 +35,31 @@ export default function Listing({ params }) {
     const [bookingAccepted, setBookingAccepted] = useState(false)
     const [bookingRejected, setBookingRejected] = useState(false)
     const [currentDiscount, setCurrentDiscount] = useState(0)
-
+    const [buyerProfile, setBuyerProfile] = useState(null);
+    const [companyProfile, setCompanyProfile] = useState(null);
     const id = params.id
     const searchParams = useSearchParams()
-    const notificationId = searchParams.get('notification_id') 
+    const notificationId = searchParams.get('notification_id')
     useEffect(() => {
-
         async function getInfo() {
-            const myListing = await GetAdvertisementDetails(id,notificationId)
+            const myListing = await GetAdvertisementDetails(id, notificationId)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const checkPayout = await GetPayoutMethod()
+            const buyerInfo = await GetUserProfile(myListing.requested_by)
+            const buyerCompanies = await GetCompany(myListing.requested_by_company)
+            console.log('buyer profile', buyerInfo)
+            console.log('buyer company', buyerCompanies)
             setHasPayout(checkPayout)
+            setBuyerProfile(buyerInfo)
+            setCompanyProfile(buyerCompanies.length > 0 ? buyerCompanies[0] : null)
             if (myListing) {
                 setListingProperties({
                     id: myListing.id,
                     created_by: myListing.created_by,
-                    company_id:myListing.company_id,
+                    company_id: myListing.company_id,
                     requested_by: myListing.requested_by,
-                    requested_by_company:myListing.requested_by_company,
+                    requested_by_company: myListing.requested_by_company,
                     sub_category: myListing.category_id,
                     title: myListing.title,
                     location: myListing.address,
@@ -120,6 +130,7 @@ export default function Listing({ params }) {
         };
         handleRouteChange()
     }, []);
+    console.log('listingProperties', listingProperties);
 
     return (
         <>
@@ -143,6 +154,9 @@ export default function Listing({ params }) {
 
                                         <Separator className='my-3' />
                                         <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
+
+                                        <Separator className='my-3' />
+                                        <BuyerDetails buyerId={listingProperties.requested_by} buyerProfile={buyerProfile} companyProfile={companyProfile} />
 
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />

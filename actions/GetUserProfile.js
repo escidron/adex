@@ -1,14 +1,16 @@
-export default async function GetUserProfile() {
+export default async function GetUserProfile(id) {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/user-profile`,
       {
-        method: "GET",
+        method: id ? "POST" : "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: id ? JSON.stringify({ id: id }) : null
+
       }
     );
     if (response.status === 200) {

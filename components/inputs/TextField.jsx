@@ -26,6 +26,7 @@ export default function TextField({
       )}
       <input
         name={id}
+        autoComplete='current-field'
         id={id}
         placeholder=" "
         type={type ? type : "text"}

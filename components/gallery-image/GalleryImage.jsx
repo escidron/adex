@@ -5,7 +5,6 @@ import { ImageIcon } from 'lucide-react';
 
 export default function GalleryImage({ gallery, isSelectable, selected, setSelected, setImportFromGallery }) {
 
-
   const handleSelected = (index) => {
 
 
@@ -27,7 +26,7 @@ export default function GalleryImage({ gallery, isSelectable, selected, setSelec
           <div className='mt-6 grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-full '>
             {
               gallery[0].company_gallery.map((item, index) => (
-                <div key={index} id={index} className='relative hover:cursor-pointer max-w-[250px] hover:scale-[1.1] shadow-md border rounded-lg' onClick={() => handleSelected(index)}>
+                <div key={index} id={index} className='relative hover:cursor-pointer max-w-[250px] hover:opacity-80 shadow-md border rounded-lg' onClick={() => handleSelected(index)}>
                   <div className="w-full aspect-square rounded-lg max-w-[250px]">
                     <Image
                       src={item.data_url}

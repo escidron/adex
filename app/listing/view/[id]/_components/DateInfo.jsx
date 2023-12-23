@@ -53,7 +53,15 @@ export default function DateInfo({ listingProperties }) {
                 )
             }
             {
-                !listingProperties.first_available_date && !listingProperties.date.from && !listingProperties.date.from && (
+                !listingProperties.first_available_date && listingProperties.ad_duration_type == '0' && (
+                    <div>
+                        <h1 className='text-[26px]'>Date</h1>
+                        <p className='text-gray-600 italic'>No Date provided</p>
+                    </div>
+                )
+            }
+            {
+             !listingProperties.date.from && !listingProperties.date.from && listingProperties.ad_duration_type == '1' &&(
                     <div>
                         <h1 className='text-[26px]'>Date</h1>
                         <p className='text-gray-600 italic'>No Date provided</p>

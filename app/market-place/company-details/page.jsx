@@ -5,15 +5,18 @@ import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Image from 'next/image'
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import GalleryImage from '@/components/gallery-image/GalleryImage'
 import { industries } from '@/utils/industries'
+import ProfileImages from './_components/ProfileImages'
 
 
 export default function CompanyDetailsPage() {
     const [company, setCompany] = useState({});
     const [gallery, setGallery] = useState([]);
+    const [contentIsLoaded, setContentIsLoaded] = useState(false);
+
     const [industry, setIndustry] = useState('');
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
@@ -30,8 +33,9 @@ export default function CompanyDetailsPage() {
             .then(function (response) {
                 setCompany(response.data[0])
                 getGallery(id)
-                industries.map((item)=>{
-                    if(item.id == response.data[0].industry){
+                setContentIsLoaded(true)
+                industries.map((item) => {
+                    if (item.id == response.data[0].industry) {
                         setIndustry(item.name)
                     }
                 })
@@ -91,9 +95,23 @@ export default function CompanyDetailsPage() {
                     </div>
                 </div>
                 <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+                {
+                    !contentIsLoaded && (
+                        <div className='mt-6 grid gap-8 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full md:w-full '>
+                            <Skeleton variant="rounded" width={'100%'} height={'200px'} sx={{ borderRadius: '16px' }} />
+                            <Skeleton variant="rounded" width={'100%'} height={'200px'} sx={{ borderRadius: '16px' }} />
+                            <Skeleton variant="rounded" width={'100%'} height={'200px'} sx={{ borderRadius: '16px' }} />
+                            <Skeleton variant="rounded" width={'100%'} height={'200px'} sx={{ borderRadius: '16px' }} />
 
+                        </div>
+                    )
+                }
+                {
+                    gallery.length > 0 && (
 
-                <GalleryImage gallery={gallery}/>
+                        <ProfileImages images={gallery[0].company_gallery} />
+                    )
+                }
 
 
             </div >
