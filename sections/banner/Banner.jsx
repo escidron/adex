@@ -23,8 +23,8 @@ export default function Banner() {
         src='/adex-home-banner.jpg'
         alt="banner image"
         priority={true}
-        width={3000}
-        height={3000}
+        width={1200}
+        height={800}
         className=' h-full w-full object-cover mt-[80px]'
       />
       <div className=' max-h-[350px] text-[34px] w-[90%] flex flex-col justify-center items-center rounded-md p-8 max-w-[400px] bg-white z-8  absolute top-[200px] md:top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
