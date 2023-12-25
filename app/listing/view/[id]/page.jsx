@@ -48,8 +48,6 @@ export default function Listing({ params }) {
             const checkPayout = await GetPayoutMethod()
             const buyerInfo = await GetUserProfile(myListing.requested_by)
             const buyerCompanies = await GetCompany(myListing.requested_by_company)
-            console.log('buyer profile', buyerInfo)
-            console.log('buyer company', buyerCompanies)
             setHasPayout(checkPayout)
             setBuyerProfile(buyerInfo)
             setCompanyProfile(buyerCompanies.length > 0 ? buyerCompanies[0] : null)
@@ -130,7 +128,6 @@ export default function Listing({ params }) {
         };
         handleRouteChange()
     }, []);
-    console.log('listingProperties', listingProperties);
 
     return (
         <>

@@ -165,7 +165,6 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
     },
   });
 
-console.log('selectedMerchant',selectedMerchant)
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {

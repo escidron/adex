@@ -4,7 +4,6 @@ import React from 'react'
 
 export default function ProfileImages({ images }) {
 
-  console.log('galllery images',images);
 
   if (images.length == 0) {
     return (

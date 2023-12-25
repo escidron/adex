@@ -108,7 +108,6 @@ export default function MessagesPage() {
         })
     }
 
-    console.log('allChats', allChats);
     return (
         <div className={`h-screen w-full flex justify-center pt-[120px]`}>
             {

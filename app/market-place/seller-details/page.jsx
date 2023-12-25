@@ -47,7 +47,7 @@ export default function SellerDetailsPage() {
 
                     {
                         contentIsLoaded ? (
-                            <div className="flex gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-[70%]">
+                            <div className="flex flex-col md:flex-row gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-fit lg:w-[70%]">
                                 <div className='w-[150px] h-[150px] min-w-[150px] cursor-pointer'>
                                     <Image
                                         src={seller.image ? seller.image : '/nouser.png'}

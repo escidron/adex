@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog"
 import { AlertDialogHeader } from '../ui/alert-dialog';
 import { UserContext } from '@/app/layout';
+import CancellationPolicy from '../modals/CancellationPolicy';
 
 
 export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
@@ -90,7 +91,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 data: advertisement,
                 duration: advertisement.duration,
                 start_date: advertisement.date.from,
-                companyId:advertisement.requested_by_company
+                companyId: advertisement.requested_by_company
             }, {
             withCredentials: true,
         })
@@ -449,42 +450,57 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     )
                 }
 
-                 
-            {
-                advertisement.status == 2 && !hasStarted && (
-                    <>
-                        {
-                            finishCountdown ? (
-                                <div className='flex flex-col justify-center items-center bg-[#FCD33B] mt-auto rounded-lg p-2 relative py-6'>
-                                    <p className='text-lg'>Cancellation is no longer possible.</p>
-                                </div>
-                            ) : (
-                                <>
-                                    <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
-                                        <p>Time Remaining for Cancellation</p>
-                                        <Countdown date={Date.now() + (countDownDays)} renderer={renderer} />
-                                        <div className='flex mt-[-10px] text-[14px]'>
-                                            <p className='absolute bottom-[12px] left-[60px]'>Days</p>
-                                            <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
-                                            <p className='absolute bottom-[12px] left-[195px]'>Minutes</p>
-                                            <p className='absolute bottom-[12px] left-[270px]'>Seconds</p>
-                                        </div>
+
+                {
+                    advertisement.status == 2 && !hasStarted && (
+                        <>
+                            {
+                                finishCountdown ? (
+                                    <div className='flex flex-col justify-center items-center bg-[#FCD33B] mt-auto rounded-lg p-2 relative py-6'>
+                                        <p className='text-lg'>Cancellation is no longer possible.</p>
                                     </div>
-                                    {
-                                        advertisement.ad_duration_type == '1' && (
-                                            <div className='flex gap-2 mt-2 border p-2 rounded-lg'>
-                                                <p className=' text-[14px]'>After the initial 5-day cancellation period, you will only be able to cancel once the booking has already started. Read the Cancelation Policy</p>
+                                ) : (
+                                    <>
+                                        <div className='flex flex-col items-center bg-[#FCD33B] mt-3 rounded-lg p-2 relative pb-8'>
+                                            <p>Time Remaining for Cancellation</p>
+                                            <Countdown date={Date.now() + (countDownDays)} renderer={renderer} />
+                                            <div className='flex mt-[-10px] text-[14px]'>
+                                                <p className='absolute bottom-[12px] left-[60px]'>Days</p>
+                                                <p className='absolute bottom-[12px] left-[130px]'>Hours</p>
+                                                <p className='absolute bottom-[12px] left-[195px]'>Minutes</p>
+                                                <p className='absolute bottom-[12px] left-[270px]'>Seconds</p>
                                             </div>
-                                        )
-                                    }
-                                </>
-                            )
-                        }
-                    </>
+                                        </div>
+                                        {
+                                            advertisement.ad_duration_type == '1' && (
+                                                <div className='flex gap-2 mt-2 border p-2 rounded-lg'>
+                                                    <p className=' text-[14px]'>After the initial 5-day cancellation period, you will only be able to cancel once the booking has already started. Read the Cancelation Policy</p>
+                                                </div>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
+                        </>
 
-                )
-            } 
-
+                    )
+                }
+                <Dialog >
+                    <DialogTrigger >
+                        <div className='w-full mt-3 flex justify-center'>
+                            <h1 className='text-[12px] underline cursor-pointer'>Cancellation Policy</h1>
+                        </div>
+                    </DialogTrigger>
+                    <DialogContent className='max-w-[600px] h-fit overflow-y-auto flex flex-col justify-start'>
+                        <DialogHeader>
+                            <DialogTitle className='text-[26px]'>Cancellation Policy</DialogTitle>
+                            <DialogDescription>
+                                Please take a moment to carefully read the cancellation policy.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <CancellationPolicy status={advertisement.status} durationType={advertisement.ad_duration_type} />
+                    </DialogContent>
+                </Dialog>
             </div>
         </>
     )
