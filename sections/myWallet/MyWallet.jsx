@@ -13,8 +13,8 @@ export default function MyWallet() {
       <div>
         <h1 className='text-[30px] mt-8'>Payments & payouts</h1>
       </div>
-      <div className='flex mt-4 w-full items-center px-[20px]'>
-        <div className='w-full md:w-[80%] lg:w-[60%]'>
+      <div className='flex mt-4 w-full items-center px-[20px] lg:px-[80px]'>
+        <div className='w-full md:w-[80%] lg:w-[40%]'>
           <TabsComponent value={value} setValue={(value)=>setValue(value)}>
             <AddCard label='Payments' />
             <AddAccount label='Payouts' />
