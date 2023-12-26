@@ -34,6 +34,7 @@ import GetPaymentMethod from '@/actions/GetPaymentMethod';
 import GetCompanies from '@/actions/GetCompanies';
 import GetUserProfile from '@/actions/GetUserProfile';
 import CompanyList from './CompanyList';
+import CancellationPolicy from '../modals/CancellationPolicy';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
@@ -345,6 +346,22 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     </Button>
                 )
             }
+            <Dialog >
+                <DialogTrigger >
+                    <div className='w-full mt-3 flex justify-center'>
+                        <h1 className='text-[12px] underline cursor-pointer'>Cancellation Policy</h1>
+                    </div>
+                </DialogTrigger>
+                <DialogContent className='max-w-[600px] h-fit overflow-y-auto flex flex-col justify-start'>
+                    <DialogHeader>
+                        <DialogTitle className='text-[26px]'>Cancellation Policy</DialogTitle>
+                        <DialogDescription>
+                            Please take a moment to carefully read the cancellation policy.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <CancellationPolicy status={data.status} durationType={data.ad_duration_type} />
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
