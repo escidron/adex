@@ -1,6 +1,4 @@
 'use client'
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MultiImage from '@/components/multiImage/MultiImage';
 import ShareButtonFacebook from '@/components/facebook/ShareButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -23,8 +21,12 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import RatingModal from './_components/RatingBuyerModal';
+import RatingBuyerModal from './_components/RatingBuyerModal';
+import RatingSellerModal from './_components/RatingSellerModal';
+import RatingComponent from '@/components/rating/RatingComponent';
 
-export default function Card({ item, route, deleteListing }) {
+export default function Card({ item, route, deleteListing, updateRatingStastus, isListingView }) {
     const router = useRouter();
     const [sharingOptions, setSharingOptions] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -35,12 +37,11 @@ export default function Card({ item, route, deleteListing }) {
     // Convert the difference to days
     var days = differenceInMilliseconds / (1000 * 3600 * 24);
 
-
-
     const onCopy = () => {
         setCopied(true);
         toast.success('Link copy to your clipboard')
     }
+    console.log('item',item);
     return (
         <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
@@ -64,11 +65,7 @@ export default function Card({ item, route, deleteListing }) {
 
                     </div>
                     <div className="flex items-center justify-start">
-                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
+                        <RatingComponent readOnly={true} size='small' rating={item.rating}/>
                     </div>
                     <div className='flex mt-1 gap-2'>
                         <MapPin size={14} color='gray' className='min-w-[14px]' />
@@ -80,7 +77,7 @@ export default function Card({ item, route, deleteListing }) {
                         </div>
                     </div>
                 </div>
-                <div className='flex justify-between items-center mt-auto '>
+                <div className='flex justify-between items-center mt-auto'>
                     <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
                         {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''}
                     </div>
@@ -97,6 +94,44 @@ export default function Card({ item, route, deleteListing }) {
                             )
                         }
                         {
+                            isListingView ? (
+                                <>
+                                    {
+                                        item.status == 3 && item.is_rated_by_seller == 0 && (
+                                            <div onClick={(e) => e.stopPropagation()}>
+                                                <RatingBuyerModal listing={item} updateRatingStastus={(id) => updateRatingStastus(id)} />
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        item.status == 3 && item.is_rated_by_seller == 1 && (
+                                            <div className='bg-black text-white rounded-[16px] px-3 py-1 text-[14px]'>
+                                                Reviewed
+                                            </div>
+                                        )
+                                    }
+                                </>
+                            ) : (
+                                <>
+                                    {
+                                        item.status == 3 && item.is_rated_by_buyer == 0 && (
+                                            <div onClick={(e) => e.stopPropagation()}>
+                                                <RatingSellerModal listing={item} updateRatingStastus={(id) => updateRatingStastus(id)} />
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        item.status == 3 && item.is_rated_by_buyer == 1 && (
+                                            <div className='bg-black text-white rounded-[16px] px-3 py-1 text-[14px]'>
+                                                Reviewed
+                                            </div>
+                                        )
+                                    }
+                                </>
+                            )
+                        }
+
+                        {
                             (item.status == 1 || item.status == 0) && (
                                 <>
                                     <div onClick={(e) => {
@@ -105,13 +140,6 @@ export default function Card({ item, route, deleteListing }) {
                                     }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                                         <Edit />
                                     </div>
-
-                                    {/* <div onClick={(e) => {
-                                        e.stopPropagation()
-                                        setAdvertisementId(item.id)
-                                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
-                                        <Trash />
-                                    </div> */}
 
                                     <div onClick={(e) => e.stopPropagation()}>
 

@@ -2,8 +2,7 @@ import { format, parseISO } from 'date-fns'
 import { Separator } from '../ui/separator';
 
 export default function CancellationPolicy({ status, durationType }) {
-    console.log('status', status);
-    console.log('durationType', durationType);
+
     const maxCancellationDate = new Date()
     maxCancellationDate.setDate(maxCancellationDate.getDate() + 5);
 

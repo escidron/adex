@@ -1,33 +1,52 @@
 'use client'
 
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import Image from 'next/image'
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import WorkIcon from '@mui/icons-material/Work';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import MarketPlaceCard from '@/components/market place/marketPlaceCard/MarketPlaceCard'
 import GetSellerListing from '@/actions/GetSellerListings'
-
-import { Divider } from '@mui/material';
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import SellerCardSkeleton from './_components/SellerCardSkeleton';
 import MarketPlaceCardSkeleton from '@/components/market place/marketPlaceCard/MarketPlaceCardSkeleton';
 import Footer from '@/components/footer/Footer';
+import ReviewsCarrousel from './_components/ReviewsCarrousel';
+import GetSellerReviews from '@/actions/GetSellerReviews';
+import SeeAllReviews from '../details/_components/SeeAllReviews';
+
+
+import { industries } from '@/utils/industries'
+import { Divider } from '@mui/material';
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import SellerProfileInfo from './_components/SellerProfileInfo';
+import CompanyProfileInfo from './_components/CompanyProfileInfo';
+
 
 export default function SellerDetailsPage() {
     const [seller, setSeller] = useState({});
     const [sellerListings, setSellerListings] = useState([]);
+    const [sellerReviews, setSellerReviews] = useState([]);
     const [contentIsLoaded, setContentIsLoaded] = useState(false);
+    const [industry, setIndustry] = useState('');
+
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
+    const companyId = searchParams.get('company_id')
 
     useEffect(() => {
         async function getInfo() {
-            const { listings, profile_info } = await GetSellerListing(id)
+            const { listings, profile_info } = await GetSellerListing(id, companyId)
+            const sellerReviews = await GetSellerReviews(id, companyId)
+            setSellerReviews(sellerReviews)
             setSellerListings(listings)
             setSeller(profile_info)
             setContentIsLoaded(true)
+
+            if (companyId) {
+
+                industries.map((item) => {
+                    if (item.id == profile_info.industry) {
+                        setIndustry(item.name)
+                    }
+                })
+            }
         }
         getInfo();
     }, []);
@@ -43,80 +62,53 @@ export default function SellerDetailsPage() {
         <>
 
             <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
-                <div className='flex flex-col w-[80%] max-w-[1000px] items-center'>
+                <div className='flex flex-col w-[80%] max-w-[1000px] items-start'>
 
                     {
                         contentIsLoaded ? (
-                            <div className="flex flex-col md:flex-row gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-fit lg:w-[70%]">
-                                <div className='w-[150px] h-[150px] min-w-[150px] cursor-pointer'>
-                                    <Image
-                                        src={seller.image ? seller.image : '/nouser.png'}
-                                        alt="Seller Logo"
-                                        priority
-                                        width={2000}
-                                        height={2000}
-                                        className='rounded-full w-full h-full object-cover'
-                                    />
-                                    <div className="flex items-center justify-center">
-                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                        <StarRoundedIcon fontSize='small' sx={{ color: '#FCD33B' }} />
-                                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                                        <StarRoundedIcon fontSize='small' sx={{ color: 'gray' }} />
-                                    </div>
-                                </div>
-                                <div className='flex flex-col justify-start h-auto' >
-                                    <h1 className='text-[35px]'>{`${seller.name}`}</h1>
-                                    {
-                                        seller.handle_is_public == "1" && seller.handle && (
-                                            <div className='mt-1 flex items-center gap-3'>
-                                                <AccountCircleIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                                <h1>{seller.handle}</h1>
-                                            </div>
+                            <>
+                                {
+                                    companyId ? (
 
-                                        )
-                                    }
-                                    {
-                                        seller.city_is_public == '1' && seller.city && (
+                                        <CompanyProfileInfo company={seller} industry={industry} />
+                                    ) : (
 
-                                            <div className='mt-1 flex items-center gap-3'>
-                                                <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                                <h1>{seller.city}</h1>
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        seller.profession_is_public == '1' && seller.profession && (
-
-                                            <div className='mt-1 flex items-center gap-3'>
-                                                <WorkIcon sx={{ fontSize: '18px', color: 'gray' }} />
-                                                <h1>{seller.profession}</h1>
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        seller.bio_is_public == '1' && (
-
-                                            <p className='mt-2 max-w-full'>{seller.bio != 'null' ? seller.bio : ''}</p>
-                                        )
-                                    }
-                                </div>
-                            </div>
+                                        <SellerProfileInfo seller={seller} />
+                                    )
+                                }
+                            </>
                         ) : (
-                            <SellerCardSkeleton />
+                                <SellerCardSkeleton />
                         )
                     }
 
 
 
                     <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+                    {
+                        contentIsLoaded && (
+
+                            <div className='w-full flex flex-col items-start'>
+                                <p className='text-[32px] mb-4'>{`${companyId ? seller.company_name : seller.name}’s Reviews`}</p>
+                                <ReviewsCarrousel data={sellerReviews} />
+                                {
+                                    sellerReviews.length > 4 && (
+                                        <div className='mt-4 w-full flex justify-center'>
+                                            <SeeAllReviews reviews={sellerReviews} />
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+                    <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
 
 
                     {
                         contentIsLoaded && (
 
-                            <div>
-                                <p className='text-[32px]'>{`${seller.name}’s Listings`}</p>
+                            <div className='w-full flex justify-start'>
+                                <p className='text-[32px]'>{`${companyId ? seller.company_name : seller.name}’s Listings`}</p>
                             </div>
                         )
                     }

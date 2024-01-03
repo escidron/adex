@@ -2,14 +2,11 @@
 import React, { useState, useContext, useCallback } from 'react'
 import MarketPlaceGrid from '../market place/marketPlaceGrid/MarketPlaceGrid';
 import loading from '../../public/loading.gif'
-
 import Image from 'next/image';
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
-
+import RatingComponent from '../rating/RatingComponent';
 
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import { MapCoordinatesContext } from '@/app/market-place/page';
-import MultiImage from '../multiImage/MultiImage';
 import { formatPrice } from '@/utils/format';
 import { MapPin } from 'lucide-react';
 
@@ -106,11 +103,7 @@ function Map({ newData, isDataLoaded, located }) {
                   <div className='w-full flex justify-between mt-3'>
                     <p className='text-[16px] font-[600]' >{formatPrice(selectedMarker.price)}</p>
                     <div className="flex items-center justify-start">
-                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                      <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                      <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
-                      <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
+                      <RatingComponent readOnly={true} size='small' rating={selectedMarker.rating}/>
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,8 @@
 'use client'
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import Link from 'next/link';
 import MultiImage from '@/components/multiImage/MultiImage';
+import RatingComponent from '@/components/rating/RatingComponent';
+
 import { MapPin } from 'lucide-react';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { formatPrice } from '@/utils/format';
@@ -10,7 +11,6 @@ import { UserContext } from '@/app/layout';
 
 export default function MarketPlaceCard({ ad }) {
   const [user, setUser] = useContext(UserContext)
-
   return (
     <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards min-w-[360px] max-w-[360px] md:min-w-[300px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
@@ -37,11 +37,7 @@ export default function MarketPlaceCard({ ad }) {
             }
             </p>
             <div className=" min-w-[70px]">
-              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-              <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '15px' }} />
-              <StarRoundedIcon sx={{ color: 'gray', fontSize: '15px' }} />
-              <StarRoundedIcon sx={{ color: 'gray', fontSize: '15px' }} />
+              <RatingComponent readOnly={true} size='small' rating={ad.rating}/>
             </div>
           </div>
 

@@ -19,6 +19,8 @@ import { Separator } from '@/components/ui/separator'
 import GetAdvertisementDetails from '@/actions/GetAdvertisementDetails'
 import ApproveReservation from '@/components/reservation/ApproveReservation'
 import SellerDetails from '@/app/market-place/details/_components/SellerDetails'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetCompany from '@/actions/GetCompany'
 
 export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -26,7 +28,8 @@ export default function Booking({ params }) {
     const [statusPending, setStatusPending] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const [currentDiscount, setCurrentDiscount] = useState(0)
-
+    const [sellerProfile, setSellerProfile] = useState(null);
+    const [companyProfile, setCompanyProfile] = useState(null);
     const id = params.id
 
     useEffect(() => {
@@ -35,6 +38,13 @@ export default function Booking({ params }) {
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
+
+            const sellerInfo = await GetUserProfile(myListing.created_by)
+            const sellerCompanies = await GetCompany(myListing.company_id)
+
+            setSellerProfile(sellerInfo)
+            setCompanyProfile(sellerCompanies.length > 0 ? sellerCompanies[0] : null)
+
             if (myListing) {
                 setListingProperties({
                     id: myListing.id,
@@ -67,6 +77,7 @@ export default function Booking({ params }) {
                     seller_image: myListing.seller_image,
                     seller_id: myListing.created_by,
                     ad_duration_type: myListing.ad_duration_type,
+                    rating:myListing.rating
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
@@ -132,7 +143,7 @@ export default function Booking({ params }) {
                                         <Preview value={listingProperties.description} heigth={200} />
 
                                         <Separator className='my-6' />
-                                        <SellerDetails listingProperties={listingProperties} />
+                                        <SellerDetails sellerId={listingProperties.seller_id} sellerProfile={sellerProfile} companyProfile={companyProfile} />
 
                                         {
                                             (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (

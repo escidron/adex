@@ -80,7 +80,8 @@ export default function Listing({ params }) {
                     duration: myListing.duration,
                     stripe_price: myListing.stripe_price,
                     units: myListing.units,
-                    created_at: myListing.created_at
+                    created_at: myListing.created_at,
+                    rating:myListing.rating
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)

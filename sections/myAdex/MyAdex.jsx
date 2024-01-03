@@ -196,8 +196,8 @@ export default function MyAdex() {
         <div className='w-full xl:w-[40%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
-              <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} />
-              <MyBookings label='My Booking' data={bookingData} isContentLoaded={isContentLoaded} />
+              <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData ={(newData)=>setListingData (newData)}/>
+              <MyBookings label='My Booking' data={bookingData} isContentLoaded={isContentLoaded} setBookingData ={(newData)=>setBookingData (newData)} />
             </TabsComponent>
           </RefreshContext.Provider>
         </div>

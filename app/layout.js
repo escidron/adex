@@ -29,7 +29,9 @@ export default function RootLayout({ children }) {
     userId:null,
     notificationQuantity:0,
     notifications:[],
-    hasPayout:false
+    hasPayout:false,
+    rating:null,
+    userType:null
   });
     useEffect(() => {
         async function autoLogin() {
@@ -39,7 +41,7 @@ export default function RootLayout({ children }) {
             });
             if (response.status === 200) {
                 const currentUser = await response.json()
-                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
+                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId,rating:currentUser.rating,userType:currentUser.userType }));
             } else {
                 console.log('error', response)
             }

@@ -1,15 +1,16 @@
 'use client'
 
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import Link from "next/link"
+import Image from 'next/image'
+import RatingComponent from '@/components/rating/RatingComponent'
 
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import Image from 'next/image'
 
 
 export default function BuyerDetails({buyerId, buyerProfile, companyProfile }) {
     const router = useRouter()
+
     return (
         <div>
             {
@@ -40,11 +41,7 @@ export default function BuyerDetails({buyerId, buyerProfile, companyProfile }) {
                                 <div className='ml-2'>
                                     <p className="text-[24px]">{companyProfile.company_name}</p>
                                     <div className="flex items-center justify-start">
-                                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                        <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                        <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
-                                        <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
+                                        <RatingComponent readOnly={true} size='small' rating={companyProfile.rating}/>
                                     </div>
                                 </div>
                                 <Button onClick={() => router.push(`/market-place/company-details?id=${companyProfile.id}`)} size='sm' variant='outline' className='ml-auto'>Buyer Details</Button>
@@ -77,11 +74,7 @@ export default function BuyerDetails({buyerId, buyerProfile, companyProfile }) {
                             <div className='ml-2'>
                                 <p className="text-[24px]">{buyerProfile.name} {buyerProfile.lastName}</p>
                                 <div className="flex items-center justify-start">
-                                    <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                    <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                    <StarRoundedIcon sx={{ color: '#FCD33B', fontSize: '16px' }} />
-                                    <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
-                                    <StarRoundedIcon sx={{ color: 'gray', fontSize: '16px' }} />
+                                    <RatingComponent readOnly={true} size='small' rating={buyerProfile.rating}/>
                                 </div>
                             </div>
                             <Button onClick={() => router.push(`/market-place/buyer-details?id=${buyerId}`)} size='sm' variant='outline' className='ml-auto'>Buyer Details</Button>

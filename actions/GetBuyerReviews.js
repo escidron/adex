@@ -1,35 +1,30 @@
 
-export default async function GetPaymentMethod(companyId) {
+export default async function GetBuyerReviews(id,companyId) {
     try {
   
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/my-cards`,
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/get-buyer-reviews`,
         {
           method: "POST",
           headers: {
+           
             'Accept': 'application/json',
             'Content-Type': 'application/json'        
           },
           credentials: "include",
-          body: JSON.stringify({ companyId: companyId }),
-
+          body: JSON.stringify({ id: id,companyId:companyId }),
         }
       );
-  
       if (response.status === 200) {
         const res = await response.json();
-        const paymentmethods = res.data
-        if(paymentmethods.length > 0){
-            return paymentmethods
-        }else{
-            return []
-        }
+        const reviews = res
+        return reviews;
       } else {
-        return null;
+        return [];
       }
+  
     } catch (error) {
       console.log(error);
       return null;
     }
   }
-  

@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function SellerCardSkeleton() {
     return (
-        <div className="flex gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-[70%]">
+        <div className="flex mx-auto gap-6 items-center justify-center border shadow-md py-8 px-4 rounded-lg w-[70%]">
             <div className='w-[150px] h-[150px] min-w-[150px] min-h-[150px] cursor-pointer flex flex-col'>
                 <Skeleton variant="circular" width={140} height={140} />
                 <div className='mt-2 flex justify-center'>

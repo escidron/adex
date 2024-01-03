@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState,useContext } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '@/app/layout';
 
 import Image from 'next/image'
@@ -21,15 +21,15 @@ export default function ProfileHeader() {
     });
     const [images, setImages] = useState([]);
     const [src, setSrc] = useState('');
-    const onChange = (imageList,addUpdateIndex) => {
+    const onChange = (imageList, addUpdateIndex) => {
         // data for submit
         setImages(imageList);
         setSrc(imageList[0].data_url)
         setUser((prev) => ({ ...prev, image: imageList[0].data_url }))
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-profile-image`,
-        {
-            image: imageList[0].data_url,
-        }, {
+            {
+                image: imageList[0].data_url,
+            }, {
             withCredentials: true,
         }).then(function (response) {
 
@@ -42,6 +42,7 @@ export default function ProfileHeader() {
     useEffect(() => {
         async function GetInfo() {
             const userData = await GetUserProfile()
+            console.log('userData', userData)
             setUserData(userData)
             setSrc(userData.image)
         }
@@ -98,13 +99,18 @@ export default function ProfileHeader() {
                 </div>
                 <div className='flex flex-col md:flex-row gap-2 md:items-center'>
                     <p className='text-white text-[15px]'>{userData.email}</p>
-                    <div className="md:ml-4 flex items-center">
-                        <RatingComponent 
-                            readOnly={true}
-                            rating={rating}
-                            setRating={(rating)=>setRating(rating)}
-                        />
-                    </div>
+                    {
+                        userData.userType == 2 && (
+
+                            <div className="md:ml-4 flex items-center">
+                                <RatingComponent
+                                    readOnly={true}
+                                    rating={userData.rating}
+
+                                />
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </div>

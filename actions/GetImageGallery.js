@@ -1,7 +1,7 @@
-export default async function GetSellerListing(id,companyId) {
+export default async function GetImageGallery(id) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/seller-listings`,
+      `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-image-gallery`,
       {
         method: "POST",
         headers: {
@@ -9,15 +9,20 @@ export default async function GetSellerListing(id,companyId) {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ id: id,companyId:companyId }),
+        body: JSON.stringify({ id: id }),
       }
     );
+
     if (response.status === 200) {
       const res = await response.json();
-      const listings = res;
-      return listings;
+      const imageGallery = res.galleryWithImages;
+      if (imageGallery.length > 0) {
+        return imageGallery;
+      } else {
+        return [];
+      }
     } else {
-      return [];
+      return null;
     }
   } catch (error) {
     console.log(error);

@@ -12,7 +12,7 @@ import { useState, useContext } from 'react';
 import { RefreshContext } from './MyAdex';
 import { CompanyRefreshContext } from '@/app/my-company/page';
 
-export default function MyListing({ data, status, isCompanyPage, isContentLoaded }) {
+export default function MyListing({ data,setListingData, status, isCompanyPage, isContentLoaded }) {
   const [currentStatus, setCurrentStatus] = useState('all');
   const [advertisementId, setAdvertisementId] = useState('');
   const [refresh, setRefresh] = useContext(isCompanyPage ? CompanyRefreshContext : RefreshContext)
@@ -46,6 +46,17 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
     toast.success('Advertisement deleted successfully')
     setRefresh(prev => !prev)
   }
+
+  const updateRatingStastus = (id) =>{
+      // Criar uma nova array atualizada
+      const updatedData = data.map(item =>
+        item.id === id ? { ...item, is_rated_by_seller: '1' } : item
+      );
+  
+      // Atualizar o estado com a nova array
+      setListingData(updatedData);
+    
+  }
   return (
     <div className='flex flex-col items-center '>
       {/* <div><Toaster /></div> */}
@@ -58,12 +69,14 @@ export default function MyListing({ data, status, isCompanyPage, isContentLoaded
         data.map((item, index) => {
           if (item.status == currentStatus || currentStatus == 'all') {
             return (
-              <div key={item.id + index} className='w-full flex gap-4 items-center'  >
+              <div key={item.id + `${index}`} className='w-full flex gap-4 items-center'  >
                 <Card
                   item={item}
                   setAdvertisementId={(id) => setAdvertisementId(id)}
                   route={`/listing/view/${item.id}`}
                   deleteListing={(id) => deleteListing(id)}
+                  updateRatingStastus={(id)=>updateRatingStastus(id)}
+                  isListingView={true}
                 />
               </div>
             )

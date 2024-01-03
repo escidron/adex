@@ -22,6 +22,9 @@ import { Button } from '@/components/ui/button'
 import { SendHorizontal } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from '@/app/layout'
+import Reviews from './_components/Reviews'
+import GetUserProfile from '@/actions/GetUserProfile'
+import GetCompany from '@/actions/GetCompany'
 
 
 
@@ -39,7 +42,8 @@ export default function ListingDetails({ sharedId }) {
     const [isRequested, setIsRequested] = useState(false)
     const [showModal, setShowModal] = useState(false);
     const [refetch, setRefetch] = useState(false);
-
+    const [sellerProfile, setSellerProfile] = useState(null);
+    const [companyProfile, setCompanyProfile] = useState(null);
     const searchParams = useSearchParams()
     const id = sharedId ? sharedId : searchParams.get('id')
     const notificationId = searchParams.get('notification_id')
@@ -53,6 +57,13 @@ export default function ListingDetails({ sharedId }) {
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
+            
+            const sellerInfo = await GetUserProfile(myListing.created_by)
+            const sellerCompanies = await GetCompany(myListing.company_id)
+
+            setSellerProfile(sellerInfo)
+            setCompanyProfile(sellerCompanies.length > 0 ? sellerCompanies[0] : null)
+
             setDiscounts(discounts)
 
             if (myListing) {
@@ -79,8 +90,10 @@ export default function ListingDetails({ sharedId }) {
                     seller_name: myListing.seller_name,
                     seller_image: myListing.seller_image,
                     seller_id: myListing.created_by,
+                    seller_rating: myListing.seller_rating,
                     ad_duration_type: myListing.ad_duration_type,
-                    id: id
+                    id: id,
+                    rating:myListing.rating
                 }));
 
             }
@@ -144,7 +157,7 @@ export default function ListingDetails({ sharedId }) {
                                         <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
 
                                         <Separator className='my-6' />
-                                        <SellerDetails listingProperties={listingProperties} />
+                                        <SellerDetails sellerId={listingProperties.seller_id} sellerProfile={sellerProfile} companyProfile={companyProfile}/>
 
                                         {
                                             (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (
@@ -194,6 +207,8 @@ export default function ListingDetails({ sharedId }) {
                                         }
                                     </div>
                                 </div>
+                                <Separator className='my-6' />
+                                <Reviews listingId={listingProperties.id}/>
                                 <Separator className='my-6' />
                                 {
                                     isChatOpen ? (

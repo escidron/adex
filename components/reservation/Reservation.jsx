@@ -255,11 +255,18 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                             </DialogDescription>
                                         </DialogHeader>
                                         <div className='max-h-[400px] overflow-y-auto invisible_scroll_bar'>
-                                            <CompanyList
-                                                companies={companies}
-                                                handleSelectedCompany={(id) => handleSelectedCompany(id)}
-                                                selectedCompany={selectedCompany}
-                                            />
+                                            {
+                                                companies.length > 0 ? (
+
+                                                    <CompanyList
+                                                        companies={companies}
+                                                        handleSelectedCompany={(id) => handleSelectedCompany(id)}
+                                                        selectedCompany={selectedCompany}
+                                                    />
+                                                ) : (
+                                                    <p className='text-gray-600 italic'>No company available, you neeed to register a company first</p>
+                                                )
+                                            }
                                         </div>
                                         <DialogFooter className='mt-4'>
                                             <div className='w-full flex justify-end items-center'>
