@@ -23,13 +23,13 @@ export default function Categories() {
             {/* <div className='mx-auto w-full mt-4 flex flex-wrap gap-2'> */}
 
                 {
-                    categories.map((category) => {
+                    categories.map((category,index) => {
 
-                        if(category.id == 8 || category.id == 12){
+                        if(category.id == 8 || category.id == 12 ){
                             return null
                         }   
                         return (
-                            <div key={category.id} className='flex justify-center items-center h-[120px] w-[120px]  max-h-[150px]'>
+                            <div key={category.id} className={` ${categories.length-1 == index ? 'hidden md:flex' : 'flex'}  justify-center items-center h-[120px] w-[120px]  max-h-[150px]`}>
                                 <div className={`flex flex-col  items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg `}>
                                     <div className='h-[40px] md:h-[74px] aspect-square'>
                                         <Image
