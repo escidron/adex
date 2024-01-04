@@ -76,15 +76,25 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, [refetch]);
 
     useEffect(() => {
+        console.log('use efect');
         if (!date) {
+            console.log('line 81');
             if (data.ad_duration_type != '1') {
+                console.log('line 83');
                 if (data.first_available_date) {
+                    console.log('line 85');
                     setDate(new Date(data.first_available_date))
                 } else {
+                    console.log('line 88');
                     setDate(new Date())
                 }
             } else {
-                setDate(new Date(data.date.from))
+                console.log('line 92',data);
+                if(data.date.from){
+                    setDate(new Date(data.date.from))
+                }else{
+                    setDate(new Date())
+                }
             }
         }
 
