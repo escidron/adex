@@ -5,6 +5,7 @@ import AnyPerson from '@/sections/anyPerson/AnyPerson'
 import CustomerComents from '@/sections/customerComments/CustomerComments'
 import Footer from '@/components/footer/Footer'
 import Categories from '@/sections/categories/Categories.jsx'
+
 export default function Home() {
   return (
     <main>
