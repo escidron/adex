@@ -45,7 +45,7 @@ export default function Listing({ params }) {
             const myListing = await GetAdvertisementDetails(id, notificationId)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
-            const checkPayout = await GetPayoutMethod()
+            const checkPayout = await GetPayoutMethod(myListing.company_id)
             const buyerInfo = await GetUserProfile(myListing.requested_by)
             const buyerCompanies = await GetCompany(myListing.requested_by_company)
             setHasPayout(checkPayout)
@@ -81,7 +81,7 @@ export default function Listing({ params }) {
                     stripe_price: myListing.stripe_price,
                     units: myListing.units,
                     created_at: myListing.created_at,
-                    rating:myListing.rating
+                    rating: myListing.rating
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
@@ -153,8 +153,14 @@ export default function Listing({ params }) {
                                         <Separator className='my-3' />
                                         <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
 
-                                        <Separator className='my-3' />
-                                        <BuyerDetails buyerId={listingProperties.requested_by} buyerProfile={buyerProfile} companyProfile={companyProfile} />
+                                        {
+                                            listingProperties.requested_by && (
+                                                <>
+                                                    <Separator className='my-3' />
+                                                    <BuyerDetails buyerId={listingProperties.requested_by} buyerProfile={buyerProfile} companyProfile={companyProfile} />
+                                                </>
+                                            )
+                                        }
 
                                         <Separator className='my-3' />
                                         <DateInfo listingProperties={listingProperties} />
