@@ -30,7 +30,7 @@ import { ListingContext } from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 
 
-const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
+const requiredFields = [ 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
 
 
 
@@ -53,9 +53,6 @@ export default function EditListing({ params }) {
         async function getInfo() {
             const userData = await GetUserProfile()
             setUserData(userData)
-            if (userData.userType == 1) {
-                setStep('select_business')
-            }
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
@@ -63,7 +60,7 @@ export default function EditListing({ params }) {
                 const categoryType = checkCategoryType(myListing.ad_duration_type)
                 setListingProperties((prev) => ({
                     ...prev,
-                    selectedStep: userData?.userType == 2 ? 'Category' : 'Business',
+                    selectedStep:  'Category' ,
                     sub_category: myListing.category_id,
                     ad_duration_type: categoryType,
                     title: myListing.title,

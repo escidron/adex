@@ -15,10 +15,6 @@ import {
 
 const editSteps = [
     {
-        id: 'Business',
-        url: 'select_business'
-    },
-    {
         id: 'Category',
         url: 'category'
     },
