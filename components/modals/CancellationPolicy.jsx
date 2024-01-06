@@ -7,7 +7,6 @@ export default function CancellationPolicy({ data }) {
     const [maxCancellationDate, setMaxCancellationDate] = useState(new Date());
     const [exampleDate, setExampleDate] = useState(new Date());
 
-    console.log('dataxxx', data);
     useEffect(() => {
         let exampleDate = new Date()
         const cancellationDate = new Date();
@@ -16,18 +15,20 @@ export default function CancellationPolicy({ data }) {
         if (data.date.from) {
             const diferencaInDays = diferenceBetweenDates(data.date.from)
             if (diferencaInDays > 5) {
-                setMaxCancellationDate(()=>cancellationDate)
+                setMaxCancellationDate(cancellationDate)
                 exampleDate.setMonth(maxCancellationDate.getMonth() + 1)
+                exampleDate.setDate(Math.min(exampleDate.getDate() + 6, new Date(exampleDate.getFullYear(), exampleDate.getMonth() + 1, 0).getDate()));
                 setExampleDate(exampleDate)
 
             } else {
                 setMaxCancellationDate(new Date(data.date.from))
                 exampleDate.setMonth(new Date(data.date.from).getMonth() + 1)
+                exampleDate.setDate(Math.min(exampleDate.getDate() + 6, new Date(exampleDate.getFullYear(), exampleDate.getMonth() + 1, 0).getDate()));
+
                 setExampleDate(exampleDate)
             }
         } else {
-            setMaxCancellationDate(()=>cancellationDate)
-            console.log('maxCancellationDate',cancellationDate);
+            setMaxCancellationDate(cancellationDate)
             exampleDate.setMonth(cancellationDate.getMonth() + 1)
             exampleDate.setDate(Math.min(exampleDate.getDate() + 6, new Date(exampleDate.getFullYear(), exampleDate.getMonth() + 1, 0).getDate()));
             setExampleDate(exampleDate)
@@ -62,7 +63,7 @@ export default function CancellationPolicy({ data }) {
             {
                 data.ad_duration_type == 0 && (
                     <>
-                        <p>Cancellation is allowed within five (5) calendar days after booking. For listings with a duration exceeding one month, cancellation of the upcoming month's payments must occur before the monthly billing date to prevent any new charges. Below, an example is provided, assuming that the booking takes place today and has a duration of 2 months.</p>
+                        <p>Cancellation is allowed within five (5) calendar days after booking. For listings with a duration exceeding one month, cancellation of the upcoming month&apos;s payments must occur before the monthly billing date to prevent any new charges. Below, an example is provided, assuming that the booking takes place today and has a duration of 2 months.</p>
                         <div className='w-full p-2 mt-2'>
                             <h1 className='font-[600]'>Cancel before {format(maxCancellationDate, "MMM d")}</h1>
                             <div className='flex items-start gap-4 mt-4'>
