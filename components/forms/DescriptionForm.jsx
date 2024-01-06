@@ -5,7 +5,6 @@ export default function DescriptionForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     
     const handleDescription = (description) => {
-        console.log('description',description)
         //quill component render this when is empty
         if(description == '<p><br></p>'){
             setListingProperties({ ...listingProperties, description: '' })
