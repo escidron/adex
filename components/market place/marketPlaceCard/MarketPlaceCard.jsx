@@ -36,8 +36,9 @@ export default function MarketPlaceCard({ ad }) {
               ad.ad_duration_type == '0' ? '/ Month' : ad.ad_duration_type == '2' ? '/ Unit' : ''
             }
             </p>
-            <div className=" min-w-[70px]">
+            <div className="flex gap-1 items-center min-w-[70px]">
               <RatingComponent readOnly={true} size='small' rating={ad.rating}/>
+              <p className='text-[12px] text-gray-600'>({ad.amount_reviews})</p>
             </div>
           </div>
 
