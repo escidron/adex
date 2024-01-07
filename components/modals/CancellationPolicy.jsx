@@ -8,7 +8,6 @@ export default function CancellationPolicy({ data, date }) {
     const [exampleDate, setExampleDate] = useState(new Date());
     console.log('date', date)
     useEffect(() => {
-        let exampleDate = new Date()
         const cancellationDate = new Date();
         cancellationDate.setDate(maxCancellationDate.getDate() + 6);
 
@@ -46,8 +45,8 @@ export default function CancellationPolicy({ data, date }) {
     }
 
     const recurrentTimeCancellationDate = (cancellationDate) => {
-
-        const diferencaInDays = diferenceBetweenDates(date)
+        console.log('data date',data);
+        const diferencaInDays = diferenceBetweenDates(date ? date : data.date.from)
         if (diferencaInDays > 5) {
             setMaxCancellationDate(cancellationDate)
             const exampleDate = new Date(cancellationDate)

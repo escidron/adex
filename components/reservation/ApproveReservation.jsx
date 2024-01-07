@@ -498,7 +498,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 Please take a moment to carefully read the cancellation policy.
                             </DialogDescription>
                         </DialogHeader>
-                        <CancellationPolicy status={advertisement.status} durationType={advertisement.ad_duration_type} />
+                        <CancellationPolicy data={advertisement} />
                     </DialogContent>
                 </Dialog>
             </div>
