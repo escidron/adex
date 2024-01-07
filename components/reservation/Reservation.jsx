@@ -372,7 +372,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                             Please take a moment to carefully read the cancellation policy.
                         </DialogDescription>
                     </DialogHeader>
-                    <CancellationPolicy data={data} />
+                    <CancellationPolicy data={data} date={date}/>
                 </DialogContent>
             </Dialog>
         </div>
