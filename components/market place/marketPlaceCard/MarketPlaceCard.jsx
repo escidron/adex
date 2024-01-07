@@ -38,7 +38,7 @@ export default function MarketPlaceCard({ ad }) {
             </p>
             <div className="flex gap-1 items-center min-w-[70px]">
               <RatingComponent readOnly={true} size='small' rating={ad.rating}/>
-              <p className='text-[12px] text-gray-600'>({ad.amount_reviews})</p>
+              <p className='text-[12px] text-gray-600'>({ad.amount_reviews ? ad.amount_reviews : 0})</p>
             </div>
           </div>
 

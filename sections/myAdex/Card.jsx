@@ -21,7 +21,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import RatingModal from './_components/RatingBuyerModal';
 import RatingBuyerModal from './_components/RatingBuyerModal';
 import RatingSellerModal from './_components/RatingSellerModal';
 import RatingComponent from '@/components/rating/RatingComponent';
@@ -64,8 +63,9 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         </div>
 
                     </div>
-                    <div className="flex items-center justify-start">
+                    <div className="flex gap-1 items-center min-w-[70px]">
                         <RatingComponent readOnly={true} size='small' rating={item.rating}/>
+                        <p className='text-[12px] text-gray-600 mb-1'>({item.amount_reviews ? item.amount_reviews : 0})</p>
                     </div>
                     <div className='flex mt-1 gap-2'>
                         <MapPin size={14} color='gray' className='min-w-[14px]' />
