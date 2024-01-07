@@ -29,11 +29,10 @@ const itens = [
     { id: 6, name: 'Entertainment' }
 ];
 
-export default function CompanyCard({ company, removeCompany }) {
+export default function CompanyCard({ company, removeCompany, handleEdit }) {
     const [industryName, setIndustryName] = useState('');
     const router = useRouter()
     useEffect(() => {
-
         itens.map((item) => {
             if (item.id == company.industry) {
                 setIndustryName(item.name)
@@ -73,12 +72,12 @@ export default function CompanyCard({ company, removeCompany }) {
                     </div>
                 </div>
                 <div className='w-full flex justify-end items-center'onClick={(e)=>{e.stopPropagation()}} >
-                    {/* <div onClick={(e) => {
+                    <div onClick={(e) => {
                         e.stopPropagation()
-                        router.push(`/listing/edit/${item.id}`)
+                        handleEdit(company)
                     }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                         <Edit />
-                    </div> */}
+                    </div>
                     <AlertDialog >
                         <AlertDialogTrigger >
                             <Trash />

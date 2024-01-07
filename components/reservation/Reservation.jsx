@@ -84,9 +84,9 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     setDate(new Date())
                 }
             } else {
-                if(data.date.from){
+                if (data.date.from) {
                     setDate(new Date(data.date.from))
-                }else{
+                } else {
                     setDate(new Date())
                 }
             }
@@ -268,7 +268,9 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                                         selectedCompany={selectedCompany}
                                                     />
                                                 ) : (
-                                                    <p className='text-gray-600 italic'>No company available, you neeed to register a company first</p>
+                                                    <>
+                                                        <p className='text-gray-600 italic'>No company available, you neeed to register a company first.</p>
+                                                    </>
                                                 )
                                             }
                                         </div>

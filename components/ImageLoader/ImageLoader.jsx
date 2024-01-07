@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
 import ImageUploading from "react-images-uploading";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import MultiImage from "../multiImage/MultiImage";
 import GalleryModal from "../modals/GalleryModal";
-import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+
+import { useState, useEffect } from "react";
 import { ImagePlus, X } from "lucide-react";
 
 export default function ImageLoader({ images, setImages, selectedCompany, setImportFromGallery }) {
@@ -16,6 +15,7 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
     const [selected, setSelected] = useState([]);
     const [finishSelection, setFinishSelection] = useState([]);
 
+    console.log('imageName',imageName)
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
@@ -32,6 +32,10 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
 
             const newImages = images.filter((item, index) => item.file.name != imageName);
             setImages(newImages)
+        }else  if (images[0]?.data_url.includes('http')) {
+
+                const newImages = images.filter((item, index) => item.data_url != imageName);
+                setImages(newImages)
         } else {
 
             const newImages = images.filter((item, index) => item.data_url.slice(50, 70) != imageName);

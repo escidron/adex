@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TextField from '@/components/inputs/TextField';
 import { useFormik } from 'formik';
@@ -22,9 +22,10 @@ import {
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import AddCompany from '@/actions/AddCompany';
 
 
-export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) {
+export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany }) {
     const [selected, setSelected] = useState(null);
     const [address, setAddress] = useState('');
     const [images, setImages] = useState([]);
@@ -32,13 +33,25 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
     const [dropDownSelected, setDropDownSelected] = useState('')
     const [hasPhysicalSpace, setHasPhysicalSpace] = useState('')
     const [showTip, setShowTip] = useState(false)
-    const [businessType, setBusinessType] = useState(0);
 
     const [coords, setCoords] = useState({
         lat: -3.745,
         lng: -38.523
     });
 
+    useEffect(() => {
+
+        if (editCompany) {
+            setDropDownSelected(editCompany.industry)
+            setHasPhysicalSpace(editCompany.has_physical_space)
+            setAddress(editCompany.address)
+            if (editCompany.company_logo) {
+
+                const currentImages = [{ data_url: editCompany.company_logo }]
+                setImages(currentImages)
+            }
+        }
+    }, []);
     const validate = values => {
         const errors = {};
         if (!values.name) {
@@ -59,60 +72,33 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
         return errors;
     };
 
+
     const formik = useFormik({
         initialValues: {
-            name: '',
+            name: editCompany ? editCompany.company_name : '',
             image: images,
-            address: address,
-            industry: dropDownSelected,
-            hasSpace: hasPhysicalSpace
+            address: editCompany ? editCompany.address : address,
+            industry: editCompany ? 99 : dropDownSelected,
+            hasSpace: editCompany ? editCompany.has_physical_space : hasPhysicalSpace
         },
         validate,
-        onSubmit: values => {
+        onSubmit: async values => {
             setIsPending(true)
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/add-company`,
-                {
-                    name: values.name,
-                    image: images.length > 0 ? images[0].data_url : '',
-                    address: address,
-                    industry: dropDownSelected,
-                    hasPhysicalSpace: hasPhysicalSpace
-                }, {
-                withCredentials: true,
-            })
-                .then(function (response) {
-                    setIsPending(false)
-                    setRefetch((prev) => !prev)
-                    toast.success(response.data.message)
-
-                })
-                .catch(function (error) {
-                    console.log('error', error)
-                    if (error.response.status === 400) {
-                        toast.error(error.response.data.message, {
-                            duration: 6000,
-                            style: {
-                                width: 'auto',
-                                padding: '16px',
-                                minWidth: '450px',
-                                fontWeight: 500
-
-                            }
-                        })
-                    } else {
-                        toast.error(error.response.data.message, {
-                            duration: 6000,
-                            style: {
-                                padding: '8px',
-                                fontWeight: 500
-
-                            }
-                        })
-                    }
-                })
-                .finally(function (response) {
-                    setAddCompany(false)
-                })
+            const returnMessage = await AddCompany(
+                values.name,
+                images.length > 0 ? images[0].data_url : '',
+                address,
+                dropDownSelected,
+                hasPhysicalSpace,
+                editCompany ? true : false,
+                editCompany ? editCompany.id : ''
+            )
+            if (returnMessage) {
+                setIsPending(false)
+                setRefetch((prev) => !prev)
+                toast.success(returnMessage)
+            }
+            setAddCompany(false)
         },
     });
 
@@ -154,20 +140,6 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                                 dropDownSelected={dropDownSelected}
                                 setDropDownSelected={(selected) => setDropDownSelected(selected)}
                             />
-                            {/* <Select className="w-[70%] text-black" onValueChange={(value) => setBusinessType(parseInt(value))}>
-                                <SelectTrigger className='shadow-md'>
-                                    <SelectValue className='text-[12px]' placeholder="Select ..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {
-                                            industries.map((item) => (
-                                                <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
-                                            ))
-                                        }
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select> */}
                             {formik.touched.industry && formik.errors.industry ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.industry}</div> : null}
 
                         </div>
@@ -214,7 +186,11 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                                 <div className="w-full mt-4 relative">
                                     <MapCoordinatesContext.Provider value={[coords, setCoords]}>
                                         <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center">
-                                            <PlacesAutocomplete setSelected={setSelected} setAddress={(ad) => setAddress(ad)} />
+                                            <PlacesAutocomplete
+                                                setSelected={setSelected}
+                                                setAddress={(ad) => setAddress(ad)}
+                                                currentLocation={address}
+                                            />
                                         </div>
                                     </MapCoordinatesContext.Provider>
                                     {formik.touched.address && formik.errors.address ? <div className="absolute top-[55px] text-red-600 font-bold text-[12px]">{formik.errors.address}</div> : null}
@@ -237,7 +213,7 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, refetch }) 
                             <Button disabled={isPending} variant='outline' onClick={() => setAddCompany(false)} className='flex gap-2 items-center'>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={isPending}  className='flex gap-2 items-center'>
+                            <Button type="submit" disabled={isPending} className='flex gap-2 items-center'>
                                 {
                                     isPending && (
                                         <Loader2 size={18} className='animate-spin' />

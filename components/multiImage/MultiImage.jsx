@@ -15,11 +15,12 @@ export default function MultiImage({ images, setImageName, height, remove }) {
         slidesToScroll: 1,
         arrows:false
     };
+
+    console.log('images',images)
     const listItems = images.map((item, index) =>
 
         <div key={index} className='w-full h-full relative rounded-[16px]'>
             <Image
-                // src="http://localhost:5000/images/1699032333632.png"
                 src={item.data_url}
                 alt="Adex item"
                 id='image-loaded'
@@ -30,7 +31,8 @@ export default function MultiImage({ images, setImageName, height, remove }) {
             {
                 remove && (
 
-                    <div onClick={() => setImageName(item.file?item.file.name:item.data_url.slice(50,70))} id='delete-image' className="w-8 h-8 absolute top-2 right-2 z-[99] bg-black opacity-90 hover:opacity-75 rounded-full p-2 flex justify-center items-center">
+                    // <div onClick={() => setImageName(item.file?item.file.name:item.data_url.slice(50,70))} id='delete-image' className="w-8 h-8 absolute top-2 right-2 z-[99] bg-black opacity-90 hover:opacity-75 rounded-full p-2 flex justify-center items-center">
+                    <div onClick={() => setImageName(item.data_url.includes('http') ? item.data_url : item.data_url.slice(50,70))} id='delete-image' className="w-8 h-8 absolute top-2 right-2 z-[99] bg-black opacity-90 hover:opacity-75 rounded-full p-2 flex justify-center items-center">
                         <DeleteForeverIcon
                             id='delete-image'
                             fontSize="small"
