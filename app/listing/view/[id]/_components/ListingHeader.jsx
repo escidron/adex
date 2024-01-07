@@ -19,8 +19,9 @@ export default function ListingHeader({ listingProperties, advertisementType, ha
                     />
                 </div>
             </div>
-            <div className="flex items-center justify-start">
-                <RatingComponent readOnly={true} size='small' rating={listingProperties.rating}/>
+            <div className="flex gap-1 items-center min-w-[70px]">
+                <RatingComponent readOnly={true} size='small' rating={listingProperties.rating} />
+                <p className='text-[12px] text-gray-600 mb-1'>({listingProperties.amount_reviews ? listingProperties.amount_reviews : 0})</p>
             </div>
             <div className='md:hidden mt-4'>
                 <ListingHeaderPrice
