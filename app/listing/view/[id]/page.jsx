@@ -25,6 +25,7 @@ import GetUserProfile from '@/actions/GetUserProfile'
 import GetCompanies from '@/actions/GetCompanies'
 import GetCompany from '@/actions/GetCompany'
 import BuyerDetails from '@/app/market-place/details/_components/BuyerDetails'
+import Reviews from '@/app/market-place/details/_components/Reviews'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -179,6 +180,7 @@ export default function Listing({ params }) {
                                         <Separator className='my-5' />
                                         <InstructionsInfo listingProperties={listingProperties} />
                                     </div>
+
                                     {
                                         statusPending && (
 
@@ -195,6 +197,8 @@ export default function Listing({ params }) {
                                     }
                                 </div>
                             </div>
+                            <Separator className='my-6' />
+                            <Reviews listingId={listingProperties.id} />
                         </div>
                     ) : (
                         <PageSkeleton />

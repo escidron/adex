@@ -21,6 +21,7 @@ import ApproveReservation from '@/components/reservation/ApproveReservation'
 import SellerDetails from '@/app/market-place/details/_components/SellerDetails'
 import GetUserProfile from '@/actions/GetUserProfile'
 import GetCompany from '@/actions/GetCompany'
+import Reviews from '@/app/market-place/details/_components/Reviews'
 
 export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -187,6 +188,8 @@ export default function Booking({ params }) {
                                     }
                                 </div>
                             </div>
+                            <Separator className='my-6' />
+                            <Reviews listingId={listingProperties.id} />
                         </div>
                     ) : (
                         <PageSkeleton />
