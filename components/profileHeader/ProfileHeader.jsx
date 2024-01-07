@@ -1,18 +1,17 @@
 "use client"
-import { useEffect, useState, useContext } from 'react'
-import { UserContext } from '@/app/layout';
 
 import Image from 'next/image'
 import axios from 'axios';
 import ImageUploading from "react-images-uploading";
 import RatingComponent from '../rating/RatingComponent';
-import { ImageIcon } from 'lucide-react';
 import GetUserProfile from '@/actions/GetUserProfile';
-import { useDateField } from '@mui/x-date-pickers/DateField/useDateField';
+
+import { useEffect, useState, useContext } from 'react'
+import { UserContext } from '@/app/layout';
+import { ImageIcon, Trash } from 'lucide-react';
 
 export default function ProfileHeader() {
-    const [rating, setRating] = useState(0);
-    const [user, setUser] = useContext(UserContext)
+    const [user,setUser] = useContext(UserContext)
 
     const [userData, setUserData] = useState({
         name: '',
@@ -48,6 +47,22 @@ export default function ProfileHeader() {
         }
         GetInfo();
     }, []);
+    const removeProfileImage = ()=>{
+        setImages([]);
+        setSrc(null)
+        setUser((prev) => ({ ...prev, image: null }))
+        axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-profile-image`,
+        {
+            image: null,
+        }, {
+        withCredentials: true,
+    }).then(function (response) {
+
+    }).catch(function (error) {
+
+        console.log(error)
+    });
+    }
     return (
         <div className='bg-black h-[180px] md:h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99] px-6'>
             <div className='w-[100px] h-[100px]  sm:w-[140px] sm:h-[140px]  md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
@@ -91,7 +106,9 @@ export default function ProfileHeader() {
 
                     )}
                 </ImageUploading>
-
+                <div onClick={()=>removeProfileImage()} className=' h-[35px] w-[35px] absolute right-[60px] md:right-[50px] bottom-[-3px] md:bottom-[-10px] bg-[#DAD6D7] text-gray-400 rounded-full flex justify-center items-center cursor-pointer'>
+                    <Trash size={18}/>
+                </div>
             </div>
             <div className='ml-8'>
                 <div className='flex items-center'>
