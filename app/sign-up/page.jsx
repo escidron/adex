@@ -18,9 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 
-
-
-
 export default function SignUppage() {
   const [user, setUser] = useContext(UserContext)
   const [accountType, setAccountType] = useState('');
@@ -169,7 +166,7 @@ export default function SignUppage() {
           priority
         />
       </div>
-      <form className=" z-[91] flex flex-col  justify-center items-center text-black font-[400] w-[100%] absolute top-[60px] pt-2 pb-6  mt-[30px]" onSubmit={formik.handleSubmit}>
+      <form className=" z-[91] flex flex-col  justify-center items-center text-black font-[400] w-[100%] absolute top-[60px] pt-2 pb-[100px]  mt-[30px]" onSubmit={formik.handleSubmit}>
         <div className="w-full px-8 sm:w-[400px] sm:px-0 max-w-[500px]">
 
           <p className="text-white text-[36px]">Register</p>
@@ -321,11 +318,10 @@ export default function SignUppage() {
             {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
             Sign Up
           </Button>
-          <p className="text-white mt-5 ">Have an account?
-            <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer" onClick={() => {
-              router.push('/login')
-            }}>Login</label>
-          </p>
+          <Link href={'/login'}  disabled={isPending}  className='w-full mt-4 text-lg font-[600] inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-[#FCD33B] text-[#FCD33B]  bg-transparent hover:bg-[#FCD33B] hover:text-accent-foreground'>
+            {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+            Login
+          </Link>
         </div>
 
       </form>

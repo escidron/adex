@@ -10,6 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 import TextField from "@/components/inputs/TextField";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 const validate = values => {
     const errors = {};
@@ -60,10 +61,10 @@ export default function LoginPage() {
                             userId: response.data.userId,
                             hasPayout: response.data.hasPayout ? true : false
                         }))
-                        setTimeout(() => {
-                            router.push('/')
-                            setIsPending(false)
-                        }, 1000);
+                    setTimeout(() => {
+                        router.push('/')
+                        setIsPending(false)
+                    }, 1000);
                 })
 
                 .catch(function (error) {
@@ -138,17 +139,15 @@ export default function LoginPage() {
 
                 <label onClick={() => router.push('/forgot-password')} className="mt-2 ml-auto text-[#FCD33B] hover:opacity-80 cursor-pointer">Forgot Password ?</label>
 
-                <Button variant='secondary' disabled={isPending}  type='submit' className='w-full mt-4 text-lg font-[600]'>
+                <Button variant='secondary' disabled={isPending} type='submit' className='w-full mt-4 text-lg font-[600]'>
                     {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
                     Login
                 </Button>
-                
-                <p className="text-white mt-5">Don&apos;t have an account?
-                    <label className="text-[#FCD33B] hover:opacity-80 cursor-pointer"
-                        onClick={() => {
-                            router.push('/sign-up')
-                        }}>Sign Up</label>
-                </p>
+
+                <Link href={'/sign-up'} disabled={isPending} className='w-full mt-4 text-lg font-[600] inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-[#FCD33B] text-[#FCD33B]  bg-transparent hover:bg-[#FCD33B] hover:text-accent-foreground'>
+                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                    Sign Up
+                </Link>
             </form>
         </div>
     );
