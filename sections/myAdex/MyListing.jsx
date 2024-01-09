@@ -20,8 +20,8 @@ export default function MyListing({ data,setListingData, status, isCompanyPage, 
   if (data?.length == 0 && isContentLoaded) {
     return (
       <>
-        <h1 className='text-[20px]'>There are not exist any Listing yet</h1>
-        <p className='text-gray-600'>Go to Listing for getting your first one.</p>
+        <h1 className='text-[20px]'>No Listings yet.</h1>
+        <p className='text-gray-600'>Go to &quot;Create Listing&quot; to get started.</p>
       </>
     )
   }

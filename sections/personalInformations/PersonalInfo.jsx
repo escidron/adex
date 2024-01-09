@@ -309,7 +309,7 @@ export default function PersonalInfo() {
 
           <div className='mb-2 flex gap-3 font-[600] text-[18px] items-center'>
             <EyeOff size={16} color='gray' />
-            <h1 className='text-[16px]'>Making public this informations means anyone can see it</h1>
+            <h1 className='text-[16px]'>Marking this information &quot;public&quot; means it is visible to all</h1>
           </div>
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {

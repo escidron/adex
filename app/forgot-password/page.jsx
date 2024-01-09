@@ -196,7 +196,7 @@ export default function ForgotPasswordPage() {
                 steps === 1 && (
 
                     <form className={` z-[91] flex flex-col justify-center  items-center w-full px-8 max-w-[500px] h-fit `} onSubmit={formik.handleSubmit} >
-                        <p className="text-white text-[36px]">Forgot password?</p>
+                        <p className="text-white text-[36px]">Forgot password</p>
                         <p className="text-white text-[16px] mt-2">We will send you reset instructions</p>
                         <div className=" mt-6 w-full relative text-black ">
                             <TextField

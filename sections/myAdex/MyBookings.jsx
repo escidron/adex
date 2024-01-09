@@ -7,8 +7,8 @@ export default function MyBookings({ data, isContentLoaded, setBookingData }) {
   if (data?.length == 0 && isContentLoaded ) {
     return (
       <>
-        <h1 className='text-[20px]'>There are not exist any Booking yet</h1>
-        <p className='text-gray-600'>Go to market place for getting your first one.</p>
+        <h1 className='text-[20px]'>No Bookings yet.</h1>
+        <p className='text-gray-600'>Go to our Market Place to get started.</p>
       </>
     )
   }

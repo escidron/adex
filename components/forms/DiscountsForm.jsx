@@ -164,7 +164,7 @@ export default function DiscountsForm({ ListingContext }) {
                                             <Button onClick={() => setNewDiscount(false)} variant='outline' className='flex gap-2'>
                                                 Cancel
                                             </Button>
-                                            <Button onClick={addDiscount} variant='default' disabled={!selectedMonth || !percentage}>Accept</Button>
+                                            <Button onClick={addDiscount} variant='default' disabled={!selectedMonth || !percentage}>Save</Button>
                                         </div>
                                     </CardFooter>
                                 </Card>
