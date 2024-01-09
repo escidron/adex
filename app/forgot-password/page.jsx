@@ -179,6 +179,46 @@ export default function ForgotPasswordPage() {
             }
         }
     };
+
+    const handlePaste = (e, index) => {
+        e.preventDefault();
+    
+        const pastedData = e.clipboardData.getData('text');
+        const codeArray = pastedData.slice(0, 6).split('');
+    
+        for (let i = 0; i < codeArray.length && i < inputRefs.length; i++) {
+            setCodeAtIndex(i + index, codeArray[i]);
+        }
+    };
+    const setCodeAtIndex = (index, value) => {
+        switch (index) {
+            case 0:
+                setCode1(value);
+                break;
+            case 1:
+                setCode2(value);
+                break;
+            case 2:
+                setCode3(value);
+                break;
+            case 3:
+                setCode4(value);
+                break;
+            case 4:
+                setCode5(value);
+                break;
+            case 5:
+                setCode6(value);
+                break;
+            default:
+                break;
+        }
+    
+        // Optionally, focus on the next input field after setting the value
+        if (index < inputRefs.length - 1) {
+            inputRefs[index + 1].current.focus();
+        }
+    };
     return (
         <div className="style_login flex flex-col items-center pt-[150px] md:justify-start min-h-screen py-2 fixed z-[99] top-0 left-0  ">
             <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black z-90 opacity-70'></div>
@@ -228,6 +268,7 @@ export default function ForgotPasswordPage() {
                             <input
                                 type="text"
                                 value={code1}
+                                onPaste={(e) => handlePaste(e, 0)}
                                 onChange={(e) => {
                                     setCode1(e.target.value)
                                     handleInputChange(e, 0)
