@@ -69,7 +69,7 @@ export default function ContactPage() {
       <div className='absolute top-0 left-0 w-full h-[100vh]  bg-black  opacity-70'></div>
       <form className="z-[40] flex flex-col justify-center items-center w-[90%] max-w-[500px] md:w-[500px] h-auto " onSubmit={formik.handleSubmit} >
         <h1 className='text-white  text-[40px] md:text-[48px] lg:text-[51px]'>Contact</h1>
-        <p className='text-white text-[25px] '>How we can  <span className='text-[#FCD33B] mx-2'>assist</span> you?</p>
+        <p className='text-white text-[25px] '>How we can<span className='text-[#FCD33B] mx-2'>assist</span>you?</p>
         <div className=" mt-6 w-full relative">
           <TextField
             id='name'

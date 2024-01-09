@@ -40,7 +40,7 @@ export default function AnyPerson() {
         <div className='bg-black h-auto py-[30px] flex flex-col justify-center items-center'>
             <h1 className='flex text-[20px] md:text-[28px] lg:text-[51px] text-white'>Any <span className='text-[#FCD33B] mx-2'>Person</span>, Place or <span className='text-[#FCD33B] mx-2'>Thing</span></h1>
             <div className='lg:w-[70%] text-white mt-6'>
-                <p className='text-center text-[15px] lg:text-[18px] px-[10px]'>With ADEX, your creativity is your only limitation. Whether you&apos;re a small business, gig worker, or student - grow and earn with ADEX</p>
+                <p className='text-center text-[15px] lg:text-[18px] px-[10px]'>With ADEX, your creativity is your only limitation. Whether you&apos;re a small business, gig worker, or student - grow and earn with ADEX.</p>
             </div>
             <div className=' w-full md:w-[70%] flex mt-6'>
                 <Image
