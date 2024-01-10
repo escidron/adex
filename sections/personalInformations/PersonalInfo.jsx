@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Divider } from '@mui/material';
-import GalleryImage from '@/components/gallery-image/GalleryImage';
-import ImageImporter from '@/components/gallery-image/imageImporter';
-import { Edit, Eye, EyeOff } from 'lucide-react';
 import DropImageArea from '@/components/dropImageArea/DropImageArea';
+
+import { useState, useEffect } from 'react';
+import { Divider } from '@mui/material';
+import { Edit, Eye, EyeOff } from 'lucide-react';
+import { TextAreaEditor } from '@/components/textarea/TextAreaEditor';
+import { Preview } from '@/components/textarea/TextAreaReader';
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
@@ -176,6 +177,9 @@ export default function PersonalInfo() {
       });
   }
 
+  const handleDescription = (description) => {
+    setUser({ ...user, bio: description })
+  }
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
       <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-[80%] max-w-[650px] ">
@@ -435,7 +439,7 @@ export default function PersonalInfo() {
                       <Edit color='gray' size={18} />
                     </div>
                   </div>
-                  
+
                 </>
               )
             }
@@ -502,28 +506,28 @@ export default function PersonalInfo() {
             }
           </div>
 
-          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] h-auto">
+          <div className={`border rounded-md py-3 px-4 flex justify-between  gap-4 min-h-[74px] ${currentInfo === 'bio' ? 'h-[280px] items-start' : 'h-fit items-start'} `}>
             {
               currentInfo === 'bio' ? (
                 <>
-                  <textarea
-                    type="text"
-                    id="bio"
-                    name="bio"
-                    placeholder='About you'
-                    value={user.bio != 'null' ? user.bio : ''}
-                    onChange={(e) => setUser({ ...user, bio: e.target.value })}
-                    className="w-full border text-black p-3 min-h-[200px] rounded-lg outline-none focus:border-black"
-                  />
+                  <div className='w-full h-fit'>
+
+                    <TextAreaEditor
+                      value={user.bio != 'null' ? user.bio : ''}
+                      onChange={(description) => handleDescription(description)}
+                    />
+                  </div>
                   <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
                     <p className='style_banner_button_text font-medium '>Save</p>
                   </button>
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Who I Am</p>
-                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.bio != 'null' && user.bio ? user.bio : 'Not Provided'}</p>
+                    <div className='w-full'>
+                      <Preview value={user.bio != 'null' && user.bio ? user.bio : 'Not Provided'} heigth={200} autoHeigth={true} />
+                    </div>
                   </div>
 
                   <div className='flex gap-2'>

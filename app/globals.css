@@ -306,7 +306,11 @@ input[type=number] {
 
 /* Bubble Theme */
 .ql-container{
-  height: 190px !important;
+  height: auto !important;
+  min-height: 100px !important;
+  max-height: 180px !important;
+  overflow-y: auto;
+
 }
 .ql-bubble {
   background-color: transparent;

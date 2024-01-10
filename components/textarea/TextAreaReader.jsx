@@ -18,7 +18,7 @@ export const Preview = ({
       theme="bubble"
       value={value}
       readOnly
-      className={`line-clamp-3 ${(heigth && !autoHeigth) ? `max-h-[${heigth}px]` : ''} ${autoHeigth ? 'h-auto' : 'h-[70px]'} `}
+      className={`line-clamp-3 ${(heigth && !autoHeigth) ? `max-h-[${heigth}px]` : ''} ${autoHeigth ? 'h-fit' : 'h-[70px]'} `}
     />
   );
 };
