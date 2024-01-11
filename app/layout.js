@@ -54,6 +54,7 @@ export default function RootLayout({ children }) {
       <head>
         <title>ADEX Connect</title>
         <link rel="icon" href={favicon.src} />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
         <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM&libraries=places"
           async

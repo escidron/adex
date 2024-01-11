@@ -5,6 +5,7 @@ import React from 'react'
 import Image from 'next/image'
 import Faq from '@/sections/faq/Faq'
 import Footer from '@/components/footer/Footer'
+import UseCases from '@/sections/useCases/UseCases'
 
 
 
@@ -15,7 +16,8 @@ export default function page() {
         <h1 className='flex text-[40px] md:text-[46px] lg:text-[51px] '>How <span className='text-[#FCD33B] mx-2'>ADEX</span> Works</h1>
         <p className='text-[20px] lg:text-[25px]'>Advertising Reimagined</p>
         <VideoComponent />
-        <GetPaid />
+        {/* <GetPaid /> */}
+        <UseCases />
         <div className='bg-black p-5 w-full flex justify-center mt-8'>
           <p className={`text-white text-[16px]  lg:text-[25px] font-[400] `}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
         </div>
