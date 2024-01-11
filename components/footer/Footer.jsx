@@ -16,8 +16,8 @@ import TermsOfUseModal from '../modals/TermsOfUseModal';
 
 export default function Footer() {
     return (
-        <div className="h-[850px] bg-[#252525] flex flex-col justify-between items-center mt-[80px]">
-            <div className='w-full'>
+        <div className=" bg-[#252525] flex flex-col justify-between items-center mt-[80px]">
+            <div className='w-full h-full'>
                 <div className='w-full mt-[50px] flex flex-col items-center justify-center'>
                     <Separator className='w-[80%]' />
                     <div className=' my-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 w-full md:w-[650px] justify-center'>
@@ -79,10 +79,9 @@ export default function Footer() {
 
                     </div>
                     <p className={`mt-4 text-white `}>Copyright © {new Date().getFullYear()} ADEX CONNECT</p>
-
                 </div>
             </div>
-            <div className='w-full max-h-[400px]'>
+            <div className='w-full '>
                 <Image
                     src='/footer-image.png'
                     alt="Adex Logo"
