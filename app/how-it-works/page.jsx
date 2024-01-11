@@ -21,7 +21,7 @@ export default function page() {
         <div className='bg-black p-5 w-full flex justify-center mt-8'>
           <p className={`text-white text-[16px]  lg:text-[25px] font-[400] `}>Whether you’re a local celeb or just your average Joe/Jane, it doesn’t matter, anyone can earn with ADEX</p>
         </div>
-        <div className=' w-full flex'>
+        <div className='w-full flex'>
           <Image
               src='/Rectangle 101.jpg'
               alt="image of people"
@@ -45,10 +45,9 @@ export default function page() {
               priority
               width={2000}
               height={2000}
-              className='w-full sm:w-1/2 md:flex  lg:w-[40%]  object-cover'
-
+              className='w-full sm:w-1/2 md:flex  lg:w-[33.3%]  object-cover'
           />
-         
+        
         </div>
         <Faq />
       </div>

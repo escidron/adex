@@ -2,22 +2,26 @@ export const useCasesData = [
     
     {
         id:1,
-        title:'title 1',
-        image:'use-case-1.png'
+        title:'Title 1',
+        image:'use-case-1.png',
+        description:'ADEX empowers restaurants to monetize unused spaces by offering them as advertising real estate, enhancing revenue streams.'
     },
     {
         id:2,
-        title:'title 2',
-        image:'use-case-2.png'
+        title:'Title 2',
+        image:'use-case-2.png',
+        description:''
     },
     {
         id:3,
-        title:'title 3',
-        image:'use-case-3.png'
+        title:'Title 3',
+        image:'use-case-3.png',
+        description:''
     },
     {
         id:4,
-        title:'title 4',
-        image:'use-case-4.png'
+        title:'Title 4',
+        image:'use-case-4.png',
+        description:'ADEX empowers restaurants to monetize unused spaces by offering them as advertising real estate, enhancing revenue streams.'
     }
 ];
