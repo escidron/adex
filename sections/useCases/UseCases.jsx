@@ -12,7 +12,7 @@ import { useCasesData } from './useCasesData.js'
 export default function UseCases() {
     console.log('useCases', useCasesData)
     return (
-        <div className="w-[90%] mt-[150px]  mb-[150px] max-w-[510px] xl:max-w-[1000px] flex flex-col items-center gap-3">
+        <div className="w-[90%] mt-[150px]  mb-[150px] max-w-[80%] xl:max-w-[1000px] flex flex-col items-center gap-3">
             <h1 className="text-[42px]">Use Cases</h1>
             <Carousel
                 opts={{

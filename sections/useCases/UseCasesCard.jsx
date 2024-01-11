@@ -20,7 +20,7 @@ export default function UseCasesCard({ content }) {
                 </CardTitle>
             </CardHeader>
             <CardContent >
-                <div className='w-full mt-6 h-[300px]  flex justify-between '>
+                <div className='w-full pb-2 mt-6 h-[180px] xl:h-[300px]  flex justify-between '>
                     <Image
                         src={`/${content.image}`}
                         alt="use case image"
