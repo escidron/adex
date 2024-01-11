@@ -65,7 +65,7 @@ export default function ProfileHeader() {
     }
     return (
         <div className='bg-black h-[180px] md:h-[230px] w-full mt-[90px] flex items-center justify-center lg:justify-start z-[99] px-6'>
-            <div className='w-[100px] h-[100px]  sm:w-[140px] sm:h-[140px]  md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
+            <div className='w-[100px] min-w-[100px] h-[100px]  sm:w-[140px] sm:min-w-[140px] sm:h-[140px]  md:w-[160px] md:min-w-[160px] md:h-[160px] lg:w-[180px] lg:min-w-[180px] lg:h-[180px] rounded-full bg-black lg:ml-[200px] border-4 border-[#FCD33B] relative mt-[-10px]'>
                 {
                     src ? (
 
