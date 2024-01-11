@@ -53,7 +53,7 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
         //   disabled={!ready}
         // className="outline-none w=full"
         placeholder="Search an address"
-        className=" text-sm rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
+        className=" rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
       />
 
         <ComboboxPopover  className='shadow-popup ComboboxPopover_style w-auto '>
