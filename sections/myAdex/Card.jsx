@@ -73,7 +73,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                     </div>
                     <div className='flex gap-2 items-center '>
                         <div className='text-[14px] mt-2 w-full'>
-                            <Preview value={item.description} heigth={70} />
+                            <Preview value={item.description} heigth={80} />
                         </div>
                     </div>
                 </div>
