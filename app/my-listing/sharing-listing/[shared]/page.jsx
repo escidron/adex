@@ -24,6 +24,7 @@ async function getData(id) {
   export default async function SharingPage({params}) {
     const id = params.shared
     const data = await getData(id)
+    console.log('data shared',data)
     try{
         return (
             <>
