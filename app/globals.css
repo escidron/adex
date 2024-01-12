@@ -311,7 +311,7 @@ input[type=number] {
   min-height: 100px !important;
   max-height: 180px !important;
   overflow-y: auto;
-  font-size: 16px;
+  font-size: 16px!important;
 
 }
 .ql-bubble {
