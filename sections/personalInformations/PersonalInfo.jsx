@@ -8,6 +8,7 @@ import { Divider } from '@mui/material';
 import { Edit, Eye, EyeOff } from 'lucide-react';
 import { TextAreaEditor } from '@/components/textarea/TextAreaEditor';
 import { Preview } from '@/components/textarea/TextAreaReader';
+import { Button } from '@/components/ui/button';
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
@@ -199,9 +200,9 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -230,9 +231,9 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, lastName: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -261,9 +262,8 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, email: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -292,9 +292,8 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -328,9 +327,8 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, handle: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -371,9 +369,8 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, city: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -414,9 +411,8 @@ export default function PersonalInfo() {
                     onChange={(e) => setUser({ ...user, profession: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
                   />
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -476,9 +472,8 @@ export default function PersonalInfo() {
                     className={`w-full flex justify-center items-center cursor-pointer text-[15px] p-2 min-h-[50px] rounded-lg outline-none ${user.sex == 3 ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                   >Other
                   </div>
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
+                  <Button onClick={submit}>Save</Button>
+
                 </>
               ) : (
                 <>
@@ -506,21 +501,19 @@ export default function PersonalInfo() {
             }
           </div>
 
-          <div className={`border rounded-md py-3 px-4 flex justify-between  gap-4 min-h-[74px] ${currentInfo === 'bio' ? 'h-[280px] items-start' : 'h-fit items-start'} `}>
+          <div className={`border rounded-md py-3 px-4 flex justify-between  gap-4 min-h-[74px] ${currentInfo === 'bio' ? 'h-[300px] items-start' : 'h-fit items-start'} `}>
             {
               currentInfo === 'bio' ? (
-                <>
-                  <div className='w-full h-fit'>
+                <div className='flex flex-col-reverse justify-end  md:flex-row w-full h-full gap-2'>
+                  <div className='w-full'>
 
                     <TextAreaEditor
                       value={user.bio != 'null' ? user.bio : ''}
                       onChange={(description) => handleDescription(description)}
                     />
                   </div>
-                  <button onClick={submit} className='style_banner_button  mx-auto z-10 bg-black py-[4px] px-[20px] h-10 rounded-md  hover:bg-[#FCD33B] hover:text-black text-lg transition ease-linear duration-200'>
-                    <p className='style_banner_button_text font-medium '>Save</p>
-                  </button>
-                </>
+                  <Button onClick={submit}>Save</Button>
+                </div>
               ) : (
                 <>
                   <div className='w-full'>
