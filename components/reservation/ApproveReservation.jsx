@@ -495,7 +495,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                         <DialogHeader>
                             <DialogTitle className='text-[26px]'>Cancellation Policy</DialogTitle>
                             <DialogDescription>
-                                Please take a moment to carefully read the cancellation policy.
+                                Please take a moment to carefully read our cancellation policy.
                             </DialogDescription>
                         </DialogHeader>
                         <CancellationPolicy data={advertisement} />
