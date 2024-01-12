@@ -6,7 +6,6 @@ import diferenceBetweenDates from '@/utils/diferenceBetweenDates';
 export default function CancellationPolicy({ data, date }) {
     const [maxCancellationDate, setMaxCancellationDate] = useState(new Date());
     const [exampleDate, setExampleDate] = useState(new Date());
-    console.log('date', date)
     useEffect(() => {
         const cancellationDate = new Date();
         cancellationDate.setDate(maxCancellationDate.getDate() + 6);
@@ -16,9 +15,6 @@ export default function CancellationPolicy({ data, date }) {
         } else {
             recurrentTimeCancellationDate(cancellationDate)
         }
-
-
-
     }, []);
 
     const oneTimeCancellationDate = (cancellationDate) => {
@@ -88,7 +84,7 @@ export default function CancellationPolicy({ data, date }) {
                 data.ad_duration_type == 0 && (
                     <>
                         <p>A booking can be cancelled before the listing start date or within 5 days after booking the listing - whichever comes first.</p>
-                        <p>For listings with a duration exceeding one month, cancellation of the upcoming month's payments must occur before the monthly billing date to prevent any new charges. An example is provided below, assuming that the booking will take place today and has a duration of 2 months.</p>
+                        <p>For listings with a duration exceeding one month, cancellation of the upcoming month&apos;s payments must occur before the monthly billing date to prevent any new charges. An example is provided below, assuming that the booking will take place today and has a duration of 2 months.</p>
                         <div className='w-full p-2 mt-2'>
                             <h1 className='font-[600]'>Cancel before {format(maxCancellationDate, "MMM d")}</h1>
                             <div className='flex items-start gap-4 mt-4'>
