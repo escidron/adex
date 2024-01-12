@@ -299,6 +299,7 @@ input[type=number] {
 /* Snow Theme */
 .ql-snow.ql-toolbar {
   display: block;
+  font-size: 16px;
   background: #eaecec;
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
@@ -314,7 +315,9 @@ input[type=number] {
 }
 .ql-bubble {
   background-color: transparent;
-  /* height: 70px !important; */
+  font-size: 15px;
+  overflow-y: none!important;
+
 }
 .ql-bubble .ql-editor{
   overflow: hidden;
@@ -322,7 +325,7 @@ input[type=number] {
 
 .ql-editor{
   font-family: '__Inter_a64ecd', '__Inter_Fallback_a64ecd';
-  font-size: 16px;
+  /* font-size: 16px; */
   scrollbar-width: none
 }
 

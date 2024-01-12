@@ -26,7 +26,7 @@ export const TextAreaEditor = ({
         value={value}
         onChange={onChange}
         modules={{toolbar:toolbarOptions}}
-        
+
       />
     </div>
   );
