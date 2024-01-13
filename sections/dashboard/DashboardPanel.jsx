@@ -41,7 +41,7 @@ export default function DashboardPanel({ balance }) {
                             <LineChartComponent />
                         </div>
                         <div className={` bg-white rounded-lg flex flex-col justify-center items-center  h-[calc(100%-0.5rem)] `}>
-                            <p className='font-[600] text-[15px]'>Longest Running Ad</p>
+                            <p className='font-[600] text-[15px]'>Longest Booked Ad</p>
                             <div className='relative flex flex-col justify-center items-center w-[250] h-[250]'>
                                 <Image
                                     src='/calendar 1.png'

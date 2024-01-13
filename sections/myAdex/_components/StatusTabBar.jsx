@@ -28,7 +28,7 @@ export default function StatusTabBar({ status, currentStatus, handleCurrentStatu
                             <SelectItem value='all'>Show All</SelectItem>
                             <SelectItem value='0'>Draft</SelectItem>
                             <SelectItem value='1'>Available</SelectItem>
-                            <SelectItem value='2'>Running</SelectItem>
+                            <SelectItem value='2'>Booked</SelectItem>
                             <SelectItem value='3'>Finished</SelectItem>
                             <SelectItem value='4'>Pending</SelectItem>
                         </SelectGroup>
@@ -75,13 +75,13 @@ export default function StatusTabBar({ status, currentStatus, handleCurrentStatu
                     <div
                         type="text"
                         id="2"
-                        name="running"
+                        name="booked"
                         onClick={(e) => handleCurrentStatus(e)}
                         className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentStatus == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                     >
-                        <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Running</p>
+                        <p className={`flex items-center h-[20px] pr-1 text-[12px] md:text-[14px] lg:text-[16px]`}>Booked</p>
                         <p className='text-[12px] md:text-[14px] lg:text-[16px]'>|</p>
-                        <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.running}</p>
+                        <p className=' pl-1 text-[12px] md:text-[14px] lg:text-[16px]'>{status.booked}</p>
                     </div>
 
                     <div

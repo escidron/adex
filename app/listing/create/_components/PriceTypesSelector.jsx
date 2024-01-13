@@ -26,7 +26,7 @@ export default function PriceTypeSelector({ currentPriceType, handleCurrentPrice
                     <div
                         type="text"
                         id="1"
-                        name="running"
+                        name="booked"
                         onClick={() => handleCurrentPriceType('1')}
                         className={` py-2  px-2 flex justify-between items-center cursor-pointer rounded-[50px] outline-none ${currentPriceType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] `}
                     >

@@ -51,7 +51,7 @@ export default function MyAdex() {
   const [user, setUser] = useState({});
   const [status, setStatus] = useState({
     available: 0,
-    running: 0,
+    booked: 0,
     draft: 0,
     finished: 0,
     pending: 0
@@ -112,7 +112,7 @@ export default function MyAdex() {
       all: 0,
       draft: 0,
       available: 0,
-      running: 0,
+      booked: 0,
       finished: 0,
       pending: 0,
     };
@@ -125,7 +125,7 @@ export default function MyAdex() {
         status.available++;
         status.all++;
       } else if (item.status == "2") {
-        status.running++;
+        status.booked++;
         status.all++;
       } else if (item.status == "3") {
         status.finished++;
