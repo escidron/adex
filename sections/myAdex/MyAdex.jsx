@@ -68,10 +68,9 @@ export default function MyAdex() {
 
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
       const {myBookings,bookingStatus} = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
-      const pendingBooking = await GetPendingBookings()
       const user = await GetUserProfile()
       const companies = await GetCompanies()
-      setAllBookings([...pendingBooking, ...myBookings])
+      setAllBookings(myBookings)
       if (user.userType == 1) {
 
         if (companies.length > 0) {
@@ -98,7 +97,7 @@ export default function MyAdex() {
         setStatus(status)
         console.log('sattus',bookingStatus)
         setBookingStatus(bookingStatus)
-        setBookingData([...pendingBooking, ...myBookings])
+        setBookingData(myBookings)
 
       }
 
