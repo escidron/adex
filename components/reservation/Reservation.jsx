@@ -42,6 +42,7 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts, isContentLoaded }) {
 
     const [date, setDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [counter, setCounter] = useState(1);
     const [incomplete, setIncomplete] = useState(false);
     const [isPending, setIsPending] = useState(false)
@@ -86,8 +87,12 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             } else {
                 if (data.date.from) {
                     setDate(new Date(data.date.from))
+                    setEndDate(new Date(data.date.to))
                 } else {
-                    setDate(new Date())
+                    const startDate = new Date()
+                    startDate.setDate(startDate.getDate() + 6)
+                    setDate(startDate)
+                    setEndDate(startDate)
                 }
             }
         }
@@ -118,6 +123,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         data: data,
                         duration: counter,
                         start_date: date,
+                        end_date: endDate,
                         companyId: selectedCompany
                     }, {
                     withCredentials: true,

@@ -55,7 +55,7 @@ export default function NavBar() {
             });
 
 
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         const handleClick = (event) => {

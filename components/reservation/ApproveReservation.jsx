@@ -89,8 +89,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/create-payment-intent`,
             {
                 data: advertisement,
-                duration: advertisement.duration,
-                start_date: advertisement.date.from,
+                current_discount: currentDiscount,
                 companyId: advertisement.requested_by_company
             }, {
             withCredentials: true,
