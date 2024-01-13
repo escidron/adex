@@ -16,7 +16,6 @@ export default function MultiImage({ images, setImageName, height, remove }) {
         arrows:false
     };
 
-    console.log('images',images)
     const listItems = images.map((item, index) =>
 
         <div key={index} className='w-full h-full relative rounded-[16px]'>

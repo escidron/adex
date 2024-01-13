@@ -56,17 +56,22 @@ export default function MyAdex() {
     finished: 0,
     pending: 0
   });
+  const [bookingStatus, setBookingStatus] = useState({
+    booked: 0,
+    finished: 0,
+    pending: 0
+  });
 
   useEffect(() => {
     async function getInfo() {
       let checkPayout
 
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
-      const myBookings = await GetMyBookings()
-      const pendingListing = await GetPendingBookings()
+      const {myBookings,bookingStatus} = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
+      const pendingBooking = await GetPendingBookings()
       const user = await GetUserProfile()
       const companies = await GetCompanies()
-      setAllBookings([...pendingListing, ...myBookings])
+      setAllBookings([...pendingBooking, ...myBookings])
       if (user.userType == 1) {
 
         if (companies.length > 0) {
@@ -75,11 +80,12 @@ export default function MyAdex() {
           const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
-          const newPendings = pendingListing.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+          const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
 
           setBookingData([...newPendings, ...newBookings])
           setListingData(() => newListing)
           setStatus(newStatus)
+          setBookingStatus(bookingStatus)
           setSelectedCompany(() => companies[0].company_name)
           setSelectedCompanyId(() => companies[0].id)
         }
@@ -90,7 +96,8 @@ export default function MyAdex() {
           setListingData(myListing)
         }
         setStatus(status)
-        setBookingData([...pendingListing, ...myBookings])
+        setBookingStatus(bookingStatus)
+        setBookingData([...pendingBooking, ...myBookings])
 
       }
 
@@ -197,7 +204,7 @@ export default function MyAdex() {
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData ={(newData)=>setListingData (newData)}/>
-              <MyBookings label='My Booking' data={bookingData} isContentLoaded={isContentLoaded} setBookingData ={(newData)=>setBookingData (newData)} />
+              <MyBookings label='My Booking' data={bookingData} status={bookingStatus} isContentLoaded={isContentLoaded} setBookingData ={(newData)=>setBookingData (newData)} />
             </TabsComponent>
           </RefreshContext.Provider>
         </div>

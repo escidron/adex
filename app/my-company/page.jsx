@@ -57,7 +57,7 @@ export default function MyCompanyPage() {
     useEffect(() => {
         async function getInfo() {
             const { myListing, status } = (await GetMyAdvertisement()) || {}
-            const myBookings = await GetMyBookings()
+            const {myBookings} = (await GetMyBookings()) || { myBookings: [] }
             const pendingListing = await GetPendingBookings()
 
             if (myListing?.length > 0) {

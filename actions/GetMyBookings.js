@@ -17,9 +17,12 @@ export default async function GetMyBookings(id) {
         const res = await response.json();
         if (res.data.length > 0) {
           const myBookings = res.data;
-          return myBookings;
+          const bookingStatus = res.status;
+          return {myBookings,bookingStatus};
         } else {
-          return [];
+          const myBookings = []
+          const bookingStatus = {}
+          {myBookings,bookingStatus};
         }
       } else {
         return null;

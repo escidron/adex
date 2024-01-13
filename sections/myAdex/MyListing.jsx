@@ -59,7 +59,6 @@ export default function MyListing({ data,setListingData, status, isCompanyPage, 
   }
   return (
     <div className='flex flex-col items-center '>
-      {/* <div><Toaster /></div> */}
         <StatusTabBar
           status={status}
           currentStatus={currentStatus}

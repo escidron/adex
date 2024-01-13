@@ -15,7 +15,6 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
     const [selected, setSelected] = useState([]);
     const [finishSelection, setFinishSelection] = useState([]);
 
-    console.log('imageName',imageName)
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
