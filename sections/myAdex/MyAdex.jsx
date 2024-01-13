@@ -96,6 +96,7 @@ export default function MyAdex() {
           setListingData(myListing)
         }
         setStatus(status)
+        console.log('sattus',bookingStatus)
         setBookingStatus(bookingStatus)
         setBookingData([...pendingBooking, ...myBookings])
 
