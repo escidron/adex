@@ -199,8 +199,8 @@ export default function MyAdex() {
           </div>
         )
       }
-      <div className='flex flex-col lg:flex-row w-full items-start  md:px-8'  >
-        <div className='w-full xl:w-[40%]'>
+      <div className='flex flex-col-reverse 2xl:flex-row w-full items-start  md:px-8'  >
+        <div className='w-full 2xl:w-[60%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData ={(newData)=>setListingData (newData)}/>
@@ -211,7 +211,7 @@ export default function MyAdex() {
         {
           isContentLoaded && !hasPayoutMethod && listingData.length > 0 && value == '0' && (
 
-            <Card className='w-full mt-[50px] md:max-w-[550px] h-fit ml-[80px] mx-auto' >
+            <Card className='w-full mt-[50px] 2xl:max-w-[550px] h-fit ml-[80px] mx-auto ' >
               <CardHeader>
                 <CardTitle className='flex gap-2 items-center'>
                   <div className='w-[25px]'>
