@@ -142,11 +142,10 @@ export default function NavBar() {
             <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[500px] lg:w-[600px] xl:max-w-[50%]'>
-                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How It Works</Link>
-                <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
-                <div className='md:h-[50px] md:w-[50px] 
-                                lg:h-[60px] lg:w-[60px]
-                                xl:h-[70px] xl:w-[70px]'>
+                <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
+                <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+
+                <div className='md:h-[50px] md:w-[50px] lg:h-[60px] lg:w-[60px] xl:h-[70px] xl:w-[70px]'>
                     <Link href="/">
                         <Image
                             src={logo}
@@ -157,8 +156,8 @@ export default function NavBar() {
                         />
                     </Link>
                 </div>
-                <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How It Works</Link>
+                <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
             </section>
             {user.isLogged
                 ? (

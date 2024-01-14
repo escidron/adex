@@ -211,7 +211,7 @@ export default function MyAdex() {
         {
           isContentLoaded && !hasPayoutMethod && listingData.length > 0 && value == '0' && (
 
-            <Card className='w-full mt-[50px] md:max-w-[550px] h-fit ml-[80px] mx-auto'>
+            <Card className='w-full mt-[50px] md:max-w-[550px] h-fit ml-[80px] mx-auto' >
               <CardHeader>
                 <CardTitle className='flex gap-2 items-center'>
                   <div className='w-[25px]'>
