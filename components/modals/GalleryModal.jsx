@@ -16,7 +16,7 @@ export default function GalleryModal({ setOpenGalleryModal,gallery,selected,setS
                         onClick={() => setOpenGalleryModal(false)}
                         sx={{ "&:hover": { color: "#FCD33B" } }} />
                 </div>
-                <div className='w-full max-h-[600px] overflow-y-scroll p-4 mt-2'>
+                <div className='w-full max-h-[50vh] overflow-y-scroll p-4 mt-2'>
                     <GalleryImage 
                         gallery={gallery} 
                         isSelectable={true}
