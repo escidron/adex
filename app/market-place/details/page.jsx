@@ -57,7 +57,7 @@ export default function ListingDetails({ sharedId }) {
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
-            
+
             const sellerInfo = await GetUserProfile(myListing.created_by)
             const sellerCompanies = await GetCompany(myListing.company_id)
 
@@ -93,8 +93,8 @@ export default function ListingDetails({ sharedId }) {
                     seller_rating: myListing.seller_rating,
                     ad_duration_type: myListing.ad_duration_type,
                     id: id,
-                    rating:myListing.rating,
-                    amount_reviews:myListing.amount_reviews
+                    rating: myListing.rating,
+                    amount_reviews: myListing.amount_reviews
                 }));
 
             }
@@ -130,11 +130,15 @@ export default function ListingDetails({ sharedId }) {
     }, []);
 
     const sendMessage = async () => {
+        
         if (user.isLogged) {
-            const response = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message)
-            toast.success('Message sended')
-            setMessage(prev => '')
-            setRefetch(prev => !prev)
+            if(message){
+
+                const response = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message)
+                toast.success('Message sended')
+                setMessage(prev => '')
+                setRefetch(prev => !prev)
+            }
         } else {
             router.push('/login')
         }
@@ -158,7 +162,7 @@ export default function ListingDetails({ sharedId }) {
                                         <Preview value={listingProperties.description} heigth={200} autoHeigth={true} />
 
                                         <Separator className='my-6' />
-                                        <SellerDetails sellerId={listingProperties.seller_id} sellerProfile={sellerProfile} companyProfile={companyProfile}/>
+                                        <SellerDetails sellerId={listingProperties.seller_id} sellerProfile={sellerProfile} companyProfile={companyProfile} />
 
                                         {
                                             (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (
@@ -209,43 +213,28 @@ export default function ListingDetails({ sharedId }) {
                                     </div>
                                 </div>
                                 <Separator className='my-6' />
-                                <Reviews listingId={listingProperties.id}/>
+                                <Reviews listingId={listingProperties.id} />
                                 <Separator className='my-6' />
-                                {
-                                    isChatOpen ? (
-                                        <div className='w-[600px] flex mx-auto'>
-                                            {/* <Chat
-                                                messages={messages}
-                                                isChatPage={false}
-                                                userId={user.userId}
-                                                createdBy={data.created_by}
-                                                advertisementId={data.id}
-                                                //socket={socket}
-                                                setRefetch={(refetch) => setRefetch(refetch)} /> */}
-                                        </div>
 
-                                    ) : (
-                                        <div className='w-full max-w-[600px] '>
-                                            <h1 className='text-[20px] font-[500]'>{rejectedId ? 'Any question about the rejected booking request?' : 'Need further clarification?'}</h1>
-                                            <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${listingProperties.seller_name} via a message.`}</p>
-                                            <textarea
-                                                onChange={(e) => setMessage(e.target.value)}
-                                                type="textarea"
-                                                id="message"
-                                                name="message"
-                                                value={message}
-                                                className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none  focus:border-black`}
-                                            />
-                                            <div className='flex gap-2 justify-end'>
-                                                <Button onClick={sendMessage} className='flex gap-2 items-center'>
-                                                    <SendHorizontal size={15} />
-                                                    Send Message
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    )
+                                <div className='w-full max-w-[600px] '>
+                                    <h1 className='text-[20px] font-[500]'>{rejectedId ? 'Any question about the rejected booking request?' : 'Need further clarification?'}</h1>
+                                    <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${listingProperties.seller_name} via a message.`}</p>
+                                    <textarea
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        type="textarea"
+                                        id="message"
+                                        name="message"
+                                        value={message}
+                                        className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none  focus:border-black`}
+                                    />
+                                    <div className='flex gap-2 justify-end'>
+                                        <Button onClick={sendMessage} className='flex gap-2 items-center'>
+                                            <SendHorizontal size={15} />
+                                            Send Message
+                                        </Button>
+                                    </div>
+                                </div>
 
-                                }
                             </div>
                         </div>
                     ) : (
