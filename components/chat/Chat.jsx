@@ -25,18 +25,20 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
 
   const sendMessage = async (e) => {
     e.preventDefault()
-    const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message)
+    if(message){
 
-    setMessages(prev=>([...prev, {
-      ...prev[prev.length - 1], sended_by: userId,
-      seller_id: createdBy,
-      buyer_id: prev[0].buyer_id,
-      advertisement_id: advertisementId,
-      message: message
-    }]))
+      const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message)
+  
+      setMessages(prev=>([...prev, {
+        ...prev[prev.length - 1], sended_by: userId,
+        seller_id: createdBy,
+        buyer_id: prev[0].buyer_id,
+        advertisement_id: advertisementId,
+        message: message
+      }]))
+      setMessage('')
+    }
 
-    //setRefetch(prev => !prev)
-    setMessage('')
   }
 
   let dates = ''
