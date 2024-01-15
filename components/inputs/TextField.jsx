@@ -17,7 +17,8 @@ export default function TextField({
   register,
   required,
   errors,
-  maxLength
+  maxLength,
+  autoFocus
 }) {
   return (
     <div className="w-full relative shadow-sm">
@@ -26,6 +27,7 @@ export default function TextField({
       )}
       <input
         name={id}
+        autoFocus={autoFocus ? autoFocus : false}
         autoComplete='current-field'
         id={id}
         placeholder=" "
