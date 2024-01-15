@@ -52,6 +52,7 @@ const PlacesAutocomplete = ({ setSelected, setAddress, currentLocation }) => {
         onChange={(e) => setValue(e.target.value)}
         //   disabled={!ready}
         // className="outline-none w=full"
+        autoFocus={true}
         placeholder="Search an address"
         className=" rounded-lg outline-none w-full  p-3  bg-white placeholder-gray-400 placeholder- text-black"
       />
