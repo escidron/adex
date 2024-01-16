@@ -312,17 +312,16 @@ input[type=number] {
   max-height: 180px !important;
   overflow-y: auto;
   font-size: 16px!important;
+  background-color: white;
 
 }
 .ql-bubble {
   background-color: transparent;
   font-size: 15px!important;
-  overflow-y: none!important;
+  overflow: hidden!important;
 
 }
-.ql-bubble .ql-editor{
-  overflow: hidden;
-}
+
 
 .ql-editor{
   font-family: '__Inter_a64ecd', '__Inter_Fallback_a64ecd';
