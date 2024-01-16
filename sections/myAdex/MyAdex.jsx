@@ -79,9 +79,9 @@ export default function MyAdex() {
           const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
-          const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+          //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
 
-          setBookingData([...newPendings, ...newBookings])
+          setBookingData(newBookings)
           setListingData(() => newListing)
           setStatus(newStatus)
           setBookingStatus(bookingStatus)
