@@ -122,6 +122,7 @@ export default function MyAdex() {
       booked: 0,
       finished: 0,
       pending: 0,
+      expired: 0,
     };
 
     companyListings.map((item) => {
@@ -139,6 +140,9 @@ export default function MyAdex() {
         status.all++;
       } else if (item.status == "4") {
         status.pending++;
+        status.all++;
+      }else if (item.status == "5") {
+        status.expired++;
         status.all++;
       }
     });
