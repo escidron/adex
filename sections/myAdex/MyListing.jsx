@@ -40,7 +40,6 @@ export default function MyListing({ data,setListingData, status, isCompanyPage, 
     }
   }
 
-
   const deleteListing = async (id) => {
     const response = await RemoveListing(id)
     toast.success('Advertisement deleted successfully')

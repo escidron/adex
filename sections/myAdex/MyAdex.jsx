@@ -65,14 +65,13 @@ export default function MyAdex() {
   useEffect(() => {
     async function getInfo() {
       let checkPayout
-
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
       const {myBookings,bookingStatus} = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
+
       const user = await GetUserProfile()
       const companies = await GetCompanies()
       setAllBookings(myBookings)
       if (user.userType == 1) {
-
         if (companies.length > 0) {
           checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
 
@@ -81,9 +80,9 @@ export default function MyAdex() {
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
 
-          setBookingData(newBookings)
+          setBookingData(() =>newBookings)
           setListingData(() => newListing)
-          setStatus(newStatus)
+          setStatus(() =>newStatus)
           setBookingStatus(bookingStatus)
           setSelectedCompany(() => companies[0].company_name)
           setSelectedCompanyId(() => companies[0].id)
@@ -92,12 +91,13 @@ export default function MyAdex() {
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
         if (myListing.length > 0) {
-          setListingData(myListing)
+          setListingData(() =>myListing)
+        }else{
+          setListingData([])
         }
-        setStatus(status)
-        console.log('sattus',bookingStatus)
-        setBookingStatus(bookingStatus)
-        setBookingData(myBookings)
+        setStatus(() =>status)
+        setBookingStatus(() =>bookingStatus)
+        setBookingData(() =>myBookings)
 
       }
 
