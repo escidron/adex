@@ -33,7 +33,6 @@ export default function NavBar() {
         if (response.status === 200) {
             const res = await response.json()
             if (res.data) {
-                // setHasPayout((prev) => (true));
                 setUser((prev) => ({ ...prev, hasPayout: true }))
 
             }
@@ -48,7 +47,6 @@ export default function NavBar() {
         })
             .then(function (response) {
                 setUser((prev) => ({ ...prev, notificationQuantity: response.data.notifications.length, notifications: response.data.notifications }))
-                //   setUser((prev) => ({ ...prev, notifications: response.data.notifications }))
             })
             .catch(function (error) {
                 console.log(error)
@@ -60,7 +58,6 @@ export default function NavBar() {
     useEffect(() => {
         const handleClick = (event) => {
 
-            // Handle your click logic here
             setshowNotifications(false)
             if (user.showLoginOptions) {
                 setUser((prev) => ({ ...prev, showLoginOptions: false }))
@@ -108,7 +105,7 @@ export default function NavBar() {
             }
         }
         GetUserProfile();
-    }, [user]);
+    }, [finishRequests]);
 
     const logout = () => {
         toast.dismiss()
@@ -134,7 +131,7 @@ export default function NavBar() {
             .catch(function (error) {
             });
     }
-
+console.log('navbar')
     return (
         <div className={`bg-black  ${(pathname.includes('listing') || pathname.includes('booking')) ? 'hidden' : 'flex'} w-full h-[90px] text-slate-50 text-lg 
                         flex justify-center lg:justify-start items-center py-4 px-[40px] xl:px-[80px] relative style_navbar md:h-[90px] xl:justify-center  `}>
