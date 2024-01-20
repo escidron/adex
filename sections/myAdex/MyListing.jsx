@@ -47,12 +47,10 @@ export default function MyListing({ data,setListingData, status, isCompanyPage, 
   }
 
   const updateRatingStastus = (id) =>{
-      // Criar uma nova array atualizada
       const updatedData = data.map(item =>
         item.id === id ? { ...item, is_rated_by_seller: '1' } : item
       );
   
-      // Atualizar o estado com a nova array
       setListingData(updatedData);
     
   }

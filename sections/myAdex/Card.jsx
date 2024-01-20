@@ -131,7 +131,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         }
 
                         {
-                            (item.status == 1 || item.status == 0) && (
+                            (item.status == 1 || item.status == 0 || item.status == 5) && (
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()

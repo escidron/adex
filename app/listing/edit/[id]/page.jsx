@@ -30,10 +30,6 @@ import { ListingContext } from './layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 
 
-const requiredFields = [ 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
-
-
-
 export default function EditListing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [isPending, setIsPending] = useState(false)
@@ -78,7 +74,8 @@ export default function EditListing({ params }) {
                     select_business: myListing.company_id,
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
-                    otherListingType: myListing.ad_duration_type
+                    otherListingType: myListing.ad_duration_type,
+                    status:myListing.status
                 }));
             }
             if (categories && myListing) {
@@ -187,7 +184,8 @@ export default function EditListing({ params }) {
                     first_available_date: listingProperties.first_available_date,
                     date: listingProperties.date,
                     company_id: listingProperties.select_business,
-                    instructions: listingProperties.instructions
+                    instructions: listingProperties.instructions, 
+                    status: listingProperties.status 
                 }, {
                 withCredentials: true,
             })

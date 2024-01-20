@@ -50,7 +50,7 @@ export default function ListingDetails({ sharedId }) {
     const rejectedId = searchParams.get('rejected')
 
     const router = useRouter();
-
+    console.log('listing details')
     useEffect(() => {
 
         async function getInfo() {
@@ -130,9 +130,9 @@ export default function ListingDetails({ sharedId }) {
     }, []);
 
     const sendMessage = async () => {
-        
+
         if (user.isLogged) {
-            if(message){
+            if (message) {
 
                 const response = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message)
                 toast.success('Message sended')
