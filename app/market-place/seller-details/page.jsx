@@ -61,8 +61,8 @@ export default function SellerDetailsPage() {
     return (
         <>
 
-            <div className={`mt-[150px] w-full h-full flex justify-center items-center `}>
-                <div className='flex flex-col w-[80%] max-w-[1000px] items-start'>
+            <div className={`px-4 mt-[150px] w-full h-full flex justify-center items-center `}>
+                <div className='flex flex-col w-full md:w-[80%] max-w-[1000px] items-start'>
 
                     {
                         contentIsLoaded ? (
@@ -88,7 +88,7 @@ export default function SellerDetailsPage() {
                     {
                         contentIsLoaded && (
 
-                            <div className='w-full flex flex-col items-start'>
+                            <div className='w-[80%] md:w-full flex flex-col items-start'>
                                 <p className='text-[32px] mb-4'>{`${companyId ? seller.company_name : seller.name}’s Reviews`}</p>
                                 <ReviewsCarrousel data={sellerReviews} />
                                 {
@@ -127,7 +127,7 @@ export default function SellerDetailsPage() {
                     {
                         sellerListings.length > 0 && contentIsLoaded && (
 
-                            <div className={` h-auto mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 gap-4 md:p-2 xl:p-[10px] `}>
+                            <div className={`flex flex-col items-center h-auto mt-8 md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 gap-4 md:p-2 xl:p-[10px] `}>
                                 {sellerListings.map((ad) => (
                                     <MarketPlaceCard key={ad.id} ad={ad} />
                                 ))}
