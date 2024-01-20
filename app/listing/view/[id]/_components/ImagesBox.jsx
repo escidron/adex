@@ -55,9 +55,9 @@ export default function ImagesBox({ listingProperties }) {
             </div>
             {
                 showImages && (
-                    <div className='fixed top-0 left-0 bg-black z-[98] h-[100%] w-full text-white p-2'>
+                    <div className='fixed top-0 left-0 bg-black z-[98] h-[100%] w-full text-white p-2 flex justify-center items-center'>
                         <X onClick={()=>setShowImages(false)} className='fixed top-8 right-8 z-[99] rounded-lg cursor-pointer hover:bg-slate-200 hover:text-black'/>
-                        <ViewPhotosSlider id={listingProperties.id} images={listingProperties.images}/>
+                        <ViewPhotosSlider images={listingProperties.images}/>
                     </div>
                 )
             }
