@@ -50,7 +50,6 @@ export default function ListingDetails({ sharedId }) {
     const rejectedId = searchParams.get('rejected')
 
     const router = useRouter();
-    console.log('listing details')
     useEffect(() => {
 
         async function getInfo() {

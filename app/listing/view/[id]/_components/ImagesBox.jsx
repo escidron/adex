@@ -8,7 +8,6 @@ import { useState } from 'react'
 
 export default function ImagesBox({ listingProperties }) {
     const [showImages, setShowImages] = useState(false);
-    console.log('images box')
     return (
         <>
 
