@@ -29,11 +29,11 @@ export default function ViewPhotosSlider({ images }) {
     }, [api])
     return (
         <div className="w-full flex flex-col items-center">
-            <Carousel className="w-[80%] " setApi={setApi}>
-                <CarouselContent className='w-full'>
+            <Carousel className="w-full sm:w-[80%] flex justify-center " setApi={setApi}>
+                <CarouselContent >
                     {images.map((image, index) => (
                         <CarouselItem key={index} className='w-[80%] flex justify-center'>
-                            <div className="p-1 md:h-[80vh] w-full max-w-[1000px]">
+                            <div className="p-1 h-[300px] md:h-[80vh] w-full max-w-[1000px]">
                                 <Image
                                     src={image.data_url}
                                     alt="Listing images"
