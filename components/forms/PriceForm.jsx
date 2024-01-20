@@ -100,7 +100,7 @@ export default function PriceForm({ ListingContext }) {
                             autoFocus={true}
                             className=' text-[55px] font-[700] text-gray-800  w-full rounded-md outline-none p-2'
                             name="input-name"
-                            placeholder="$ 0,00"
+                            placeholder="$"
                             allowDecimals={true}
                             decimalsLimit={2}
                             decimalSeparator="."
