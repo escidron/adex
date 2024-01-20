@@ -2,12 +2,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import DatePickerComponent from '../datePicker/DatePickerComponent';
-import HelpIcon from '@mui/icons-material/Help';
-import { ThreeDots } from 'react-loader-spinner'
+
 import { Divider, Skeleton } from '@mui/material';
 import formatNumberInput from '@/utils/formatInputNumbers';
-import dayjs from 'dayjs';
 import axios from 'axios';
 import CancelBooking from '../modals/CancelBooking';
 import toast, { Toaster } from 'react-hot-toast';
@@ -24,7 +21,6 @@ import {
     DialogTitle,
     DialogDescription
 } from "@/components/ui/dialog"
-import { AlertDialogHeader } from '../ui/alert-dialog';
 import { UserContext } from '@/app/layout';
 import CancellationPolicy from '../modals/CancellationPolicy';
 

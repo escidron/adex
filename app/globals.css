@@ -394,3 +394,9 @@ input[type=number] {
   display: flex;
   
 }
+
+.react-datepicker__year-dropdown{
+  max-height: 230px;
+  overflow-y: auto;
+  padding-top: 10px;
+}

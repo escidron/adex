@@ -3,15 +3,10 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/navigation';
 
-import dayjs, { Dayjs } from 'dayjs';
-import DatePickerComponent from '../datePicker/DatePickerComponent';
 import CounterComponent from '../counter/CounterComponent';
 import { Divider, Skeleton } from '@mui/material';
-import WarningIcon from '@mui/icons-material/Warning';
-import { ThreeDots } from 'react-loader-spinner'
 import axios from 'axios';
 import formatNumberInput from '@/utils/formatInputNumbers';
-import toast from "react-hot-toast";
 import { UserContext } from '../../app/layout';
 import { ArrowLeft, HelpCircle, Loader2, X } from 'lucide-react';
 import { Button } from '../ui/button';

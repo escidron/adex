@@ -1,23 +1,20 @@
 "use client"
-import { useState } from "react";
 import axios from 'axios'
-import { useFormik } from 'formik';
-import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
-import { ThreeDots } from 'react-loader-spinner'
 import toast, { Toaster } from "react-hot-toast";
-
-import ImageLoader from "@/components/ImageLoader/ImageLoader";
-import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
-import Footer from "@/components/footer/Footer";
 import SelectIndustryComponent from "@/components/select-search/SelectSearch";
+import ImageLoader from "@/components/ImageLoader/ImageLoader";
+import DobComponent from "@/components/datePicker/DobComponent";
+
+import { useState } from "react";
+import { useFormik } from 'formik';
+import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import { MerchantCategories } from "@/utils/MerchantCategories";
 import { Button } from "@/components/ui/button";
 
 
 
 export default function PayoutCompanyForm({ setHasAccount, selectedCompany, selectedCompanyId }) {
-  // const [user,setUser] = useContext(UserContext)
   const [state, setState] = useState('');
   const [ownerState, setOwnerState] = useState('');
   const [isPending, setIsPending] = useState(false)
@@ -135,7 +132,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
             ownerZip: values.ownerZip,
             verificationImage: images[0].data_url,
             dob: dob,
-            companyId : selectedCompanyId
+            companyId: selectedCompanyId
           }, {
           withCredentials: true,
         })
@@ -373,13 +370,9 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
                     Date of Birth
                   </label>
                 </div>
-                <DatePickerComponent
-                  id='dob'
-                  setDate={(dob) => setDob(dob)}
-                  maxHeight='42px'
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
+
+                <DobComponent value={dob} onChange={date => setDob(date)} />
+
                 {formik.touched.dob && formik.errors.dob ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.dob}</div> : null}
               </div>
             </div>

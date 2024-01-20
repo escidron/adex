@@ -2,7 +2,6 @@
 import { useState } from "react";
 import axios from 'axios'
 import { useFormik } from 'formik';
-import DatePickerComponent from "@/components/datePicker/DatePickerComponent";
 import SelectUSState from 'react-select-us-states';
 import toast, { Toaster } from "react-hot-toast";
 
@@ -10,11 +9,13 @@ import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import Footer from "@/components/footer/Footer";
 import { Button } from "@/components/ui/button";
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import DobComponent from "@/components/datePicker/DobComponent";
 
 
 export default function PayoutIndividualForm({ setHasAccount }) {
-  const [bod, setBod] = useState('');
+  const [dob, setdob] = useState('');
   const [state, setState] = useState('AL');
   const [isPending, setIsPending] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -26,8 +27,8 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       errors.idNumber = 'Required';
     }
 
-    if (!bod) {
-      errors.bod = 'Required';
+    if (!dob) {
+      errors.dob = 'Required';
     }
 
     if (!values.street) {
@@ -55,7 +56,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
   const formik = useFormik({
     initialValues: {
       idNumber: '',
-      bod: bod,
+      dob: dob,
       street: '',
       city: '',
       state: state,
@@ -70,7 +71,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-user-connect-account`,
         {
           idNumber: values.idNumber,
-          bod: bod,
+          dob: dob,
           street: values.street,
           city: values.city,
           state: state,
@@ -103,8 +104,6 @@ export default function PayoutIndividualForm({ setHasAccount }) {
   });
 
   return (
-
-
     <form className="flex flex-col gap-3" onSubmit={formik.handleSubmit}>
       <div className=" w-full  flex gap-[20px] ">
         <div className="w-[50%] relative ">
@@ -136,20 +135,14 @@ export default function PayoutIndividualForm({ setHasAccount }) {
           {formik.touched.idNumber && formik.errors.idNumber ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.idNumber}</div> : null}
 
         </div>
-        <div className="w-[50%] relative max-h-[42px]">
+        <div className="w-[50%] relative max-h-[42px] z-[99] ">
           <div className="flex">
-            <label htmlFor="bod" className="block text-[14px]   mb-1">
+            <label htmlFor="dob" className="block text-[14px]   mb-1">
               Date of Birth
             </label>
           </div>
-          <DatePickerComponent
-            id='bod'
-            setDate={(bod) => setBod(bod)}
-            maxHeight='42px'
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.bod && formik.errors.bod ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.bod}</div> : null}
+          <DobComponent value={dob} onChange={date => setdob(date)}/>
+          {formik.touched.dob && formik.errors.dob ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.dob}</div> : null}
         </div>
       </div>
 
