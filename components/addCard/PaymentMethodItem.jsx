@@ -31,7 +31,7 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
 
 
     return (
-        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[10px] sm:px-[30px] py-[15px] rounded-md min-w-[300px] sm:min-w-[350px] max-w-[450px] cursor-pointer`}>
+        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[10px] sm:px-[30px] py-[15px] rounded-md min-w-[280px] sm:min-w-[350px] max-w-[450px] cursor-pointer`}>
             <div className='flex gap-2 items-center'>
                 <div className='w-[35px] h-[35px] sm:w-[40px] sm:h-[40px]'>
                     <Image
@@ -58,8 +58,8 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
                         {
                             item.is_default == 1 ? (
 
-                                <div className='ml-3 bg-black rounded-lg py-1 px-3'>
-                                    <p className='text-white text-[10px]'>Default</p>
+                                <div className='ml-1 sm:ml-3 bg-black rounded-lg py-1 px-2 sm:px-3'>
+                                    <p className='text-white text-[8px] sm:text-[10px]'>Default</p>
                                 </div>
                             ) : ''
                         }
