@@ -260,7 +260,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                         <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                             Request Booking
                         </DialogTrigger>
-                        <DialogContent className='w-full max-w-[550px]'>
+                        <DialogContent className='w-[90%] max-w-[550px]'>
                             {
                                 isCompanyProfile && !hasCompanySelected && (
                                     <>

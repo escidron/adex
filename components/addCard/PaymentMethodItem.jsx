@@ -31,9 +31,9 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
 
 
     return (
-        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[30px] py-[15px] rounded-md min-w-[350px] max-w-[450px] cursor-pointer`}>
+        <div onClick={(e) => handleSelected(e)} className={`border ${item.is_default == 1 ? 'border-black' : ''} flex justify-between items-center px-[10px] sm:px-[30px] py-[15px] rounded-md min-w-[300px] sm:min-w-[350px] max-w-[450px] cursor-pointer`}>
             <div className='flex gap-2 items-center'>
-                <div className='w-[40px] h-[40px] '>
+                <div className='w-[35px] h-[35px] sm:w-[40px] sm:h-[40px]'>
                     <Image
                         src={`/${item.card.brand.toLowerCase()}.png`}
                         alt="card brand"
@@ -46,15 +46,15 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
                     <p className='font-semibold'>{item.name_on_card}</p>
                     <div className='flex items-center font-[400] gap-1'>
                         <div className='h-[15px] '>
-                            <p className=' font-semibold text-[15px]'>**** **** ****</p>
+                            <p className=' font-semibold text-[13px] sm:text-[15px]'>**** **** ****</p>
                         </div>
-                        <p className='font-semibold'>{item.card.last4}</p>
+                        <p className='font-semibold text-[13px] sm:text-[16px]'>{item.card.last4}</p>
 
                     </div>
 
                     <div className='flex gap-2 items-center'>
-                        <p >Expiration: </p>
-                        <p className='font-semibold'>{`${item.card.exp_month}/${item.card.exp_year}`}</p>
+                        <p className='text-[13px] sm:text-[16px]'>Expiration: </p>
+                        <p className='font-semibold text-[13px] sm:text-[16px]'>{`${item.card.exp_month}/${item.card.exp_year}`}</p>
                         {
                             item.is_default == 1 ? (
 
@@ -75,7 +75,7 @@ export default function PaymentMethodItem({ item, setRefetch, deleteElement }) {
                             <Trash size={20} />
                         </div>
                     </AlertDialogTrigger>
-                    <AlertDialogContent >
+                    <AlertDialogContent className='w-[90%]'>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                             <AlertDialogDescription>
