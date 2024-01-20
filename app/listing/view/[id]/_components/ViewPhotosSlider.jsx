@@ -12,7 +12,7 @@ export default function ViewPhotosSlider({ images }) {
             // original:image.data_url,
             // thumbnail:image.data_url,
 //http://test.adexconnect.com/images/1699034873274.png
-            original: "https://picsum.photos/id/1018/1000/600/",
+            original: "http://test.adexconnect.com/images/1699034873274.png",
             thumbnail: "https://picsum.photos/id/1018/250/150/",
 
             originalClass: "custom-slider-image",
