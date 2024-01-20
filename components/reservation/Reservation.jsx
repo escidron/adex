@@ -59,6 +59,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     const [hasCompanySelected, setHasCompanySelected] = useState(false);
     const router = useRouter();
 
+
     useEffect(() => {
         async function getInfo() {
             const cards = await GetPaymentMethod()
@@ -100,13 +101,21 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, []);
 
     useEffect(() => {
+
         let hasDiscount = false
-        discounts.map((item) => {
-            if (counter >= item.duration) {
-                hasDiscount = true
-                setCurrentDiscount(item.discount)
+        
+        const appliedDiscount = discounts.reduce((prev, current) => {
+            if (counter >= current.duration && current.duration > prev.duration) {
+                return current;
+            } else {
+                return prev;
             }
-        })
+        }, { duration: 0, discount: 0 });
+
+        if (appliedDiscount.duration > 0) {
+            hasDiscount = true;
+            setCurrentDiscount(appliedDiscount.discount);
+        }
         if (!hasDiscount) {
             setCurrentDiscount(0)
         }
@@ -170,6 +179,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
             </div>
         )
     }
+
+
     return (
         <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
@@ -378,7 +389,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                             Please take a moment to carefully read the cancellation policy.
                         </DialogDescription>
                     </DialogHeader>
-                    <CancellationPolicy data={data} date={date}/>
+                    <CancellationPolicy data={data} date={date} />
                 </DialogContent>
             </Dialog>
         </div>
