@@ -76,7 +76,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
     //       }
     // }
     return (
-        <div className={`min-h-[100vh] bg-[#EFEFEF]  pt-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} `}>
+        <div className={`min-h-[100vh] bg-[#EFEFEF]  py-[100px] flex flex-col ${newData.length === 0 ? '' : 'relative'} `}>
             <div className="w-full  top-5 flex items-center px-[20px] mt-4 ">
                 <label className="sr-only">Search</label>
                 <div className="relative w-full ">
@@ -176,7 +176,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                     ) : (
 
                         <>
-                            <div className={` justify-center h-[80vh] pb-[50px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:p-2 xl:p-[10px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
+                            <div className={` justify-center h-[80vh] pb-[100px] mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 px-[50px] md:px-2 xl:px-[10px] sm:pb-[100px] ${newData.length > 0 ? 'overflow-y-scroll' : ''}`}>
 
                                 {newData.map((ad) => (
                                     <div key={ad.id} className='w-full flex justify-center'>
