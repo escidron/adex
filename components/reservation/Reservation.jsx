@@ -196,7 +196,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                 <DateFieldComponent
                                     date={date ? date : data.first_available_date}
                                     setDate={(newDate) => setDate(newDate)}
-                                    disabledDate={data.first_available_date}
+                                    disabledDate={data.first_available_date ? data.first_available_date : new Date()}
                                 />
                             </div>
                             <div className='w-[35%] flex flex-col items-center justify-end'>
