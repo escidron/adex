@@ -78,13 +78,13 @@ export default function Notifications() {
       <label htmlFor="privacy" className="text-[30px] mt-8">ADEX Notifications</label>
       <div className="flex justify-between items-center  w-full mt-8">
         <div className="">
-          <h1 className="text-[18px] font-bold ">Reminders</h1>
-          <p>Wrap up Emails about content you missed</p>
+          <h1 className="text-[18px] font-bold ">Email Notifications</h1>
+          <p>Enable email notifications</p>
         </div>
         <PinkSwitch {...label} defaultChecked sx={{marginLeft:'10px'}}/>
       </div>
 
-      <div className="flex justify-between items-center w-full mt-8">
+      {/* <div className="flex justify-between items-center w-full mt-8">
         <div>
           <h1 className="text-[18px] font-bold ">Advertisement Updates </h1>
           <p>Changes to Advertisement</p>
@@ -98,34 +98,7 @@ export default function Notifications() {
           <p>When others repost your content</p>
         </div>
         <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
-      </div>
-
-      <Divider variant="middle" sx={{color:'black',width:'100%',marginTop:'20px',marginBottom:'20px'}} />
-      <label htmlFor="privacy" className="text-[24px] sm:text-[26px] md:text-[30px]">Marketing Communications</label>
-      <div className="flex justify-between items-center  w-full mt-8">
-        <div className="">
-          <h1 className="text-[18px] font-bold ">Sales & Promotions</h1>
-          <p>We only notify you for significant promotions</p>
-        </div>
-        <PinkSwitch {...label} defaultChecked sx={{marginLeft:'10px'}}/>
-      </div>
-
-      <div className="flex justify-between items-center w-full mt-8">
-        <div>
-          <h1 className="text-[18px] font-bold ">Product updates</h1>
-          <p>Major changes in our product offering</p>
-        </div>
-        <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
-      </div>
-
-      <div className="flex justify-between items-center w-full mt-8 mb-[200px]">
-        <div>
-          <h1 className="text-[18px] font-bold ">Newsletter</h1>
-          <p>Updates on what’s going on here at ADEX.</p>
-        </div>
-        <PinkSwitch {...label} sx={{marginLeft:'10px'}} />
-      </div>
-
+      </div> */}
     </div>
   )
 }
