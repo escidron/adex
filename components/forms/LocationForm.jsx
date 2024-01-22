@@ -24,30 +24,10 @@ export default function LocationForm({ ListingContext }) {
     }
 
     return (
-        <div className='w-full flex flex-col items-center lg:flex-row lg:justify-around lg:items-start max-w-[1200px] overflow-y-auto mx-auto'>
-            <Card className='w-full max-w-[450px] h-[180px] lg:hidden'>
-                <CardHeader>
-                    <CardTitle className='flex gap-2 items-center'>
-                        <div className='w-[50px]'>
-                            <Image
-                                src='/note.png'
-                                alt="note icon"
-                                priority
-                                width={2000}
-                                height={2000}
-                                className='w-full'
-
-                            />
-                        </div>
-                        Location
-                    </CardTitle>
-                    <CardDescription>For Ads that do not have a physical location (such wearables, media, vehicle, etc.), please use your home address. Otherwise, please use the address where the Ad will appear. </CardDescription>
-                </CardHeader>
-            </Card>
+        <div className='w-full flex flex-col-reverse items-center lg:flex-row lg:justify-around lg:items-start max-w-[1200px] overflow-y-auto mx-auto'>
             <div className='w-full max-w-[450px] mt-4'>
                 <div className='flex flex-col'>
                     <h1 className='text-[28px] md:text-[32px]'>Location</h1>
-                    {/* <p className='text-[18px] text-gray-500'>Enter a the location</p> */}
                 </div>
                 <div className=' mt-4'>
                     <MapCoordinatesContext.Provider value={[coords, setCoords]}>
@@ -61,7 +41,7 @@ export default function LocationForm({ ListingContext }) {
                     </MapCoordinatesContext.Provider>
                 </div>
             </div>
-            <Card className='hidden lg:flex w-full mt-[50px] max-w-[450px] h-[180px] lg:mt-0'>
+            <Card className='flex w-full mt-[50px] max-w-[450px] h-[180px] lg:mt-0'>
                 <CardHeader>
                     <CardTitle className='flex gap-2 items-center'>
                         <div className='w-[50px]'>
@@ -72,12 +52,11 @@ export default function LocationForm({ ListingContext }) {
                                 width={2000}
                                 height={2000}
                                 className='w-full'
-
                             />
                         </div>
                         Location
                     </CardTitle>
-                    <CardDescription>For Ads that do not have a physical location (such wearables, media, vehicle, etc.), please use your home address. Otherwise, please use the address where the Ad will appear. </CardDescription>
+                    <CardDescription>For Ads that do not have a physical location (such as wearables, media, vehicle, etc.), please use your home address. Otherwise, please use the address where the Ad will appear. </CardDescription>
                 </CardHeader>
             </Card>
         </div>
