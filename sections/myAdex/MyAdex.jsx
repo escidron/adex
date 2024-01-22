@@ -66,7 +66,7 @@ export default function MyAdex() {
     async function getInfo() {
       let checkPayout
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
-      const {myBookings,bookingStatus} = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
+      const { myBookings, bookingStatus } = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
 
       const user = await GetUserProfile()
       const companies = await GetCompanies()
@@ -80,9 +80,9 @@ export default function MyAdex() {
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
 
-          setBookingData(() =>newBookings)
+          setBookingData(() => newBookings)
           setListingData(() => newListing)
-          setStatus(() =>newStatus)
+          setStatus(() => newStatus)
           setBookingStatus(bookingStatus)
           setSelectedCompany(() => companies[0].company_name)
           setSelectedCompanyId(() => companies[0].id)
@@ -91,13 +91,13 @@ export default function MyAdex() {
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
         if (myListing.length > 0) {
-          setListingData(() =>myListing)
-        }else{
+          setListingData(() => myListing)
+        } else {
           setListingData([])
         }
-        setStatus(() =>status)
-        setBookingStatus(() =>bookingStatus)
-        setBookingData(() =>myBookings)
+        setStatus(() => status)
+        setBookingStatus(() => bookingStatus)
+        setBookingData(() => myBookings)
 
       }
 
@@ -141,7 +141,7 @@ export default function MyAdex() {
       } else if (item.status == "4") {
         status.pending++;
         status.all++;
-      }else if (item.status == "5") {
+      } else if (item.status == "5") {
         status.expired++;
         status.all++;
       }
@@ -207,15 +207,15 @@ export default function MyAdex() {
         <div className='w-full 2xl:w-[60%]'>
           <RefreshContext.Provider value={[refresh, setRefresh]}>
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
-              <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData ={(newData)=>setListingData (newData)}/>
-              <MyBookings label='My Booking' data={bookingData} status={bookingStatus} isContentLoaded={isContentLoaded} setBookingData ={(newData)=>setBookingData (newData)} />
+              <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData={(newData) => setListingData(newData)} />
+              <MyBookings label='My Booking' data={bookingData} status={bookingStatus} isContentLoaded={isContentLoaded} setBookingData={(newData) => setBookingData(newData)} />
             </TabsComponent>
           </RefreshContext.Provider>
         </div>
         {
           isContentLoaded && !hasPayoutMethod && listingData.length > 0 && value == '0' && (
 
-            <Card className='w-full mt-[50px] 2xl:max-w-[550px] h-fit ml-[80px] mx-auto ' >
+            <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
               <CardHeader>
                 <CardTitle className='flex gap-2 items-center'>
                   <div className='w-[25px]'>
@@ -231,7 +231,8 @@ export default function MyAdex() {
                   </div>
                   Set Up Your Payout Method
                 </CardTitle>
-                <CardDescription className='mt-3'>To ensure the visibility of your advertisements and allow potential viewers to explore and book them, it&apos;s mandatory to set up at least one Payout Method. Without a registered Payout Method, your advertisements will not be visible to others. After register, all your listings will automatically become visible.</CardDescription>
+                <CardDescription className='mt-3 text-[14px]'>To enable visibility of your Ads and allow buyers to view and explore them, a <b>Payout</b> method (typically your bank account) is required.
+                  Once your <b>Payout</b> method is added, all of your listings / Ads will automatically become visible.</CardDescription>
               </CardHeader>
               <CardContent>
                 <AddAccountModals
