@@ -47,7 +47,7 @@ export const faqArray = [
   {
     id: 10,
     question: "How do I contact the seller?",
-    answer: "As with other popular marketplaces, utilize our platform messenger to determine connect with sellers regarding logistics, ad material hand-off or placement, on-site verification visits, etc.",
+    answer: "As with other popular marketplaces, utilize our platform messenger to connect with sellers regarding logistics, ad material hand-off or placement, on-site verification visits, etc.",
   },
   {
     id:11,

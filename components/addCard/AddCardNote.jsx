@@ -25,7 +25,7 @@ export default function AddCardNote() {
                     </div>
                     Payment methods
                 </CardTitle>
-                <CardDescription>When you book a listing, payment methods are the ways you can pay for the booking.</CardDescription>
+                <CardDescription>A payment method (credit card) is required to book a listing.</CardDescription>
             </CardHeader>
         </Card>
     )
