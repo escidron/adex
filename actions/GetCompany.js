@@ -17,7 +17,7 @@ export default async function GetCompany(id) {
         const company = await response.json();
         return company;
       } else {
-        return null;
+        return [];
       }
     } catch (error) {
       console.log(error);
