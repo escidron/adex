@@ -211,7 +211,7 @@ export default function Listing({ params }) {
                                 />
                                 <h1 className='text-[#FCD33B] font-[600] mt-2'>ADEX CONNECT</h1>
                                 <p className='mt-1'>Book this place and put your assets here.</p>
-                                <QrCodeComponent value={`${process.env.NEXT_PUBLIC_SERVER_IP}/market-place/details?id=${listingProperties.id}`}/>
+                                <QrCodeComponent value={`https://adexconnect.com/market-place/details?id=${listingProperties.id}`}/>
                             </div>
                         </div>
                     ) : (
