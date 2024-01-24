@@ -28,6 +28,7 @@ import BuyerDetails from '@/app/market-place/details/_components/BuyerDetails'
 import Reviews from '@/app/market-place/details/_components/Reviews'
 import QrCodeComponent from './_components/QrCodeComponent'
 import Image from 'next/image'
+import QrCodeInfo from './_components/QrCodeInfo'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -202,17 +203,7 @@ export default function Listing({ params }) {
                             <Separator className='my-6' />
                             <Reviews listingId={listingProperties.id} />
                             <Separator className='my-6' />
-                            <div className='mx-auto w-full max-w-[800px] rounded-lg flex flex-col items-center bg-black text-white p-[50px]'>
-                                <Image
-                                    src='/adex-logo-white-yellow.png'
-                                    alt="Adex Logo"
-                                    width={70}
-                                    height={70}
-                                />
-                                <h1 className='text-[#FCD33B] font-[600] mt-2'>ADEX CONNECT</h1>
-                                <p className='mt-1'>Book this place and put your assets here.</p>
-                                <QrCodeComponent value={`https://adexconnect.com/market-place/details?id=${listingProperties.id}`}/>
-                            </div>
+                            <QrCodeInfo id={listingProperties.id} />
                         </div>
                     ) : (
                         <PageSkeleton />
