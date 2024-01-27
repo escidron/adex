@@ -33,8 +33,7 @@ export default function QrCodeInfo({ id }) {
                     width={70}
                     height={70}
                 />
-                <h1 className='text-[#FCD33B] font-[600] mt-2'>ADEX CONNECT</h1>
-                <p className='mt-1'>Book this place and put your assets here.</p>
+                <p className='mt-1'>Reach more people, place your ad here.</p>
                 <QrCodeComponent value={`https://adexconnect.com/market-place/details?id=${id}`} />
             </div>
             <Button onClick={handleDownload} className='mt-6 gap-2'>
