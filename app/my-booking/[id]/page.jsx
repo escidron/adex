@@ -22,6 +22,9 @@ import SellerDetails from '@/app/market-place/details/_components/SellerDetails'
 import GetUserProfile from '@/actions/GetUserProfile'
 import GetCompany from '@/actions/GetCompany'
 import Reviews from '@/app/market-place/details/_components/Reviews'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import ContactSeller from '@/app/market-place/details/_components/ContactSeller'
 
 export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -32,7 +35,7 @@ export default function Booking({ params }) {
     const [sellerProfile, setSellerProfile] = useState(null);
     const [companyProfile, setCompanyProfile] = useState(null);
     const id = params.id
-
+    const router = useRouter()
     useEffect(() => {
 
         async function getInfo() {
@@ -50,7 +53,7 @@ export default function Booking({ params }) {
                 setListingProperties({
                     id: myListing.id,
                     created_by: myListing.created_by,
-                    created_at:myListing.created_at,
+                    created_at: myListing.created_at,
                     requested_by: myListing.requested_by,
                     sub_category: myListing.category_id,
                     title: myListing.title,
@@ -78,7 +81,7 @@ export default function Booking({ params }) {
                     seller_image: myListing.seller_image,
                     seller_id: myListing.created_by,
                     ad_duration_type: myListing.ad_duration_type,
-                    rating:myListing.rating
+                    rating: myListing.rating
                 });
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
@@ -129,7 +132,7 @@ export default function Booking({ params }) {
 
     return (
         <>
-            <TopBar route={'/my-profile?tab=5&sub-tab=1'}/>
+            <TopBar route={'/my-profile?tab=5&sub-tab=1'} />
             <div className={`h-full w-full mt-[80px] py-4 flex flex-col items-center justify-center`}>
                 {
                     isContentLoaded ? (
@@ -144,7 +147,11 @@ export default function Booking({ params }) {
                                         <Preview value={listingProperties.description} heigth={200} />
 
                                         <Separator className='my-6' />
-                                        <SellerDetails sellerId={listingProperties.seller_id} sellerProfile={sellerProfile} companyProfile={companyProfile} />
+                                        <SellerDetails
+                                            sellerId={listingProperties.seller_id}
+                                            sellerProfile={sellerProfile}
+                                            companyProfile={companyProfile}
+                                        />
 
                                         {
                                             (listingProperties.first_available_date || (listingProperties.date.from && listingProperties.date.to)) && (
@@ -173,7 +180,7 @@ export default function Booking({ params }) {
                                         }
                                     </div>
                                     {
-                                        statusPending  && (
+                                        statusPending && (
 
                                             <div className='w-full md:w-[40%] flex justify-end mt-2' >
                                                 <ApproveReservation
@@ -190,6 +197,17 @@ export default function Booking({ params }) {
                             </div>
                             <Separator className='my-6' />
                             <Reviews listingId={listingProperties.id} />
+                            <Separator className='my-6' />
+                            <ContactSeller listingProperties={listingProperties}/>
+                            {/* <div className='w-full max-w-[600px] '>
+                                <h1 className='text-[20px] font-[500]'>Need further clarification?</h1>
+                                <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${listingProperties.seller_name}.`}</p>
+                                <div className='flex gap-2 justify-start mt-4'>
+                                    <Button  className='flex gap-2 items-center' onClick={()=>router.push('/messages')}>
+                                        Contact Seller
+                                    </Button>
+                                </div>
+                            </div> */}
                         </div>
                     ) : (
                         <PageSkeleton />

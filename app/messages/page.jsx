@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 export default function MessagesPage() {
 
     const [messages, setMessages] = useState([]);
-    const [allChats, setallChats] = useState([]);
+    const [allChats, setAllChats] = useState([]);
     const [showMessages, setshowMessages] = useState(false);
     const [refetch, setRefetch] = useState(false);
     const [contentIsLoaded, setContentIsLoaded] = useState(false);
@@ -45,7 +45,7 @@ export default function MessagesPage() {
             const response = await GetNotifications()
             const allMessages = await GetChatMessages(key)
             setUser((prev) => ({ ...prev, notificationQuantity: response.length, notifications: response }))
-            setallChats(allMessages)
+            setAllChats(allMessages)
             setContentIsLoaded(true)
             const privateMessages = allMessages.filter(message => message.advertisement_id + message.seller_id + message.buyer_id == key);
             setMessages(privateMessages)
@@ -114,7 +114,7 @@ export default function MessagesPage() {
                 contentIsLoaded && (
                     <>
                         {
-                            allChats.length > 0 && (
+                            allChats.length > 0  && (
                                 <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>
                                     <div className={` md:block ${showMessages ? 'block h-[680px] w-[90%] md:w-[40%]' : 'hidden'} border shadow-sm w-[40%] md:h-[800px] bg-slate-100 rounded-lg overflow-y-scroll text-right`}>
                                         {
@@ -233,7 +233,7 @@ export default function MessagesPage() {
                             )
                         }
                         {
-                            allChats.length == 0 && (
+                            allChats.length == 0  && (
                                 <div className='mt-[200px] bg-[#FCD33B] h-[150px] rounded-lg p-4 flex flex-col items-center'>
                                     <h1 className='text-[32px]'>You don&apos;t have conversations yet</h1>
                                     <Button className='mt-6 gap-2' onClick={() => router.back()}>

@@ -3,7 +3,8 @@ export default async function SendChatMessage(
   seller_id,
   buyer_id,
   advertisement_id,
-  message
+  message,
+  filesNames
 ) {
   try {
     const response = await fetch(
@@ -21,6 +22,7 @@ export default async function SendChatMessage(
           buyer_id: buyer_id,
           advertisement_id: advertisement_id,
           message: message,
+          filesNames : filesNames
         }),
       }
     );

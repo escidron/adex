@@ -7,8 +7,9 @@ import ChatBox from './ChatBox';
 import { useEffect, useRef } from "react";
 import { Divider } from '@mui/material';
 import SendChatMessage from '@/actions/SendChatMessage';
+import getFilesLink from '@/utils/getFilesLink';
 
-export default function Chat({ messages, userId, setRefetch, advertisementId, createdBy, setMessages }) {
+export default function Chat({ messages, userId, advertisementId, createdBy, setMessages }) {
   const [message, setMessage] = useState('');
   const messageRef = useRef(null);
 
@@ -25,11 +26,11 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
 
   const sendMessage = async (e) => {
     e.preventDefault()
-    if(message){
+    if (message) {
 
       const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message)
-  
-      setMessages(prev=>([...prev, {
+
+      setMessages(prev => ([...prev, {
         ...prev[prev.length - 1], sended_by: userId,
         seller_id: createdBy,
         buyer_id: prev[0].buyer_id,
@@ -40,15 +41,17 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
     }
 
   }
-
   let dates = ''
 
+  console.log(`messages`, messages);
   return (
     <div className='flex-col w-full'>
       <div className='border shadow-sm w-full h-[540px] md:h-[745px] lg:h-[540px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >
 
         {
           messages.map((message, index) => {
+
+            const FilesArray = message.files ? getFilesLink(message.files) : []
             if (dates.substring(0, 10) != message.created_at.substring(0, 10)) {
               const date = new Date(message.created_at);
               const month = date.toLocaleString('en-US', { month: 'long' });
@@ -61,12 +64,14 @@ export default function Chat({ messages, userId, setRefetch, advertisementId, cr
                     <Divider variant="" sx={{ color: 'black', width: '100%' }} />
                     <p className='mt-[-10px] bg-slate-100 px-2 text-[12px] font-semibold'>{`${month} ${day},${year}`}</p>
                   </div>
-                  <ChatBox text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
+                    <ChatBox text={message.message} currentUser={message.sended_by == userId} time={message.created_at} file={FilesArray} />
                 </div>
               )
             }
             return (
-              <ChatBox key={message.id} text={message.message} currentUser={message.sended_by == userId} time={message.created_at} />
+              <div key={index + message.created_at}>
+                    <ChatBox text={message.message} currentUser={message.sended_by == userId} time={message.created_at} file={FilesArray} />
+              </div>
             )
           })
         }
