@@ -1,9 +1,11 @@
 export default function getFilesLink(files){
-    let FilesArray = files  ? files.split(`;`) : []
-
+    const  FilesArray = files  ? files.split(`;`) : []
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_IP; 
+    const httpImageUrl = serverUrl.replace("https://", "http://");
+    
     const filesLink = FilesArray.map(file=>{
 
-        return `${process.env.NEXT_PUBLIC_SERVER_IP}/images/files/${file}`
+        return `${httpImageUrl}/images/files/${file}`
     })
 
     return filesLink
