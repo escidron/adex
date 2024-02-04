@@ -7,20 +7,25 @@ export default function ChatBox({ text, currentUser, time, file }) {
 
   return (
     <div className={`w-full ${currentUser ? 'text-right' : 'text-left'}`}>
-      <div className={`p-2 rounded-xl max-w-[70%] inline-block ${currentUser ? 'bg-[#FCD33B] text-black shadow-md ' : 'bg-white shadow-md'} text-[14px] mt-2 mb-2`}>
+      <div className={`p-2 rounded-xl  min-w-[250px] max-w-[70%] inline-block ${currentUser ? 'bg-[#FCD33B] text-black shadow-md ' : 'bg-white shadow-md'} text-[14px] mt-2 mb-2`}>
         {
           file.length > 0 ? (
-            <div className="flex gap-2 min-w-[250px] justify-between items-center">
-              <div className="flex gap-2 items-center">
-                <File size={18} />
-                <p className="text-[15px] font-[500]">{file.length} file(s)</p>
+            <>
+              <div className="flex gap-2  justify-between items-center">
+                <div className="flex gap-2 items-center">
+                  <File size={18} />
+                  <p className="text-[15px] font-[500]">{file.length} file{file.length > 1 && 's'}</p>
+                </div>
+                <div onClick={() => { }} className='p-2 rounded-lg cursor-pointer hover:bg-slate-200 hover:text-black'>
+                  <Download size={18} onClick={async () => DownloadChatFiles(file)} />
+                </div>
               </div>
-              <div onClick={() => {}} className='p-2 z-[99] rounded-lg cursor-pointer hover:bg-slate-200 hover:text-black'>
-                <Download size={18} onClick={async () => DownloadChatFiles(file)} />
-              </div>
-            </div>
+              <p className="text-left">
+                {text}
+              </p>
+            </>
           ) : (
-            <p>
+            <p className="text-left">
               {text}
             </p>
 

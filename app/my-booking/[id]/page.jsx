@@ -199,15 +199,6 @@ export default function Booking({ params }) {
                             <Reviews listingId={listingProperties.id} />
                             <Separator className='my-6' />
                             <ContactSeller listingProperties={listingProperties}/>
-                            {/* <div className='w-full max-w-[600px] '>
-                                <h1 className='text-[20px] font-[500]'>Need further clarification?</h1>
-                                <p className='text-[14px] text-gray-700'>{`Feel free to reach out to ${listingProperties.seller_name}.`}</p>
-                                <div className='flex gap-2 justify-start mt-4'>
-                                    <Button  className='flex gap-2 items-center' onClick={()=>router.push('/messages')}>
-                                        Contact Seller
-                                    </Button>
-                                </div>
-                            </div> */}
                         </div>
                     ) : (
                         <PageSkeleton />

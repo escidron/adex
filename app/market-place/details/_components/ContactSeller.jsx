@@ -34,14 +34,12 @@ export default function ContactSeller({ listingProperties }) {
             const formData = new FormData();
             const filesNames = []
             uploadFiles.forEach((file, index) => {
-                formData.append(`files`, file);
+                formData.append('files', file);
                 filesNames.push(file.name)
             });
             const filesResponse = await SendFiles(formData)
-            console.log(`files names`,filesNames);
             const messageResponse = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message, filesNames)
             
-            //todo implement the send message and storage the id of the chat
             setMessage('')
             setUploadFiles([])
             setIsPending(false)
