@@ -39,16 +39,18 @@ export default function Chat({ messages, userId, advertisementId, createdBy, set
         formData.append('files', file);
         filesNames.push(file.name)
       });
+      const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message, filesNames)
       const filesResponse = await SendFiles(formData)
 
-      const response = await SendChatMessage(userId, createdBy, messages[0].buyer_id, advertisementId, message, filesNames)
 
       setMessages(prev => ([...prev, {
         ...prev[prev.length - 1], sended_by: userId,
         seller_id: createdBy,
         buyer_id: prev[0].buyer_id,
         advertisement_id: advertisementId,
-        message: message
+        message: message,
+        files:filesNames.join(';')
+
       }]))
       setMessage('')
       setUploadFiles([])
