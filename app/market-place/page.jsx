@@ -95,6 +95,7 @@ export default function MarketPlace() {
       }
 
       let types = "";
+      let typeArray = "";
       if (type == 1) {
         types = "4,5,6,7,8";
       } else if (type == 2) {
@@ -108,7 +109,10 @@ export default function MarketPlace() {
         types = type
       }
 
-      const typeArray = types.split(",").map(Number);
+      if(types){
+
+         typeArray = types.split(",").map(Number);
+      }
       const isKeyFound = findKeyWords(ad, key, categories)
      
       const filterConditions = [
