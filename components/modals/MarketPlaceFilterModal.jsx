@@ -9,11 +9,7 @@ import {
 } from "next/navigation";
 
 import { useContext, useState } from 'react'
-import { Divider } from '@mui/material';
 import { MapCoordinatesContext } from '@/app/market-place/page';
-import { Button } from '../ui/button';
-import { DialogFooter, DialogTrigger } from '../ui/dialog';
-import PlacesAutocomplete from '../placesAutocomplete/PlacesAutocomplete';
 import { NewSearchAddress } from '../placesAutocomplete/NewSearchAddress';
 
 const radiusValues = [100, 500, 1000, 2000]
@@ -23,10 +19,6 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const [filters, setFilters] = useState([]);
     const [coords, setCoords] = useContext(MapCoordinatesContext)
 
-    // const [coords, setCoords] = useState({
-    //     lat: -3.745,
-    //     lng: -38.523
-    // });
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -58,11 +50,9 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
 
     };
 
-    const applyFilter = () => {
-        setOpenFilter(false)
-    }
-
-
+    // const applyFilter = () => {
+    //     setOpenFilter(false)
+    // }
 
     const handleCoords = (coords) => {
         onClick('coords',coords)

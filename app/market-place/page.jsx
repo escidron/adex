@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState, createContext, useContext, useMemo } from 'react'
-import axios from 'axios';
 import Map from '@/components/map/Map';
 import { useRouter, useSearchParams } from 'next/navigation';
 import haversine_distance from '@/utils/haversine_distance';
@@ -33,7 +32,7 @@ export default function MarketPlace() {
   const key = params.get("key");
   const latitude = params.get("latitude")
   const longitude = params.get("longitude")
-
+  console.log('key',key);
   const router = useRouter();
   useEffect(() => {
     if (located) {
@@ -102,18 +101,25 @@ export default function MarketPlace() {
         types = "9,10,11,12";
       } else if (type == 3) {
         types = "17,18";
+      }else if(type == 13 || type == 14 || type == 15 || type == 16){
+        types = "9";
+      }
+      else{
+        types = type
       }
 
+      const typeArray = types.split(",").map(Number);
       const isKeyFound = findKeyWords(ad, key, categories)
+     
       const filterConditions = [
         distance < radius || radius == 2000,
-        type ? types.includes(ad.category_id) : true,
+        type ? typeArray.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
         (ad.price >= priceMin && ad.price <= priceMax),
         key ? isKeyFound : true
 
       ];
-
+      console.log('filterConditions'+ad.title,filterConditions)
       return filterConditions.every(condition => condition);
     });
   }, [allData, located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);

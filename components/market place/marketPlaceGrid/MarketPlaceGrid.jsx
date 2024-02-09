@@ -1,9 +1,8 @@
 "use client"
 import MarketPlaceCard from '../marketPlaceCard/MarketPlaceCard';
-import PlacesAutocomplete from '../../placesAutocomplete/PlacesAutocomplete';
 import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
-import MarketPlaceFooter from '@/components/footer/MarketPlaceFooter'
 import qs from "query-string";
+import MarketPlaceCardSkeleton from '../marketPlaceCard/MarketPlaceCardSkeleton';
 
 import { useState, useEffect } from 'react'
 import { SlidersHorizontal } from 'lucide-react';
@@ -20,14 +19,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
-import MarketPlaceCardSkeleton from '../marketPlaceCard/MarketPlaceCardSkeleton';
 import { Divider } from '@mui/material';
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
-    const [selected, setSelected] = useState(null);
-    const [address, setAddress] = useState('');
-    const [showFilterModal, setShowFilterModal] = useState(true);
     const [openFilter, setOpenFilter] = useState(false);
 
     const [value, setValue] = useState("")
@@ -55,7 +50,7 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                 type: type,
                 priceMin: priceMin,
                 priceMax: priceMax,
-                key: debouncedValue,
+                key: debouncedValue ? debouncedValue : key,
                 latitude: latitude,
                 longitude: longitude
             }
