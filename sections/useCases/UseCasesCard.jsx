@@ -11,7 +11,6 @@ import Image from 'next/image'
 
 
 export default function UseCasesCard({ content }) {
-    console.log('conten image',content);
     return (
         <Card className='w-full h-[510px]' key={content.id}>
             <CardHeader>
@@ -20,7 +19,7 @@ export default function UseCasesCard({ content }) {
                 </CardTitle>
             </CardHeader>
             <CardContent >
-                <div className='w-full pb-2 mt-6 h-[180px] xl:h-[300px]  flex justify-between '>
+                <div className='w-full aspect-square pb-2 mt-6 h-[200px] lg:h-[250px] xl:h-[300px]  flex justify-between '>
                     <Image
                         src={`/${content.image}`}
                         alt="use case image"
