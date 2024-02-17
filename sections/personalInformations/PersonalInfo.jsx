@@ -4,11 +4,22 @@ import axios from 'axios';
 import DropImageArea from '@/components/dropImageArea/DropImageArea';
 
 import { useState, useEffect } from 'react';
-import { Divider } from '@mui/material';
+import { Divider, Skeleton } from '@mui/material';
 import { Edit, Eye, EyeOff } from 'lucide-react';
 import { TextAreaEditor } from '@/components/textarea/TextAreaEditor';
 import { Preview } from '@/components/textarea/TextAreaReader';
 import { Button } from '@/components/ui/button';
+import { Switch } from "@/components/ui/switch"
+import PlataformDropdown from './_components/PlataformDropdown';
+import PlataformCards from './_components/PlataformCards';
+import GetSocialMediaInfo from '@/actions/GetSocialMediaInfo';
+import SetIsContentCreator from '@/actions/SetIsContentCreator';
+import toast from 'react-hot-toast';
+import PreferencesDropdown from './_components/PreferencesDropdown';
+import PreferencesCards from './_components/PreferencesCards';
+import GetAudiencePreference from '@/actions/GetAudiencePreference';
+import RemovePreference from '@/actions/RemovePreference';
+import RemovePlataform from '@/actions/RemovePlataform';
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
@@ -17,6 +28,10 @@ export default function PersonalInfo() {
   const [gallery, setGallery] = useState([]);
   const [images, setImages] = useState([]);
   const [remove, setRemove] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  // const [isContentCreator, setIsContentCreator] = useState(false);
+  const [plataforms, setPlataforms] = useState([]);
+  const [preferences, setPreferences] = useState([]);
 
   const [user, setUser] = useState({
     name: '',
@@ -33,7 +48,8 @@ export default function PersonalInfo() {
     bioIsPublic: '0',
     city: '',
     cityIsPublic: '0',
-    userType: '0'
+    userType: '0',
+    isContentCreator: false
   });
 
   useEffect(() => {
@@ -48,6 +64,8 @@ export default function PersonalInfo() {
       if (response.status === 200) {
         const res = await response.json()
         setUser(res)
+        setIsLoading(false)
+
       }
     }
     GetUserProfile();
@@ -109,6 +127,27 @@ export default function PersonalInfo() {
         });
     }
   }, [refetch]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await GetSocialMediaInfo();
+      if(response){
+        setPlataforms(response)
+      }
+    }
+    fetchData();
+
+  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await GetAudiencePreference();
+      if(response){
+        setPreferences(response)
+      }
+    }
+    fetchData();
+
+  }, []);
 
   const handleSex = (e) => {
     const id = e.currentTarget.id
@@ -181,6 +220,33 @@ export default function PersonalInfo() {
   const handleDescription = (description) => {
     setUser({ ...user, bio: description })
   }
+  const handleIsContentCreator = async () => {
+    const response = await SetIsContentCreator(!user.isContentCreator)
+    if(response){
+      setUser({...user,isContentCreator:!user.isContentCreator})
+      return
+    }
+    toast.error("Something went wrong")
+  }
+
+  const handleDeletePlataform = async (id)=>{
+    const isRemoved = await RemovePlataform(id)
+    if(isRemoved){
+      const newPlataforms  = plataforms.filter(item=>item.name != id)
+      console.log('plataformaray',newPlataforms);
+      setPlataforms(newPlataforms)
+    }
+    console.log('id',id)
+}
+  const handleDeletePreference = async (id)=>{
+    const isRemoved = await RemovePreference(id)
+    if(isRemoved){
+      const newPreferences  = preferences.filter(item=>item != id)
+      setPreferences(newPreferences)
+    }
+    console.log('id',id)
+}
+
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
       <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-[80%] max-w-[650px] ">
@@ -206,9 +272,16 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Name</p>
-                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.name != 'null' && user.name ? user.name : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.name != 'null' && user.name ? user.name : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div onClick={() => { setCurrentInfo('name') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                     <Edit color='gray' size={18} />
@@ -237,9 +310,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Last Name</p>
-                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.lastName != 'null' && user.lastName ? user.lastName : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.lastName != 'null' && user.lastName ? user.lastName : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div onClick={() => { setCurrentInfo('lastname') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                     <Edit color='gray' size={18} />
@@ -267,9 +346,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Email</p>
-                    <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap '>{user.email != 'null' && user.email ? user.email : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[300px] overflow-hidden overflow-ellipsis whitespace-nowrap '>{user.email != 'null' && user.email ? user.email : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div onClick={() => { setCurrentInfo('email') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                     <Edit color='gray' size={18} />
@@ -297,9 +382,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Phone Number</p>
-                    <p className='font-[300] text-gray-600'>{user.phone != 'null' && user.phone ? user.phone : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600'>{user.phone != 'null' && user.phone ? user.phone : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div onClick={() => { setCurrentInfo('phone') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
                     <Edit color='gray' size={18} />
@@ -332,9 +423,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>User Handle</p>
-                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.handle != 'null' && user.handle ? user.handle : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => handlePublicInfo('handle')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
@@ -374,9 +471,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>City</p>
-                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.city != 'null' && user.city ? user.city : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => handlePublicInfo('city')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
@@ -416,9 +519,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Profession</p>
-                    <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap' >{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap' >{user.profession != 'null' && user.profession ? user.profession : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => handlePublicInfo('profession')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
@@ -477,9 +586,15 @@ export default function PersonalInfo() {
                 </>
               ) : (
                 <>
-                  <div>
+                  <div className='w-full'>
                     <p className='font-[600]'>Sex</p>
-                    <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? (user.sex == 1 ? 'Male' : user.sex == 2 ? 'Female' : user.sex == 3 ? 'Other' : '') : 'Not Provided'}</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600'>{user.sex != 'null' && user.sex ? (user.sex == 1 ? 'Male' : user.sex == 2 ? 'Female' : user.sex == 3 ? 'Other' : '') : 'Not Provided'}</p>
+                      )
+                    }
                   </div>
                   <div className='flex gap-2'>
                     <div onClick={() => handlePublicInfo('sex')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
@@ -518,9 +633,15 @@ export default function PersonalInfo() {
                 <>
                   <div className='w-full'>
                     <p className='font-[600]'>Who I Am</p>
-                    <div className='w-full'>
-                      <Preview value={user.bio != 'null' && user.bio ? user.bio : 'Not Provided'} heigth={200} autoHeigth={true} />
-                    </div>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'60px'} className='mt-2' />
+                      ) : (
+                        <div className='w-full'>
+                          <Preview value={user.bio != 'null' && user.bio ? user.bio : 'Not Provided'} heigth={200} autoHeigth={true} />
+                        </div>
+                      )
+                    }
                   </div>
 
                   <div className='flex gap-2'>
@@ -544,6 +665,23 @@ export default function PersonalInfo() {
             }
           </div>
 
+          <div className='w-full flex justify-between items-center mt-8'>
+            <p className='font-[600]'>Are you a Content Creator?</p>
+            <Switch checked={user.isContentCreator} onCheckedChange={handleIsContentCreator} />
+          </div>
+          {
+            user.isContentCreator && (
+              <>
+                <p className='font-[500] text-[24px] mt-4'>Plataforms & Followers</p>
+                <PlataformDropdown setPlataforms={(newPlataform) => setPlataforms(newPlataform)} plataforms={plataforms} />
+                <PlataformCards plataforms={plataforms} handleDeletePlataform={(id)=>handleDeletePlataform(id)}/>
+                
+                <p className='font-[500] text-[24px] mt-4'>Audience preferences</p>
+                <PreferencesDropdown setPreferences={(newPreference) => setPreferences(newPreference)} preferences={preferences}/>
+                <PreferencesCards preferences={preferences} handleDeletePreference={(id)=>handleDeletePreference(id)}/>
+              </>
+            )
+          }
 
         </div>
 

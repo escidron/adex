@@ -25,9 +25,10 @@ import { useContext } from 'react'
 import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
+import MediaTypesForm from '@/components/forms/MediaTypesForm'
 
 
-const requiredFields = ['select_business', 'category', 'sub_category', 'title', 'location', 'description', 'price', 'images']
+const requiredFields = ['select_business', 'category', 'sub_category','media_types', 'title', 'location', 'description', 'price', 'images']
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -79,10 +80,16 @@ export default function Listing({ params }) {
 
     const handleNext = () => {
         setIsPending(true)
+        let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
-        const isValid = listingMachine.states[nextRoute].ISVALID
-        if (!isValid) {
-            nextRoute = validRoute(nextRoute, 'NEXT')
+        let isValid = listingMachine.states[nextRoute].ISVALID
+        
+        while (!isValid && !force) {
+            ({ nextRoute, force } = validRoute(nextRoute, 'NEXT'))
+            
+            isValid = listingMachine.states[nextRoute].ISVALID
+            force = force
+            console.log('xxxxxx')
         }
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
@@ -93,13 +100,15 @@ export default function Listing({ params }) {
 
     const handlePrevious = () => {
         setIsPending(true)
-
+        let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
+        let isValid = listingMachine.states[nextRoute].ISVALID
 
-        const isValid = listingMachine.states[nextRoute].ISVALID
-
-        if (!isValid) {
-            nextRoute = validRoute(nextRoute, 'PREVIOUS')
+        while (!isValid && !force) {
+            ({ nextRoute, force } = validRoute(nextRoute, 'PREVIOUS'))
+            
+            isValid = listingMachine.states[nextRoute].ISVALID
+            force = force
         }
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep - 1 }))
@@ -109,15 +118,24 @@ export default function Listing({ params }) {
     }
 
     const validRoute = (url, direction) => {
-        let validRoute
-
+        let nextRoute
+        let force = false
         switch (url) {
             case 'building_assets':
-
                 if (listingProperties.sub_category == 9) {
-                    validRoute = url;
+                    nextRoute = url;
+                    force = true
                 } else {
-                    validRoute = listingMachine.states[url][direction];
+                    nextRoute = listingMachine.states[url][direction];
+                }
+
+                break;
+            case 'media_types':
+                if (listingProperties.sub_category == 7) {
+                    nextRoute = url;
+                    force = true
+                } else {
+                    nextRoute = listingMachine.states[url][direction];
                 }
 
                 break;
@@ -125,26 +143,32 @@ export default function Listing({ params }) {
             case 'discounts':
 
                 if (advertisementType == 1) {
-                    validRoute = listingMachine.states[url][direction];
+                    nextRoute = listingMachine.states[url][direction];
                 } else {
-                    validRoute = url;
+                    nextRoute = url;
+                    force = true
+
                 }
 
                 break;
             case 'date':
 
                 if (advertisementType == 1) {
-                    validRoute = url;
+                    nextRoute = url;
+                    force = true
+
                 } else {
-                    validRoute = listingMachine.states[url][direction];
+                    nextRoute = listingMachine.states[url][direction];
                 }
 
                 break;
             default:
-                validRoute = url;
+                nextRoute = url;
+                force = true
+
                 break;
         }
-        return validRoute
+        return {nextRoute,force}
     }
 
     //control the amount of steps,depends of the user sub category choice and type of user
@@ -156,7 +180,7 @@ export default function Listing({ params }) {
                 if (categoryType == 1) {
                     setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
                 } else {
-                    if (listingProperties.sub_category != 9) {
+                    if (listingProperties.sub_category != 9 && listingProperties.sub_category != 7) {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
                     } else {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
@@ -179,7 +203,6 @@ export default function Listing({ params }) {
         }
         //restart this params when change the listing type
     }
-
     const createListing = (isDraft) => {
         if (isDraft) {
             setIsDrafPending(true)
@@ -199,6 +222,7 @@ export default function Listing({ params }) {
                 images: listingProperties.images,
                 ad_duration_type: listingProperties.otherListingType ? listingProperties.otherListingType : advertisementType,
                 sub_asset_type: listingProperties.building_asset,
+                media_types: listingProperties.media_types,
                 per_unit_price: advertisementType == '2' ? listingProperties.price : null,
                 discounts: listingProperties.discounts,
                 company_id: selectedCompany,
@@ -260,6 +284,7 @@ export default function Listing({ params }) {
                 {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
                 {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
                 {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
+                {step === 'media_types' && <MediaTypesForm ListingContext={ListingContext} />}
                 {step === 'title' && <TitleForm ListingContext={ListingContext} />}
                 {step === 'location' && <LocationForm ListingContext={ListingContext} />}
                 {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}

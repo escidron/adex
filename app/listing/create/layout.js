@@ -18,6 +18,7 @@ export default function ListingLayout({ children }) {
     category: "",
     sub_category: "",
     building_asset: "13",
+    media_types: "",
     title: "",
     location: "",
     latitude: 0,

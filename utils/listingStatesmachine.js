@@ -21,14 +21,20 @@ const listingMachine = {
 
         },
         building_assets:{
-            NEXT:'title',
+            NEXT:'media_types',
             PREVIOUS:'sub_category',
+            ISVALID:    false
+
+        },
+        media_types:{
+            NEXT:'title',
+            PREVIOUS:'building_assets',
             ISVALID:    false
 
         },
         title:{
             NEXT:'location',
-            PREVIOUS:'building_assets',
+            PREVIOUS:'media_types',
             ISVALID:    true
         },
         location:{
