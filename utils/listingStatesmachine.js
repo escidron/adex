@@ -40,7 +40,7 @@ const listingMachine = {
         location:{
             NEXT:'description',
             PREVIOUS:'title',
-            ISVALID:    true
+            ISVALID:    false
         },
         description:{
             NEXT:'price',

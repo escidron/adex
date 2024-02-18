@@ -104,8 +104,9 @@ export default function MarketPlace() {
         types = "17,18";
       }else if(type == 13 || type == 14 || type == 15 || type == 16){
         types = "9";
-      }
-      else{
+      }else if(type == 4 ){
+        types = "7"
+      }else{
         types = type
       }
 
@@ -116,7 +117,7 @@ export default function MarketPlace() {
       const isKeyFound = findKeyWords(ad, key, categories)
      
       const filterConditions = [
-        distance < radius || radius == 2000,
+        distance < radius || radius == 2000 || ad.category_id == 7,
         type ? typeArray.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
         (ad.price >= priceMin && ad.price <= priceMax),

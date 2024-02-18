@@ -98,12 +98,18 @@ function Map({ newData, isDataLoaded, located }) {
                   <p className='text-[15px] font-[600]'>{selectedMarker.title}</p>
                   <div className='flex gap-1 mt-1'>
                     <MapPin size={14} color='gray' />
-                    <p className='text-[12px] text-gray-500 line-clamp-2'>{selectedMarker.address}</p>
+                    {
+                      selectedMarker.address ? (
+                        <p className='text-[12px] text-gray-500 line-clamp-2'>{selectedMarker.address}</p>
+                      ) : (
+                        <p className='text-[12px] text-gray-500 line-clamp-2'>Online Asset</p>
+                      )
+                    }
                   </div>
                   <div className='w-full flex justify-between mt-3'>
                     <p className='text-[16px] font-[600]' >{formatPrice(selectedMarker.price)}</p>
                     <div className="flex items-center justify-start">
-                      <RatingComponent readOnly={true} size='small' rating={selectedMarker.rating}/>
+                      <RatingComponent readOnly={true} size='small' rating={selectedMarker.rating} />
                     </div>
                   </div>
                 </div>

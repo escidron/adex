@@ -114,7 +114,7 @@ export default function MessagesPage() {
                 contentIsLoaded && (
                     <>
                         {
-                            allChats.length > 0  && (
+                            allChats.length > 0 && (
                                 <div className='w-[90%] max-w-[600px] md:max-w-[1000px] flex justify-center gap-2'>
                                     <div className={` md:block ${showMessages ? 'block h-[680px] w-[90%] md:w-[40%]' : 'hidden'} border shadow-sm w-[40%] md:h-[800px] bg-slate-100 rounded-lg overflow-y-scroll text-right`}>
                                         {
@@ -159,7 +159,13 @@ export default function MessagesPage() {
                                                             <h1 className='text-[24px] font-[600]'>{selectedChat.advertisementTitle}</h1>
                                                             <div className='flex gap-2 ml-[-5px] items-center'>
                                                                 <MapPin className='min-w-[14px] max-w-[14px]' />
-                                                                <p className='text-[12px] mt-[-3px] text-gray-600'>{selectedChat.advertisementAddress}</p>
+                                                                {
+                                                                    selectedChat.advertisementAddress ? (
+                                                                        <p className='text-[12px] mt-[-3px] text-gray-600'>{selectedChat.advertisementAddress}</p>
+                                                                    ) : (
+                                                                        <p className='text-[12px] mt-[-3px] text-gray-600'>Online Asset</p>
+                                                                    )
+                                                                }
                                                             </div>
                                                             <div className='flex mt-auto text-[20px] absolute bottom-[20px]'>
                                                                 ${selectedChat.advertisementPrice}/{selectedChat?.advertisementDurationType == '0' ? (<p className='text-[15px] text-gray-600 flex items-center'>Month</p>) : selectedChat?.advertisementDurationType == '2' ? (<p className='text-[15px] text-gray-600 flex items-center'>Units</p>) : ''}
@@ -233,11 +239,11 @@ export default function MessagesPage() {
                             )
                         }
                         {
-                            allChats.length == 0  && (
+                            allChats.length == 0 && (
                                 <div className='mt-[200px] bg-[#FCD33B] h-[150px] rounded-lg p-4 flex flex-col items-center'>
                                     <h1 className='text-[32px]'>You don&apos;t have conversations yet</h1>
                                     <Button className='mt-6 gap-2' onClick={() => router.back()}>
-                                        <ArrowLeft size={16}/>
+                                        <ArrowLeft size={16} />
                                         Back
                                     </Button>
                                 </div>

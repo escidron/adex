@@ -13,7 +13,7 @@ import { MapCoordinatesContext } from '@/app/market-place/page';
 import { NewSearchAddress } from '../placesAutocomplete/NewSearchAddress';
 
 const radiusValues = [100, 500, 1000, 2000]
-const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id: 3, label: 'Thing' }]
+const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id: 3, label: 'Thing' }, { id: 4, label: 'Online Assets' }]
 
 export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     const [filters, setFilters] = useState([]);

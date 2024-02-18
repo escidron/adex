@@ -34,7 +34,13 @@ export default function ListingHeader({ listingProperties, advertisementType, ha
             </div>
             <div className='flex items-start mt-4 gap-1'>
                 <MapPin size={14} color='gray' className='min-w-[14px] mt-[2px]' />
-                <h1 className='mt-[-2px] text-[15px] text-gray-500'>{listingProperties.location}</h1>
+                {
+                    listingProperties.location ? (
+                        <h1 className='mt-[-2px] text-[15px] text-gray-500'>{listingProperties.location}</h1>
+                    ) : (
+                        <h1 className='mt-[-2px] text-[15px] text-gray-500'>Online Asset</h1>
+                    )
+                }
             </div>
         </>
     )

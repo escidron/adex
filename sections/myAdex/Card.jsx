@@ -63,12 +63,18 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
 
                     </div>
                     <div className="flex gap-1 items-center min-w-[70px]">
-                        <RatingComponent readOnly={true} size='small' rating={item.rating}/>
+                        <RatingComponent readOnly={true} size='small' rating={item.rating} />
                         <p className='text-[12px] text-gray-600 mb-1'>({item.amount_reviews ? item.amount_reviews : 0})</p>
                     </div>
                     <div className='flex mt-1 gap-2'>
                         <MapPin size={14} color='gray' className='min-w-[14px]' />
-                        <p className='text-[12px] md:text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
+                        {
+                            item.address ? (
+                                <p className='text-[12px] md:text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>{item.address}</p>
+                            ) : (
+                                <p className='text-[12px] md:text-[14px] mt-[-3px] text-gray-500 line-clamp-2'>Online Asset</p>
+                            )
+                        }
                     </div>
                     <div className='flex gap-2 items-center '>
                         <div className='text-[14px] mt-2 w-full'>

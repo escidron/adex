@@ -89,7 +89,6 @@ export default function Listing({ params }) {
             
             isValid = listingMachine.states[nextRoute].ISVALID
             force = force
-            console.log('xxxxxx')
         }
         router.push(`/listing/create/${nextRoute}`)
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
@@ -139,6 +138,18 @@ export default function Listing({ params }) {
                 }
 
                 break;
+            case 'location':
+                if (listingProperties.sub_category != 7) {
+                    nextRoute = url;
+                    force = true
+                } else {
+                    nextRoute = listingMachine.states[url][direction];
+                    //clear the location for online assets
+                    setListingProperties({ ...listingProperties, location: '', longitude: 0, latitude: 0 })
+
+                }
+
+                break;
 
             case 'discounts':
 
@@ -180,7 +191,7 @@ export default function Listing({ params }) {
                 if (categoryType == 1) {
                     setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
                 } else {
-                    if (listingProperties.sub_category != 9 && listingProperties.sub_category != 7) {
+                    if (listingProperties.sub_category != 9 ) {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
                     } else {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))

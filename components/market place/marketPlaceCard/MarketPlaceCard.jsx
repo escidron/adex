@@ -17,7 +17,7 @@ export default function MarketPlaceCard({ ad }) {
         <MultiImage images={ad.image} height={'200px'} remove={false} />
         <p>
           <span className={`text-white absolute top-[20px] right-[20px] ${ad.status == "1" ? 'bg-green-600' : ad.status == "2" ? "bg-orange-600" : "bg-gray-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>
-            {ad.status == "1" ? 'Available' : ad.status == "2" ? 'Booked' : (ad.status == "4" && user.userId == ad.requested_by) ? 'Pending' :'Currently Unavailable'}
+            {ad.status == "1" ? 'Available' : ad.status == "2" ? 'Booked' : (ad.status == "4" && user.userId == ad.requested_by) ? 'Pending' : 'Currently Unavailable'}
           </span>
         </p>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
@@ -27,7 +27,13 @@ export default function MarketPlaceCard({ ad }) {
 
           <div className='flex gap-1'>
             <MapPin size={14} color='gray' className='min-w-[14px]' />
-            <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
+            {
+              ad.address ? (
+                <p className='text-[12px] text-gray-500 line-clamp-2'>{ad.address}</p>
+              ) : (
+                <p className='text-[12px] text-gray-500 line-clamp-2'>Online Asset</p>
+              )
+            }
           </div>
           <Preview value={ad.description} heigth={80} />
 
@@ -37,7 +43,7 @@ export default function MarketPlaceCard({ ad }) {
             }
             </p>
             <div className="flex gap-1 items-center min-w-[70px]">
-              <RatingComponent readOnly={true} size='small' rating={ad.rating}/>
+              <RatingComponent readOnly={true} size='small' rating={ad.rating} />
               <p className='text-[12px] text-gray-600'>({ad.amount_reviews ? ad.amount_reviews : 0})</p>
             </div>
           </div>

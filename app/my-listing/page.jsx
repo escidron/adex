@@ -138,7 +138,14 @@ export default function MyListing() {
                                                 <div className='flex advertisements-center  gap-1'>
                                                     {/* <LocationOnIcon sx={{ fontSize: '18px', color: 'gray' }} /> */}
                                                     <MapPin size={16} color='gray' />
-                                                    <h1 className='mt-[-2px] text-[15px] text-gray-500'>{advertisement.address}</h1>
+                                                    {
+                                                        advertisement.address ? (
+
+                                                            <h1 className='mt-[-2px] text-[15px] text-gray-500'>{advertisement.address}</h1>
+                                                        ) : (
+                                                            <h1 className='mt-[-2px] text-[15px] text-gray-500'>Online Asset</h1>
+                                                        )
+                                                    }
                                                 </div>
                                                 <h1 className='text-[15px] mt-4 line-clamp-3'>
                                                     {

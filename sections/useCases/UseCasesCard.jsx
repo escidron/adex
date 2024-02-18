@@ -12,7 +12,7 @@ import Image from 'next/image'
 
 export default function UseCasesCard({ content }) {
     return (
-        <Card className='w-full h-[510px]' key={content.id}>
+        <Card className='w-full h-[450px]' key={content.id}>
             <CardHeader>
                 <CardTitle className='flex gap-3 justify-center '>
                     {content.title}
@@ -27,7 +27,7 @@ export default function UseCasesCard({ content }) {
                         height={2000}
                     />
                 </div>
-                <p className="mt-4">{content.description}</p>
+                {/* <p className="mt-4">{content.description}</p> */}
             </CardContent>
         </Card>
     )

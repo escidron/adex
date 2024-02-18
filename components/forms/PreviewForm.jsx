@@ -15,7 +15,7 @@ export default function PreviewForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
 
     useEffect(() => {
-        if (listingProperties.otherListingType &&  otherListingType.includes(listingProperties.sub_category)) {
+        if (listingProperties.otherListingType && otherListingType.includes(listingProperties.sub_category)) {
             setCategoryType(listingProperties.otherListingType)
 
         } else {
@@ -41,7 +41,15 @@ export default function PreviewForm({ ListingContext }) {
                         </div>
                         <div className='flex gap-1'>
                             <MapPin size={14} color='gray' />
-                            <p className='text-[12px] text-gray-500'>{listingProperties.location}</p>
+                            {
+                                listingProperties.location ? (
+
+                                    <p className='text-[12px] text-gray-500'>{listingProperties.location}</p>
+                                ) : (
+
+                                    <p className='text-[12px] text-gray-500'>Online Asset</p>
+                                )
+                            }
                         </div>
                         <div className='mt-2 text-[14px]'>
                             <Preview value={listingProperties.description} heigth={80} />
