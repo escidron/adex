@@ -17,6 +17,10 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import SellerProfileInfo from './_components/SellerProfileInfo';
 import CompanyProfileInfo from './_components/CompanyProfileInfo';
+import GetSocialMediaInfo from '@/actions/GetSocialMediaInfo';
+import GetAudiencePreference from '@/actions/GetAudiencePreference';
+import PlataformCards from '@/sections/personalInformations/_components/PlataformCards';
+import PreferencesCards from '@/sections/personalInformations/_components/PreferencesCards';
 
 
 export default function SellerDetailsPage() {
@@ -25,6 +29,8 @@ export default function SellerDetailsPage() {
     const [sellerReviews, setSellerReviews] = useState([]);
     const [contentIsLoaded, setContentIsLoaded] = useState(false);
     const [industry, setIndustry] = useState('');
+    const [plataforms, setPlataforms] = useState([]);
+    const [preferences, setPreferences] = useState([]);
 
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
@@ -34,6 +40,13 @@ export default function SellerDetailsPage() {
         async function getInfo() {
             const { listings, profile_info } = await GetSellerListing(id, companyId)
             const sellerReviews = await GetSellerReviews(id, companyId)
+
+            const plataforms = await GetSocialMediaInfo(profile_info.id);
+
+            const preferences = await GetAudiencePreference(profile_info.id);
+
+            setPreferences(preferences)
+            setPlataforms(plataforms)
             setSellerReviews(sellerReviews)
             setSellerListings(listings)
             setSeller(profile_info)
@@ -51,7 +64,7 @@ export default function SellerDetailsPage() {
         getInfo();
     }, []);
 
-
+    console.log('seller', seller)
     useEffect(() => {
         const handleRouteChange = () => {
             window.scrollTo(0, 0);
@@ -63,7 +76,6 @@ export default function SellerDetailsPage() {
 
             <div className={`px-4 mt-[150px] w-full h-full flex justify-center items-center `}>
                 <div className='flex flex-col w-full md:w-[80%] max-w-[1000px] items-start'>
-
                     {
                         contentIsLoaded ? (
                             <>
@@ -78,7 +90,7 @@ export default function SellerDetailsPage() {
                                 }
                             </>
                         ) : (
-                                <SellerCardSkeleton />
+                            <SellerCardSkeleton />
                         )
                     }
 
@@ -86,10 +98,46 @@ export default function SellerDetailsPage() {
 
                     <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
                     {
+                        contentIsLoaded && seller.is_content_creator == '1' && (
+                            <>
+                                <p className='text-[32px] mb-4'>Pataforms & Followers</p>
+
+
+                                {
+                                    plataforms.length > 0 ? (
+                                        <PlataformCards plataforms={plataforms} isViewOnly={true} />
+                                    ) : (
+                                        <p className='text-gray-600 italic text-[26px]'>No Plataforms</p>
+                                    )
+
+                                }
+
+                                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+                            </>
+                        )
+                    }
+                    {
+                        contentIsLoaded && seller.is_content_creator == '1' && (
+                            <>
+                                <p className='text-[32px] mb-4'>Audience Preferences</p>
+
+                                {
+                                    preferences.length > 0 ? (
+                                        <PreferencesCards preferences={preferences} isViewOnly={true} />
+                                    ) : (
+                                        <p className='text-gray-600 italic text-[26px]'>No Preferences</p>
+                                    )
+
+                                }
+                                <Divider variant="" sx={{ color: 'black', width: '100%', marginTop: '40px', marginBottom: '40px' }} />
+                            </>
+                        )
+                    }
+                    {
                         contentIsLoaded && (
 
                             <div className='w-[80%] md:w-full flex flex-col items-start'>
-                                <p className='text-[32px] mb-4'>{`${companyId ? seller.company_name : seller.name}’s Reviews`}</p>
+                                <p className='text-[32px] mb-4'>Reviews</p>
                                 <ReviewsCarrousel data={sellerReviews} />
                                 {
                                     sellerReviews.length > 4 && (
@@ -108,7 +156,7 @@ export default function SellerDetailsPage() {
                         contentIsLoaded && (
 
                             <div className='w-full flex justify-start'>
-                                <p className='text-[32px]'>{`${companyId ? seller.company_name : seller.name}’s Listings`}</p>
+                                <p className='text-[32px]'>Listings</p>
                             </div>
                         )
                     }

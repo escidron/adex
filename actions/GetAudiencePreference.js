@@ -1,14 +1,16 @@
-export default async function GetAudiencePreference() {
+export default async function GetAudiencePreference(id) {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-audience-preference`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
           credentials: "include",
+          body: id ? JSON.stringify({ id: id }) : null
+
         }
       );
       if (response.status === 200) {
