@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
-import {Command,CommandGroup,CommandItem,} from "@/components/ui/command"
-import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { Check, ChevronsUpDown, Plus } from "lucide-react"
 import { useState } from "react"
@@ -28,7 +28,7 @@ export default function PreferencesDropdown({ setPreferences, preferences }) {
                 setValuePreferences("")
                 setValueOtherPreferences("")
                 setOtherPreferences(false)
-                
+
             }
         }
         setIsLoading(false)
@@ -56,12 +56,14 @@ export default function PreferencesDropdown({ setPreferences, preferences }) {
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="p-0">
+                    <PopoverContent className="p-0 ">
                         {
                             !otherPreferences && (
 
                                 <Command>
-                                    <CommandGroup>
+                                    <CommandInput placeholder="Search ..." className="h-9" />
+                                    <CommandEmpty>No Niche / Genre found.</CommandEmpty>
+                                    <CommandGroup className='h-[400px] overflow-y-auto'>
                                         {audiencePreferences.map((category) => (
                                             <CommandItem
                                                 key={category.value}

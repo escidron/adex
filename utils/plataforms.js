@@ -51,27 +51,80 @@ export const followers = [
 export const audiencePreferences = [
   {
     value: 1,
-    label: "Fitness",
+    label: "Health, Wellness, Fitness",
   },
   {
     value: 2,
-    label: "Politics",
+    label: "Wealth / Finance",
   },
   {
     value: 3,
-    label: "Guns",
+    label: "Lifestyle / Life Coaching",
   },
   {
     value: 4,
-    label: "Cooking",
+    label: "Sports Entertainment",
   },
   {
     value: 5,
-    label: "Real Estate",
+    label: "Gaming Entertainment",
   },
   {
     value: 6,
-    label: "Finance",
+    label: "Comedy Entertainment",
+  },
+  {
+    value: 7,
+    label: "Music Entertainment",
+  },{
+    value: 8,
+    label: "Movie Entertainment",
+  },
+  {
+    value: 9,
+    label: "Celebrity / Public Figure",
+  },
+  {
+    value: 10,
+    label: "Family / Parenting",
+  },
+  {
+    value: 11,
+    label: "Business / Entrepreneurship",
+  },
+  {
+    value: 12,
+    label: "Home Improvement / Design",
+  },{
+    value: 13,
+    label: "Real Estate",
+  },{
+    value: 14,
+    label: "Politics",
+  },
+  {
+    value: 15,
+    label: "Fashion",
+  },
+  {
+    value: 16,
+    label: "Beauty",
+  },
+  {
+    value: 17,
+    label: "Travel",
+  },
+  {
+    value: 18,
+    label: "Faith",
+  },
+  {
+    value: 19,
+    label: "Technology",
+  },
+  {
+    value: 20,
+    label: "Food / Cooking",
   },
   {
     value: 0,

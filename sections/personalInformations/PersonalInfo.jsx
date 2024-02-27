@@ -666,7 +666,7 @@ export default function PersonalInfo() {
           </div>
 
           <div className='w-full flex justify-between items-center mt-8'>
-            <p className='font-[600]'>Are you a Content Creator?</p>
+            <p className='font-[600]'>Are you an Influencer / Content Creator?</p>
             <Switch checked={user.isContentCreator} onCheckedChange={handleIsContentCreator} />
           </div>
           {
@@ -676,7 +676,7 @@ export default function PersonalInfo() {
                 <PlataformDropdown setPlataforms={(newPlataform) => setPlataforms(newPlataform)} plataforms={plataforms} />
                 <PlataformCards plataforms={plataforms} handleDeletePlataform={(id)=>handleDeletePlataform(id)}/>
                 
-                <p className='font-[500] text-[24px] mt-4'>Audience preferences</p>
+                <p className='font-[500] text-[24px] mt-4'>Niche / Genre</p>
                 <PreferencesDropdown setPreferences={(newPreference) => setPreferences(newPreference)} preferences={preferences}/>
                 <PreferencesCards preferences={preferences} handleDeletePreference={(id)=>handleDeletePreference(id)}/>
               </>
