@@ -98,7 +98,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     useEffect(() => {
 
         let hasDiscount = false
-        
+
         const appliedDiscount = discounts.reduce((prev, current) => {
             if (counter >= current.duration && current.duration > prev.duration) {
                 return current;
@@ -175,14 +175,29 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
         )
     }
 
-
+    console.log('data', data)
     return (
         <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
                 <div className='flex justify-center'>
                     <p className='text-[25px] font-[500]'>{`$${data?.price ? formatNumberInput(data.price.toString()) : ''}`}</p>
                     <p className='flex items-center text-gray-500 '>
-                        {data.ad_duration_type == '0' ? '/months' : data.ad_duration_type == '2' ? '/units' : ''}
+                        {/* {data.ad_duration_type == '0' ? '/months' : data.ad_duration_type == '2' ? '/units' : ''} */}
+                        {
+                            data.sub_category == 7 ? (
+                                <>
+                                    {
+                                        data.digital_price_type == '0' ? '/ Per Mention' : data.digital_price_type == '1' ? '/ Per Inclusion' : '/ Per Post'
+                                    }
+                                </>
+                            ) : (
+                                <>
+                                    {
+                                        data.ad_duration_type == '0' ? '/ Month' : data.ad_duration_type == '2' ? '/ Unit' : ''
+                                    }
+                                </>
+                            )
+                        }
                     </p>
                 </div>
             )}
@@ -200,7 +215,17 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                                 />
                             </div>
                             <div className='w-[35%] flex flex-col items-center justify-end'>
-                                <label htmlFor="date" className='mb-1'>{data.ad_duration_type == '2' ? 'Units' : 'Duration'}</label>
+                                {
+                                    data.sub_category == 7 ? (
+                                        <>
+                                            <label htmlFor="date" className='mb-1'>Quantity</label>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <label htmlFor="date" className='mb-1'>{data.ad_duration_type == '2' ? 'Units' : 'Duration'}</label>
+                                        </>
+                                    )
+                                }
                                 <CounterComponent counter={counter} setCounter={(c) => setCounter(c)} />
                             </div>
                         </>
@@ -259,7 +284,7 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
                     <Dialog className='w-full ' onOpenChange={() => {
                         setHasCompanySelected(false)
                         setAddCard(false)
-                        }}>
+                    }}>
                         <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                             Request Booking
                         </DialogTrigger>

@@ -12,6 +12,8 @@ import { checkCategoryType } from '@/utils/checkCategoryType';
 
 import PriceTypeSelector from '@/app/listing/create/_components/PriceTypesSelector';
 import Image from 'next/image';
+import DigitalPriceTypeSelector from '@/app/listing/create/_components/DigitalPriceTypesSelector';
+import DigitalDurationType from '@/app/listing/create/_components/DigitalDurationType';
 
 export default function PriceForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -43,6 +45,12 @@ export default function PriceForm({ ListingContext }) {
         setListingProperties({ ...listingProperties, otherListingType: type })
 
     }
+    const handleDigitalPriceType = (type) => {
+        console.log('type', type)
+        setListingProperties({ ...listingProperties, digitalPriceType: type })
+
+    }
+
     return (
         <div className='w-full max-w-[800px] flex flex-col items-center mx-auto'>
             <div className={`w-full flex flex-col px-[20px] md:flex-row  ${listingProperties.sub_category === 17 ? 'justify-between' : 'justify-center'}`}>
@@ -55,6 +63,22 @@ export default function PriceForm({ ListingContext }) {
                                     currentPriceType={listingProperties.otherListingType}
                                     handleCurrentPriceType={(type) => handleCurrentPriceType(type)}
                                 />
+                            </>
+                        )
+                    }
+                    {
+                        listingProperties.sub_category === 7 && (
+                            <>
+                                <p className='text-[24px]'>Select the type of the price</p>
+                                <DigitalPriceTypeSelector
+                                    currentPriceType={listingProperties.digitalPriceType}
+                                    handleCurrentPriceType={(type) => handleDigitalPriceType(type)}
+                                />
+                                {/* <p className='text-[24px] mt-4'>Select the frequence </p>
+                                <DigitalDurationType
+                                    currentPriceType={listingProperties.digitalListingDuration}
+                                    handleCurrentPriceType={(type) => handleDigitalDuration(type)}
+                                /> */}
                             </>
                         )
                     }

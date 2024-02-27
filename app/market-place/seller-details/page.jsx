@@ -100,7 +100,7 @@ export default function SellerDetailsPage() {
                     {
                         contentIsLoaded && seller.is_content_creator == '1' && (
                             <>
-                                <p className='text-[32px] mb-4'>Pataforms & Followers</p>
+                                <p className='text-[32px] mb-4'>Plataforms & Followers</p>
 
 
                                 {

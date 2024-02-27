@@ -32,7 +32,8 @@ export default function ListingLayout({ children }) {
     isDraft : false,
     select_business: '',
     instructions:'',
-    otherListingType: ''
+    otherListingType: '',
+    digitalPriceType: ''
 
   });
 

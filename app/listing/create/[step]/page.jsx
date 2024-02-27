@@ -242,7 +242,8 @@ export default function Listing({ params }) {
                 date: listingProperties.date,
                 company_id: listingProperties.select_business,
                 instructions: listingProperties.instructions,
-                has_payout_method: hasPayoutMethod
+                has_payout_method: hasPayoutMethod,
+                digital_price_type : listingProperties.digitalPriceType
             }, {
             withCredentials: true,
         })

@@ -93,7 +93,8 @@ export default function ListingDetails({ sharedId }) {
                     ad_duration_type: myListing.ad_duration_type,
                     id: id,
                     rating: myListing.rating,
-                    amount_reviews: myListing.amount_reviews
+                    amount_reviews: myListing.amount_reviews,
+                    digital_price_type : myListing.digital_price_type,
                 }));
 
             }

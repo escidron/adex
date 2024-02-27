@@ -75,7 +75,8 @@ export default function EditListing({ params }) {
                     instructions: myListing.instructions,
                     building_asset: myListing.sub_asset_type,
                     otherListingType: myListing.ad_duration_type,
-                    status:myListing.status
+                    status:myListing.status,
+                    digitalPriceType: myListing.digital_price_type
                 }));
             }
             if (categories && myListing) {
@@ -185,7 +186,8 @@ export default function EditListing({ params }) {
                     date: listingProperties.date,
                     company_id: listingProperties.select_business,
                     instructions: listingProperties.instructions, 
-                    status: listingProperties.status 
+                    status: listingProperties.status ,
+                    digital_price_type : listingProperties.digitalPriceType
                 }, {
                 withCredentials: true,
             })

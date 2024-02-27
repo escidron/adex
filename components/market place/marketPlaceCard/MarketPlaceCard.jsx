@@ -11,6 +11,7 @@ import { UserContext } from '@/app/layout';
 
 export default function MarketPlaceCard({ ad }) {
   const [user, setUser] = useContext(UserContext)
+  console.log('ad', ad)
   return (
     <Link href={`/market-place/details?id=${ad.id}`} className={` relative styled_map_cards min-w-[360px] max-w-[360px] md:min-w-[300px] md:w-[90%] lg:w-[100%] xl:w-[360px] 2xl:w-full   `}>
       <div className="style_image_box w-full rounded-[24px] h-[200px]">
@@ -38,8 +39,21 @@ export default function MarketPlaceCard({ ad }) {
           <Preview value={ad.description} heigth={80} />
 
           <div className='flex w-[90%] justify-between items-center absolute bottom-[25px]'>
-            <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">{formatPrice(ad.price)}</b>{
-              ad.ad_duration_type == '0' ? '/ Month' : ad.ad_duration_type == '2' ? '/ Unit' : ''
+            <p className='font-[400px] text-gray-500 text-[14px]'><b className="style_price_text text-[18px] text-black">{formatPrice(ad.price)}</b>
+              {
+                ad.category_id == 7 ? (
+                  <>
+                    {
+                      ad.digital_price_type == '0' ? '/ Per Mention' : ad.digital_price_type == '1' ? '/ Per Inclusion' : '/ Per Post'
+                    }
+                  </>
+                ) : (
+                  <>
+                    {
+                      ad.ad_duration_type == '0' ? '/ Month' : ad.ad_duration_type == '2' ? '/ Unit' : ''
+                    }
+                  </>
+                )
             }
             </p>
             <div className="flex gap-1 items-center min-w-[70px]">

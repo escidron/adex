@@ -84,7 +84,18 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                 </div>
                 <div className='flex justify-between items-center mt-auto'>
                     <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
-                        {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''}
+                        {
+                            item.category_id ==  7 ? (
+                                <>
+                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : '/Per Post'}</p>
+                                </>
+                            ) : (
+                                <>
+                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.ad_duration_type === '0' ? '/Month' : item.ad_duration_type === '2' ? '/Unit' : ''}</p>
+                                    {/* {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''} */}
+                                </>
+                            )
+                        }
                     </div>
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         {

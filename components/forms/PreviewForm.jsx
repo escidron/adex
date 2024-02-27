@@ -25,6 +25,8 @@ export default function PreviewForm({ ListingContext }) {
         }
     }, []);
 
+
+    console.log('listingProperties', listingProperties)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full sm:w-[500px] flex flex-col items-center'>
@@ -58,14 +60,27 @@ export default function PreviewForm({ ListingContext }) {
                             <p className='font-[400px] text-gray-500 text-[14px]'>
                                 <b className="text-[18px] text-black">{formatPrice(listingProperties.price)}</b>
                                 {
-                                    categoryType == 0 ? '/Month' : categoryType == 2 ? "/Unit" : ''
+                                    listingProperties.sub_category == 7 ? (
+                                        <>
+                                            {
+                                                listingProperties.digitalPriceType == 0 ? '/Per Mention' : listingProperties.digitalPriceType == 1 ? "/Per Inclusion" : '/Per Post'
+                                            }
+                                        </>
+                                    ) : (
+                                        <>
+                                            {
+                                                categoryType == 0 ? '/Month' : categoryType == 2 ? "/Unit" : ''
+                                            }
+                                        </>
+                                    )
                                 }
+
                             </p>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
