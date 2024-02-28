@@ -17,6 +17,7 @@ export default function MarketPlace() {
   const [allData, setAllData] = useContext(AllDataContext);
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [userCoords, setUserCoords] = useState(null);
   const [coords, setCoords] = useState({
     lat: 39.8283,
     lng: -98.5795
@@ -32,7 +33,9 @@ export default function MarketPlace() {
   const key = params.get("key");
   const latitude = params.get("latitude")
   const longitude = params.get("longitude")
-  console.log('key',key);
+  console.log('longitude', longitude)
+  console.log('latitude', latitude)
+
   const router = useRouter();
   useEffect(() => {
     if (located) {
@@ -54,10 +57,13 @@ export default function MarketPlace() {
       }
 
     } else {
+      console.log('entrouuu')
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             setCoords({ lat: position.coords.latitude, lng: position.coords.longitude });
+            setUserCoords({ lat: position.coords.latitude, lng: position.coords.longitude });
+            
             setLocated(true);
           },
           (error) => {
@@ -79,6 +85,9 @@ export default function MarketPlace() {
 
   }, [located]);
 
+
+
+
   const filteredData = useMemo(() => {
 
     return allData.filter(ad => {
@@ -88,10 +97,15 @@ export default function MarketPlace() {
           lat: latitude,
           lng: longitude
         }
+        console.log('filterCoords', filterCoords)
         distance = haversine_distance(filterCoords, { lat: ad.lat, lng: ad.long });
       } else {
-        distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
-
+        if(userCoords){
+          console.log('userCoords', userCoords)
+          distance = haversine_distance(userCoords, { lat: ad.lat, lng: ad.long });
+        }else{
+          distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });
+        }
       }
 
       let types = "";
@@ -102,20 +116,19 @@ export default function MarketPlace() {
         types = "9,10,11,12";
       } else if (type == 3) {
         types = "17,18";
-      }else if(type == 13 || type == 14 || type == 15 || type == 16){
+      } else if (type == 13 || type == 14 || type == 15 || type == 16) {
         types = "9";
-      }else if(type == 4 ){
+      } else if (type == 4) {
         types = "7"
-      }else{
+      } else {
         types = type
       }
 
-      if(types){
-
-         typeArray = types.split(",").map(Number);
+      if (types) {
+        typeArray = types.split(",").map(Number);
       }
       const isKeyFound = findKeyWords(ad, key, categories)
-     
+
       const filterConditions = [
         distance < radius || radius == 2000 || ad.category_id == 7,
         type ? typeArray.includes(ad.category_id) : true,
@@ -124,7 +137,6 @@ export default function MarketPlace() {
         key ? isKeyFound : true
 
       ];
-      console.log('filterConditions'+ad.title,filterConditions)
       return filterConditions.every(condition => condition);
     });
   }, [allData, located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);
@@ -138,7 +150,7 @@ export default function MarketPlace() {
 
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
-      <MapCoordinatesContext.Provider value={[coords, setCoords]}>
+      <MapCoordinatesContext.Provider value={[coords, setCoords,userCoords,setUserCoords]}>
         <Map newData={newData} isDataLoaded={isDataLoaded} located={located} />
       </MapCoordinatesContext.Provider>
 

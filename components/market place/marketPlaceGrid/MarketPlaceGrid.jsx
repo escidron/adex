@@ -4,7 +4,7 @@ import MarketPlaceFilterModal from '@/components/modals/MarketPlaceFilterModal'
 import qs from "query-string";
 import MarketPlaceCardSkeleton from '../marketPlaceCard/MarketPlaceCardSkeleton';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { SlidersHorizontal } from 'lucide-react';
 import {
     Dialog,
@@ -20,10 +20,12 @@ import { Input } from '@/components/ui/input';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Divider } from '@mui/material';
+import { MapCoordinatesContext } from '@/app/market-place/page';
 
 
 export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
     const [openFilter, setOpenFilter] = useState(false);
+    const [coords,setCoords,userCoords,setUserCoords] = useContext(MapCoordinatesContext)
 
     const [value, setValue] = useState("")
     const debouncedValue = useDebounce(value);
@@ -60,8 +62,9 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
     }, [debouncedValue, router, pathname])
 
     const removeFilter = () => {
+        setCoords(()=>userCoords)
         router.push('/market-place');
-
+        console.log('userCoordsssssss', userCoords)
     }
 
     // const handleKeyDown = (event)=>{
