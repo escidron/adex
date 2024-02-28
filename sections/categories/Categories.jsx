@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 
 export default function Categories() {
     const [categories, setCategories] = useState([]);
+    const hideCategories = [8,12,19,20,21,22]
     useEffect(() => {
 
         async function getInfo() {
@@ -26,14 +27,15 @@ export default function Categories() {
                 {
                     categories.map((category,index) => {
                         let description = ''
-                        if(category.id == 8 || category.id == 12 ){
+                        if(hideCategories.includes(category.id)){
                             return null
                         }   
                         if(category.id == 13 || category.id == 14 || category.id == 15 || category.id == 16){
                             description = category.name
                         }
+
                         return (
-                            <div key={category.id} className={` ${categories.length-1 == index ? 'hidden md:flex' : 'flex'}  justify-center items-center h-[120px] w-[120px]  max-h-[150px]`}>
+                            <div key={category.id} className={` ${index > 16 ? 'hidden md:flex' : 'flex'}  justify-center items-center h-[120px] w-[120px]  max-h-[150px]`}>
                                 <Link href={`/market-place?type=${category.id}${description && `&key=${description}`}`} className={`flex flex-col cursor-pointer  items-center justify-center  h-[120px] w-[120px]  max-h-[150px]  bg-black  px-4 py-[24px] rounded-lg hover:opacity-80`}>
                                     <div className='flex justify-center h-[40px] md:h-[74px] aspect-square'>
                                         <Image
