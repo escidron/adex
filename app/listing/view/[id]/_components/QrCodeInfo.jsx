@@ -25,10 +25,10 @@ export default function QrCodeInfo({ id }) {
             <p className='text-[26px]'>QR Code</p>
             <p className='mt-1'>Showcase your listing by printing and attaching it to your asset.</p>
 
-            <div ref={componentRef} className='mx-auto w-full max-w-[700px] mt-8  flex flex-col items-center bg-black text-white p-[50px]'>
+            <div ref={componentRef} className='mx-auto w-full max-w-[700px] mt-8  flex flex-col items-center border text-white p-[50px]'>
 
                 <Image
-                    src='/adex-logo-white-yellow.png'
+                    src='/adex-logo-black-yellow.png'
                     alt="Adex Logo"
                     width={70}
                     height={70}
