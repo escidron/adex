@@ -119,7 +119,7 @@ export default function SellerDetailsPage() {
                     {
                         contentIsLoaded && seller.is_content_creator == '1' && (
                             <>
-                                <p className='text-[32px] mb-4'>Audience Preferences</p>
+                                <p className='text-[32px] mb-4'>Niche / Genre</p>
 
                                 {
                                     preferences.length > 0 ? (
