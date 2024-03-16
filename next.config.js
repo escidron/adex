@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     images : {
-      domains : ['localhost','test.adexconnect.com'] // <== Domain name
+      domains : ['localhost','test.adexconnect.com','server.adexconnect.com'] // <== Domain name
     },
     experimental: {
       appDir: true,
