@@ -261,7 +261,7 @@ export default function Listing({ params }) {
             })
             .catch(function (error) {
                 console.log('error',error)
-                toast.error('Something went wrong: '+error.response.data.error)
+                toast.error(error.response.data.error)
                 setIsPending(false)
                 setIsDrafPending(false)
 
