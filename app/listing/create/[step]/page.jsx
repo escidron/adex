@@ -15,7 +15,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import BusinessForm from '@/components/forms/BusinessForm'
 import InstructionsForm from '@/components/forms/InstructionsForm'
 import GetPayoutMethod from '@/actions/getPayoutMethod'
-
+import debounce from 'debounce';
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ClipboardList, Loader2 } from 'lucide-react'
@@ -41,7 +41,6 @@ export default function Listing({ params }) {
     const [userData, setUserData] = useState({});
     const [hasPayoutMethod, setHasPayoutMethod] = useState(false);
     const [importFromGallery, setImportFromGallery] = useState(false);
-    const [doubleClick, setDoubleClick] = useState(false);
     const step = params.step
     const router = useRouter();
 
@@ -78,10 +77,8 @@ export default function Listing({ params }) {
         GetUserProfile();
     }, [listingProperties.select_business]);
 
-    const handleNext = () => {
+    const handleNext = debounce(() => {
         setIsPending(true)
-        setDoubleClick(true)
-        console.log('sadasd')
         let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
         let isValid = listingMachine.states[nextRoute].ISVALID
@@ -96,11 +93,11 @@ export default function Listing({ params }) {
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
         controlSteps()
         setIsPending(false)
-        setDoubleClick(false)
 
 
-    }
-    const handlePrevious = () => {
+    },200)
+    
+    const handlePrevious = debounce(() => {
         setIsPending(true)
         let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].PREVIOUS
@@ -117,7 +114,8 @@ export default function Listing({ params }) {
         controlSteps()
         setIsPending(false)
 
-    }
+    },200)
+    
     const validRoute = (url, direction) => {
         let nextRoute
         let force = false
@@ -216,7 +214,6 @@ export default function Listing({ params }) {
         //restart this params when change the listing type
     }
     const createListing = (isDraft) => {
-        setDoubleClick(true)
         if (isDraft) {
             setIsDrafPending(true)
         } else {
@@ -250,7 +247,6 @@ export default function Listing({ params }) {
             withCredentials: true,
         })
             .then(function (response) {
-                setDoubleClick(false)
 
                 if (isDraft) {
                     router.push('/')
@@ -273,7 +269,6 @@ export default function Listing({ params }) {
             })
     }
 
-    console.log('doubkeclick', doubleClick)
     return (
         <div className="flex flex-col h-screen">
             <div className="bg-white p-4 h-[80px] flex justify-between items-center border shadow-sm">
@@ -320,7 +315,7 @@ export default function Listing({ params }) {
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button  disabled={required || isPending || isDraftPending || doubleClick} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button  disabled={required || isPending || isDraftPending } onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />
