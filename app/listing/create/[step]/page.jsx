@@ -41,7 +41,7 @@ export default function Listing({ params }) {
     const [userData, setUserData] = useState({});
     const [hasPayoutMethod, setHasPayoutMethod] = useState(false);
     const [importFromGallery, setImportFromGallery] = useState(false);
-
+    const [doubleClick, setDoubleClick] = useState(false);
     const step = params.step
     const router = useRouter();
 
@@ -96,7 +96,6 @@ export default function Listing({ params }) {
         setIsPending(false)
 
     }
-
     const handlePrevious = () => {
         setIsPending(true)
         let force = false
@@ -115,7 +114,6 @@ export default function Listing({ params }) {
         setIsPending(false)
 
     }
-
     const validRoute = (url, direction) => {
         let nextRoute
         let force = false
@@ -181,7 +179,6 @@ export default function Listing({ params }) {
         }
         return {nextRoute,force}
     }
-
     //control the amount of steps,depends of the user sub category choice and type of user
     const controlSteps = () => {
         const categoryType = checkCategoryType(listingProperties.sub_category)
@@ -215,6 +212,7 @@ export default function Listing({ params }) {
         //restart this params when change the listing type
     }
     const createListing = (isDraft) => {
+        setDoubleClick(true)
         if (isDraft) {
             setIsDrafPending(true)
         } else {
@@ -248,6 +246,7 @@ export default function Listing({ params }) {
             withCredentials: true,
         })
             .then(function (response) {
+                setDoubleClick(false)
 
                 if (isDraft) {
                     router.push('/')
@@ -315,7 +314,7 @@ export default function Listing({ params }) {
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button  disabled={required || isPending || isDraftPending || doubleClick} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />
