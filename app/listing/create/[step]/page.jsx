@@ -80,6 +80,8 @@ export default function Listing({ params }) {
 
     const handleNext = () => {
         setIsPending(true)
+        setDoubleClick(true)
+        console.log('sadasd')
         let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
         let isValid = listingMachine.states[nextRoute].ISVALID
@@ -94,6 +96,8 @@ export default function Listing({ params }) {
         setStateMachine((prev) => ({ ...prev, currentState: nextRoute, currentStep: stateMachine.currentStep + 1 }))
         controlSteps()
         setIsPending(false)
+        setDoubleClick(false)
+
 
     }
     const handlePrevious = () => {
@@ -268,6 +272,8 @@ export default function Listing({ params }) {
 
             })
     }
+
+    console.log('doubkeclick', doubleClick)
     return (
         <div className="flex flex-col h-screen">
             <div className="bg-white p-4 h-[80px] flex justify-between items-center border shadow-sm">
