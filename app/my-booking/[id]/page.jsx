@@ -139,7 +139,7 @@ export default function Booking({ params }) {
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
-                                <div className='w- full gap-4 flex justify-between'>
+                                <div className='w-full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
 
@@ -182,7 +182,7 @@ export default function Booking({ params }) {
                                     {
                                         statusPending && (
 
-                                            <div className='w-full md:w-[40%] flex justify-end mt-2' >
+                                            <div className='w-full md:w-[40%] flex justify-center md:justify-end mt-2' >
                                                 <ApproveReservation
                                                     advertisement={listingProperties}
                                                     discounts={listingProperties.discounts}

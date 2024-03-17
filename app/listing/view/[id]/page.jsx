@@ -147,7 +147,7 @@ export default function Listing({ params }) {
                             }
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
-                                <div className='w- full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
+                                <div className='w-full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
                                         <ListingHeader
                                             listingProperties={listingProperties}
