@@ -64,7 +64,6 @@ export default function SellerDetailsPage() {
         getInfo();
     }, []);
 
-    console.log('seller', seller)
     useEffect(() => {
         const handleRouteChange = () => {
             window.scrollTo(0, 0);

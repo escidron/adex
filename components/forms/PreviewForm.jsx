@@ -25,8 +25,6 @@ export default function PreviewForm({ ListingContext }) {
         }
     }, []);
 
-
-    console.log('listingProperties', listingProperties)
     return (
         <div className='w-full flex flex-col items-center overflow-y-auto invisible_scroll_bar'>
             <div className='w-full sm:w-[500px] flex flex-col items-center'>

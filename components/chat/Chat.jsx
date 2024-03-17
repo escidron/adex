@@ -78,7 +78,6 @@ export default function Chat({ messages, userId, advertisementId, createdBy, set
     setUploadFiles([])
 
   };
-  console.log('messages',messages)
   return (
     <div className='flex-col w-full'>
       <div className='border shadow-sm w-full h-[525px] md:h-[735px] lg:h-[525px]  bg-slate-100 rounded-lg p-2 overflow-y-scroll text-right' >

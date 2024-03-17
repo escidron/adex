@@ -33,8 +33,6 @@ export default function MarketPlace() {
   const key = params.get("key");
   const latitude = params.get("latitude")
   const longitude = params.get("longitude")
-  console.log('longitude', longitude)
-  console.log('latitude', latitude)
 
   const router = useRouter();
   useEffect(() => {
@@ -57,7 +55,6 @@ export default function MarketPlace() {
       }
 
     } else {
-      console.log('entrouuu')
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -97,11 +94,9 @@ export default function MarketPlace() {
           lat: latitude,
           lng: longitude
         }
-        console.log('filterCoords', filterCoords)
         distance = haversine_distance(filterCoords, { lat: ad.lat, lng: ad.long });
       } else {
         if(userCoords){
-          console.log('userCoords', userCoords)
           distance = haversine_distance(userCoords, { lat: ad.lat, lng: ad.long });
         }else{
           distance = haversine_distance(coords, { lat: ad.lat, lng: ad.long });

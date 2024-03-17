@@ -38,6 +38,7 @@ export default function PriceForm({ ListingContext }) {
                 price = pricesParts[0] + '.' + pricesParts[1].substring(0, 2)
             }
         }
+        console.log(price)
         setListingProperties({ ...listingProperties, price: price })
     }
 
@@ -124,13 +125,17 @@ export default function PriceForm({ ListingContext }) {
                             autoFocus={true}
                             className=' text-[55px] font-[700] text-gray-800  w-full rounded-md outline-none p-2'
                             name="input-name"
+                            maxLength={6}
                             placeholder="$"
                             allowDecimals={true}
                             decimalsLimit={2}
                             decimalSeparator="."
                             groupSeparator=","
                             onChange={(e) => {
-                                const inputValue = e.target.value;
+                                let inputValue = e.target.value;
+                                if (inputValue.length > 8) {
+                                    inputValue = inputValue.slice(0, 8);
+                                }
                                 const numericValue = inputValue.replace(/[^0-9.,]/g, '');
                                 handlePrice(numericValue);
                             }}

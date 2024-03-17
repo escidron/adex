@@ -7,7 +7,6 @@ import StatusBookingsTabBar from './_components/StatusBookingsTabBar';
 export default function MyBookings({ data, isContentLoaded, setBookingData, status }) {
 
   const [currentStatus, setCurrentStatus] = useState('all');
-  console.log('boooking status prop', status);
   if (data?.length == 0 && isContentLoaded) {
     return (
       <>

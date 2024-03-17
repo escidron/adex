@@ -233,7 +233,6 @@ export default function PersonalInfo() {
     const isRemoved = await RemovePlataform(id)
     if(isRemoved){
       const newPlataforms  = plataforms.filter(item=>item.name != id)
-      console.log('plataformaray',newPlataforms);
       setPlataforms(newPlataforms)
     }
     console.log('id',id)

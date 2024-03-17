@@ -260,9 +260,8 @@ export default function Listing({ params }) {
 
             })
             .catch(function (error) {
-
-                console.log(error)
-                toast.error('Something went wrong!')
+                console.log('error',error)
+                toast.error('Something went wrong: '+error.response.data.error)
                 setIsPending(false)
                 setIsDrafPending(false)
 
@@ -271,6 +270,7 @@ export default function Listing({ params }) {
 
     return (
         <div className="flex flex-col h-screen">
+            <Toaster />
             <div className="bg-white p-4 h-[80px] flex justify-between items-center border shadow-sm">
                 <div className='flex gap-2'>
                     <ClipboardList />

@@ -64,7 +64,6 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
     const removeFilter = () => {
         setCoords(()=>userCoords)
         router.push('/market-place');
-        console.log('userCoordsssssss', userCoords)
     }
 
     // const handleKeyDown = (event)=>{

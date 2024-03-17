@@ -13,7 +13,6 @@ import RatingComponent from '@/components/rating/RatingComponent'
 import ShowMore from './ShowMore'
 
 export default function ReviewCard({ review,showFullContent }) {
-    console.log('review',review)
     return (
         <Card className='w-full h-[240px] ' key={review.id}>
             <CardHeader>

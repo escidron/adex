@@ -41,7 +41,6 @@ export default function CancellationPolicy({ data, date }) {
     }
 
     const recurrentTimeCancellationDate = (cancellationDate) => {
-        console.log('data date',data);
         const diferencaInDays = diferenceBetweenDates(date ? date : data.date.from)
         if (diferencaInDays > 5) {
             setMaxCancellationDate(cancellationDate)

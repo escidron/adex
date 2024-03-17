@@ -1,7 +1,6 @@
 
 export default function DigitalPriceTypeSelector({ currentPriceType, handleCurrentPriceType }) {
 
-    console.log('listing type',currentPriceType)
     return (
         <div className=" mt-2 w-full flex gap-4">
             <div className={`w-full`}>
