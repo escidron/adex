@@ -28,7 +28,7 @@ import { listingMachine } from '@/utils/listingStatesmachine'
 import MediaTypesForm from '@/components/forms/MediaTypesForm'
 
 
-const requiredFields = ['select_business', 'category', 'sub_category','media_types', 'title', 'location', 'description', 'price', 'images']
+const requiredFields = ['select_business', 'category', 'sub_category', 'media_types', 'title', 'location', 'description', 'price', 'images']
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -46,11 +46,22 @@ export default function Listing({ params }) {
 
     useEffect(() => {
         if (requiredFields.includes(step)) {
-
+            console.log(listingProperties)
             if (!listingProperties[step] || listingProperties[step].length == 0) {
                 setRequired(true)
             } else {
-                setRequired(false)
+                console.log('listingProperties[step]',listingProperties[step])
+                if (step == 'price' && listingProperties.sub_category == 7) {
+                    if(!listingProperties.digitalPriceType){
+                        setRequired(true)
+                    }else{
+                        setRequired(false)
+                    }
+                } else {
+                    setRequired(false)
+                }
+
+
             }
         }
         const categoryType = checkCategoryType(listingProperties.sub_category)
@@ -82,10 +93,10 @@ export default function Listing({ params }) {
         let force = false
         let nextRoute = listingMachine.states[stateMachine.currentState].NEXT
         let isValid = listingMachine.states[nextRoute].ISVALID
-        
+
         while (!isValid && !force) {
             ({ nextRoute, force } = validRoute(nextRoute, 'NEXT'))
-            
+
             isValid = listingMachine.states[nextRoute].ISVALID
             force = force
         }
@@ -95,8 +106,8 @@ export default function Listing({ params }) {
         setIsPending(false)
 
 
-    },200)
-    
+    }, 200)
+
     const handlePrevious = debounce(() => {
         setIsPending(true)
         let force = false
@@ -105,7 +116,7 @@ export default function Listing({ params }) {
 
         while (!isValid && !force) {
             ({ nextRoute, force } = validRoute(nextRoute, 'PREVIOUS'))
-            
+
             isValid = listingMachine.states[nextRoute].ISVALID
             force = force
         }
@@ -114,8 +125,8 @@ export default function Listing({ params }) {
         controlSteps()
         setIsPending(false)
 
-    },200)
-    
+    }, 200)
+
     const validRoute = (url, direction) => {
         let nextRoute
         let force = false
@@ -179,7 +190,7 @@ export default function Listing({ params }) {
 
                 break;
         }
-        return {nextRoute,force}
+        return { nextRoute, force }
     }
     //control the amount of steps,depends of the user sub category choice and type of user
     const controlSteps = () => {
@@ -190,7 +201,7 @@ export default function Listing({ params }) {
                 if (categoryType == 1) {
                     setStateMachine((prev) => ({ ...prev, totalSteps: 10 }))
                 } else {
-                    if (listingProperties.sub_category != 9 ) {
+                    if (listingProperties.sub_category != 9) {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 11 }))
                     } else {
                         setStateMachine((prev) => ({ ...prev, totalSteps: 12 }))
@@ -242,7 +253,7 @@ export default function Listing({ params }) {
                 company_id: listingProperties.select_business,
                 instructions: listingProperties.instructions,
                 has_payout_method: hasPayoutMethod,
-                digital_price_type : listingProperties.digitalPriceType
+                digital_price_type: listingProperties.digitalPriceType
             }, {
             withCredentials: true,
         })
@@ -260,7 +271,7 @@ export default function Listing({ params }) {
 
             })
             .catch(function (error) {
-                console.log('error',error)
+                console.log('error', error)
                 toast.error(error.response.data.error)
                 setIsPending(false)
                 setIsDrafPending(false)
@@ -315,7 +326,7 @@ export default function Listing({ params }) {
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button  disabled={required || isPending || isDraftPending } onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />
