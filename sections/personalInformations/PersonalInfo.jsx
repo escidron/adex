@@ -88,24 +88,20 @@ export default function PersonalInfo() {
 
   }, [gallery]);
 
-  useEffect(() => {
-    if (remove) {
 
-      axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/remove-gallery-image`,
-        { remove },
-        {
-          withCredentials: true,
-        })
-        .then(function (response) {
-        })
-        .catch(function (error) {
-          console.log(error)
-        });
-    }
+  const removeImage = async (remove) => {
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/remove-gallery-image`,
+      { remove },
+      {
+        withCredentials: true,
+      })
+      .then(function (response) {
 
-
-  }, [remove]);
-
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }
   useEffect(() => {
 
     if (images.length > 0) {
@@ -131,7 +127,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     async function fetchData() {
       const response = await GetSocialMediaInfo();
-      if(response){
+      if (response) {
         setPlataforms(response)
       }
     }
@@ -141,7 +137,7 @@ export default function PersonalInfo() {
   useEffect(() => {
     async function fetchData() {
       const response = await GetAudiencePreference();
-      if(response){
+      if (response) {
         setPreferences(response)
       }
     }
@@ -222,29 +218,29 @@ export default function PersonalInfo() {
   }
   const handleIsContentCreator = async () => {
     const response = await SetIsContentCreator(!user.isContentCreator)
-    if(response){
-      setUser({...user,isContentCreator:!user.isContentCreator})
+    if (response) {
+      setUser({ ...user, isContentCreator: !user.isContentCreator })
       return
     }
     toast.error("Something went wrong")
   }
 
-  const handleDeletePlataform = async (id)=>{
+  const handleDeletePlataform = async (id) => {
     const isRemoved = await RemovePlataform(id)
-    if(isRemoved){
-      const newPlataforms  = plataforms.filter(item=>item.name != id)
+    if (isRemoved) {
+      const newPlataforms = plataforms.filter(item => item.name != id)
       setPlataforms(newPlataforms)
     }
-    console.log('id',id)
-}
-  const handleDeletePreference = async (id)=>{
+    console.log('id', id)
+  }
+  const handleDeletePreference = async (id) => {
     const isRemoved = await RemovePreference(id)
-    if(isRemoved){
-      const newPreferences  = preferences.filter(item=>item != id)
+    if (isRemoved) {
+      const newPreferences = preferences.filter(item => item != id)
       setPreferences(newPreferences)
     }
-    console.log('id',id)
-}
+    console.log('id', id)
+  }
 
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
@@ -673,11 +669,11 @@ export default function PersonalInfo() {
               <>
                 <p className='font-[500] text-[24px] mt-4'>Plataforms & Followers</p>
                 <PlataformDropdown setPlataforms={(newPlataform) => setPlataforms(newPlataform)} plataforms={plataforms} />
-                <PlataformCards plataforms={plataforms} handleDeletePlataform={(id)=>handleDeletePlataform(id)}/>
-                
+                <PlataformCards plataforms={plataforms} handleDeletePlataform={(id) => handleDeletePlataform(id)} />
+
                 <p className='font-[500] text-[24px] mt-4'>Niche / Genre</p>
-                <PreferencesDropdown setPreferences={(newPreference) => setPreferences(newPreference)} preferences={preferences}/>
-                <PreferencesCards preferences={preferences} handleDeletePreference={(id)=>handleDeletePreference(id)}/>
+                <PreferencesDropdown setPreferences={(newPreference) => setPreferences(newPreference)} preferences={preferences} />
+                <PreferencesCards preferences={preferences} handleDeletePreference={(id) => handleDeletePreference(id)} />
               </>
             )
           }
@@ -697,7 +693,7 @@ export default function PersonalInfo() {
                 setImages={(image) => setImages(image)}
                 setRefetch={(toggle) => setRefetch(toggle)}
                 isInPersonalProfile={true}
-                setRemove={(item) => setRemove(item)}
+                setRemove={(item) => removeImage(item)}
               />
             </div>
           </div>

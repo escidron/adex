@@ -46,11 +46,9 @@ export default function Listing({ params }) {
 
     useEffect(() => {
         if (requiredFields.includes(step)) {
-            console.log(listingProperties)
             if (!listingProperties[step] || listingProperties[step].length == 0) {
                 setRequired(true)
             } else {
-                console.log('listingProperties[step]',listingProperties[step])
                 if (step == 'price' && listingProperties.sub_category == 7) {
                     if(!listingProperties.digitalPriceType){
                         setRequired(true)
