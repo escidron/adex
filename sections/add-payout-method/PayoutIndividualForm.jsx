@@ -141,7 +141,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               Date of Birth
             </label>
           </div>
-          <DobComponent value={dob} onChange={date => setdob(date)}/>
+          <DobComponent value={dob} onChange={date => setdob(date)} />
           {formik.touched.dob && formik.errors.dob ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.dob}</div> : null}
         </div>
       </div>
@@ -230,12 +230,17 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       <Button disabled={isPending} type="submit" className='w-full mt-8 text-[16px] flex gap-2'>
         {
           isPending ? (
-            <Loader2 size={18} className='animate-spin' />
+            <>
+              <Loader2 size={18} className='animate-spin' />
+              Validating...
+            </>
           ) : (
-            <Lock size={18} />
+            <>
+              <Lock size={18} />
+              Next
+            </>
           )
         }
-        Next
       </Button>
     </form>
 

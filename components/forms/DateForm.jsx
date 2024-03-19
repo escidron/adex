@@ -52,6 +52,7 @@ export default function DateForm({ ListingContext }) {
                 <div className='mt-8 w-[80%] sm:w-auto flex justify-center'>
                     <Calendar
                         initialFocus
+                        disabled={ (date) => date < new Date()  } 
                         mode={listingProperties.sub_category == 4 ? 'range' : 'single'}
                         selected={date}
                         onSelect={(date) => handleDate(date)}

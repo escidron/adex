@@ -48,7 +48,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const fiveDaysInterval = 5 * 24 * 60 * 60 * 1000;
     const availableDays = interval1 / (1000 * 60 * 60 * 24)
 
-
     let hasStarted = false
     let countDownDays
 
@@ -493,7 +492,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 Please take a moment to carefully read our cancellation policy.
                             </DialogDescription>
                         </DialogHeader>
-                        <CancellationPolicy data={advertisement} />
+                        <CancellationPolicy data={advertisement} date={startDate}/>
                     </DialogContent>
                 </Dialog>
             </div>

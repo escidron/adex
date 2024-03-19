@@ -494,12 +494,17 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       <Button disabled={isPending} type="submit" className='w-full mt-4 text-[16px] flex gap-2'>
         {
           isPending ? (
-            <Loader2 size={18} className='animate-spin' />
+            <>
+              <Loader2 size={18} className='animate-spin' />
+              Validating...
+            </>
           ) : (
-            <Lock size={18} />
+            <>
+              <Lock size={18} />
+              Next
+            </>
           )
         }
-        Next
       </Button>
     </form>
   );
