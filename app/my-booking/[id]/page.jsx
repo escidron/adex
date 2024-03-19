@@ -25,6 +25,7 @@ import Reviews from '@/app/market-place/details/_components/Reviews'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import ContactSeller from '@/app/market-place/details/_components/ContactSeller'
+import { calculateDiscounts } from '@/utils/calculateDiscounts'
 
 export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -86,16 +87,13 @@ export default function Booking({ params }) {
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
                 }
-                {
-                    discounts.length > 0 && (
 
-                        discounts.map((item) => {
-                            if (myListing.duration >= item.duration) {
-                                setCurrentDiscount(item.discount)
-                            }
-                        })
-                    )
+                if (discounts.length > 0) {
+
+                    const calculatedDiscount = calculateDiscounts(discounts,myListing.duration)
+                    setCurrentDiscount(calculatedDiscount)
                 }
+
                 setAdvertisementType(myListing.ad_duration_type)
                 setIsContentLoaded(true)
 
@@ -198,7 +196,7 @@ export default function Booking({ params }) {
                             <Separator className='my-6' />
                             <Reviews listingId={listingProperties.id} />
                             <Separator className='my-6' />
-                            <ContactSeller listingProperties={listingProperties}/>
+                            <ContactSeller listingProperties={listingProperties} />
                         </div>
                     ) : (
                         <PageSkeleton />

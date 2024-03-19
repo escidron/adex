@@ -30,6 +30,7 @@ import GetCompanies from '@/actions/GetCompanies';
 import GetUserProfile from '@/actions/GetUserProfile';
 import CompanyList from './CompanyList';
 import CancellationPolicy from '../modals/CancellationPolicy';
+import { calculateDiscounts } from '@/utils/calculateDiscounts';
 
 const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
 
@@ -96,25 +97,8 @@ export default function Reservation({ data, hasCard, setShowModal, setIsBooked, 
     }, []);
 
     useEffect(() => {
-
-        let hasDiscount = false
-
-        const appliedDiscount = discounts.reduce((prev, current) => {
-            if (counter >= current.duration && current.duration > prev.duration) {
-                return current;
-            } else {
-                return prev;
-            }
-        }, { duration: 0, discount: 0 });
-
-        if (appliedDiscount.duration > 0) {
-            hasDiscount = true;
-            setCurrentDiscount(appliedDiscount.discount);
-        }
-        if (!hasDiscount) {
-            setCurrentDiscount(0)
-        }
-
+        const calculatedDiscount = calculateDiscounts(discounts,counter)
+        setCurrentDiscount(calculatedDiscount)
     }, [counter]);
 
     const Booking = () => {

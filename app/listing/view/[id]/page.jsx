@@ -29,6 +29,7 @@ import Reviews from '@/app/market-place/details/_components/Reviews'
 import QrCodeComponent from './_components/QrCodeComponent'
 import Image from 'next/image'
 import QrCodeInfo from './_components/QrCodeInfo'
+import { calculateDiscounts } from '@/utils/calculateDiscounts'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -91,16 +92,12 @@ export default function Listing({ params }) {
                 if (myListing.status == 4 || myListing.status == 2) {
                     setStatusPending(true)
                 }
-                {
-                    discounts.length > 0 && (
 
-                        discounts.map((item) => {
-                            if (myListing.duration >= item.duration) {
-                                setCurrentDiscount(item.discount)
-                            }
-                        })
-                    )
+                if (discounts.length > 0) {
+                    const calculatedDiscount = calculateDiscounts(discounts, myListing.duration)
+                    setCurrentDiscount(calculatedDiscount)
                 }
+
                 setAdvertisementType(myListing.ad_duration_type)
                 setIsContentLoaded(true)
 
