@@ -341,7 +341,14 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                     </div>
                                     <p className='font-[600]'>Long contract discount</p>
                                 </div>
-                                <p className='text-green-700'>{`-$${advertisement.price * advertisement.duration * currentDiscount / 100}`}</p>
+                                {
+                                    advertisement.ad_duration_type == '2' ? (
+                                        <p className='text-green-700'>{`-$${advertisement.price * advertisement.units * currentDiscount / 100}`}</p>
+
+                                    ) : (
+                                        <p className='text-green-700'>{`-$${advertisement.price * advertisement.duration * currentDiscount / 100}`}</p>
+                                    )
+                                }
                                 {
                                     discountOptions && (
                                         <div className='absolute bg-black top-10 py-2 left-0 w-[360px] rounded-lg  text-white'>
@@ -492,7 +499,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                 Please take a moment to carefully read our cancellation policy.
                             </DialogDescription>
                         </DialogHeader>
-                        <CancellationPolicy data={advertisement} date={startDate}/>
+                        <CancellationPolicy data={advertisement} date={startDate} />
                     </DialogContent>
                 </Dialog>
             </div>

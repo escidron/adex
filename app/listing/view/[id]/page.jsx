@@ -94,7 +94,8 @@ export default function Listing({ params }) {
                 }
 
                 if (discounts.length > 0) {
-                    const calculatedDiscount = calculateDiscounts(discounts, myListing.duration)
+                    let duration = myListing.ad_duration_type == '2' ? myListing.units : myListing.duration
+                    const calculatedDiscount = calculateDiscounts(discounts, duration)
                     setCurrentDiscount(calculatedDiscount)
                 }
 
