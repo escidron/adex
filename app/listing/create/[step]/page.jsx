@@ -276,7 +276,6 @@ export default function Listing({ params }) {
 
             })
     }
-
     return (
         <div className="flex flex-col h-screen">
             <Toaster />
@@ -320,7 +319,7 @@ export default function Listing({ params }) {
             <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end fixed bottom-0 left-0 w-full">
                 <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
-                    <Button disabled={userData.userType == 2 && step === 'category' || isDraftPending} onClick={handlePrevious} variant='outline' className='flex gap-2'>
+                    <Button disabled={(userData.userType == 2 && step === 'category') || isDraftPending || (userData.userType == 1 && step === 'select_business')} onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
                         Back
                     </Button>
