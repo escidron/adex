@@ -21,7 +21,6 @@ export default function NavBar() {
     const [finishRequests, setFinishRequests] = useState(false);
     const router = useRouter();
 
-
     async function hasPayoutMethod() {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/external-account`,
@@ -79,7 +78,7 @@ export default function NavBar() {
             });
             if (response.status === 200) {
                 const currentUser = await response.json()
-                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId }));
+                setUser((prev) => ({ ...prev, name: currentUser.name, isLogged: true, checkLogin: false, showLoginOptions: false, image: currentUser.image, userId: currentUser.userId,userType:currentUser.userType }));
                 hasPayoutMethod()
                 setFinishRequests(true)
             } else {
@@ -88,7 +87,7 @@ export default function NavBar() {
             }
         }
         autoLogin();
-    }, []);
+    }, [userData]);
 
     useEffect(() => {
         async function GetUserProfile() {
@@ -139,7 +138,7 @@ export default function NavBar() {
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[500px] lg:w-[600px] xl:max-w-[50%]'>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
 
                 <div className='md:h-[50px] md:w-[50px] lg:h-[60px] lg:w-[60px] xl:h-[70px] xl:w-[70px]'>
                     <Link href="/">
@@ -246,7 +245,7 @@ export default function NavBar() {
                             Profile
                         </Link>
                         {
-                            userData.userType == '1' && (
+                            user.userType == '1' && (
                                 <Link href="/my-profile?tab=6" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                                     <Building2 size={20} />
                                     My Companies
@@ -262,7 +261,7 @@ export default function NavBar() {
                             My Bookings
                         </Link>
                         {
-                            userData.userType == '2' && (
+                            user.userType == '2' && (
                                 <Link href="/my-profile?tab=4" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                                     <Wallet size={20} />
                                     My Wallet
@@ -278,7 +277,7 @@ export default function NavBar() {
                             <Store size={20} />
                             ADEX Market Place
                         </Link>
-                        <Link href={user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                        <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <List size={20} />
                             Create Listing
                         </Link>

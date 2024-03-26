@@ -59,7 +59,8 @@ export default function LoginPage() {
                             showLoginOptions: false,
                             image: response.data.image,
                             userId: response.data.userId,
-                            hasPayout: response.data.hasPayout ? true : false
+                            hasPayout: response.data.hasPayout ? true : false,
+                            userType: response.data.userType
                         }))
                     setTimeout(() => {
                         router.push('/')
