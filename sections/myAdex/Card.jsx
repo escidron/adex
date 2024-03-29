@@ -41,9 +41,9 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
         toast.success('Link copy to your clipboard')
     }
     return (
-        <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:max-h-[300px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
-            <div className='h-[210px] w-full md:w-[210px] min-h-[210px] min-w-[210px] rounded-lg relative'>
-                <MultiImage images={item.image} height={'210px'} remove={false} />
+        <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:h-[260px] md:max-h-[260px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
+            <div className='h-[240px] w-full md:w-[240px] min-h-[240px] min-w-[240px] rounded-lg relative'>
+                <MultiImage images={item.image} height={'240px'} remove={false} />
                 {
                     item.status === 2 && (
 
