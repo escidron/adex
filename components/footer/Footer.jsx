@@ -12,9 +12,11 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import TermsOfUseModal from '../modals/TermsOfUseModal';
+import { useRouter } from 'next/navigation';
 
 
 export default function Footer() {
+    const router = useRouter()
     return (
         <div className=" bg-[#252525] flex flex-col justify-between items-center mt-[80px]">
             <div className='w-full h-full'>
@@ -48,7 +50,7 @@ export default function Footer() {
                     <Separator className='w-[80%]' />
                 </div>
                 <div className='w-full mt-[20px] flex flex-col items-center justify-center'>
-                    <div className='w-[80px] '>
+                    <div onClick={()=>router.push('/')}  className='w-[80px] cursor-pointer'>
                         <Image
                             src='/adex-logo-white-yellow.png'
                             alt="Adex Logo"

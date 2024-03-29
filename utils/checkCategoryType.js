@@ -1,5 +1,4 @@
 export const checkCategoryType = (id) => {
-    console.log('sss',id)
     const OneTimeCategories = [4,8,12,18]
     const unitCategories = [7,17,19,20,21,22]
     if(OneTimeCategories.includes(id)){
