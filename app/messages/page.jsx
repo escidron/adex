@@ -241,7 +241,7 @@ export default function MessagesPage() {
                         {
                             allChats.length == 0 && (
                                 <div className='mt-[200px] bg-[#FCD33B] h-[150px] rounded-lg p-4 flex flex-col items-center'>
-                                    <h1 className='text-[32px]'>You don&apos;t have conversations yet</h1>
+                                    <h1 className='text-[32px]'>You do not have any messages yet</h1>
                                     <Button className='mt-6 gap-2' onClick={() => router.back()}>
                                         <ArrowLeft size={16} />
                                         Back
