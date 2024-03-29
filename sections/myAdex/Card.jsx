@@ -104,7 +104,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                                 <div onClick={(e) => {
                                     setSharingOptions(true)
                                     e.stopPropagation()
-                                }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer z-[20]'>
+                                }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer z-[20] flex items-center'>
                                     <Share2 />
                                 </div>
                             )
@@ -153,7 +153,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                                     <div onClick={(e) => {
                                         e.stopPropagation()
                                         router.push(`/listing/edit/${item.id}`)
-                                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer flex items-center'>
                                         <Edit />
                                     </div>
 
@@ -161,7 +161,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
 
                                         <AlertDialog>
                                             <AlertDialogTrigger>
-                                                <div className="hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer" >
+                                                <div className="hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer flex items-center" >
                                                     <Trash />
                                                 </div>
                                             </AlertDialogTrigger>
