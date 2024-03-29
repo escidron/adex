@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Edit, ImageIcon, Trash } from 'lucide-react';
+import { Edit, ImageIcon, MapPin, Trash } from 'lucide-react';
 
 import {
     AlertDialog,
@@ -41,7 +41,7 @@ export default function CompanyCard({ company, removeCompany, handleEdit }) {
     }, [company]);
 
     return (
-        <div onClick={()=>router.push(`/my-company?id=${company.id}`)} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border  cursor-pointer hover:border-black`}>
+        <div onClick={() => router.push(`/my-company?id=${company.id}`)} className={`bg-white w-full h-[150px] mt-4 p-4 shadow-md rounded-lg flex border  cursor-pointer hover:border-black`}>
             <div className="card_element w-1/4 rounded-lg">
                 {
                     company.company_logo ? (
@@ -65,13 +65,13 @@ export default function CompanyCard({ company, removeCompany, handleEdit }) {
 
                 <div className="w-full ml-4">
                     <h3 className="text-lg font-semibold">{company.company_name}</h3>
-                    <p className='text-[14px] mb-2'>{industryName}</p>
+                    <p className='text-[15px] mb-2'>{industryName}</p>
                     <div className='flex items-start  gap-1'>
-                        <LocationOnIcon sx={{ fontSize: '18px', color: 'gray', marginTop: '4px' }} />
-                        <p className="text-gray-500">{company.address ? company.address : 'Home-base business'}</p>
+                        <MapPin size={14} color='gray' className='min-w-[14px] mt-[2px]' />
+                        <p className="text-gray-500 text-[12px] line-clamp-2">{company.address ? company.address : 'Home-base business'}</p>
                     </div>
                 </div>
-                <div className='w-full flex justify-end items-center'onClick={(e)=>{e.stopPropagation()}} >
+                <div className='w-full flex justify-end items-center' onClick={(e) => { e.stopPropagation() }} >
                     <div onClick={(e) => {
                         e.stopPropagation()
                         handleEdit(company)
