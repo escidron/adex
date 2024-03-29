@@ -32,7 +32,7 @@ export default function ChatBox({ text, currentUser, time, file }) {
           )
         }
         <p className="text-[10px] text-right mt-1">
-          {time.substring(11, 16)}
+          {new Date(time).toLocaleString().substring(11, 17)}
         </p>
       </div>
     </div >
