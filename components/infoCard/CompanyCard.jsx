@@ -61,7 +61,7 @@ export default function CompanyCard({ company, removeCompany, handleEdit }) {
                     )
                 }
             </div>
-            <div className='w-3/4'>
+            <div className='w-3/4 relative'>
 
                 <div className="w-full ml-4">
                     <h3 className="text-lg font-semibold">{company.company_name}</h3>
@@ -71,16 +71,16 @@ export default function CompanyCard({ company, removeCompany, handleEdit }) {
                         <p className="text-gray-500 text-[12px] line-clamp-2">{company.address ? company.address : 'Home-base business'}</p>
                     </div>
                 </div>
-                <div className='w-full flex justify-end items-center' onClick={(e) => { e.stopPropagation() }} >
+                <div className='w-full flex gap-1 justify-end items-center absolute bottom-[-10px]' onClick={(e) => { e.stopPropagation() }} >
                     <div onClick={(e) => {
                         e.stopPropagation()
                         handleEdit(company)
-                    }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
-                        <Edit />
+                    }} className='hover:bg-slate-200 hover:text-black p-1 rounded-md cursor-pointer'>
+                        <Edit size={20}/>
                     </div>
                     <AlertDialog >
-                        <AlertDialogTrigger >
-                            <Trash />
+                        <AlertDialogTrigger className='hover:bg-slate-200 p-1 rounded-md cursor-pointer'>
+                            <Trash size={20}/>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
