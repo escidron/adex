@@ -24,6 +24,7 @@ import {
 import RatingBuyerModal from './_components/RatingBuyerModal';
 import RatingSellerModal from './_components/RatingSellerModal';
 import RatingComponent from '@/components/rating/RatingComponent';
+import { FacebookProvider } from 'react-facebook';
 
 export default function Card({ item, route, deleteListing, updateRatingStastus, isListingView }) {
     const router = useRouter();
@@ -85,7 +86,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                 <div className='flex justify-between items-center mt-auto'>
                     <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
                         {
-                            item.category_id ==  7 ? (
+                            item.category_id == 7 ? (
                                 <>
                                     {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : '/Per Post'}</p>
                                 </>
@@ -195,7 +196,9 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                             }} className='absolute top-1 right-1 hover:bg-slate-300 p-1 rounded-md cursor-pointer'>
                                 <X />
                             </div>
-                            <ShareButtonFacebook id={item.id} />
+                            <FacebookProvider appId="1611678826026608" >
+                                <ShareButtonFacebook id={item.id} />
+                            </FacebookProvider>
                             <CopyToClipboard onCopy={onCopy} text={`https://adexconnect.com/market-place/details?id=${item.id}`}>
                                 <div className='w-[180px] flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
                                     <Copy />
