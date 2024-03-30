@@ -6,33 +6,26 @@ export default function ShareButtonFacebook({ id }) {
 
   async function handleClick() {
     const api = await init();
-
-    const response = await api.login();
-    const FB = await api.getFB(); // Get original FB object
-
+    console.log('api', api)
     try {
-      const scrapeResponse = await new Promise((resolve, reject) => {
-        FB.api('https://graph.facebook.com/', 'post', {
+      // Realiza a solicitação de limpeza de cache
+      await api.getFB().api(
+        'https://graph.facebook.com/',
+        'post',
+        {
           id: `https://adexconnect.com/my-listing/sharing-listing/${id}?timestamp=${Date.now()}`,
           scrape: true
-        }, function (response) {
-          if (!response || response.error) {
-            reject(response.error || 'Erro desconhecido ao fazer scraping');
-          } else {
-            resolve(response);
-          }
-        });
-      });
-
-      console.log('Resposta do scraping:', scrapeResponse);
+        }
+      );
+  
     } catch (error) {
-      console.error('Erro ao fazer scraping:', error);
+      console.error('Erro ao limpar o cache do scraper do Facebook:', error);
     }
   }
 
   return (
     <>
-        <ShareButton href={`https://adexconnect.com/my-listing/sharing-listing/${id}?timestamp=${Date.now()}`}>
+        <ShareButton onClick={handleClick} href={`https://adexconnect.com/my-listing/sharing-listing/${id}?timestamp=${Date.now()}`}>
           <div className='w-[180px] flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
             <Facebook />
             <p>Facebook</p>
