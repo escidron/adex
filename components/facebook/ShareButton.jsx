@@ -14,15 +14,12 @@ export default function ShareButtonFacebook({ id }) {
       console.log('api', api)
       try {
         // Realiza a solicitação de limpeza de cache
-        await api.getFB().api(
-          'https://graph.facebook.com/',
-          'post',
-          {
-            id: `https://adexconnect.com/my-listing/sharing-listing/${id}?timestamp=${Date.now()}`,
+        const res = await api.getFB().api('https://graph.facebook.com/','post',{
+            id: `https://adexconnect.com/my-listing/sharing-listing/${id}`,
             scrape: true
           }
         );
-
+          console.log('res',res)
       } catch (error) {
         console.error('Erro ao limpar o cache do scraper do Facebook:', error);
       }
@@ -33,7 +30,7 @@ export default function ShareButtonFacebook({ id }) {
 
   return (
     <>
-      <ShareButton  href={`https://adexconnect.com/my-listing/sharing-listing/${id}?timestamp=${Date.now()}`}>
+      <ShareButton  href={`https://adexconnect.com/my-listing/sharing-listing/${id}`}>
         <div className='w-[180px] flex gap-3 border p-3 mt-2 bg-white shadow-sm rounded-lg cursor-pointer hover:border-black'>
           <Facebook />
           <p>Facebook</p>
