@@ -16,7 +16,6 @@ export default function CancelBooking({ setCancelMessage, cancelMessage, cancelB
                     value={cancelMessage}
                     className={`w-full border mt-2 p-3 rounded-lg outline-none h-[140px] resize-none `}
                 />
-                <p className='text-[12px]'>Your booking will be canceled,you will be refunded within 10 business days</p>
                 <div className='text-end mt-5'>
                     <DialogTrigger onClick={cancelBooking} disabled={isCancelPending} className='ml-[20px] h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
                         Cancel Booking
