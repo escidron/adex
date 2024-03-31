@@ -118,7 +118,7 @@ export default function ForgotPasswordPage() {
         if (newPassword == '') {
             toast.error('Provide a password.')
         } else if (newPassword.length < 8) {
-            toast.error('The password must have more than 8 caracters.')
+            toast.error('Password must have more than 8 characters.')
         } else if (newPassword !== confirmPassword) {
             toast.error('The password do not match.')
         } else {

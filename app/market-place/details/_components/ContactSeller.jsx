@@ -43,7 +43,7 @@ export default function ContactSeller({ listingProperties }) {
             setMessage('')
             setUploadFiles([])
             setIsPending(false)
-            toast.success('Message sended')
+            toast.success('Message Sent')
         } catch (error) {
             toast.error('Something went wrong.')
         }

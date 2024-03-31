@@ -135,7 +135,7 @@ export default function ListingDetails({ sharedId }) {
             if (message) {
 
                 const response = await SendChatMessage(user.userId, listingProperties.seller_id, user.userId, listingProperties.id, message)
-                toast.success('Message sended')
+                toast.success('Message Sent')
                 setMessage(prev => '')
                 setRefetch(prev => !prev)
             }

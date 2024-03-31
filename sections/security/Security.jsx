@@ -32,7 +32,7 @@ export default function Security() {
     if (!values.password) {
       errors.password = 'Required';
     }else if (values.password.length < 8){
-      errors.password = 'The password must have more than 8 caracters.';
+      errors.password = 'Password must have more than 8 characters.';
 
     }
 
@@ -40,7 +40,7 @@ export default function Security() {
       errors.password2 = 'Required';
   
     } else if (values.password2 !== values.password) {
-      errors.password2 = 'passwords must be equal'
+      errors.password2 = 'Passwords must be equal'
     }
   
     return errors;

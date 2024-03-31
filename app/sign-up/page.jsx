@@ -48,14 +48,14 @@ export default function SignUppage() {
     if (!values.password) {
       errors.password = 'Required';
     } else if (values.password.length < 8) {
-      errors.password = 'The password must have more than 8 caracters.';
+      errors.password = 'Password must have more than 8 characters.';
     }
 
     if (!values.password2) {
       errors.password2 = 'Required';
 
     } else if (values.password2 !== values.password) {
-      errors.password2 = 'passwords must be equal'
+      errors.password2 = 'Passwords must be equal'
     }
     if (!values.email) {
       errors.email = 'Required';
