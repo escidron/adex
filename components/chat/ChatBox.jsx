@@ -4,7 +4,7 @@ import DownloadChatFiles from "@/actions/DownloadChatFiles";
 import { Download, File, Trash } from "lucide-react"
 
 export default function ChatBox({ text, currentUser, time, file }) {
-
+  const timetest = '31/03/2024, 2:05:56'
   return (
     <div className={`w-full ${currentUser ? 'text-right' : 'text-left'}`}>
       <div className={`p-2 rounded-xl  min-w-[250px] max-w-[70%] inline-block ${currentUser ? 'bg-[#FCD33B] text-black shadow-md ' : 'bg-white shadow-md'} text-[14px] mt-2 mb-2`}>
@@ -32,7 +32,7 @@ export default function ChatBox({ text, currentUser, time, file }) {
           )
         }
         <p className="text-[10px] text-right mt-1">
-          {new Date(time).toLocaleString().substring(11, 17)}
+          {new Date(time).toLocaleString('en-US',{hour: '2-digit', minute: '2-digit'})}
         </p>
       </div>
     </div >

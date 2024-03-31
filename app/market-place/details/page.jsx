@@ -227,7 +227,7 @@ export default function ListingDetails({ sharedId }) {
                                         value={message}
                                         className={`w-full mt-2 overflow-hidden border shadow-sm p-3 rounded-lg outline-none h-[140px] resize-none  focus:border-black`}
                                     />
-                                    <div className='flex gap-2 justify-end'>
+                                    <div className='flex gap-2 justify-start'>
                                         <Button onClick={sendMessage} className='flex gap-2 items-center'>
                                             <SendHorizontal size={15} />
                                             Send Message
