@@ -46,7 +46,7 @@ export default function DateInfo({ listingProperties }) {
                                 className="w-[240px] justify-start text-left font-normal"
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {format(new Date(listingProperties.first_available_date), "PPP")}
+                                {new Date(listingProperties.first_available_date).toLocaleString('en-US',{ month: 'long', day: 'numeric', year: 'numeric' })}
                             </Button>
                         </div>
                     </>
