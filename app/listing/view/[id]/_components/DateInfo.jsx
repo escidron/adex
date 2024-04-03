@@ -2,15 +2,12 @@
 
 
 import { Button } from '@/components/ui/button'
-import { format, parseISO  } from 'date-fns'
+import { format  } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
 export default function DateInfo({ listingProperties }) {
     
-    console.log('string', listingProperties.first_available_date)
-    console.log('string 2', new Date(listingProperties.first_available_date).toLocaleString('en-US',{ month: 'long', day: 'numeric', year: 'numeric' }))
-    console.log('string 3', format(new Date(listingProperties.first_available_date), "PPP"))
-    console.log('string 4', format(parseISO(listingProperties.first_available_date), "PPP"))
+
     return (
         <div>
             {
@@ -51,7 +48,8 @@ export default function DateInfo({ listingProperties }) {
                                 className="w-[240px] justify-start text-left font-normal"
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {new Date(listingProperties.first_available_date).toLocaleString('en-US',{ month: 'long', day: 'numeric', year: 'numeric' })}
+                                {format(new Date(listingProperties.first_available_date), "PPP")}
+                                {/* {new Date(listingProperties.first_available_date).toLocaleString('en-US',{ month: 'long', day: 'numeric', year: 'numeric' })} */}
                             </Button>
                         </div>
                     </>
