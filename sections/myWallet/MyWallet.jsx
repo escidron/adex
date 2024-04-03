@@ -11,7 +11,7 @@ export default function MyWallet() {
   return (
     <div className={`w-full flex flex-col items-center `}>
       <div>
-        <h1 className='text-[30px] mt-8'>Payments & payouts</h1>
+        <h1 className='text-[30px] mt-8'>Payments & Payouts</h1>
       </div>
       <div className='flex mt-4 w-full items-center px-[20px] lg:px-[80px]'>
         <div className='w-full md:w-[80%] lg:w-[40%]'>

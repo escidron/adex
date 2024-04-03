@@ -245,7 +245,7 @@ export default function PersonalInfo() {
   return (
     <div className={` flex flex-col items-center  min-h-screen py-2 overflow-y-auto invisible_scroll_bar`}>
       <div className="flex flex-col items-center rounded-lg p-6 w-[100%] md:w-[80%] max-w-[650px] ">
-        <h1 className="text-[30px]">Personal Informations</h1>
+        <h1 className="text-[30px]">Personal Information</h1>
         <div className={`mt-2 w-full flex flex-col gap-3 `}>
 
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] w-full">
