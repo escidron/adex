@@ -16,6 +16,7 @@ import TextField from "@/components/inputs/TextField";
 import TermsOfUseModal from "@/components/modals/TermsOfUseModal";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import PrivacyPolicyModal from "@/components/modals/PrivacyPolicyModal";
 
 
 export default function SignUppage() {
@@ -23,6 +24,8 @@ export default function SignUppage() {
   const [accountType, setAccountType] = useState('');
   const [showTerms, setShowterms] = useState(false);
   const [checkTerms, setCheckTerms] = useState(false)
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [checkPrivacy, setCheckPrivacy] = useState(false)
   const [isPending, setIsPending] = useState(false)
 
   const router = useRouter();
@@ -81,7 +84,7 @@ export default function SignUppage() {
     onSubmit: values => {
       setIsPending(true)
       toast.dismiss()
-      if (checkTerms) {
+      if (checkTerms && checkPrivacy) {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users`,
           {
             name: `${values.firstName} ${values.lastName}`,
@@ -123,7 +126,7 @@ export default function SignUppage() {
           });
       } else {
         setIsPending(false)
-        toast.error('Accept the terms of service before continue.', {
+        toast.error('Accept the Terms of Service and Privacy Policy before continue.', {
           duration: 10000,
           style: {
             width: 'auto',
@@ -290,6 +293,10 @@ export default function SignUppage() {
             <input className="cursor-pointer" type="checkbox" onChange={() => setCheckTerms(!checkTerms)} checked={checkTerms ? true : false} />
             <p className="text-white text-[14px] sm:text-[16px]">I have read and agree to the <label onClick={() => setShowterms(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Terms of service</label> </p>
           </div>
+          <div className={`flex rounded-lg items-center gap-4 mt-2`}>
+            <input className="cursor-pointer" type="checkbox" onChange={() => setCheckPrivacy(!checkPrivacy)} checked={checkPrivacy ? true : false} />
+            <p className="text-white text-[14px] sm:text-[16px]">I have read and agree to the <label onClick={() => setShowPrivacy(true)} className={`font-[600] cursor-pointer border-b-[1px] border-white  ${formik.errors.checkTerms && !checkTerms ? ' border-red-600' : ''}`}>Privacy Policy</label> </p>
+          </div>
           {
             showTerms && (
               <>
@@ -306,6 +313,30 @@ export default function SignUppage() {
                     <div onClick={() => {
                       setCheckTerms(true)
                       setShowterms(false)
+                    }}>
+                      <BlackButton label='I agree' />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )
+          }
+          {
+            showPrivacy && (
+              <>
+                <div className='bg-black w-full h-[100vh] fixed z-[90] top-0 left-0 opacity-80 flex justify-center items-center'>
+                </div>
+                <div className='card-payment-modal bg-white z-[99] fixed left-[50%] top-[50%] rounded-xl w-full md:w-[80%] lg:min-w-[800px] h-[80vh]'>
+                  <div className=' w-full h-[90%] flex flex-col justify-center items-center overflow-y-scroll'>
+                    <PrivacyPolicyModal />
+                  </div>
+                  <div className="w-full h-[10%] flex justify-around items-center">
+                    <div onClick={() => setShowPrivacy(false)}>
+                      <SecondaryButton label='Cancel' dark={true} />
+                    </div>
+                    <div onClick={() => {
+                      setCheckPrivacy(true)
+                      setShowPrivacy(false)
                     }}>
                       <BlackButton label='I agree' />
                     </div>

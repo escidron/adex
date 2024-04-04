@@ -254,7 +254,7 @@ export default function NavBar() {
                         }
                         <Link href="/my-profile?tab=5&sub-tab=0" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <List size={20} />
-                            My Listing
+                            My Listings
                         </Link>
                         <Link href="/my-profile?tab=5&sub-tab=1" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <BookmarkCheck size={20} />

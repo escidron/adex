@@ -96,9 +96,6 @@ export default function MarketPlaceGrid({ newData, isDataLoaded, located }) {
                     <DialogContent className="w-[90%] sm:max-w-[550px] h-[85vh]" >
                         <DialogHeader>
                             <DialogTitle>Filters</DialogTitle>
-                            <DialogDescription>
-                                Use the filter modal to narrow down your listing search and discover the perfect advertisements with ease.
-                            </DialogDescription>
                         </DialogHeader>
                         <Divider variant="" sx={{ color: 'black', width: '95%', marginTop: '10px' }} />
 

@@ -80,7 +80,7 @@ export default function Footer() {
                         </Link>
 
                     </div>
-                    <p className={`mt-4 text-white `}>Copyright © {new Date().getFullYear()} ADEX CONNECT</p>
+                    <p className={`mt-4 text-white `}>Copyright © {new Date().getFullYear()} ADEX Corp.</p>
                 </div>
             </div>
             <div className='w-full '>
