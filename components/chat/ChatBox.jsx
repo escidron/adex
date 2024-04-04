@@ -5,6 +5,8 @@ import { Download, File, Trash } from "lucide-react"
 
 export default function ChatBox({ text, currentUser, time, file }) {
   const timetest = '31/03/2024, 2:05:56'
+  console.log( 'time',time )
+  console.log( 'date',new Date(time) )
   return (
     <div className={`w-full ${currentUser ? 'text-right' : 'text-left'}`}>
       <div className={`p-2 rounded-xl  min-w-[250px] max-w-[70%] inline-block ${currentUser ? 'bg-[#FCD33B] text-black shadow-md ' : 'bg-white shadow-md'} text-[14px] mt-2 mb-2`}>

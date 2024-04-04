@@ -1,6 +1,5 @@
 'use client'
 
-import axios from 'axios';
 import { useState } from 'react'
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import ChatBox from './ChatBox';
@@ -10,6 +9,7 @@ import SendChatMessage from '@/actions/SendChatMessage';
 import getFilesLink from '@/utils/getFilesLink';
 import { FileCheck, ImageIcon, Paperclip, X } from 'lucide-react';
 import SendFiles from '@/actions/SendFiles';
+import { format } from 'date-fns';
 
 export default function Chat({ messages, userId, advertisementId, createdBy, setMessages,setRefetch }) {
   const [message, setMessage] = useState('');
@@ -88,15 +88,13 @@ export default function Chat({ messages, userId, advertisementId, createdBy, set
             const FilesArray = message.files ? getFilesLink(message.files) : []
             if (dates.substring(0, 10) != message.created_at.substring(0, 10)) {
               const date = new Date(message.created_at);
-              const month = date.toLocaleString('en-US', { month: 'long' });
-              const day = date.getUTCDate();
-              const year = date.getUTCFullYear();
               dates = message.created_at
               return (
                 <div key={message.id}>
                   <div className='flex flex-col items-center h-[40px] mt-[20px]'>
                     <Divider variant="" sx={{ color: 'black', width: '100%' }} />
-                    <p className='mt-[-10px] bg-slate-100 px-2 text-[12px] font-semibold'>{`${month} ${day},${year}`}</p>
+                    <p className='mt-[-10px] bg-slate-100 px-2 text-[12px] font-semibold'>{format(date, "PPP")}</p>
+                    {/* <p className='mt-[-10px] bg-slate-100 px-2 text-[12px] font-semibold'>{`${month} ${day},${year}`}</p> */}
                   </div>
                   <ChatBox text={message.message} currentUser={message.sended_by == userId} time={message.created_at} file={FilesArray} />
                 </div>

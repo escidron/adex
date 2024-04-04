@@ -6,7 +6,6 @@ import { format  } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 
 export default function DateInfo({ listingProperties }) {
-    
 
     return (
         <div>
@@ -49,7 +48,6 @@ export default function DateInfo({ listingProperties }) {
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                 {format(new Date(listingProperties.first_available_date), "PPP")}
-                                {/* {new Date(listingProperties.first_available_date).toLocaleString('en-US',{ month: 'long', day: 'numeric', year: 'numeric' })} */}
                             </Button>
                         </div>
                     </>
