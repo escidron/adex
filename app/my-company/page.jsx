@@ -45,7 +45,7 @@ export default function MyCompanyPage() {
     const [status, setStatus] = useState({
         available: 0,
         booked: 0,
-        finished: 0,
+        completed: 0,
         pending: 0
     });
     const searchParams = useSearchParams()

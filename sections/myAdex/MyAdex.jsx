@@ -53,12 +53,12 @@ export default function MyAdex() {
     available: 0,
     booked: 0,
     draft: 0,
-    finished: 0,
+    completed: 0,
     pending: 0
   });
   const [bookingStatus, setBookingStatus] = useState({
     booked: 0,
-    finished: 0,
+    completed: 0,
     pending: 0
   });
 
@@ -120,7 +120,7 @@ export default function MyAdex() {
       draft: 0,
       available: 0,
       booked: 0,
-      finished: 0,
+      completed: 0,
       pending: 0,
       expired: 0,
     };
@@ -136,7 +136,7 @@ export default function MyAdex() {
         status.booked++;
         status.all++;
       } else if (item.status == "3") {
-        status.finished++;
+        status.completed++;
         status.all++;
       } else if (item.status == "4") {
         status.pending++;
