@@ -78,7 +78,7 @@ export default function AnyPerson() {
                 router.push(user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : '/login')
             }}>
                 {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                Create a listing
+                Create Listing
             </Button>
         </div>
     )

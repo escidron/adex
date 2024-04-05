@@ -40,7 +40,7 @@ export default function GetPaid() {
                         lg:py-[15px] lg:px-[40px] lg:mt-10 '>
                         <p className='style_banner_button_text font-medium `}><p>Create a Listing</p>
                     </Link> */}
-                    <Button onClick={()=>router.push(path)} className='max-w-[200px] mt-4 flex mx-auto'>Create a Listing</Button>
+                    <Button onClick={()=>router.push(path)} className='max-w-[200px] mt-4 flex mx-auto'>Create Listing</Button>
                 </div>
                 <div className='w-[320px] mt-8 h-full max-h-[400px] flex justify-between '>
                     <Image
