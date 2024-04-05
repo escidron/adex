@@ -256,7 +256,7 @@ export default function PersonalInfo() {
                     type="text"
                     id="name"
                     name="name"
-                    placeholder='Name'
+                    placeholder='First Name'
                     value={user.name != 'null' ? user.name : ''}
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                     className="w-full border text-black p-3 max-h-[42px] rounded-lg outline-none focus:border-black"
@@ -268,7 +268,7 @@ export default function PersonalInfo() {
               ) : (
                 <>
                   <div className='w-full'>
-                    <p className='font-[600]'>Name</p>
+                    <p className='font-[600]'>First Name</p>
                     {
                       isLoading ? (
 
