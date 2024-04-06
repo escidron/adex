@@ -99,7 +99,7 @@ export default function PriceSlider({ filters, setFilters,priceMin ,priceMax,onC
   }
 
   return (
-    <Box sx={{ width: 300, marginLeft: '10px' }} className='flex items-center flex-col justify-start'>
+    <Box sx={{ width: 300 }} className='flex items-center flex-col justify-start'>
       <Box sx={{ m: 1 }} />
       <label className='mb-2'>Price range</label>
       <AirbnbSlider
