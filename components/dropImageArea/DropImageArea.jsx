@@ -129,9 +129,10 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                         }
                         <div
                             id="image-loader"
-                            className={`mt-3 relative py-6  h-full rounded-lg flex justify-center items-center cursor-pointer ${images.length == 0 && `bg-slate-100`}   ${isDragging && 'bg-slate-300'}`}
+                            className={`mt-3 relative py-6   rounded-lg flex justify-center items-center cursor-pointer ${images.length == 0 && `bg-slate-100`}   ${isDragging ? 'bg-slate-300 h-[250px]' :'h-full'} `}
                             {...dragProps}
                         >
+
                             {
                                 !isDragging && (
                                     <>
