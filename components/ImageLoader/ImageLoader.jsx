@@ -99,23 +99,24 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
                         className={`relative shadow-sm h-full rounded-lg flex justify-center items-center cursor-pointer bg-slate-100 ${imageList.length == 0 ? 'hover:bg-gray-200' : ''}  ${isDragging ? 'bg-gray-200' : ''}`}
                         onClick={(e) => {
                             if (e.target.id == 'image-loader' || e.target.id == 'image-loaded') {
-                                if (gallery.length > 0) {
-                                    setShowOptions(true)
-                                } else {
-                                    onImageUpload()
-                                }
+                                // if (gallery.length > 0) {
+                                //     setShowOptions(true)
+                                // } else {
+                                //     onImageUpload()
+                                // }
+                                onImageUpload()
                             }
                         }}
                         {...dragProps}
                     >
                         {images.length === 0 ? (
-                            // <AddAPhotoIcon fontSize="large" className="hover:scale-[1.1] opacity-60" onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()} />
-                            <ImagePlus size={25} onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()}/>
+                            // <ImagePlus size={25} onClick={() => gallery.length > 0 ? setShowOptions(true) : onImageUpload()}/>
+                            <ImagePlus size={25} onClick={() =>  onImageUpload()}/>
                         ) : (
                             <MultiImage images={imageList.length > 0 ? imageList : images} setImageName={(name) => setImageName(name)} height={'160px'} remove={true} />
                         )}
 
-                        {
+                        {/* {
                             showOptions && (
                                 <div className="absolute bg-black h-full w-full rounded-lg z-[10] min-w-[350px]">
                                     <h1 className="text-white w-full mt-4 text-center">Import the images from:</h1>
@@ -157,7 +158,7 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
 
                                 />
                             )
-                        }
+                        } */}
 
                     </div>
                 )}

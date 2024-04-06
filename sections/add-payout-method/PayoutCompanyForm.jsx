@@ -479,18 +479,6 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
         )
       }
 
-      {/* stripe image verification */}
-      {/* <div className=" w-full relative flex flex-col">
-            <p>Identity Document</p>
-            <div className=" h-[160px]  mt-1">
-              <ImageLoader
-                images={images}
-                setImages={(image) => setImages(image)}
-              />
-            </div>
-            <p className="mt-1 text-[13px] text-slate-600">Upload a photo of the front side of your identification document</p>
-            {formik.errors.images ? <div className="absolute top-[210px] text-red-600 text-[12px] font-bold">{formik.errors.images}</div> : null}
-          </div> */}
       <Button disabled={isPending} type="submit" className='w-full mt-4 text-[16px] flex gap-2'>
         {
           isPending ? (
