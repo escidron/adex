@@ -3,7 +3,7 @@ import QrCodeComponent from './QrCodeComponent'
 
 export default function QrCard({id,isHide}) {
     return (
-        <div className={`relative rounded-lg border border-black p-4 ${isHide ? 'w-[600px]' : 'w-full'} flex flex-col items-center`}>
+        <div className={`relative rounded-[20px] border border-black p-4 ${isHide ? 'w-[600px]' : 'w-full'} flex flex-col items-center`}>
             <Image
                 src='/qrcode-header.png'
                 alt="Adex Logo"

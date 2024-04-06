@@ -31,7 +31,7 @@ export const CompanyRefreshContext = createContext();
 
 export default function MyCompanyPage() {
     const [company, setCompany] = useState({});
-    const [rating, setRating] = useState(2);
+    const [rating, setRating] = useState(0);
     const [value1, setValue1] = useState(0);
     const [value2, setValue2] = useState(0);
     const [refresh, setRefresh] = useState(false)
@@ -100,6 +100,7 @@ export default function MyCompanyPage() {
             })
             .then(function (response) {
                 setCompany(response.data[0])
+                setRating(response.data[0].rating)
             })
             .catch(function (error) {
                 console.log(error)
@@ -241,16 +242,6 @@ export default function MyCompanyPage() {
                             </>
                         )
                     }
-                    {/* {
-                        selectedOption == 3 && (
-                            <CompanyRefreshContext.Provider value={[refresh, setRefresh]}>
-                                <TabsComponent value={value2} setValue={(value2) => setValue2(value2)}>
-                                    <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} isCompanyPage={true}/>
-                                    <MyBookings label='My Booking' data={bookingData} isContentLoaded={isContentLoaded} />
-                                </TabsComponent>
-                            </CompanyRefreshContext.Provider>
-                        )
-                    } */}
                     {
                         selectedOption == 3 && (
                             <>
