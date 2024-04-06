@@ -27,16 +27,14 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
     };
 
     useEffect(() => {
+        console.log('entrou no efect',imageName)
         if (images[0]?.file) {
-
-            const newImages = images.filter((item, index) => item.file.name != imageName);
+            const newImages = images.filter((item, index) => item.data_url.slice(50, 70) != imageName);
             setImages(newImages)
         }else  if (images[0]?.data_url.includes('http')) {
-
-                const newImages = images.filter((item, index) => item.data_url != imageName);
-                setImages(newImages)
+            const newImages = images.filter((item, index) => item.data_url != imageName);
+            setImages(newImages)
         } else {
-
             const newImages = images.filter((item, index) => item.data_url.slice(50, 70) != imageName);
             setImages(newImages)
 

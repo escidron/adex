@@ -11,8 +11,7 @@ import {
     CardCvcElement,
     CardExpiryElement
 } from '@stripe/react-stripe-js';
-import CloseIcon from '@mui/icons-material/Close';
-import { ThreeDots } from 'react-loader-spinner'
+
 import toast, { Toaster } from "react-hot-toast";
 import { Button } from '../ui/button';
 import { Loader2, Plus } from 'lucide-react';
@@ -71,7 +70,6 @@ export default function StripeForm({ setRefetch, setAddCard, companyId }) {
     return (
         <>
 
-            {/* <div><Toaster /></div> */}
             <form onSubmit={handleSubmit}>
                 <div className='flex justify-between items-center flex-col mb-[20px] '>
                     <div className=" mt-2 w-full relative">
