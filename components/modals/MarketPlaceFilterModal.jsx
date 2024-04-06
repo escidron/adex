@@ -61,10 +61,10 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
     return (
         <>
 
-            <div className='  bg-white    rounded-xl'>
+            <div className='bg-white rounded-xl'>
 
                 <div className='flex flex-col items-center'>
-                    <div className='px-[20px]  flex flex-col items-center  gap-6 w-full'>
+                    <div className='md:px-[20px] flex flex-col items-center  gap-6 w-full'>
                         <MapCoordinatesContext.Provider value={[coords, setCoords]}>
                             <div onClick={(e) => { e.stopPropagation() }} className="z-[99] w-full border rounded-lg outline-none  flex items-center shadow-sm">
                                 <NewSearchAddress
