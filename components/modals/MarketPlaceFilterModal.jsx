@@ -86,10 +86,10 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                         <div className='w-full flex flex-col items-start'>
                             <label>Seller type</label>
                             <div className='flex gap-2 mt-2'>
-                                <button onClick={() => onClick('adGroup', 1)} className={`flex items-center justify-center h-10 px-[15px] ${adGroup == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>
+                                <button onClick={() => onClick('adGroup', 1)} onTouchStart={() => onClick('adGroup', 1)} className={`flex items-center justify-center h-10 px-[15px] ${adGroup == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>
                                     <p className=' flex items-center'>Business</p>
                                 </button>
-                                <button onClick={() => onClick('adGroup', 2)} className={`flex items-center justify-center h-10 px-[15px] ${adGroup == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>
+                                <button onClick={() => onClick('adGroup', 2)} onTouchStart={() => onClick('adGroup', 2)} className={`flex items-center justify-center h-10 px-[15px] ${adGroup == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}    hover:text-black hover:bg-[#FCD33B] font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>
                                     <p className=' flex items-center'>Individual</p>
                                 </button>
                             </div>
@@ -99,7 +99,7 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
                             <div className='mt-2 flex justify-end'>
                                 {
                                     typesValues.map((item) => (
-                                        <button key={item.id} onClick={() => onClick('type', item.id)} className={`${type == item.id ? 'text-black bg-[#FCD33B]' : 'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>{item.label}</button>
+                                        <button key={item.id} onClick={() => onClick('type', item.id)} onTouchStart={() => onClick('type', item.id)} className={`${type == item.id ? 'text-black bg-[#FCD33B]' : 'text-white bg-black'}  hover:bg-[#FCD33B] hover:text-black   font-medium rounded-3xl text-sm px-4 py-2 mr-2 mb-2   focus:outline-none`}>{item.label}</button>
                                     ))
                                 }
                             </div>
