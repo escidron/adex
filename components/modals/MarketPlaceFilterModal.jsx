@@ -15,7 +15,7 @@ import { NewSearchAddress } from '../placesAutocomplete/NewSearchAddress';
 const radiusValues = [100, 500, 1000, 2000]
 const typesValues = [{ id: 1, label: 'Person' }, { id: 2, label: 'Place' }, { id: 3, label: 'Thing' }, { id: 4, label: 'Online Assets' }]
 
-export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
+export default function MarketPlaceFilterModal() {
     const [filters, setFilters] = useState([]);
     const [coords, setCoords] = useContext(MapCoordinatesContext)
 
@@ -50,14 +50,13 @@ export default function MarketPlaceFilterModal({ setOpenFilter, counter }) {
 
     };
 
-    // const applyFilter = () => {
-    //     setOpenFilter(false)
-    // }
 
     const handleCoords = (coords) => {
         onClick('coords',coords)
         setCoords(coords)
     }
+
+    console.log('filtering',adGroup)
     return (
         <>
 
