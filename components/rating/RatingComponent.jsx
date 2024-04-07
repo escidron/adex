@@ -5,7 +5,6 @@ import Rating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
 
 export default function RatingComponent({ size, readOnly, rating, setRating }) {
-
   const CustomRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconEmpty': {
       color: '#FCD33B',
@@ -16,10 +15,10 @@ export default function RatingComponent({ size, readOnly, rating, setRating }) {
   return (
     <Box>
       <CustomRating
-        defaultValue={5}
+        defaultValue={1}
         size={size ? size : 'medium'}
         readOnly={readOnly ? readOnly : false}
-        value={rating }
+        value={rating}
         onChange={(event, newValue) => {
           setRating(newValue);
         }}
