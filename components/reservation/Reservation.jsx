@@ -36,7 +36,7 @@ const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgY
 //const stripePromise = loadStripe('pk_live_51Hz3inL3Lxo3VPLo1HZXUJ0JX3NiC7qVlyiw37nBRE3hf206rKHs6CSYrSXo1tlePY7ConUThfIMqtfbXgOVroS800fll05dSk');
 
 
-export default function Reservation({ data, hasCard, setShowModal, setIsBooked, setIsRequested, discounts, isContentLoaded }) {
+export default function Reservation({ data, setIsRequested, discounts, isContentLoaded }) {
 
     const [date, setDate] = useState('');
     const [endDate, setEndDate] = useState('');

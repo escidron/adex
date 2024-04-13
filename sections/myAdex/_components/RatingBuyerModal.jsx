@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import Image from "next/image"
 import { useState } from "react"
+import toast, { Toaster } from "react-hot-toast";
 
 export default function RatingBuyerModal({ listing, updateRatingStastus }) {
     const [comments, setComments] = useState('');
@@ -21,6 +22,7 @@ export default function RatingBuyerModal({ listing, updateRatingStastus }) {
 
     return (
         <Dialog className='w-full ' open={open} onOpenChange={setOpen}>
+            {/* <Toaster /> */}
             <DialogTrigger className='w-fit h-10 px-4 py-2 border rounded-[16px] border-input bg-background hover:bg-accent hover:text-accent-foreground'>
                 Leave a Review
             </DialogTrigger>
@@ -97,7 +99,7 @@ export default function RatingBuyerModal({ listing, updateRatingStastus }) {
                     </div>
                 </div>
                 <div className="mt-6">
-                    <h1 className="text-[20px] font-[600] mb-2">Overall rating</h1>
+                    <h1 className="text-[20px] font-[600] mb-2">Give an overall rating</h1>
                     <RatingComponent rating={rating} setRating={(newRating) => setRating(newRating)} />
                 </div>
                 <div className="mt-6">
@@ -113,9 +115,13 @@ export default function RatingBuyerModal({ listing, updateRatingStastus }) {
                     />
                 </div>
                 <Button className='w-[120px] flex ml-auto' onClick={() => {
-                    RateBuyer(listing.requested_by, listing.requested_by_company, listing.contract_id, rating, comments)
-                    setOpen(false)
-                    updateRatingStastus(listing.id)
+                    if (comments) {
+                        RateBuyer(listing.requested_by, listing.requested_by_company, listing.contract_id, rating, comments)
+                        setOpen(false)
+                        updateRatingStastus(listing.id)
+                    }else{
+                        toast.error('Please add some comment')
+                    }
                 }}>Submit</Button>
 
             </DialogContent>
