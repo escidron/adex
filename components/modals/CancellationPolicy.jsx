@@ -18,8 +18,10 @@ export default function CancellationPolicy({ data, date }) {
     }, []);
 
     const oneTimeCancellationDate = (cancellationDate) => {
-        if (data.date.from) {
-            const diferencaInDays = diferenceBetweenDates(data.date.from)
+        console.log('one time cancellation',date)
+        const startDate = data.date.from ? data.date.from : date
+        if (startDate) {
+            const diferencaInDays = diferenceBetweenDates(startDate)
             if (diferencaInDays > 5) {
                 setMaxCancellationDate(cancellationDate)
                 exampleDate.setMonth(maxCancellationDate.getMonth() + 1)
@@ -27,9 +29,9 @@ export default function CancellationPolicy({ data, date }) {
                 setExampleDate(exampleDate)
 
             } else {
-                setMaxCancellationDate(new Date(data.date.from))
-                const exampleDate = new Date(data.date.from)
-                exampleDate.setMonth(new Date(data.date.from).getMonth() + 1)
+                setMaxCancellationDate(new Date(startDate))
+                const exampleDate = new Date(startDate)
+                exampleDate.setMonth(new Date(startDate).getMonth() + 1)
                 setExampleDate(exampleDate)
             }
         } else {
