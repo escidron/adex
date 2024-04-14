@@ -165,6 +165,7 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
     }
 
     console.log('data', data)
+    console.log('user', user)
     return (
         <div className={`w-[350px] h-fit flex flex-col   shadow-lg rounded-lg border p-4 `}>
             {data.price && (
@@ -268,7 +269,7 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
             </div>
 
             {
-                data.status == '1' && user.isLogged && (
+                (data.status == '1' && user.isLogged && user.userId != data.seller_id) && (
 
                     <Dialog className='w-full ' onOpenChange={() => {
                         setHasCompanySelected(false)

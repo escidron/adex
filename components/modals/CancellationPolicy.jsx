@@ -18,7 +18,6 @@ export default function CancellationPolicy({ data, date }) {
     }, []);
 
     const oneTimeCancellationDate = (cancellationDate) => {
-        console.log('one time cancellation',date)
         const startDate = data.date.from ? data.date.from : date
         if (startDate) {
             const diferencaInDays = diferenceBetweenDates(startDate)
