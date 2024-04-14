@@ -36,15 +36,16 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const [cancelMessage, setCancelMessage] = useState('');
     const [finishCountdown, setFinishCountdown] = useState(false);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
+    const [contractStartDate, setContractStartDate] = useState(new Date());
     const router = useRouter();
-    const pathName = usePathname();
 
     const createdDate = new Date(advertisement.created_at);
+    console.log('advertisement', advertisement)
     const currentDate = new Date();
     const startDate = new Date(advertisement.date.from);
 
     const interval1 = Math.abs(startDate - currentDate);
-    const interval2 = Math.abs(currentDate - createdDate);
+    const interval2 = Math.abs(currentDate - contractStartDate);
     const fiveDaysInterval = 5 * 24 * 60 * 60 * 1000;
     const availableDays = interval1 / (1000 * 60 * 60 * 24)
 
@@ -60,6 +61,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             countDownDays = fiveDaysInterval - interval2
         }
     }
+    console.log('countDownDays', countDownDays)
     useEffect(() => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
@@ -71,6 +73,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
         })
             .then(function (response) {
                 setFinishCountdown(response.data.cancellation_allowed == '0')
+                console.log(response.data.created_at)
+                setContractStartDate(new Date(response.data.created_at))
                 setIsContentLoaded(true)
             })
             .catch(function (error) {
@@ -151,7 +155,8 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
             });
     }
-
+    console.log('finishCountdown', finishCountdown)
+    console.log('hasStarted', hasStarted)
     const Finished = () => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/update-cancellation-status`,
             {
@@ -415,7 +420,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     )
                 }
                 {
-                    advertisement?.status == 2 && (!finishCountdown || hasStarted) && (
+                    advertisement?.status == 2 && (!finishCountdown || hasStarted || advertisement.ad_duration_type == '0' ) && (
                         <>
                             <Dialog>
                                 <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50' >
@@ -456,7 +461,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                     advertisement.status == 2 && !hasStarted && (
                         <>
                             {
-                                finishCountdown ? (
+                                (finishCountdown && advertisement.ad_duration_type != '0') ? (
                                     <div className='flex flex-col justify-center items-center bg-[#FCD33B] mt-auto rounded-lg p-2 relative py-6'>
                                         <p className='text-lg'>Cancellation is no longer possible.</p>
                                     </div>
@@ -473,9 +478,16 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                             </div>
                                         </div>
                                         {
-                                            advertisement.ad_duration_type == '1' && (
+                                            (advertisement.ad_duration_type == '1' || advertisement.ad_duration_type == '2') && (
                                                 <div className='flex gap-2 mt-2 border p-2 rounded-lg'>
-                                                    <p className=' text-[14px]'>After the initial 5-day cancellation period, you will only be able to cancel once the booking has already started. Read the Cancelation Policy</p>
+                                                    <p className=' text-[14px]'>After the initial 5-day cancellation period or the booking start date, you will not be able to cancel.Please read the Cancellation Policy.</p>
+                                                </div>
+                                            )
+                                        }
+                                        {
+                                            advertisement.ad_duration_type == '0' && (
+                                                <div className='flex gap-2 mt-2 border p-2 rounded-lg'>
+                                                    <p className=' text-[14px]'>After the initial 5-day cancellation period, you will be charged. Read the Cancelation Policy.</p>
                                                 </div>
                                             )
                                         }
