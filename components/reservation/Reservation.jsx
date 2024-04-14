@@ -78,7 +78,11 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
         if (!date) {
             if (data.ad_duration_type != '1') {
                 if (data.first_available_date) {
-                    setDate(new Date(data.first_available_date))
+                    if(new Date(data.first_available_date) > new Date()) {
+                        setDate(new Date(data.first_available_date))
+                    }else{
+                        setDate(new Date())
+                    }
                 } else {
                     setDate(new Date())
                 }
@@ -194,9 +198,9 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
                             <div className='w-[65%]'>
                                 <label htmlFor="date" className='mb-1'>Start date</label>
                                 <DateFieldComponent
-                                    date={date ? date : data.first_available_date}
+                                    date={date ? date : new Date()}
                                     setDate={(newDate) => setDate(newDate)}
-                                    disabledDate={data.first_available_date ? data.first_available_date : new Date()}
+                                    disabledDate={(data.first_available_date && new Date(data.first_available_date) > new Date()) ? data.first_available_date : new Date()}
                                 />
                             </div>
                             <div className='w-[35%] flex flex-col items-center justify-end'>
