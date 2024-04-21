@@ -59,7 +59,7 @@ export default function SelectIndustryComponent({ options, selectedMerchant, set
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value ? value : "Select Industry..."}
+          {value ? value : "Search Industry..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -67,9 +67,10 @@ export default function SelectIndustryComponent({ options, selectedMerchant, set
         <Command>
           <CommandInput placeholder="Search industry..." />
           <CommandEmpty>No industry found.</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup className="max-h-[200px] overflow-y-auto">
             {options.map((industry) => (
               <CommandItem
+              className="cursor-pointer"
                 key={industry.value}
                 value={industry.label}
                 onSelect={(currentValue) => {
