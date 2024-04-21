@@ -113,12 +113,11 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
 
       if (step == 2) {
         setIsPending(true)
-
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-company-connect-account`,
           {
             name: values.name,
             idNumber: values.idNumber,
-            mcc: selectedMerchant.value,
+            mccValue: selectedMerchant,
             street: values.street,
             city: values.city,
             state: state,
@@ -161,7 +160,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       }
     },
   });
-
+console.log('selected merchant', selectedMerchant)
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
