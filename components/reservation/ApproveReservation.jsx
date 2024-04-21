@@ -344,7 +344,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                                         <HelpCircle size={17} className='cursor-pointer' />
 
                                     </div>
-                                    <p className='font-[600]'>Long contract discount</p>
+                                    <p className='font-[600]'>Discount</p>
                                 </div>
                                 {
                                     advertisement.ad_duration_type == '2' ? (

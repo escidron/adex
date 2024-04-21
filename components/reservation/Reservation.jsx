@@ -236,7 +236,7 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
                                 <div onMouseOver={() => setDiscountOptions(true)} onMouseLeave={() => setDiscountOptions(false)}>
                                     <HelpCircle size={17} className='cursor-pointer' />
                                 </div>
-                                <p className='font-[600]'>Long contract discount</p>
+                                <p className='font-[600]'>Discount</p>
                             </div>
                             <p className='text-green-700'>{`-$${data.price * counter * currentDiscount / 100}`}</p>
                             {
