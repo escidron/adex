@@ -30,6 +30,7 @@ import { useSearchParams } from 'next/navigation'
 import GetCompanies from '@/actions/GetCompanies'
 import GetUserProfile from '@/actions/GetUserProfile'
 import { Separator } from '@/components/ui/separator'
+import GetSellerProfile from '@/actions/GetSellerProfile'
 
 export const RefreshContext = createContext();
 
@@ -49,6 +50,7 @@ export default function MyAdex() {
   const [allListings, setAllListings] = useState([]);
   const [allBookings, setAllBookings] = useState([]);
   const [user, setUser] = useState({});
+  const [sellerAccountIsAccepted, setSellerAccountIsAccepted] = useState(false);
   const [status, setStatus] = useState({
     available: 0,
     booked: 0,
@@ -65,6 +67,7 @@ export default function MyAdex() {
   useEffect(() => {
     async function getInfo() {
       let checkPayout
+      let sellerInfo
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
       const { myBookings, bookingStatus } = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
 
@@ -74,12 +77,16 @@ export default function MyAdex() {
       if (user.userType == 1) {
         if (companies.length > 0) {
           checkPayout = await GetPayoutMethod(selectedCompanyId ? selectedCompanyId : companies[0].id)
+          sellerInfo = await GetSellerProfile(selectedCompanyId ? selectedCompanyId : companies[0].id)
 
           const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
 
+          if(sellerInfo?.isAccepted === '1'){
+            setSellerAccountIsAccepted(true)
+          }
           setBookingData(() => newBookings)
           setListingData(() => newListing)
           setStatus(() => newStatus)
@@ -90,10 +97,15 @@ export default function MyAdex() {
 
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
+        sellerInfo = await GetSellerProfile()
+        console.log('sellerInfo', sellerInfo)
         if (myListing.length > 0) {
           setListingData(() => myListing)
         } else {
           setListingData([])
+        }
+        if(sellerInfo?.isAccepted === '1'){
+          setSellerAccountIsAccepted(true)
         }
         setStatus(() => status)
         setBookingStatus(() => bookingStatus)
@@ -226,13 +238,12 @@ export default function MyAdex() {
                       width={2000}
                       height={2000}
                       className='w-full mr-3'
-
                     />
                   </div>
                   Set Up Your Payout Method
                 </CardTitle>
                 <CardDescription className='mt-3 text-[14px]'>To enable visibility of your Ads and allow buyers to view and explore them, a <b>Payout</b> method (typically your bank account) is required.
-                  Once your <b>Payout</b> method is added, all of your listings / Ads will automatically become visible.</CardDescription>
+                  Once your <b>Payout</b> method is added and verified by Stripe, all of your listings / Ads will automatically become visible.</CardDescription>
               </CardHeader>
               <CardContent>
                 <AddAccountModals
@@ -241,6 +252,33 @@ export default function MyAdex() {
                   selectedCompanyId={selectedCompanyId}
                   setHasPayoutMethod={(hasPayout) => setHasPayoutMethod(hasPayout)}
                 />
+              </CardContent>
+            </Card>
+          )
+        }
+        {
+          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && (
+
+            <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
+              <CardHeader>
+                <CardTitle className='flex gap-2 items-center'>
+                  <div className='w-[25px]'>
+                    <Image
+                      src='/warning.png'
+                      alt="note icon"
+                      priority
+                      width={2000}
+                      height={2000}
+                      className='w-full mr-3'
+                    />
+                  </div>
+                  Checking your account
+                </CardTitle>
+                <CardDescription className='mt-3 text-[14px]'>Your <b>Payout</b> method is being verified by Stripe, after acceptance, all of your listings / Ads will automatically become visible.
+                  This process takes up to 24 hours for <b>Individual</b> accounts and 5 business days for <b>Company</b> accounts.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
               </CardContent>
             </Card>
           )
