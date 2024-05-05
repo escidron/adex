@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import SelectIndustryComponent from "@/components/select-search/SelectSearch";
 import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import DobComponent from "@/components/datePicker/DobComponent";
+import MaskedInput from 'react-maskedinput';
 
 import { useState } from "react";
 import { useFormik } from 'formik';
@@ -18,7 +19,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
   const [state, setState] = useState('');
   const [ownerState, setOwnerState] = useState('');
   const [isPending, setIsPending] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [images, setImages] = useState([]);
   const [selectedMerchant, setSelectedMerchant] = useState(null);
   const [step, setStep] = useState(1);
@@ -116,7 +117,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-company-connect-account`,
           {
             name: values.name,
-            idNumber: values.idNumber,
+            idNumber: values.idNumber.replace(/-/g, ''),
             mccValue: selectedMerchant,
             street: values.street,
             city: values.city,
@@ -160,7 +161,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       }
     },
   });
-console.log('selected merchant', selectedMerchant)
+console.log('formik.values.idNumber', formik.values.idNumber.replace(/-/g, ''))
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
@@ -195,11 +196,13 @@ console.log('selected merchant', selectedMerchant)
                       EIN
                     </label>
                   </div>
-                  <input
+                  <MaskedInput
                     id="idNumber"
                     name="idNumber"
                     type={isVisible ? 'text' : 'password'}
-                    maxLength="9"
+                    maxLength="11"
+                    mask="111-11-1111"
+                    placeholder=''
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.idNumber}

@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useFormik } from 'formik';
 import SelectUSState from 'react-select-us-states';
 import toast, { Toaster } from "react-hot-toast";
+import MaskedInput from 'react-maskedinput';
 
 import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
@@ -18,7 +19,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
   const [dob, setdob] = useState('');
   const [state, setState] = useState('AL');
   const [isPending, setIsPending] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [images, setImages] = useState([]);
 
   const validate = values => {
@@ -70,7 +71,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       setIsPending(true)
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/create-user-connect-account`,
         {
-          idNumber: values.idNumber,
+          idNumber: values.idNumber.replace(/-/g, ''),
           dob: dob,
           street: values.street,
           city: values.city,
@@ -112,11 +113,13 @@ export default function PayoutIndividualForm({ setHasAccount }) {
               Social Security Number
             </label>
           </div>
-          <input
+          <MaskedInput
             id="idNumber"
             name="idNumber"
             type={isVisible ? 'text' : 'password'}
-            maxLength="9"
+            maxLength="11"
+            mask="111-11-1111"
+            placeholder=''
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.idNumber}
