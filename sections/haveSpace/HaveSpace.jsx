@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image'
-import properties1 from '../../public/properties-1.jpg'
-import properties2 from '../../public/properties-2.jpg'
-import properties3 from '../../public/properties-3.jpg'
-import properties4 from '../../public/about-adex-section.jpg'
+import properties1 from '../../public/properties-1.png'
+import properties2 from '../../public/properties-2.png'
+import properties3 from '../../public/properties-3.png'
+import aboutSection from '../../public/about-adex-section.png'
 
 import {useState,useEffect} from 'react'
 import { useContext } from 'react';
@@ -39,8 +39,8 @@ export default function HaveSpace() {
     return (
 
         <div className='w-full h-auto'>
-            <div className='w-full flex flex-col lg:flex-row'>
-                <div className={`bg-[#FCD33B] h-[288px] lg:w-[50%] xl:w-[35%] flex flex-col justify-center items-center  lg:border-r-[1px] lg:border-r-black`}>
+            <div className='w-full flex flex-col xl:flex-row'>
+                <div className={`bg-[#FCD33B] w-full h-[288px]  flex flex-col justify-center items-center  lg:border-r-[1px] lg:border-r-black`}>
                     <h1 className='text-5xl'>Have AD space?</h1>
                     <p className='text-lg mt-3'>Transform your world into a billboard</p>
                     <Button className='mt-4' disabled={isPending} size='lg' onClick={() => {
@@ -51,7 +51,7 @@ export default function HaveSpace() {
                         {user.isLogged ? 'Create Listing' : 'Sign Up'}
                     </Button>
                 </div>
-                <div className=' lg:w-[50%] xl:w-[65%] flex h-[288px]'>
+                <div className='flex h-[288px] justify-center mt-4 gap-2 xl:mt-0 xl:gap-0 xl:min-w-[840px]'>
                     <Image
                         src={properties2}
                         alt="Adex Logo"
@@ -59,7 +59,8 @@ export default function HaveSpace() {
                         height={2000}
                         priority
                         quality={100}
-                        className='hidden md:flex w-1/2  lg:hidden xl:flex xl:w-[33%] '
+                        className='md:flex w-[280px]'
+                        // className='hidden md:flex w-1/2  lg:hidden xl:flex xl:w-[33%] '
                     />
                     <Image
                         src={properties1}
@@ -68,7 +69,8 @@ export default function HaveSpace() {
                         height={2000}
                         priority
                         quality={100}
-                        className='w-full sm:w-1/2  lg:w-full xl:w-[33%]'
+                        className='hidden  md:flex w-[280px]'
+                        // className='w-full sm:w-1/2  lg:w-full xl:w-[33%]'
                     />
                     <Image
                         src={properties3}
@@ -77,7 +79,8 @@ export default function HaveSpace() {
                         height={2000}
                         quality={100}
                         priority
-                        className='hidden sm:flex sm:w-1/2  md:hidden xl:flex xl:w-[34%]'
+                        className='hidden  lg:flex w-[280px]'
+                        // className='hidden sm:flex sm:w-1/2  md:hidden xl:flex xl:w-[34%]'
 
                     />
                 </div>
@@ -91,7 +94,7 @@ export default function HaveSpace() {
                     </div>
                     <div className='w-full lg:w-[50%] bg-white rounded-md flex items-center'>
                         <Image
-                            src={properties4}
+                            src={aboutSection}
                             alt="Adex Logo"
                             priority
                             className='rounded-md shadow-md lg:max-w-[600px]  w-full h-[250px] lg:h-[300px] mt-4 object-cover'

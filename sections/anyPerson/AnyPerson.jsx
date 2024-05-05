@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
-import properties4 from '../../public/properties-4.jpeg'
-import properties5 from '../../public/properties-5.jpeg'
+import properties4 from '../../public/properties-4.png'
+import properties5 from '../../public/properties-5.png'
 import properties6 from '../../public/properties-6.jpg'
 
 import {useState,useEffect} from 'react'
