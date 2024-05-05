@@ -58,6 +58,7 @@ export default function ContactPage() {
           router.push('/')
         })
         .catch(function (error) {
+          console.log('error', error)
           toast.error('Something went wrong, please try again.')
         });
     },
@@ -121,7 +122,7 @@ export default function ContactPage() {
           {formik.touched.message && formik.errors.message ? <div className="absolute  top-[140px] text-red-600 font-bold">{formik.errors.message}</div> : null}
         </div>
 
-        <Button variant='secondary' className='w-full text-lg font-[600] mt-4'>Send Message</Button>
+        <Button type='submit' variant='secondary' className='w-full text-lg font-[600] mt-4'>Send Message</Button>
       </form>
 
     </div>
