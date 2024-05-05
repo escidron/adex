@@ -49,13 +49,15 @@ export default function CancellationPolicy({ data, date }) {
             exampleDate.setMonth(new Date(exampleDate).getMonth() + 1)
             setExampleDate(exampleDate)
         } else {
-            console.log('date', date)
+            console.log('date before', date)
             date.setDate(date.getDate()-1);
-            console.log('date', date)
             setMaxCancellationDate(date)
+            console.log('date after', date)
             const exampleDate = new Date(date)
             exampleDate.setMonth(new Date(date).getMonth() + 1)
             setExampleDate(exampleDate)
+            date.setDate(date.getDate()+1);
+
         }
     }
 
