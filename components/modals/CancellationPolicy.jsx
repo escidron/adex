@@ -28,9 +28,11 @@ export default function CancellationPolicy({ data, date }) {
                 setExampleDate(exampleDate)
 
             } else {
-                setMaxCancellationDate(new Date(startDate))
-                const exampleDate = new Date(startDate)
-                exampleDate.setMonth(new Date(startDate).getMonth() + 1)
+                const newStartDate = new Date(startDate)
+                newStartDate.setDate(newStartDate.getDate()-1);
+                setMaxCancellationDate(newStartDate)
+                const exampleDate = newStartDate
+                exampleDate.setMonth(newStartDate.getMonth() + 1)
                 setExampleDate(exampleDate)
             }
         } else {
@@ -49,14 +51,12 @@ export default function CancellationPolicy({ data, date }) {
             exampleDate.setMonth(new Date(exampleDate).getMonth() + 1)
             setExampleDate(exampleDate)
         } else {
-            console.log('date before', date)
-            date.setDate(date.getDate()-1);
-            setMaxCancellationDate(()=>date)
-            console.log('date after', date)
-            const exampleDate = new Date(date)
-            exampleDate.setMonth(new Date(date).getMonth() + 1)
+            const newdate = new Date(date)
+            newdate.setDate(newdate.getDate()-1);
+            setMaxCancellationDate(newdate)
+            const exampleDate = new Date(newdate)
+            exampleDate.setMonth(new Date(newdate).getMonth() + 1)
             setExampleDate(exampleDate)
-            //date.setDate(date.getDate()+1);
 
         }
     }
