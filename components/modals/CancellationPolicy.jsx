@@ -49,19 +49,23 @@ export default function CancellationPolicy({ data, date }) {
             exampleDate.setMonth(new Date(exampleDate).getMonth() + 1)
             setExampleDate(exampleDate)
         } else {
+            console.log('date', date)
+            date.setDate(date.getDate()-1);
+            console.log('date', date)
             setMaxCancellationDate(date)
             const exampleDate = new Date(date)
             exampleDate.setMonth(new Date(date).getMonth() + 1)
             setExampleDate(exampleDate)
         }
     }
+
     return (
         <>
             {/* one time payments */}
             {
                 (data.ad_duration_type == 1 || data.ad_duration_type == 2) && (
                     <>
-                        <p>A booking can be cancelled before the listing start date or within 5 days after booking the listing - whichever comes first.</p>
+                        <p>A booking can be cancelled either up to the day before the listing start date or within 5 days after booking the listing - whichever comes first.</p>
                         <p>An example is provided below, assuming that the booking will take place today.</p>
                         <div className='w-full p-2 mt-2'>
                             <h1 className='font-[600]'>Cancel before {format(maxCancellationDate, "MMM d")}</h1>
@@ -83,7 +87,7 @@ export default function CancellationPolicy({ data, date }) {
             {
                 data.ad_duration_type == 0 && (
                     <>
-                        <p>A booking can be cancelled before the listing start date or within 5 days after booking the listing - whichever comes first.</p>
+                        <p>A booking can be cancelled either up to the day before the listing start date or within 5 days after booking the listing - whichever comes first.</p>
                         <p>For listings with a duration exceeding one month, cancellation of the upcoming month&apos;s payments must occur before the monthly billing date to prevent any new charges. An example is provided below, assuming that the booking will take place today and has a duration of 2 months.</p>
                         <div className='w-full p-2 mt-2'>
                             <h1 className='font-[600]'>Cancel before {format(maxCancellationDate, "MMM d")}</h1>
