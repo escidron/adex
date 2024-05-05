@@ -39,12 +39,13 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
     const [contractStartDate, setContractStartDate] = useState(new Date());
     const router = useRouter();
 
-    const createdDate = new Date(advertisement.created_at);
-    console.log('advertisement', advertisement)
     const currentDate = new Date();
     const startDate = new Date(advertisement.date.from);
 
-    const interval1 = Math.abs(startDate - currentDate);
+    const previusStartDay = new Date(startDate)
+    previusStartDay.setDate(previusStartDay.getDate()-1);
+
+    const interval1 = Math.abs(previusStartDay - currentDate);
     const interval2 = Math.abs(currentDate - contractStartDate);
     const fiveDaysInterval = 5 * 24 * 60 * 60 * 1000;
     const availableDays = interval1 / (1000 * 60 * 60 * 24)
@@ -61,7 +62,6 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             countDownDays = fiveDaysInterval - interval2
         }
     }
-    console.log('countDownDays', countDownDays)
     useEffect(() => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/get-contract`,
             {
@@ -155,8 +155,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
 
             });
     }
-    console.log('finishCountdown', finishCountdown)
-    console.log('hasStarted', hasStarted)
+
     const Finished = () => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/payments/update-cancellation-status`,
             {
