@@ -56,7 +56,7 @@ export default function CancellationPolicy({ data, date }) {
             const exampleDate = new Date(date)
             exampleDate.setMonth(new Date(date).getMonth() + 1)
             setExampleDate(exampleDate)
-            date.setDate(date.getDate()+1);
+            //date.setDate(date.getDate()+1);
 
         }
     }
