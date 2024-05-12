@@ -60,7 +60,9 @@ export default function LoginPage() {
                             image: response.data.image,
                             userId: response.data.userId,
                             hasPayout: response.data.hasPayout ? true : false,
-                            userType: response.data.userType
+                            userType: response.data.userType,
+                            notifications: response.data.notifications,
+                            notificationQuantity: response.data.notificationQuantity
                         }))
                     setTimeout(() => {
                         router.push('/')

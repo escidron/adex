@@ -99,7 +99,18 @@ export default function SignUppage() {
         })
           .then(function (response) {
             if (response.status === 200) {
-              setUser({ ...user, isLogged: true, name: values.firstName, showLoginOptions: false, userId: response.data.userId, hasPayout: false })
+              setUser({ ...user, 
+                isLogged: true, 
+                name: values.firstName, 
+                showLoginOptions: false, 
+                userId: response.data.userId,
+                userType: response.data.userType, 
+                hasPayout: false,
+                notifications: 0,
+                notificationQuantity:[],
+                image: ""
+
+              })
               setTimeout(() => {
                 router.push('/')
                 setIsPending(false)
@@ -349,7 +360,7 @@ export default function SignUppage() {
             {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
             Sign Up
           </Button>
-          <Link href={'/login'}  disabled={isPending}  className='w-full mt-4 text-lg font-[600] inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-[#FCD33B] text-[#FCD33B]  bg-transparent hover:bg-[#FCD33B] hover:text-accent-foreground'>
+          <Link href={'/login'} disabled={isPending} className='w-full mt-4 text-lg font-[600] inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-[#FCD33B] text-[#FCD33B]  bg-transparent hover:bg-[#FCD33B] hover:text-accent-foreground'>
             {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
             Login
           </Link>
