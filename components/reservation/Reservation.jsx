@@ -32,7 +32,8 @@ import CompanyList from './CompanyList';
 import CancellationPolicy from '../modals/CancellationPolicy';
 import { calculateDiscounts } from '@/utils/calculateDiscounts';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe('pk_test_51Hz3inL3Lxo3VPLoBHjjbAES3oCWqKYtTQtgYYPdDhYw8LQboBwmqpz3euwD4KL7x37x0vrFgA2EDu1toAXg6Bo900T7w4sPl5');
+//const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 //const stripePromise = loadStripe('pk_live_51Hz3inL3Lxo3VPLo1HZXUJ0JX3NiC7qVlyiw37nBRE3hf206rKHs6CSYrSXo1tlePY7ConUThfIMqtfbXgOVroS800fll05dSk');
 
 
