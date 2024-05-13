@@ -70,10 +70,10 @@ export default function RootLayout({ children }) {
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
-        {/* <script
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATrfv2ahP3hrMsAP8x5vwq3Hpy6qjGQgM&libraries=places"
+        <script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY}&libraries=places`}
           async
-        /> */}
+        />
       </head>
       {/* <body className={`${abel.className} ${showLoginModal || showSignUpModal?'overflow-hidden':''}`} > */}
       <body className={`${inter.className}`}>
