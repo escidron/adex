@@ -18,8 +18,8 @@ import AddCardNote from './AddCardNote';
 import { Separator } from '../ui/separator';
 import toast, { Toaster } from "react-hot-toast";
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
-console.log('eky',process.env.STRIPE_PUBLISHABLE_KEY)
+console.log('eky',process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 export default function AddCard({ companyId }) {
   const [refetch, setRefetch] = useState(false);
   const [addCard, setAddCard] = useState(false);

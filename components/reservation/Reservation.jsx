@@ -32,7 +32,7 @@ import CompanyList from './CompanyList';
 import CancellationPolicy from '../modals/CancellationPolicy';
 import { calculateDiscounts } from '@/utils/calculateDiscounts';
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 
 export default function Reservation({ data, setIsRequested, discounts, isContentLoaded }) {
