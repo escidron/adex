@@ -18,8 +18,7 @@ import AddCardNote from './AddCardNote';
 import { Separator } from '../ui/separator';
 import toast, { Toaster } from "react-hot-toast";
 
- const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
- //const stripePromise = loadStripe('pk_live_51Hz3inL3Lxo3VPLo1HZXUJ0JX3NiC7qVlyiw37nBRE3hf206rKHs6CSYrSXo1tlePY7ConUThfIMqtfbXgOVroS800fll05dSk');
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
 
 export default function AddCard({ companyId }) {
   const [refetch, setRefetch] = useState(false);
