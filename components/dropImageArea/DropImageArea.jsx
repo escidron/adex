@@ -35,10 +35,6 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
     const maxNumber = 20;
     const onChange = (imageList, addUpdateIndex) => {
         setImages(imageList);
-        if (isInPersonalProfile) {
-
-            setRefetch((prev) => !prev)
-        }
     };
 
     useEffect(() => {
@@ -85,7 +81,6 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
         const newImages = images.filter((item, index) => index != id);
         setImages(newImages)
         if (isInPersonalProfile) {
-            setRefetch((prev) => !prev)
             setRemove(images[id])
         }
     }
@@ -129,7 +124,7 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                         }
                         <div
                             id="image-loader"
-                            className={`mt-3 relative py-6   rounded-lg flex justify-center items-center cursor-pointer ${images.length == 0 && `bg-slate-100`}   ${isDragging ? 'bg-slate-300 h-[250px]' :'h-full'} `}
+                            className={`mt-3 relative py-6   rounded-lg flex justify-center items-center cursor-pointer ${images.length == 0 && `bg-slate-100`}   ${isDragging ? 'bg-slate-300 h-[250px]' : 'h-full'} `}
                             {...dragProps}
                         >
 
@@ -143,14 +138,14 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
                                                 <p>or</p>
                                                 <p className="font-[600]">Import images from :</p>
                                                 <div className=" h-full w-full max-w-[400px] rounded-lg ">
-                                                    <div className={`flex ${gallery.length > 0 ? 'justify-between' : 'justify-between'}  w-[80%] items-center mx-auto mt-4`}>
-                                                        {/* {
-                                                            gallery.length > 0 && ( */}
+                                                    <div className={`flex ${isInPersonalProfile ? 'justify-center' : 'justify-between'}  w-[80%] items-center mx-auto mt-4`}>
+                                                        {
+                                                            !isInPersonalProfile && (
                                                                 <Button variant='secondary' onClick={() => setOpenGalleryModal(true)}>
                                                                     ADEX gallery
                                                                 </Button>
-                                                            {/* )
-                                                        } */}
+                                                            )
+                                                        }
                                                         <Button variant='secondary' onClick={() => {
                                                             onImageUpload()
                                                             setShowOptions(false)

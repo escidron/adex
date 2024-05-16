@@ -86,7 +86,7 @@ export default function PersonalInfo() {
       });
 
 
-  }, [gallery]);
+  }, []);
 
 
   const removeImage = async (remove) => {
@@ -103,7 +103,7 @@ export default function PersonalInfo() {
       });
   }
   useEffect(() => {
-
+    console.log('atualizandoooo')
     if (images.length > 0) {
 
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/image-gallery`,
@@ -114,7 +114,7 @@ export default function PersonalInfo() {
           withCredentials: true,
         })
         .then(function (response) {
-          setImages([])
+          //setImages([])
           setGallery([...gallery, images])
           setRefresh(!refresh)
         })
@@ -122,7 +122,7 @@ export default function PersonalInfo() {
           console.log(error)
         });
     }
-  }, [refetch]);
+  }, [images]);
 
   useEffect(() => {
     async function fetchData() {
@@ -691,7 +691,7 @@ export default function PersonalInfo() {
               <DropImageArea
                 images={images}
                 setImages={(image) => setImages(image)}
-                setRefetch={(toggle) => setRefetch(toggle)}
+                //setRefetch={(toggle) => setRefetch(toggle)}
                 isInPersonalProfile={true}
                 setRemove={(item) => removeImage(item)}
               />
