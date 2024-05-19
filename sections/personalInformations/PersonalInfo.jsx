@@ -27,7 +27,6 @@ export default function PersonalInfo() {
   const [refetch, setRefetch] = useState(false)
   const [gallery, setGallery] = useState([]);
   const [images, setImages] = useState([]);
-  const [remove, setRemove] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   // const [isContentCreator, setIsContentCreator] = useState(false);
   const [plataforms, setPlataforms] = useState([]);
@@ -79,7 +78,7 @@ export default function PersonalInfo() {
         withCredentials: true,
       })
       .then(function (response) {
-        setImages(response.data.galleryWithImages[0].company_gallery)
+        setGallery(response.data.galleryWithImages[0].company_gallery)
       })
       .catch(function (error) {
         console.log(error)
@@ -96,16 +95,16 @@ export default function PersonalInfo() {
         withCredentials: true,
       })
       .then(function (response) {
-
+        const newGallery = gallery.filter((image) => image.data_url !== remove.data_url)
+        setGallery(newGallery)
       })
       .catch(function (error) {
         console.log(error)
       });
   }
-  useEffect(() => {
-    console.log('atualizandoooo')
-    if (images.length > 0) {
 
+  useEffect(() => {
+    if (images.length > 0) {
       axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/image-gallery`,
         {
           images: images
@@ -114,15 +113,15 @@ export default function PersonalInfo() {
           withCredentials: true,
         })
         .then(function (response) {
-          //setImages([])
-          setGallery([...gallery, images])
+          setImages([])
+          setGallery([...gallery, ...response.data.images])
           setRefresh(!refresh)
         })
         .catch(function (error) {
           console.log(error)
         });
     }
-  }, [images]);
+  }, [refetch]);
 
   useEffect(() => {
     async function fetchData() {
@@ -689,9 +688,9 @@ export default function PersonalInfo() {
           <div className='w-full h-full '>
             <div className='h-[400px]  mt-2 mb-[200px] w-full'>
               <DropImageArea
-                images={images}
+                images={gallery}
                 setImages={(image) => setImages(image)}
-                //setRefetch={(toggle) => setRefetch(toggle)}
+                setRefetch={(toggle) => setRefetch(toggle)}
                 isInPersonalProfile={true}
                 setRemove={(item) => removeImage(item)}
               />
