@@ -36,7 +36,7 @@ export default function PhotosForm({ ListingContext }) {
             </div>
             Photos
           </CardTitle>
-          <CardDescription>Across nearly every industry and every major platform, profiles and listings with more pics have been proven to attract more interest, views, likes, and bookings. Be sure to add plenty of pics to your profile and to your listings.</CardDescription>
+          <CardDescription>Across nearly every industry and every major platform, profiles and listings with more pics have been proven to attract more interest, views, likes, and bookings. Be sure to add plenty of clear, high-quality pics to your profile and to your listings.</CardDescription>
         </CardHeader>
       </Card>
       <div className='w-full h-full mt-6 min-h-[500px]'>

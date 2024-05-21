@@ -31,7 +31,7 @@ export default function page() {
               className='hidden sm:flex sm:w-1/2  lg:w-[33.3%]  object-cover'
           />
           <Image
-              src='/Rectangle 108.jpeg'
+              src='/Rectangle 108.png'
               alt="image of people"
               priority
               width={2000}
