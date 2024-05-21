@@ -28,9 +28,9 @@ export default function DiscountNote({ advertisementType }) {
 
                                     />
                                 </div>
-                                <p className='text-[18px] md:text-[26px]'>Long Duration Bookings</p>
+                                <p className='text-[18px] md:text-[26px]'>Offer Booking Discounts</p>
                             </CardTitle>
-                            <CardDescription className='text-[16px] '>Much like many (if not all) of the big companies, ADEX encourages you to offer duration discounts. This incentivizes buyers to book your ad for longer durations. For example: </CardDescription>
+                            <CardDescription className='text-[16px] '>Like many (if not all) of the big companies, ADEX encourages you to offer duration discounts. This incentivizes buyers to book your ad for longer durations. For example: </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <p className='text-[14px] md:text-[16px]'>• 3 months earns the buyer a 10% discount,</p>
