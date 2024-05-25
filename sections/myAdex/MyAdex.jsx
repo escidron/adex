@@ -275,7 +275,7 @@ export default function MyAdex() {
                   Verifying your account
                 </CardTitle>
                 <CardDescription className='mt-3 text-[14px]'>Your <b>Payout</b> method is being verified by Stripe, once approved, all of your Listings / Ads will automatically become visible.
-                  This process takes up to 24 hours for <b>Individual</b> accounts and 5 business days for <b>Company</b> accounts.
+                  This process takes up to 5 business days for <b>Individual</b> accounts and 7 business days for <b>Company</b> accounts.
                 </CardDescription>
               </CardHeader>
               <CardContent>
