@@ -161,7 +161,6 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       }
     },
   });
-console.log('formik.values.idNumber', formik.values.idNumber.replace(/-/g, ''))
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
@@ -201,7 +200,7 @@ console.log('formik.values.idNumber', formik.values.idNumber.replace(/-/g, ''))
                     name="idNumber"
                     type={isVisible ? 'text' : 'password'}
                     maxLength="11"
-                    mask="111-11-1111"
+                    mask="11-1111111"
                     placeholder=''
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -341,11 +340,13 @@ console.log('formik.values.idNumber', formik.values.idNumber.replace(/-/g, ''))
                     Social Security Number
                   </label>
                 </div>
-                <input
+                <MaskedInput
                   id="ownerIdNumber"
                   name="ownerIdNumber"
                   type={isVisible ? 'text' : 'password'}
-                  maxLength="9"
+                  maxLength="11"
+                  mask="111-11-1111"
+                  placeholder=''
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.ownerIdNumber}
