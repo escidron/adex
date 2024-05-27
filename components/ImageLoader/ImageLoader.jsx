@@ -81,7 +81,7 @@ export default function ImageLoader({ images, setImages, selectedCompany, setImp
                 onChange={onChange}
                 maxNumber={maxNumber}
                 dataURLKey="data_url"
-                acceptType={["jpg", "png", 'JPEG']}
+                acceptType={["jpg", "png", 'JPEG','GIF']}
             >
                 {({
                     imageList,
