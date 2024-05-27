@@ -35,7 +35,9 @@ export default function DropImageArea({ images, setImages, selectedCompany, setR
     const maxNumber = 20;
     const onChange = (imageList, addUpdateIndex) => {
         setImages(imageList);
-        setRefetch((prev) => !prev)
+        if (isInPersonalProfile) {
+            setRefetch((prev) => !prev)
+        }
 
     };
 
