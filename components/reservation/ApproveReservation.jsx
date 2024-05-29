@@ -228,6 +228,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             </div>
         )
     }
+    console.log('data', advertisement)
     return (
         <>
             <Toaster />

@@ -88,7 +88,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         {
                             item.category_id == 7 ? (
                                 <>
-                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : '/Per Post'}</p>
+                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : item.digital_price_type === '2' ? '/Per Post' : '/Per Month'}</p>
                                 </>
                             ) : (
                                 <>

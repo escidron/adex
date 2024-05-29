@@ -43,7 +43,7 @@ export default function MarketPlaceCard({ ad }) {
                 ad.category_id == 7 ? (
                   <>
                     {
-                      ad.digital_price_type == '0' ? '/ Per Mention' : ad.digital_price_type == '1' ? '/ Per Inclusion' : '/ Per Post'
+                      ad.digital_price_type == '0' ? '/ Per Mention' : ad.digital_price_type == '1' ? '/ Per Inclusion' : ad.digital_price_type == '2' ? '/ Per Post' : '/ Per Month'
                     }
                   </>
                 ) : (

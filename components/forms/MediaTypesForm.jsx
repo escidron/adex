@@ -19,6 +19,10 @@ const mediaTypes = [
     {
         id:22,
         label:'Video Content'
+    },
+    {
+        id:23,
+        label:'Website'
     }
 ]
 export default function MediaTypesForm({ ListingContext }) {

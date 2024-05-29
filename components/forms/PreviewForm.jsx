@@ -61,7 +61,7 @@ export default function PreviewForm({ ListingContext }) {
                                     listingProperties.sub_category == 7 ? (
                                         <>
                                             {
-                                                listingProperties.digitalPriceType == 0 ? '/Per Mention' : listingProperties.digitalPriceType == 1 ? "/Per Inclusion" : '/Per Post'
+                                                listingProperties.digitalPriceType == 0 ? '/Per Mention' : listingProperties.digitalPriceType == 1 ? "/Per Inclusion" : listingProperties.digitalPriceType == 2 ? "/Per Post" : '/Per Month'
                                             }
                                         </>
                                     ) : (

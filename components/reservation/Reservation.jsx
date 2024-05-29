@@ -176,7 +176,7 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
                             data.sub_category == 7 ? (
                                 <>
                                     {
-                                        data.digital_price_type == '0' ? '/ Per Mention' : data.digital_price_type == '1' ? '/ Per Inclusion' : '/ Per Post'
+                                        data.digital_price_type == '0' ? '/ Per Mention' : data.digital_price_type == '1' ? '/ Per Inclusion' : data.digital_price_type == '2' ? '/ Per Post' : '/ Per Month'
                                     }
                                 </>
                             ) : (
@@ -205,7 +205,7 @@ export default function Reservation({ data, setIsRequested, discounts, isContent
                             </div>
                             <div className='w-[35%] flex flex-col items-center justify-end'>
                                 {
-                                    data.sub_category == 7 ? (
+                                    (data.sub_category == 7 && data.digital_price_type != '3') ? (
                                         <>
                                             <label htmlFor="date" className='mb-1'>Quantity</label>
                                         </>
