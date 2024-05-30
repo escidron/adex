@@ -70,7 +70,6 @@ export default function MyAdex() {
       let sellerInfo
       const { myListing, status } = (await GetMyAdvertisement()) || { myListing: [], status: {} }
       const { myBookings, bookingStatus } = (await GetMyBookings()) || { myBookings: [], bookingStatus: {} }
-
       const user = await GetUserProfile()
       const companies = await GetCompanies()
       setAllBookings(myBookings)
@@ -83,7 +82,6 @@ export default function MyAdex() {
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
-
           if(sellerInfo?.isAccepted === '1'){
             setSellerAccountIsAccepted(true)
           }
@@ -166,6 +164,11 @@ export default function MyAdex() {
     const newListing = allListings.filter(item => item.company_id == id)
     const selectedCompany = companies.find(item => item.id === id)
     const checkPayout = await GetPayoutMethod(id)
+    const sellerInfo = await GetSellerProfile(id ? id : companies[0].id)
+    if(sellerInfo?.isAccepted === '1'){
+      setSellerAccountIsAccepted(true)
+    }
+    console.log(  'seller',sellerInfo)
     const newStatus = filterStatus(newListing)
     setStatus(newStatus)
     setListingData(newListing)
