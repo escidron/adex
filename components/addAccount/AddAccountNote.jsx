@@ -25,7 +25,7 @@ export default function AddAccountNote() {
                     </div>
                     Payout methods
                 </CardTitle>
-                <CardDescription>Payout methods are how you receive the money you&apos;ve earned from your listings.</CardDescription>
+                <CardDescription>Payout methods are how you receive the money you&apos;ve earned from your listings. At least one Payout method is required before your listing(s) can be viewed and booked from the Marketplace.</CardDescription>
             </CardHeader>
         </Card>
     )

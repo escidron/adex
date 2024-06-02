@@ -110,7 +110,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
         <div className="w-[50%] relative ">
           <div className="flex">
             <label htmlFor="idNumber" className="block text-[14px]  mb-1">
-            * Social Security Number
+            Social Security Number *
             </label>
           </div>
           <MaskedInput
@@ -141,7 +141,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
         <div className="w-[50%] relative max-h-[42px] z-[99] ">
           <div className="flex">
             <label htmlFor="dob" className="block text-[14px]   mb-1">
-            * Date of Birth
+            Date of Birth *
             </label>
           </div>
           <DobComponent value={dob} onChange={date => setdob(date)} />
@@ -152,7 +152,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       <div className="  w-full relative">
         <div className="flex">
           <label htmlFor="street" className="block text-[14px]   mb-1">
-          * Street address
+          Street address *  
           </label>
         </div>
         <input
@@ -170,7 +170,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       <div className="  w-full relative">
         <div className="flex">
           <label htmlFor="city" className="block text-[14px]   mb-1">
-          * City
+          City *
           </label>
         </div>
         <input
@@ -189,7 +189,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
         <div className="w-[70%] relative">
           <div className="flex">
             <label htmlFor="state" className="block text-[14px]   mb-1">
-            * State
+            State *
             </label>
           </div>
           <div >
@@ -204,7 +204,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
         <div className="w-[30%] relative">
           <div className="flex">
             <label htmlFor="zip" className="block text-[14px]   mb-1">
-            * ZIP code
+             ZIP code *
             </label>
           </div>
           <input
@@ -220,7 +220,7 @@ export default function PayoutIndividualForm({ setHasAccount }) {
       </div>
       {/* stripe image verification */}
       <div className=" w-full relative flex flex-col">
-        <p className="text-[14px]">* Identity Document</p>
+        <p className="text-[14px]">Identity Document *</p>
         <div className=" h-[160px]  mt-1">
           <ImageLoader
             images={images}
