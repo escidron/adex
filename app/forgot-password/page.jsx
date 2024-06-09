@@ -381,7 +381,7 @@ export default function ForgotPasswordPage() {
                 steps === 4 && (
                     <div className={` z-[91] flex flex-col text-center justify-center text-black  items-center  w-[400px] h-auto `} >
                         <p className="text-white text-[30px]">Well done!</p>
-                        <p className="text-white text-[16px] mt-2">Your new password was reseted successfuly</p>
+                        <p className="text-white text-[16px] mt-2">You have reset your password.</p>
 
                         <div onClick={() => {
                             router.push('/login')
