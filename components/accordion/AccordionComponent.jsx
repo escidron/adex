@@ -69,12 +69,12 @@ export default function AccordionComponent() {
                     {
                       item.answer.map((item, index) => (
                         <div key={index} className='flex flex-col mt-2'>
-                          <Typography className={`text-[15px] font-bold`}>
+                          <p className={`text-[15px] font-bold`}>
                             {item.key}
-                          </Typography>
-                          <Typography className={`text-[15px]`}>
+                          </p>
+                          <p className={`text-[15px]`}>
                             {item.value}
-                          </Typography>
+                          </p>
                         </div>
                       ))
                     }

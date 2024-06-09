@@ -42,35 +42,35 @@ export const faqArray = [
     answer: [
       {
         key:'Have a house:',
-        value:'offer up your lawn and fence.'
+        value:'Offer up your lawn and fence.'
       },
       {
         key:'Have a vehicle:',
-        value:'offer up your windows, doors, or back panel.'
+        value:'Offer up your windows, doors, or back panel.'
       },
       {
         key:'Have a business with a physical location:',
-        value:'offer up your windows, doors, table tops, bathroom stalls, interior / exterior walls, parking spaces, napkins, coasters, pizza boxes, carry out boxes, empty floor space, etc.'
+        value:'Offer up your windows, doors, table tops, bathroom stalls, interior / exterior walls, parking spaces, napkins, coasters, pizza boxes, carry out boxes, empty floor space, etc.'
       },
       {
         key:'Are you a performance artist:',
-        value:'allow buyers to place an ad on stage and / or offer to give several verbal “shout outs” during the concert.'
+        value:'Allow buyers to place an ad on stage and / or offer to give several verbal “shout outs” during the concert.'
       },
       {
         key:'Do you command a lot of attention where ever you go:',
-        value:'offer to wear ad apparel (hat, shirt, workout pants, hoodies, etc.).'
+        value:'Offer to wear ad apparel (hat, shirt, workout pants, hoodies, etc.).'
       },
       {
         key:'Have a website or social media page with a decent following:',
-        value:'offer to post ads.'
+        value:'Offer to post ads.'
       },
       {
         key:'Do you throw lots of parties or organize lots of events:',
-        value:'allow buyers to place an ad at the event and / or offer to give several verbal “shout outs” during the event.'
+        value:'Allow buyers to place an ad at the event and / or offer to give several verbal “shout outs” during the event.'
       },
       {
         key:'Other ad assets we’ve seen:',
-        value:'gym equipment, bus stops, top of a scoreboard, shopping carts, golf carts, you can place an ad sign just about anywhere people can see them.'
+        value:'Gym equipment, bus stops, top of a scoreboard, shopping carts, golf carts, you can place an ad sign just about anywhere people can see them.'
       },
       {
         key:'With ADEX, your creativity is your only limitation. Any person, place, or thing - options are endless!',
