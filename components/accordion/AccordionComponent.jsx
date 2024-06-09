@@ -1,7 +1,6 @@
 "use client"
-import React, { useRef } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
@@ -64,9 +63,28 @@ export default function AccordionComponent() {
                 <Typography className={`text-[20px] ml-8 `}>{item.question}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography className={`text-[15px] `}>
-                  {item.answer}
-                </Typography>
+                {
+                  item.bulletPoint ? (
+                    <>
+                    {
+                      item.answer.map((item, index) => (
+                        <div key={index} className='flex flex-col mt-2'>
+                          <Typography className={`text-[15px] font-bold`}>
+                            {item.key}
+                          </Typography>
+                          <Typography className={`text-[15px]`}>
+                            {item.value}
+                          </Typography>
+                        </div>
+                      ))
+                    }
+                    </>
+                  ) : (
+                    <Typography className={`text-[15px]`}>
+                      {item.answer}
+                    </Typography>
+                  )
+                }
               </AccordionDetails>
             </Accordion>
           </div>
