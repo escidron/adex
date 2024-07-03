@@ -10,7 +10,6 @@ import { useState } from "react";
 
 
 export default function StatusTabBar({ status, currentStatus, handleCurrentStatus }) {
-    console.log('sattis',status);
     return (
         <div>
             <div className='md:hidden w-full flex justify-center gap-2 md:px-8 ' >

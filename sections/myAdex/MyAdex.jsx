@@ -31,6 +31,7 @@ import GetCompanies from '@/actions/GetCompanies'
 import GetUserProfile from '@/actions/GetUserProfile'
 import { Separator } from '@/components/ui/separator'
 import GetSellerProfile from '@/actions/GetSellerProfile'
+import UpdateAccountInfo from '@/components/modals/UpdateStripeAccountInfo'
 
 export const RefreshContext = createContext();
 
@@ -51,6 +52,7 @@ export default function MyAdex() {
   const [allBookings, setAllBookings] = useState([]);
   const [user, setUser] = useState({});
   const [sellerAccountIsAccepted, setSellerAccountIsAccepted] = useState(false);
+  const [dueInfo, setDueInfo] = useState([]);
   const [status, setStatus] = useState({
     available: 0,
     booked: 0,
@@ -82,8 +84,13 @@ export default function MyAdex() {
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
-          if(sellerInfo?.isAccepted === '1'){
+          if (sellerInfo?.isAccepted === '1') {
             setSellerAccountIsAccepted(true)
+          }
+
+          const dueInfoArray = sellerInfo?.due_info?.split(';')
+          if (dueInfoArray) {
+            setDueInfo(() => dueInfoArray)
           }
           setBookingData(() => newBookings)
           setListingData(() => newListing)
@@ -102,9 +109,15 @@ export default function MyAdex() {
         } else {
           setListingData([])
         }
-        if(sellerInfo?.isAccepted === '1'){
+        if (sellerInfo?.isAccepted === '1') {
           setSellerAccountIsAccepted(true)
         }
+        const dueInfoArray = sellerInfo?.due_info?.split(';')
+        console.log('dueInfoArray', dueInfoArray)
+        if (dueInfoArray) {
+          setDueInfo(() => dueInfoArray)
+        }
+
         setStatus(() => status)
         setBookingStatus(() => bookingStatus)
         setBookingData(() => myBookings)
@@ -165,10 +178,9 @@ export default function MyAdex() {
     const selectedCompany = companies.find(item => item.id === id)
     const checkPayout = await GetPayoutMethod(id)
     const sellerInfo = await GetSellerProfile(id ? id : companies[0].id)
-    if(sellerInfo?.isAccepted === '1'){
+    if (sellerInfo?.isAccepted === '1') {
       setSellerAccountIsAccepted(true)
     }
-    console.log(  'seller',sellerInfo)
     const newStatus = filterStatus(newListing)
     setStatus(newStatus)
     setListingData(newListing)
@@ -183,6 +195,8 @@ export default function MyAdex() {
     setSelectedCompanyId(selectedCompany.id)
 
   }
+  console.log('dueInfo', dueInfo)
+  console.log('sellerAccountIsAccepted', sellerAccountIsAccepted)
   return (
     <div className='w-full flex flex-col items-center px-[20px]'>
       <div>
@@ -260,7 +274,7 @@ export default function MyAdex() {
           )
         }
         {
-          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && (
+          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && dueInfo?.length === 0 && (
 
             <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
               <CardHeader>
@@ -282,6 +296,33 @@ export default function MyAdex() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+              </CardContent>
+            </Card>
+          )
+        }
+        {
+          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && dueInfo?.length > 0 && (
+
+            <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
+              <CardHeader>
+                <CardTitle className='flex gap-2 items-center'>
+                  <div className='w-[25px]'>
+                    <Image
+                      src='/warning.png'
+                      alt="note icon"
+                      priority
+                      width={2000}
+                      height={2000}
+                      className='w-full mr-3'
+                    />
+                  </div>
+                  Action Required
+                </CardTitle>
+                <CardDescription className='mt-3 text-[14px]'>We have detected that some required information is missing or incorrect. Please complete or correct the following details to activate your account.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <UpdateAccountInfo dueInfo={dueInfo} />
               </CardContent>
             </Card>
           )
