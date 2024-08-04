@@ -100,7 +100,7 @@ export default function SignUppage() {
           .then(function (response) {
             if (response.status === 200) {
               setUser({ ...user, 
-                isLogged: true, 
+                isLogged: false, 
                 name: values.firstName, 
                 showLoginOptions: false, 
                 userId: response.data.userId,
@@ -112,7 +112,7 @@ export default function SignUppage() {
 
               })
               setTimeout(() => {
-                router.push('/')
+                router.push('/account-confirmation')
                 setIsPending(false)
               }, 1000);
             } else if (response.status === 401) {
