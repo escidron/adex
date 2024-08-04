@@ -8,12 +8,15 @@ import { Skeleton } from '@mui/material';
 
 export default function VerifyEmailPage() {
     const [isVerified, setIsVerified] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams()
     const tempToken = searchParams.get('temp_token')
     const userId = searchParams.get('user_id')
     console.log(tempToken)
     console.log(userId)
+    console.log(isVerified)
+    console.log(isLoading)
+
 
     useEffect(() => {
         async function getEmailVerification() {
