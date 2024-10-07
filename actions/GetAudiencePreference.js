@@ -16,7 +16,6 @@ export default async function GetAudiencePreference(id) {
       if (response.status === 200) {
         const res = await response.json();
         const preference = res.data;
-        console.log('geting preferences',preference)
         return preference;
       } else {
         return [];

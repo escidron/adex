@@ -16,16 +16,16 @@ const containerStyle = {
 };
 
 
-function Map({ newData, isDataLoaded, located }) {
+function Map({ newData, isDataLoaded, located, availableSellers }) {
   const libraries = ["places"]
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [selectedPersonMarker, setSelectedPersonMarker] = useState(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY,
     libraries: libraries,
   })
-
   const [map, setMap] = useState(null)
   const [coords] = useContext(MapCoordinatesContext)
 
@@ -35,6 +35,12 @@ function Map({ newData, isDataLoaded, located }) {
 
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
+  };
+  const handlePersonMarkerClick = (marker) => {
+    setSelectedPersonMarker(marker);
+  };
+  const handlePersonMarkerClose = (marker) => {
+    setSelectedPersonMarker(null);
   };
 
   const handleInfoWindowClose = () => {
@@ -80,6 +86,23 @@ function Map({ newData, isDataLoaded, located }) {
             )
 
           })}
+          {availableSellers.map((marker) => {
+
+            return (
+
+              <Marker key={marker.id}
+
+                className='h-4'
+                position={{ lat: parseFloat(marker.lat), lng: parseFloat(marker.long) }}
+                map={map}
+                onClick={() => handlePersonMarkerClick(marker)}
+                icon={{
+                  url: '/person.ico',
+                }}
+              />
+            )
+
+          })}
           {selectedMarker && (
             <InfoWindow
               position={{ lat: parseFloat(selectedMarker.lat), lng: parseFloat(selectedMarker.long) }}
@@ -113,6 +136,16 @@ function Map({ newData, isDataLoaded, located }) {
                     </div>
                   </div>
                 </div>
+              </div>
+            </InfoWindow>
+          )}
+          {selectedPersonMarker && (
+            <InfoWindow
+              position={{ lat: parseFloat(selectedPersonMarker.lat), lng: parseFloat(selectedPersonMarker.long) }}
+              onCloseClick={handlePersonMarkerClose}
+            >
+              <div className='w-[240px] p-0'>
+              <p>{selectedPersonMarker.user_type == '1' ?  'This seller is looking to use their personal asset' : 'This seller is looking to be leveraged to advertise assets'}</p>
               </div>
             </InfoWindow>
           )}

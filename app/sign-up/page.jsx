@@ -17,7 +17,12 @@ import TermsOfUseModal from "@/components/modals/TermsOfUseModal";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import PrivacyPolicyModal from "@/components/modals/PrivacyPolicyModal";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogFooter
+} from "@/components/ui/dialog"
 
 export default function SignUppage() {
   const [user, setUser] = useContext(UserContext)
@@ -27,6 +32,9 @@ export default function SignUppage() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [checkPrivacy, setCheckPrivacy] = useState(false)
   const [isPending, setIsPending] = useState(false)
+  const [allowReverseListingNotification, setAllowReverseListingNotification] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   const router = useRouter();
 
@@ -93,21 +101,23 @@ export default function SignUppage() {
             phone: values.phone,
             email: values.email,
             password: values.password,
-            accountType: accountType
+            accountType: accountType,
+            allowReverseListingNotification: allowReverseListingNotification
           }, {
           withCredentials: true,
         })
           .then(function (response) {
             if (response.status === 200) {
-              setUser({ ...user, 
-                isLogged: false, 
-                name: values.firstName, 
-                showLoginOptions: false, 
+              setUser({
+                ...user,
+                isLogged: false,
+                name: values.firstName,
+                showLoginOptions: false,
                 userId: response.data.userId,
-                userType: response.data.userType, 
+                userType: response.data.userType,
                 hasPayout: false,
                 notifications: 0,
-                notificationQuantity:[],
+                notificationQuantity: [],
                 image: ""
 
               })
@@ -273,30 +283,78 @@ export default function SignUppage() {
 
             </div>
             <div className="flex gap-2">
-              <div
-                type="text"
-                id="1"
-                name="account-1"
-                value={formik.values.accountType}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                onClick={(e) => handleAccountType(e)}
-                className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none cursor-pointer  hover:text-black hover:bg-[#FCD33B] 
+              <Dialog className='w-full' open={open} onOpenChange={setOpen}>
+                <DialogTrigger className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none cursor-pointer  hover:text-black hover:bg-[#FCD33B] 
               ${accountType == '1' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'} 
-              `}
-              >Business
-              </div>
-              <div
-                type="text"
-                id="2"
-                name="account-2"
-                value={formik.values.accountType}
-                onClick={(e) => handleAccountType(e)}
-                className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none  hover:text-black hover:bg-[#FCD33B] cursor-pointer
-                ${accountType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'}   
-                `}
-              >Individual
-              </div>
+              `}>
+                  <div
+                    type="text"
+                    id="1"
+                    name="account-1"
+                    value={formik.values.accountType}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    onClick={(e) => handleAccountType(e)}
+                    className="w-full"
+                  >Business
+                  </div>
+                </DialogTrigger>
+                <DialogContent className='w-full max-w-[650px]  overflow-y-auto z-[99]'>
+                  <div className='mt-8 grid gap-4 grid-cols-1 w-full'>
+                    <p>Would you like to be notified if a buyer requests an asset type that you possess in your location? (Standard business for campaign would be a Store, Walls, Property) (these need to be very simple assets than any business location would all possess)</p>
+                  </div>
+                  <DialogFooter>
+                    <SecondaryButton label='No' dark={true} onClick={
+                      () => {
+                        setAllowReverseListingNotification(false)
+                        setOpen(false)
+                      }
+                    } />
+                    <BlackButton label='Yes' onClick={
+                      () => {
+                        setAllowReverseListingNotification(true)
+                        setOpen(false)
+                      }
+
+                    } />
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Dialog className='w-full' open={open2} onOpenChange={setOpen2}>
+                <DialogTrigger className={`w-[48%] flex justify-center items-center p-2 rounded-lg outline-none cursor-pointer  hover:text-black hover:bg-[#FCD33B] 
+              ${accountType == '2' ? 'bg-[#FCD33B] text-black' : 'text-white bg-black'} 
+              `}>
+                  <div
+                    type="text"
+                    id="2"
+                    name="account-2"
+                    value={formik.values.accountType}
+                    onClick={(e) => handleAccountType(e)}
+                    className={`w-full`}
+                  >Individual
+                  </div>
+                </DialogTrigger>
+                <DialogContent className='w-full max-w-[650px]  overflow-y-auto z-[99]'>
+                  <div className='mt-8 grid gap-4 grid-cols-1 w-full'>
+                    <p>Would you like to be notified if there is a buyer who would like to buy an ad in the area of personal asset (car, attire) within the zip code you list?</p>
+                  </div>
+                  <DialogFooter>
+                    <SecondaryButton label='No' dark={true} onClick={
+                      () => {
+                        setAllowReverseListingNotification(false)
+                        setOpen2(false)
+                      }
+                    } />
+                    <BlackButton label='Yes' onClick={
+                      () => {
+                        setAllowReverseListingNotification(true)
+                        setOpen2(false)
+                      }
+
+                    } />
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
 

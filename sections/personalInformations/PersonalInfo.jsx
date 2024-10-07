@@ -20,6 +20,8 @@ import PreferencesCards from './_components/PreferencesCards';
 import GetAudiencePreference from '@/actions/GetAudiencePreference';
 import RemovePreference from '@/actions/RemovePreference';
 import RemovePlataform from '@/actions/RemovePlataform';
+import { MapCoordinatesContext } from '@/app/market-place/page';
+import PlacesAutocomplete from '@/components/placesAutocomplete/PlacesAutocomplete';
 
 export default function PersonalInfo() {
   const [currentInfo, setCurrentInfo] = useState('');
@@ -32,6 +34,14 @@ export default function PersonalInfo() {
   const [plataforms, setPlataforms] = useState([]);
   const [preferences, setPreferences] = useState([]);
 
+
+  const handleAddress = (address) => {
+    setUser((prev) => ({ ...prev, address }))
+  }
+
+  const handleCoords = (coords) => {
+    setUser((prev) => ({ ...prev, coords: { lng: coords.lng, lat: coords.lat } }))
+  }
   const [user, setUser] = useState({
     name: '',
     lastName: '',
@@ -46,11 +56,16 @@ export default function PersonalInfo() {
     sexIsPublic: '0',
     bioIsPublic: '0',
     city: '',
+    address: '',
+    coords: {
+      lat: 0,
+      lng: 0
+    },
     cityIsPublic: '0',
     userType: '0',
     isContentCreator: false
   });
-
+  console.log('user', user)
   useEffect(() => {
     async function GetUserProfile() {
       const response = await fetch(
@@ -170,6 +185,8 @@ export default function PersonalInfo() {
         sexIsPublic: user.sexIsPublic,
         bioIsPublic: user.bioIsPublic,
         city: user.city,
+        address: user.address,
+        coords: user.coords,
         cityIsPublic: user.cityIsPublic
 
       }, {
@@ -194,6 +211,8 @@ export default function PersonalInfo() {
         sex: user.sex,
         handle: user.handle,
         city: user.city,
+        address: user.address,
+        coords: user.coords,
         handleIsPublic: info == 'handle' && user.handleIsPublic == '1' ? '0' : info == 'handle' && user.handleIsPublic == '0' ? '1' : user.handleIsPublic,
         professionIsPublic: info == 'profession' && user.professionIsPublic == '1' ? '0' : info == 'profession' && user.professionIsPublic == '0' ? '1' : user.professionIsPublic,
         sexIsPublic: info == 'sex' && user.sexIsPublic == '1' ? '0' : info == 'sex' && user.sexIsPublic == '0' ? '1' : user.sexIsPublic,
@@ -447,6 +466,54 @@ export default function PersonalInfo() {
             }
           </div>
 
+
+          <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
+            {
+              currentInfo === 'address' ? (
+                <>
+                  <MapCoordinatesContext.Provider value={[user.coords, () => { }]}>
+                    <div className="w-full border rounded-lg outline-none min-h-[55px] flex items-center shadow-sm">
+                      <PlacesAutocomplete
+                        setSelected={(coords) => handleCoords(coords)}
+                        setAddress={(ad) => handleAddress(ad)}
+                        currentLocation={user.address}
+                      />
+                    </div>
+                  </MapCoordinatesContext.Provider>
+                  <Button onClick={submit}>Save</Button>
+
+                </>
+              ) : (
+                <>
+                  <div className='w-full'>
+                    <p className='font-[600]'>Address</p>
+                    {
+                      isLoading ? (
+                        <Skeleton variant="rounded" width={'80%'} height={'10px'} className='mt-2' />
+                      ) : (
+                        <p className='font-[300] text-gray-600 max-w-[260px] overflow-hidden overflow-ellipsis whitespace-nowrap'>{user.address != 'null' && user.address ? user.address : 'Not Provided'}</p>
+                      )
+                    }
+                  </div>
+                  <div className='flex gap-2'>
+                    <div onClick={() => handlePublicInfo('address')} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      {
+                        user.cityIsPublic == '1' ? (
+                          <Eye size={16} color='gray' />
+                        ) : (
+                          <EyeOff size={16} color='gray' />
+                        )
+                      }
+                    </div>
+                    <div onClick={() => { setCurrentInfo('address') }} className='hover:bg-slate-200 hover:text-black p-2 rounded-md cursor-pointer'>
+                      <Edit color='gray' size={18} />
+                    </div>
+                  </div>
+                </>
+              )
+            }
+          </div>
+
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {
               currentInfo === 'city' ? (
@@ -494,6 +561,7 @@ export default function PersonalInfo() {
               )
             }
           </div>
+
 
           <div className="border rounded-md py-3 px-4 flex justify-between items-center gap-4 min-h-[74px] ">
             {

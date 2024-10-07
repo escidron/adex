@@ -8,6 +8,7 @@ import GetFilteredAdvertisements from '@/actions/GetFilteredAdvertisements';
 import { findKeyWords } from '@/utils/findKeyWords';
 import { AllDataContext } from './layout';
 import GetCategories from '@/actions/GetCategories';
+import GetAvailableSellers from '@/actions/GetAvailableSellers';
 
 export const MapCoordinatesContext = createContext();
 
@@ -18,6 +19,7 @@ export default function MarketPlace() {
   const [located, setLocated] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [userCoords, setUserCoords] = useState(null);
+  const [availableSellers, setAvailableSellers] = useState([]);
   const [coords, setCoords] = useState({
     lat: 39.8283,
     lng: -98.5795
@@ -44,6 +46,9 @@ export default function MarketPlace() {
         setAllData(response)
         const categories = await GetCategories()
         setCategories(categories)
+
+        const newAvailableSellers = await GetAvailableSellers()
+        setAvailableSellers(newAvailableSellers)
         setIsDataLoaded(true);
 
       }
@@ -146,7 +151,7 @@ export default function MarketPlace() {
     <div className=' w-full flex absolute top-0 h-[100%]' >
       <div><Toaster /></div>
       <MapCoordinatesContext.Provider value={[coords, setCoords,userCoords,setUserCoords]}>
-        <Map newData={newData} isDataLoaded={isDataLoaded} located={located} />
+        <Map newData={newData} isDataLoaded={isDataLoaded} located={located} availableSellers={availableSellers}/>
       </MapCoordinatesContext.Provider>
 
     </div>
