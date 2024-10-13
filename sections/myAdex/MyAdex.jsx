@@ -241,65 +241,7 @@ export default function MyAdex() {
             </TabsComponent>
           </RefreshContext.Provider>
         </div>
-        {
-          isContentLoaded && !hasPayoutMethod && listingData.length > 0 && value == '0' && (
-
-            <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
-              <CardHeader>
-                <CardTitle className='flex gap-2 items-center'>
-                  <div className='w-[25px]'>
-                    <Image
-                      src='/warning.png'
-                      alt="note icon"
-                      priority
-                      width={2000}
-                      height={2000}
-                      className='w-full mr-3'
-                    />
-                  </div>
-                  Set Up Your Payout Method
-                </CardTitle>
-                <CardDescription className='mt-3 text-[14px]'>To enable visibility of your Ads and allow buyers to view and explore them, a <b>Payout</b> method (typically your bank account) is required.
-                  Once your <b>Payout</b> method is added and verified by Stripe, all of your listings / Ads will automatically become visible.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <AddAccountModals
-                  setRefetch={(toggle) => setRefresh(toggle)}
-                  selectedCompany={selectedCompany}
-                  selectedCompanyId={selectedCompanyId}
-                  setHasPayoutMethod={(hasPayout) => setHasPayoutMethod(hasPayout)}
-                />
-              </CardContent>
-            </Card>
-          )
-        }
-        {
-          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && dueInfo?.length === 0 && (
-
-            <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
-              <CardHeader>
-                <CardTitle className='flex gap-2 items-center'>
-                  <div className='w-[25px]'>
-                    <Image
-                      src='/warning.png'
-                      alt="note icon"
-                      priority
-                      width={2000}
-                      height={2000}
-                      className='w-full mr-3'
-                    />
-                  </div>
-                  Verifying your account
-                </CardTitle>
-                <CardDescription className='mt-3 text-[14px]'>Your <b>Payout</b> method is being verified by Stripe, once approved, all of your Listings / Ads will automatically become visible.
-                  This process takes up to 5 business days for <b>Individual</b> accounts and 7 business days for <b>Company</b> accounts.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-              </CardContent>
-            </Card>
-          )
-        }
+        
         {
           isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && dueInfo?.length > 0 && (
 
