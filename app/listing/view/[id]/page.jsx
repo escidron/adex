@@ -132,7 +132,6 @@ export default function Listing({ params }) {
         };
         handleRouteChange()
     }, []);
-
     return (
         <>
             <TopBar />
