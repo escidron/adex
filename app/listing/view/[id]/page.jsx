@@ -30,6 +30,7 @@ import QrCodeComponent from './_components/QrCodeComponent'
 import Image from 'next/image'
 import QrCodeInfo from './_components/QrCodeInfo'
 import { calculateDiscounts } from '@/utils/calculateDiscounts'
+import GetSellerProfile from '@/actions/GetSellerProfile'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -42,6 +43,7 @@ export default function Listing({ params }) {
     const [currentDiscount, setCurrentDiscount] = useState(0)
     const [buyerProfile, setBuyerProfile] = useState(null);
     const [companyProfile, setCompanyProfile] = useState(null);
+    const [sellerAccountIsAccepted, setSellerAccountIsAccepted] = useState(false);
     const id = params.id
     const searchParams = useSearchParams()
     const notificationId = searchParams.get('notification_id')
@@ -50,7 +52,15 @@ export default function Listing({ params }) {
             const myListing = await GetAdvertisementDetails(id, notificationId)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
-            const checkPayout = await GetPayoutMethod(myListing.company_id)
+            let checkPayout = false
+            if(myListing.company_id){
+                checkPayout = await GetPayoutMethod(myListing.company_id)
+            }
+            const sellerInfo = await GetSellerProfile(myListing.company_id)
+
+            if (sellerInfo?.isAccepted === '1') {
+              setSellerAccountIsAccepted(true)
+            }
             const buyerInfo = await GetUserProfile(myListing.requested_by)
             const buyerCompanies = await GetCompany(myListing.requested_by_company)
             setHasPayout(checkPayout)
@@ -141,7 +151,7 @@ export default function Listing({ params }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             {
-                                !hasPayout && <PayoutWarningBanner />
+                                (!hasPayout || !sellerAccountIsAccepted) && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout}/>
                             }
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
@@ -192,6 +202,8 @@ export default function Listing({ params }) {
                                                     currentDiscount={currentDiscount}
                                                     setBookingAccepted={(accepted) => setBookingAccepted(accepted)}
                                                     setBookingRejected={(rejected) => setBookingRejected(rejected)}
+                                                    hasPayout={hasPayout}
+                                                    sellerAccountIsAccepted={sellerAccountIsAccepted}
                                                 />
                                             </div>
                                         )
