@@ -1,27 +1,32 @@
 'use client'
-import Success from '@/components/messages/Success';
-import Link from 'next/link';
 import ExternalBankForm from '@/sections/add-payout-method/ExternalBankForm';
 import PayoutIndividualForm from '@/sections/add-payout-method/PayoutIndividualForm'
 import PayoutCompanyForm from '@/sections/add-payout-method/PayoutCompanyForm';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import GetSellerProfile from '@/actions/GetSellerProfile';
+import GetCompany from '@/actions/GetCompany';
 
 export default function AddPayoutMethod() {
   const [hasBankAccount, setHasBankAccount] = useState(false);
   const [seller, setSeller] = useState(null);
-  const [finish, setFinish] = useState(false);
   const [hasAccount, setHasAccount] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [company, setCompany] = useState();
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const companyId = searchParams.get('company_id')
+
   useEffect(() => {
     async function GetInfo() {
       const sellerInfo = await GetSellerProfile()
+      const companyInfo = await GetCompany(companyId)
       setSeller(sellerInfo)
       if (sellerInfo.stripe_account) {
         setHasAccount(true)
+      }
+      if(companyInfo.length > 0){
+        setCompany(companyInfo[0])
       }
     }
     GetInfo();
@@ -44,8 +49,7 @@ export default function AddPayoutMethod() {
 
             <PayoutIndividualForm setHasAccount={(toggle) => setHasAccount(toggle)} />
           ) : (
-            <PayoutCompanyForm setHasAccount={(toggle) => setHasAccount(toggle)} />
-
+            <PayoutCompanyForm setHasAccount={(toggle) => setHasAccount(toggle)} company={company}/>
           )
         }
       </>

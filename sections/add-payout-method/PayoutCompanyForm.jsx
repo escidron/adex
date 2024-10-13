@@ -7,7 +7,7 @@ import ImageLoader from "@/components/ImageLoader/ImageLoader";
 import DobComponent from "@/components/datePicker/DobComponent";
 import MaskedInput from 'react-maskedinput';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import { Eye, EyeOff, Loader2, Lock } from "lucide-react";
 import { MerchantCategories } from "@/utils/MerchantCategories";
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 
 
 
-export default function PayoutCompanyForm({ setHasAccount, selectedCompany, selectedCompanyId }) {
+export default function PayoutCompanyForm({ setHasAccount, selectedCompany, selectedCompanyId,company }) {
   const [state, setState] = useState('');
   const [ownerState, setOwnerState] = useState('');
   const [isPending, setIsPending] = useState(false)
@@ -94,7 +94,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
   const formik = useFormik({
     initialValues: {
       idNumber: '',
-      name: selectedCompany,
+      name: selectedCompany ? selectedCompany : company?.company_name,
       street: '',
       city: '',
       state: state,
@@ -132,7 +132,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
             ownerZip: values.ownerZip,
             verificationImage: images[0].data_url,
             dob: dob,
-            companyId: selectedCompanyId
+            companyId: selectedCompanyId ? selectedCompanyId : company?.id
           }, {
           withCredentials: true,
         })
@@ -161,6 +161,13 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
       }
     },
   });
+
+  useEffect(() => {
+    if (selectedCompany || company?.company_name) {
+      formik.setFieldValue('name', selectedCompany || company?.company_name);
+    }
+  }, [selectedCompany, company]);
+
   return (
     <form className="flex flex-col gap-4 " onSubmit={formik.handleSubmit}>
       {
@@ -178,7 +185,7 @@ export default function PayoutCompanyForm({ setHasAccount, selectedCompany, sele
                   name="name"
                   type='text'
                   disabled
-                  value={selectedCompany}
+                  value={selectedCompany || company?.company_name || ""}
                   className={`w-full border focus:border-black p-2 rounded-lg outline-none `}
                 />
                 {formik.touched.name && formik.errors.name ? <div className="absolute top-[70px] text-red-600 text-[12px] font-bold">{formik.errors.name}</div> : null}

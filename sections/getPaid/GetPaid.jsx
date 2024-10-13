@@ -35,11 +35,6 @@ export default function GetPaid() {
                     <p className='mt-5 text-[18px] '>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
                     <p className='mt-5 text-[18px] '>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is, making it look like readable English.</p>
                     <p className='mt-5 text-[18px] '>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-                    {/* <Link href={user.hasPayout && user.isLogged ? `/listing/create/${userData.userType == 1 ? 'select_business' : 'category'}` : !user.isLogged ? '/login' : !user.hasPayout && user.isLogged ? '/add-payout-method' : '/'} 
-                        className={`style_banner_button mx-auto z-10 bg-black py-[10px] px-[20px] rounded-md mt-4  md:mt-5 hover:bg-[#FCD33B] hover:text-black text-lg
-                        lg:py-[15px] lg:px-[40px] lg:mt-10 '>
-                        <p className='style_banner_button_text font-medium `}><p>Create a Listing</p>
-                    </Link> */}
                     <Button onClick={()=>router.push(path)} className='max-w-[200px] mt-4 flex mx-auto'>Create Listing</Button>
                 </div>
                 <div className='w-[320px] mt-8 h-full max-h-[400px] flex justify-between '>

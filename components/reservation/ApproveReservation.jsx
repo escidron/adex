@@ -25,7 +25,7 @@ import { UserContext } from '@/app/layout';
 import CancellationPolicy from '../modals/CancellationPolicy';
 
 
-export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected }) {
+export default function ApproveReservation({ advertisement, discounts, currentDiscount, setBookingAccepted, setBookingRejected,hasPayout,sellerAccountIsAccepted }) {
     const [user] = useContext(UserContext)
 
     const [isPending1, setIsPending1] = useState(false)
@@ -79,6 +79,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
             })
             .catch(function (error) {
                 console.log(error)
+                setIsContentLoaded(true)
             });
 
     }, [advertisement]);
@@ -400,7 +401,7 @@ export default function ApproveReservation({ advertisement, discounts, currentDi
                 {
                     advertisement?.status == 4 && user.userId == advertisement.created_by && (
                         <div className='mt-8'>
-                            <Button onClick={Booking} disabled={isPending1 || isPending2 ? true : false} className='w-full'>
+                            <Button onClick={Booking} disabled={isPending1 || isPending2 || !hasPayout || !sellerAccountIsAccepted } className='w-full'>
                                 {
                                     isPending1 && (
                                         <Loader2 size={18} className='animate-spin' />
