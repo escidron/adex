@@ -151,7 +151,7 @@ export default function Listing({ params }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             {
-                                !hasPayout || !sellerAccountIsAccepted && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout}/>
+                                (!hasPayout || !sellerAccountIsAccepted) && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout}/>
                             }
                             <div>
                                 <ImagesBox listingProperties={listingProperties} />
