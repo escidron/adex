@@ -26,6 +26,8 @@ import { ListingContext, MachineStatesContext } from '../layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine } from '@/utils/listingStatesmachine'
 import MediaTypesForm from '@/components/forms/MediaTypesForm'
+import CampaignDetailsForm from '@/components/forms/CampaignDetails'
+import CreateCampaign from '@/actions/CreateCampaign'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'media_types', 'title', 'location', 'description', 'price', 'images']
@@ -50,9 +52,9 @@ export default function Listing({ params }) {
                 setRequired(true)
             } else {
                 if (step == 'price' && listingProperties.sub_category == 7) {
-                    if(!listingProperties.digitalPriceType){
+                    if (!listingProperties.digitalPriceType) {
                         setRequired(true)
-                    }else{
+                    } else {
                         setRequired(false)
                     }
                 } else {
@@ -182,6 +184,15 @@ export default function Listing({ params }) {
                 }
 
                 break;
+            case 'campaign_details':
+                if (listingProperties.category == 24) {
+                    nextRoute = url;
+                    force = true
+                } else {
+                    nextRoute = listingMachine.states[url][direction];
+                }
+
+                break;
             default:
                 nextRoute = url;
                 force = true
@@ -276,6 +287,17 @@ export default function Listing({ params }) {
 
             })
     }
+    const createNewCampaign = async () => {
+        setIsPending(true)
+
+        console.log('listingProperties', listingProperties)
+        console.log('selectedCompany', selectedCompany)
+        const response = await CreateCampaign(listingProperties,selectedCompany);
+        console.log('response', response)
+        toast.success('Listing created successfully!')
+        router.push('/my-profile?tab=5')
+        setIsPending(false)
+    }
     return (
         <div className="flex flex-col h-screen">
             <Toaster />
@@ -302,6 +324,7 @@ export default function Listing({ params }) {
             <div className="flex-1 overflow-y-auto p-4 mb-[130px]">
                 {step === 'select_business' && <BusinessForm ListingContext={ListingContext} />}
                 {step === 'category' && <CategoryForm ListingContext={ListingContext} />}
+                {step === 'campaign_details' && <CampaignDetailsForm ListingContext={ListingContext} />}
                 {step === 'sub_category' && <SubCategoryForm ListingContext={ListingContext} />}
                 {step === 'building_assets' && <BuildingAssetsForm ListingContext={ListingContext} />}
                 {step === 'media_types' && <MediaTypesForm ListingContext={ListingContext} />}
@@ -317,19 +340,26 @@ export default function Listing({ params }) {
             </div>
 
             <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end fixed bottom-0 left-0 w-full">
-                <Progress value={(stateMachine.currentStep / stateMachine.totalSteps) * 100} className='w-full rounded-none h-[10px] animate-in' />
+                <Progress
+                    value={step === 'campaign_details' ? 100 : (stateMachine.currentStep / stateMachine.totalSteps) * 100}
+                    className='w-full rounded-none h-[10px] animate-in'
+                />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
                     <Button disabled={(userData.userType == 2 && step === 'category') || isDraftPending || (userData.userType == 1 && step === 'select_business')} onClick={handlePrevious} variant='outline' className='flex gap-2'>
                         <ChevronLeft size={18} />
                         Back
                     </Button>
-                    <Button disabled={required || isPending || isDraftPending} onClick={step === 'preview' ? () => createListing(false) : handleNext} variant='default' className='flex gap-2 items-center'>
+                    <Button
+                        disabled={required || isPending || isDraftPending}
+                        onClick={step === 'preview' ? () => createListing(false) : step === 'campaign_details' ? createNewCampaign : handleNext}
+                        variant='default'
+                        className='flex gap-2 items-center'>
                         {
                             isPending && (
                                 <Loader2 size={18} className='animate-spin' />
                             )
                         }
-                        {step === 'preview' ? 'Create' : 'Next'}
+                        {(step === 'preview' || step === 'campaign_details') ? 'Create' : 'Next'}
                     </Button>
                 </div>
             </div>

@@ -19,23 +19,26 @@ import { useState, useEffect, useContext } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { SendHorizontal } from 'lucide-react'
+import { Loader2, SendHorizontal } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { UserContext } from '@/app/layout'
 import Reviews from './_components/Reviews'
 import GetUserProfile from '@/actions/GetUserProfile'
 import GetCompany from '@/actions/GetCompany'
+import CreateCampaignSubscription from '@/actions/CreateCampaignSubscription'
+import CancelCampaignSubscription from '@/actions/CancelCampaignSubscription'
+import GetUserSubscribed from '@/actions/GetUserSubscribed'
 
 
 
 export default function ListingDetails({ sharedId }) {
     const [user, setUser] = useContext(UserContext)
+    const [isPending, setIsPending] = useState(false)
 
     const [listingProperties, setListingProperties] = useState({})
     const [advertisementType, setAdvertisementType] = useState('')
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const [discounts, setDiscounts] = useState([]);
-    const [isChatOpen, setIsChatOpen] = useState(false)
     const [message, setMessage] = useState('');
     const [hasCard, setHasCard] = useState(false)
     const [isBooked, setIsBooked] = useState(false)
@@ -46,9 +49,8 @@ export default function ListingDetails({ sharedId }) {
     const [companyProfile, setCompanyProfile] = useState(null);
     const searchParams = useSearchParams()
     const id = sharedId ? sharedId : searchParams.get('id')
-    const notificationId = searchParams.get('notification_id')
     const rejectedId = searchParams.get('rejected')
-
+    const [subscriptionId, setSubscriptionId] = useState(null);
     const router = useRouter();
     useEffect(() => {
 
@@ -59,7 +61,10 @@ export default function ListingDetails({ sharedId }) {
 
             const sellerInfo = await GetUserProfile(myListing.created_by)
             const sellerCompanies = await GetCompany(myListing.company_id)
-
+            const subscription = await GetUserSubscribed(myListing.id)
+            if(subscription.length > 0){
+                setSubscriptionId(subscription[0].id)
+            }
             setSellerProfile(sellerInfo)
             setCompanyProfile(sellerCompanies.length > 0 ? sellerCompanies[0] : null)
 
@@ -94,7 +99,7 @@ export default function ListingDetails({ sharedId }) {
                     id: id,
                     rating: myListing.rating,
                     amount_reviews: myListing.amount_reviews,
-                    digital_price_type : myListing.digital_price_type,
+                    digital_price_type: myListing.digital_price_type,
                 }));
 
             }
@@ -145,6 +150,28 @@ export default function ListingDetails({ sharedId }) {
 
     }
 
+    const registerOnCampain = async () => {
+        setIsPending(true)
+        try {
+            const subscriptionId = await CreateCampaignSubscription(listingProperties.id)
+            setSubscriptionId(subscriptionId)
+        } catch (error) {
+            console.log(error)
+        }
+        setIsPending(false)
+    }
+    const cancelSubscription = async () => {
+        setIsPending(true)
+        try {
+            const response = await CancelCampaignSubscription(subscriptionId)
+            if (response) {
+                setSubscriptionId(null)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        setIsPending(false)
+    }
     return (
         <>
             <Toaster />
@@ -153,7 +180,11 @@ export default function ListingDetails({ sharedId }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1100px]'>
                             <div>
-                                <ImagesBox listingProperties={listingProperties} />
+                                {
+                                    listingProperties.images.length > 0 && (
+                                        <ImagesBox listingProperties={listingProperties} />
+                                    )
+                                }
                                 <div className='w-full flex flex-col-reverse  md:flex-row justify-between mt-4'>
                                     <div className='w-full md:w-[50%]'>
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
@@ -196,7 +227,7 @@ export default function ListingDetails({ sharedId }) {
 
                                     <div className='w-full md:w-[40%] flex justify-center md:justify-end' >
                                         {
-                                            !rejectedId && (
+                                            !rejectedId && listingProperties.sub_category != 24 && (
 
                                                 <Reservation
                                                     data={listingProperties}
@@ -208,6 +239,21 @@ export default function ListingDetails({ sharedId }) {
                                                     discounts={discounts}
                                                     isContentLoaded={isContentLoaded}
                                                 />
+                                            )
+                                        }
+                                        {
+                                            listingProperties.sub_category == 24 && (
+                                                <div className={`w-[350px] h-fit flex flex-col shadow-lg rounded-lg border p-4 `}>
+                                                    <Button
+                                                        disabled={isPending}
+                                                        onClick={subscriptionId ? cancelSubscription : registerOnCampain}
+                                                        variant={subscriptionId ? 'outline' : 'default'} >
+                                                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                                                        <p>
+                                                            {subscriptionId ? 'Cancel Subscription' : 'Register on campaign'}
+                                                        </p>
+                                                    </Button>
+                                                </div>
                                             )
                                         }
                                     </div>
