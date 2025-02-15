@@ -22,15 +22,14 @@ import { ListingContext } from './layout'
 import { Separator } from '@/components/ui/separator'
 import { useSearchParams } from 'next/navigation'
 import GetUserProfile from '@/actions/GetUserProfile'
-import GetCompanies from '@/actions/GetCompanies'
 import GetCompany from '@/actions/GetCompany'
 import BuyerDetails from '@/app/market-place/details/_components/BuyerDetails'
 import Reviews from '@/app/market-place/details/_components/Reviews'
-import QrCodeComponent from './_components/QrCodeComponent'
-import Image from 'next/image'
 import QrCodeInfo from './_components/QrCodeInfo'
 import { calculateDiscounts } from '@/utils/calculateDiscounts'
 import GetSellerProfile from '@/actions/GetSellerProfile'
+import GetCampaignSubscribers from '@/actions/GetCampaignSubscribers'
+import SubscriptorList from './_components/SubscriptorList'
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -47,19 +46,24 @@ export default function Listing({ params }) {
     const id = params.id
     const searchParams = useSearchParams()
     const notificationId = searchParams.get('notification_id')
+    const [subscribers, setSubscribers] = useState([]);
     useEffect(() => {
         async function getInfo() {
             const myListing = await GetAdvertisementDetails(id, notificationId)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
+            const campaignSubscribers = await GetCampaignSubscribers(id)
+            if (campaignSubscribers) {
+                setSubscribers(campaignSubscribers);
+            }
             let checkPayout = false
-            if(myListing.company_id){
+            if (myListing.company_id) {
                 checkPayout = await GetPayoutMethod(myListing.company_id)
             }
             const sellerInfo = await GetSellerProfile(myListing.company_id)
 
             if (sellerInfo?.isAccepted === '1') {
-              setSellerAccountIsAccepted(true)
+                setSellerAccountIsAccepted(true)
             }
             const buyerInfo = await GetUserProfile(myListing.requested_by)
             const buyerCompanies = await GetCompany(myListing.requested_by_company)
@@ -142,6 +146,7 @@ export default function Listing({ params }) {
         };
         handleRouteChange()
     }, []);
+
     return (
         <>
             <TopBar />
@@ -150,10 +155,14 @@ export default function Listing({ params }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             {
-                                (!hasPayout || !sellerAccountIsAccepted) && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout}/>
+                                (!hasPayout || !sellerAccountIsAccepted) && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout} />
                             }
                             <div>
-                                <ImagesBox listingProperties={listingProperties} />
+                                {
+                                    listingProperties.images.length > 0 && (
+                                        <ImagesBox listingProperties={listingProperties} />
+                                    )
+                                }
                                 <div className='w-full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
                                         <ListingHeader
@@ -173,11 +182,24 @@ export default function Listing({ params }) {
                                                 </>
                                             )
                                         }
-
-                                        <Separator className='my-3' />
-                                        <DateInfo listingProperties={listingProperties} />
-
-                                        {(advertisementType != 1 || listingProperties.otherListingType != 1) && (
+                                        {
+                                            subscribers.length > 0 && (
+                                                <>
+                                                    <Separator className='my-3' />
+                                                    <SubscriptorList subscribers={subscribers} />
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            listingProperties.sub_category != '24' && (
+                                                <>
+                                                    <Separator className='my-3' />
+                                                    <DateInfo listingProperties={listingProperties} />
+                                                </>
+                                            )
+                                        }
+                              
+                                        {((advertisementType != 1 && listingProperties.sub_category != '24') || (listingProperties.otherListingType && listingProperties.otherListingType != 1)) && (
                                             <>
                                                 <Separator className='my-5' />
                                                 <DiscountsInfo
@@ -186,9 +208,14 @@ export default function Listing({ params }) {
                                                 />
                                             </>
                                         )}
-
-                                        <Separator className='my-5' />
-                                        <InstructionsInfo listingProperties={listingProperties} />
+                                        {
+                                            listingProperties.sub_category != '24' && (
+                                                <>
+                                                    <Separator className='my-5' />
+                                                    <InstructionsInfo listingProperties={listingProperties} />
+                                                </>
+                                            )
+                                        }
                                     </div>
 
                                     {

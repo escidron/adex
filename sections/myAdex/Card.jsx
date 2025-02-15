@@ -25,6 +25,7 @@ import RatingBuyerModal from './_components/RatingBuyerModal';
 import RatingSellerModal from './_components/RatingSellerModal';
 import RatingComponent from '@/components/rating/RatingComponent';
 import { FacebookProvider } from 'react-facebook';
+import Image from 'next/image';
 
 export default function Card({ item, route, deleteListing, updateRatingStastus, isListingView }) {
     const router = useRouter();
@@ -41,10 +42,24 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
         setCopied(true);
         toast.success('Link copy to your clipboard')
     }
+    console.log('item', item)
     return (
         <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:h-[260px] md:max-h-[260px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[240px] w-full md:w-[240px] min-h-[240px] min-w-[240px] rounded-lg relative'>
-                <MultiImage images={item.image} height={'240px'} remove={false} />
+                {
+                    item.image.length > 0 ? (
+                        <MultiImage images={item.image} height={'240px'} remove={false} />
+                    ) : (
+                        <div className='w-full h-full flex justify-center items-center bg-black rounded-[16px]'>
+                            <Image
+                                src='/adex-logo-white-yellow.png'
+                                alt="Image placeholder"
+                                width={150}
+                                height={150}
+                            />
+                        </div>
+                    )
+                }
                 {
                     item.status === 2 && (
 

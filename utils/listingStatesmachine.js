@@ -10,9 +10,14 @@ const listingMachine = {
             ISVALID:    false //use for render conditional field (false => conditional field, true => always render)
         },
         category:{
-            NEXT:'sub_category',
+            NEXT:'campaign_details',
             PREVIOUS:'select_business',
             ISVALID:    true 
+        },
+        campaign_details:{
+            NEXT:'sub_category',
+            PREVIOUS:'category',
+            ISVALID:    false 
         },
         sub_category:{
             NEXT:'building_assets',

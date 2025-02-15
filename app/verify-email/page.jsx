@@ -12,11 +12,6 @@ export default function VerifyEmailPage() {
     const searchParams = useSearchParams()
     const tempToken = searchParams.get('temp_token')
     const userId = searchParams.get('user_id')
-    console.log(tempToken)
-    console.log(userId)
-    console.log(isVerified)
-    console.log(isLoading)
-
 
     useEffect(() => {
         async function getEmailVerification() {
