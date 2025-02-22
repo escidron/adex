@@ -10,6 +10,7 @@ import InstructionsInfo from '../../listing/view/[id]/_components/InstructionsIn
 import PageSkeleton from '../../listing/view/[id]/_components/PageSkeleton'
 import GetCategories from '@/actions/GetCategories'
 import GetDiscounts from '@/actions/GetDiscounts'
+import { Loader2 } from 'lucide-react'
 
 import { Preview } from '@/components/textarea/TextAreaReader'
 import { useState, useEffect } from 'react'
@@ -26,6 +27,11 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import ContactSeller from '@/app/market-place/details/_components/ContactSeller'
 import { calculateDiscounts } from '@/utils/calculateDiscounts'
+import GetUserSubscribed from '@/actions/GetUserSubscribed'
+import CreateCampaignSubscription from '@/actions/CreateCampaignSubscription'
+import CancelCampaignSubscription from '@/actions/CancelCampaignSubscription'
+import { Input } from '@/components/ui/input'
+import AddEvidenceToSubscription from '@/actions/AddEvidenceToSubscription'
 
 export default function Booking({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -35,6 +41,12 @@ export default function Booking({ params }) {
     const [currentDiscount, setCurrentDiscount] = useState(0)
     const [sellerProfile, setSellerProfile] = useState(null);
     const [companyProfile, setCompanyProfile] = useState(null);
+    const [isPending, setIsPending] = useState(false)
+    const [subscriptionId, setSubscriptionId] = useState(null);
+    const [showEvidenceField, setShowEvidenceField] = useState(false);
+    const [link, setLink] = useState("");
+    const [tempLink, setTempLink] = useState("");
+
     const id = params.id
     const router = useRouter()
     useEffect(() => {
@@ -46,7 +58,12 @@ export default function Booking({ params }) {
 
             const sellerInfo = await GetUserProfile(myListing.created_by)
             const sellerCompanies = await GetCompany(myListing.company_id)
-
+            const subscription = await GetUserSubscribed(myListing.id)
+            if (subscription.length > 0) {
+                setSubscriptionId(subscription[0].id)
+                setTempLink(subscription[0].evidence)
+                setLink(subscription[0].evidence)
+            }
             setSellerProfile(sellerInfo)
             setCompanyProfile(sellerCompanies.length > 0 ? sellerCompanies[0] : null)
 
@@ -128,6 +145,17 @@ export default function Booking({ params }) {
         handleRouteChange()
     }, []);
 
+    const addEvidenceLink = async () => {
+        try {
+            const response = await AddEvidenceToSubscription(listingProperties.id, tempLink)
+            if (response) {
+                setLink(tempLink)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <TopBar route={'/my-profile?tab=5&sub-tab=1'} />
@@ -136,7 +164,11 @@ export default function Booking({ params }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             <div>
-                                <ImagesBox listingProperties={listingProperties} />
+                                {
+                                    listingProperties.images.length > 0 && (
+                                        <ImagesBox listingProperties={listingProperties} />
+                                    )
+                                }
                                 <div className='w-full gap-4 flex flex-col-reverse  md:flex-row justify-between'>
                                     <div className={`w-full ${statusPending ? 'md:w-[50%]' : 'md:w-[70%]'} `}>
                                         <ListingHeader listingProperties={listingProperties} advertisementType={advertisementType} hasPaymentBox={true} />
@@ -178,7 +210,7 @@ export default function Booking({ params }) {
                                         }
                                     </div>
                                     {
-                                        statusPending && (
+                                        statusPending && listingProperties.sub_category != '24' && (
 
                                             <div className='w-full md:w-[40%] flex justify-center md:justify-end mt-2' >
                                                 <ApproveReservation
@@ -188,6 +220,51 @@ export default function Booking({ params }) {
                                                     setBookingAccepted={(accepted) => setBookingAccepted(accepted)}
                                                     setBookingRejected={(rejected) => setBookingRejected(rejected)}
                                                 />
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        listingProperties.sub_category == 24 && !showEvidenceField && (
+                                            <div className={`w-[350px] h-fit flex flex-col shadow-lg rounded-lg border p-4 gap-2`}>
+                                                <Button
+                                                    disabled={isPending}
+                                                    onClick={() => setShowEvidenceField(true)}
+                                                >
+                                                    {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                                                    <p>
+                                                        {link ? 'Update Evidence Link' : 'Add Evidence Link'}
+                                                    </p>
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        listingProperties.sub_category == 24 && showEvidenceField && (
+                                            <div className="w-[350px] h-fit flex flex-col shadow-lg rounded-lg border p-4 gap-2">
+                                                <Input
+                                                    placeholder="Add link here"
+                                                    value={tempLink}
+                                                    onChange={(e) => setTempLink(e.target.value)}
+                                                />
+                                                <div className="flex justify-end gap-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            setTempLink(link)
+                                                            setShowEvidenceField(false)
+                                                        }}
+                                                    >
+                                                        <p>Cancel</p>
+                                                    </Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            setShowEvidenceField(false)
+                                                            addEvidenceLink()
+                                                        }}
+                                                    >
+                                                        <p>Save</p>
+                                                    </Button>
+                                                </div>
                                             </div>
                                         )
                                     }

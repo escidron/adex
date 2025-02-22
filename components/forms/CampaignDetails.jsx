@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { TextAreaEditor } from '../textarea/TextAreaEditor';
 import TextField from '../inputs/TextField';
+import DropImageArea from '../dropImageArea/DropImageArea';
 
 export default function CampaignDetailsForm({ ListingContext }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -18,11 +19,17 @@ export default function CampaignDetailsForm({ ListingContext }) {
             setListingProperties({ ...listingProperties, description: description })
         }
     }
+    const handleInstructions = (instructions) => {
+        setListingProperties({ ...listingProperties, instructions: instructions })
+    }
+    const handleImages = (images) => {
+        setListingProperties((prev) => ({ ...prev, images: images }))
+    }
     return (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center gap-2'>
             <h1 className='text-[28px] md:text-[32px]'>Campaign Details</h1>
-            <div className='w-full sm:w-[500px] '>
-                <div className='mt-4 w-full max-w-[500px]'>
+            <div className='w-full sm:w-[500px] md:w-[650px]'>
+                <div className='mt-4 w-full'>
                     <h1 className='text-[28px]'>Title</h1>
                     <TextField
                         autoFocus={true}
@@ -34,19 +41,30 @@ export default function CampaignDetailsForm({ ListingContext }) {
                         maxLength={30}
                     />
                     <div className='w-full flex justify-end'>
-
                         <p className={`font-[500] ${counter == 30 && 'text-red-600'}`}>{counter}/30</p>
                     </div>
                 </div>
             </div>
-            <div className='w-full sm:w-[500px]'>
+            <div className='w-full sm:w-[500px] md:w-[650px]'>
                 <h1 className='text-[28px]'>Description</h1>
-                <div className=' mt-4'>
-                    <TextAreaEditor
-                        value={listingProperties.description}
-                        onChange={(description) => handleDescription(description)}
-                    />
-                </div>
+                <TextAreaEditor
+                    value={listingProperties.description}
+                    onChange={(description) => handleDescription(description)}
+                />
+            </div>
+            <div className='w-full sm:w-[500px] md:w-[650px] mt-[80px]'>
+                <h1 className='text-[28px]'>Instructions</h1>
+                <TextAreaEditor
+                    value={listingProperties.instructions}
+                    onChange={(instructions) => handleInstructions(instructions)}
+                />
+            </div>
+            <div className='w-full sm:w-[500px] md:w-[650px] h-full mt-[80px] min-h-[500px]'>
+                <h1 className='text-[28px] md:text-[32px]'>Pick some photos</h1>
+                <DropImageArea
+                    images={listingProperties.images}
+                    setImages={(image) => handleImages(image)}
+                />
             </div>
         </div>
     )

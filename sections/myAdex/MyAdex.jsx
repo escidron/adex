@@ -83,7 +83,7 @@ export default function MyAdex() {
           const newListing = myListing.filter(item => item.company_id == (selectedCompanyId ? selectedCompanyId : companies[0].id))
           const newStatus = filterStatus(newListing)
           const newBookings = myBookings.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
-          //const newPendings = pendingBooking.filter(item => item.requested_by_company == (selectedCompanyId ? selectedCompanyId : companies[0].id))
+
           if (sellerInfo?.isAccepted === '1') {
             setSellerAccountIsAccepted(true)
           }
@@ -103,7 +103,7 @@ export default function MyAdex() {
       } else if (user.userType == '2') {
         checkPayout = await GetPayoutMethod()
         sellerInfo = await GetSellerProfile()
-        console.log('sellerInfo', sellerInfo)
+
         if (myListing.length > 0) {
           setListingData(() => myListing)
         } else {
@@ -113,7 +113,7 @@ export default function MyAdex() {
           setSellerAccountIsAccepted(true)
         }
         const dueInfoArray = sellerInfo?.due_info?.split(';')
-        console.log('dueInfoArray', dueInfoArray)
+
         if (dueInfoArray) {
           setDueInfo(() => dueInfoArray)
         }
@@ -195,8 +195,6 @@ export default function MyAdex() {
     setSelectedCompanyId(selectedCompany.id)
 
   }
-  console.log('dueInfo', dueInfo)
-  console.log('sellerAccountIsAccepted', sellerAccountIsAccepted)
   return (
     <div className='w-full flex flex-col items-center px-[20px]'>
       <div>

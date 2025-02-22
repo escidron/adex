@@ -56,7 +56,7 @@ export default function EditListing({ params }) {
                 const categoryType = checkCategoryType(myListing.ad_duration_type)
                 setListingProperties((prev) => ({
                     ...prev,
-                    selectedStep:  'Category' ,
+                    selectedStep:   myListing.category_id == 24 ? 'Title' : 'Category' ,
                     sub_category: myListing.category_id,
                     ad_duration_type: categoryType,
                     title: myListing.title,
@@ -78,6 +78,9 @@ export default function EditListing({ params }) {
                     status:myListing.status,
                     digitalPriceType: myListing.digital_price_type
                 }));
+            }
+            if(myListing.category_id == 24){
+                setStep('title')
             }
             if (categories && myListing) {
 
@@ -131,7 +134,7 @@ export default function EditListing({ params }) {
             }
         }
 
-        if (!listingProperties.price) {
+        if (!listingProperties.price && listingProperties.sub_category != 24) {
             pendingInformations = true
             if (!requiredInformations.includes('Description')) {
                 setRequiredInformations(prev => ([...prev, 'Price']))
@@ -165,8 +168,8 @@ export default function EditListing({ params }) {
 
         if (!pendingInformations) {
             const categoryType = checkCategoryType(listingProperties.sub_category)
-
-            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/update`,
+            const route = listingProperties.sub_category == 24 ? 'update-campaign' : 'update'
+            axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/${route}`,
                 {
                     id: id,
                     category_id: listingProperties.sub_category,

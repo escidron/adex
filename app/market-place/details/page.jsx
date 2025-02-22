@@ -28,6 +28,9 @@ import GetCompany from '@/actions/GetCompany'
 import CreateCampaignSubscription from '@/actions/CreateCampaignSubscription'
 import CancelCampaignSubscription from '@/actions/CancelCampaignSubscription'
 import GetUserSubscribed from '@/actions/GetUserSubscribed'
+import GetCompanies from '@/actions/GetCompanies'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import CompanyList from '@/components/reservation/CompanyList'
 
 
 
@@ -51,6 +54,11 @@ export default function ListingDetails({ sharedId }) {
     const id = sharedId ? sharedId : searchParams.get('id')
     const rejectedId = searchParams.get('rejected')
     const [subscriptionId, setSubscriptionId] = useState(null);
+    const [loginRequired, setLoginRequired] = useState(false);
+    const [companies, setCompanies] = useState();
+    const [isCompanyProfile, setIsCompanyProfile] = useState(false);
+    const [hasCompanySelected, setHasCompanySelected] = useState(false);
+    const [selectedCompany, setSelectedCompany] = useState('');
     const router = useRouter();
     useEffect(() => {
 
@@ -58,11 +66,16 @@ export default function ListingDetails({ sharedId }) {
             const myListing = await GetAdvertisementDetails(id)
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
-
+            const myProfile = await GetUserProfile()
+            if (myProfile?.userType == '1') {
+                const myCompanies = await GetCompanies()
+                setCompanies(myCompanies)
+                setIsCompanyProfile(true)
+            }
             const sellerInfo = await GetUserProfile(myListing.created_by)
             const sellerCompanies = await GetCompany(myListing.company_id)
             const subscription = await GetUserSubscribed(myListing.id)
-            if(subscription.length > 0){
+            if (subscription?.length > 0) {
                 setSubscriptionId(subscription[0].id)
             }
             setSellerProfile(sellerInfo)
@@ -153,24 +166,15 @@ export default function ListingDetails({ sharedId }) {
     const registerOnCampain = async () => {
         setIsPending(true)
         try {
-            const subscriptionId = await CreateCampaignSubscription(listingProperties.id)
+            const subscriptionId = await CreateCampaignSubscription(listingProperties.id,selectedCompany)
             setSubscriptionId(subscriptionId)
         } catch (error) {
             console.log(error)
         }
         setIsPending(false)
     }
-    const cancelSubscription = async () => {
-        setIsPending(true)
-        try {
-            const response = await CancelCampaignSubscription(subscriptionId)
-            if (response) {
-                setSubscriptionId(null)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-        setIsPending(false)
+    const handleSelectedCompany = async (id) => {
+        setSelectedCompany(id)
     }
     return (
         <>
@@ -244,15 +248,91 @@ export default function ListingDetails({ sharedId }) {
                                         {
                                             listingProperties.sub_category == 24 && (
                                                 <div className={`w-[350px] h-fit flex flex-col shadow-lg rounded-lg border p-4 `}>
-                                                    <Button
-                                                        disabled={isPending}
-                                                        onClick={subscriptionId ? cancelSubscription : registerOnCampain}
-                                                        variant={subscriptionId ? 'outline' : 'default'} >
-                                                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
-                                                        <p>
-                                                            {subscriptionId ? 'Cancel Subscription' : 'Register on campaign'}
-                                                        </p>
-                                                    </Button>
+                                                    {
+                                                        subscriptionId ? (
+                                                            <div className="flex flex-col gap-1  p-2 rounded-md">
+                                                                <h1 className="text-[18px] font-bold">You have successfully subscribed</h1>
+                                                                <p className="text-[15px]">When you&apos;re ready to submit your post link, you can find this campaign in <span className="font-bold cursor-pointer underline" onClick={() => router.push('/my-profile?tab=5&sub-tab=1')}>My Bookings</span>.</p>
+                                                            </div>
+                                                        ) : (
+                                                            <>
+                                                                {
+                                                                    isCompanyProfile ? (
+
+                                                                        <Dialog className='w-full ' onOpenChange={() => {
+                                                                            setHasCompanySelected(false)
+                                                                        }}>
+                                                                            <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+                                                                                Register on campaign
+                                                                            </DialogTrigger>
+                                                                            <DialogContent className='w-[90%] max-w-[550px]'>
+                                                                                {
+                                                                                    !hasCompanySelected && (
+                                                                                        <>
+                                                                                            <DialogHeader>
+                                                                                                <DialogTitle>Select Company</DialogTitle>
+                                                                                                <DialogDescription>
+                                                                                                    On behalf of which of your companies would you like to request the booking?
+                                                                                                </DialogDescription>
+                                                                                            </DialogHeader>
+                                                                                            <div className='max-h-[400px] overflow-y-auto invisible_scroll_bar'>
+                                                                                                {
+                                                                                                    companies.length > 0 ? (
+
+                                                                                                        <CompanyList
+                                                                                                            companies={companies}
+                                                                                                            handleSelectedCompany={(id) => handleSelectedCompany(id)}
+                                                                                                            selectedCompany={selectedCompany}
+                                                                                                        />
+                                                                                                    ) : (
+                                                                                                        <>
+                                                                                                            <p className='text-gray-600 italic'>No company available, you neeed to register a company first.</p>
+                                                                                                        </>
+                                                                                                    )
+                                                                                                }
+                                                                                            </div>
+                                                                                            <DialogFooter className='mt-4'>
+                                                                                                <div className='w-full flex justify-end items-center'>
+                                                                                                    <Button disabled={!selectedCompany} type='submit'
+                                                                                                        onClick={() => {
+                                                                                                            setHasCompanySelected(true)
+                                                                                                            registerOnCampain()
+                                                                                                        }}>
+                                                                                                        {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                                                                                                        Subscribe
+                                                                                                    </Button>
+                                                                                                </div>
+                                                                                            </DialogFooter>
+                                                                                        </>
+                                                                                    )
+                                                                                }
+
+                                                                            </DialogContent>
+                                                                        </Dialog>
+                                                                    ) : (
+                                                                        <Button
+                                                                            disabled={isPending}
+                                                                            onClick={user.isLogged ? registerOnCampain : () => setLoginRequired(true)}
+                                                                        >
+                                                                            {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
+                                                                            <p>
+                                                                                Register on campaign
+                                                                            </p>
+                                                                        </Button>
+                                                                    )
+                                                                }
+
+                                                                {
+                                                                    loginRequired && (
+                                                                        <div>
+                                                                            <p className='text-red-500 text-[14px] mt-2'>You must create an account before registering for this campaign.</p>
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </>
+                                                        )
+                                                    }
+
                                                 </div>
                                             )
                                         }
