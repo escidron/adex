@@ -155,7 +155,7 @@ export default function Listing({ params }) {
                     isContentLoaded ? (
                         <div className='w-full  px-6 h-full max-w-[1000px]'>
                             {
-                                (!hasPayout || !sellerAccountIsAccepted) && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout} />
+                                (!hasPayout || !sellerAccountIsAccepted) && listingProperties.sub_category != 24 && <PayoutWarningBanner listingProperties={listingProperties} hasPayout={hasPayout} />
                             }
                             <div>
                                 {
@@ -183,14 +183,6 @@ export default function Listing({ params }) {
                                             )
                                         }
                                         {
-                                            subscribers.length > 0 && (
-                                                <>
-                                                    <Separator className='my-3' />
-                                                    <SubscriptorList subscribers={subscribers} />
-                                                </>
-                                            )
-                                        }
-                                        {
                                             listingProperties.sub_category != '24' && (
                                                 <>
                                                     <Separator className='my-3' />
@@ -198,7 +190,6 @@ export default function Listing({ params }) {
                                                 </>
                                             )
                                         }
-                              
                                         {((advertisementType != 1 && listingProperties.sub_category != '24') || (listingProperties.otherListingType && listingProperties.otherListingType != 1)) && (
                                             <>
                                                 <Separator className='my-5' />
@@ -209,7 +200,7 @@ export default function Listing({ params }) {
                                             </>
                                         )}
                                         {
-                                            listingProperties.sub_category != '24' && (
+                                            listingProperties.instructions && (
                                                 <>
                                                     <Separator className='my-5' />
                                                     <InstructionsInfo listingProperties={listingProperties} />
@@ -219,7 +210,7 @@ export default function Listing({ params }) {
                                     </div>
 
                                     {
-                                        statusPending && (
+                                        statusPending && listingProperties.sub_category != '24' && (
 
                                             <div className='w-full md:w-[40%] flex justify-center md:justify-end mt-2' >
                                                 <ApproveReservation
@@ -236,6 +227,14 @@ export default function Listing({ params }) {
                                     }
                                 </div>
                             </div>
+                            {
+                                subscribers.length > 0 && (
+                                    <>
+                                        <Separator className='my-3' />
+                                        <SubscriptorList subscribers={subscribers} />
+                                    </>
+                                )
+                            }
                             <Separator className='my-6' />
                             <Reviews listingId={listingProperties.id} />
                             <Separator className='my-6' />

@@ -60,6 +60,13 @@ const editSteps = [
     }
 
 ]
+
+const campaignSteps = [
+    "Title",
+    "Description",
+    "Instructions",
+    "Photos"
+]
 export default function StepList({ userData, setStep, requiredInformations }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     return (
@@ -80,6 +87,9 @@ export default function StepList({ userData, setStep, requiredInformations }) {
                         }
 
                         if (listingProperties.sub_category != 9 && step.id == "Building Assets") {
+                            return undefined
+                        }
+                        if (listingProperties.sub_category == 24 &&  !campaignSteps.includes(step.id)) {
                             return undefined
                         }
                         return (

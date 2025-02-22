@@ -1,4 +1,4 @@
-export default async function CreateCampaignSubscription(campaignId) {
+export default async function CreateCampaignSubscription(campaignId,selectedCompany) {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/create-campaign-subscription`,
@@ -11,6 +11,7 @@ export default async function CreateCampaignSubscription(campaignId) {
         credentials: "include",
         body: JSON.stringify({
           campaign_id: campaignId,
+          company_id: selectedCompany
         }),
       }
     );

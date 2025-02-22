@@ -12,10 +12,8 @@ export default async function GetMyBookings(id) {
           body: JSON.stringify({ advertisementId: id }),
         }
       );
-  
       if (response.status === 200) {
         const res = await response.json();
-        
         if (res.data.length > 0) {
           const myBookings = res.data;
           const bookingStatus = res.status;

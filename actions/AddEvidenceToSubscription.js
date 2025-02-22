@@ -1,8 +1,9 @@
-export default async function CreateCampaign(listingProperties) {
 
-  try {
+export default async function AddEvidenceToSubscription(campaign_id,evidence) {
+    
+    try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/new-campaign`,
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/advertisements/campaign-evidence`,
         {
           method: "POST",
           headers: {
@@ -11,13 +12,8 @@ export default async function CreateCampaign(listingProperties) {
           },
           credentials: "include",
           body: JSON.stringify({ 
-            category_id:24,
-            title: listingProperties.title,
-            description: listingProperties.description,
-            company_id: listingProperties.select_business,
-            instructions: listingProperties.instructions,
-            images: listingProperties.images,
-            company_id: listingProperties.select_business
+            evidence,
+            campaign_id
           }),
         }
       );

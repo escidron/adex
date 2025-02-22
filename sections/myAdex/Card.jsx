@@ -42,7 +42,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
         setCopied(true);
         toast.success('Link copy to your clipboard')
     }
-    console.log('item', item)
+    
     return (
         <div onClick={() => router.push(route)} className={`flex Z-[99] gap-1 mt-4 mx-auto flex-col w-[360px] md:w-[700px] md:flex-row md:min-w-[700px]  md:h-[260px] md:max-h-[260px] p-2 mb-8 border-[1px] cursor-pointer rounded-[24px] border-bg-gray-200 hover:border-black `}>
             <div className='h-[240px] w-full md:w-[240px] min-h-[240px] min-w-[240px] rounded-lg relative'>
@@ -61,7 +61,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                     )
                 }
                 {
-                    item.status === 2 && (
+                    item.status === 2 && item.category_id != 24 && (
 
                         <div className='bg-white text-black rounded-xl absolute top-2 left-2 text-[10px] px-2 py-1 font-semibold'>
                             {`${days} days left`}
@@ -99,20 +99,25 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                     </div>
                 </div>
                 <div className='flex justify-between items-center mt-auto'>
-                    <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
-                        {
-                            item.category_id == 7 ? (
-                                <>
-                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : item.digital_price_type === '2' ? '/Per Post' : '/Per Month'}</p>
-                                </>
-                            ) : (
-                                <>
-                                    {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.ad_duration_type === '0' ? '/Month' : item.ad_duration_type === '2' ? '/Unit' : ''}</p>
-                                    {/* {formatPrice(item.price)}{item.ad_duration_type === '0' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Month</p>) : item.ad_duration_type === '2' ? (<p className='text-[15px] font-[400] text-gray-600 flex items-center'>/Unit</p>) : ''} */}
-                                </>
-                            )
-                        }
-                    </div>
+                    {
+                        item.category_id != 24 ? (
+                            <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
+                                {
+                                    item.category_id == 7 ? (
+                                        <>
+                                            {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.digital_price_type === '0' ? '/Per Mention' : item.digital_price_type === '1' ? '/Per Inclusion' : item.digital_price_type === '2' ? '/Per Post' : '/Per Month'}</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {formatPrice(item.price)}<p className='text-[15px] font-[400] text-gray-600 flex items-center'>{item.ad_duration_type === '0' ? '/Month' : item.ad_duration_type === '2' ? '/Unit' : ''}</p>
+                                        </>
+                                    )
+                                }
+                            </div>
+                        ) : (
+                            <div>{''}</div>
+                        )
+                    }
                     <div className={` gap-1 ${sharingOptions ? 'hidden' : 'flex'}`}>
                         {
                             (item.status == 1 || item.status == 2) && (
@@ -164,7 +169,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         }
 
                         {
-                            (item.status == 1 || item.status == 0 || item.status == 5) && (
+                            ((item.status == 1 || item.status == 0 || item.status == 5) && isListingView) && (
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()

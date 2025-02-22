@@ -18,16 +18,6 @@ export const TextAreaEditor = ({ onChange, value }) => {
 
   ];
 
-  // const refQuill = useRef(null)
-
-  // useEffect(() => {
-  //   if (refQuill) {
-  //     console.log('reaactquil', refQuill)
-  //     refQuill.current.focus()
-  //   }
-  // }, []);
-
-
   return (
     <>
       {
@@ -35,7 +25,6 @@ export const TextAreaEditor = ({ onChange, value }) => {
           <div className="bg-white h-[100px]">
             <ReactQuill
               theme="snow"
-              // ref={refQuill}
               value={value}
               onChange={onChange}
               modules={{ toolbar: toolbarOptions }}

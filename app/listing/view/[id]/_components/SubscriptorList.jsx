@@ -11,37 +11,44 @@ import {
 import { Button } from '@/components/ui/button';
 import { useRouter } from "next/navigation";
 import { Divider } from '@mui/material';
+import { Copy } from 'lucide-react';
 
 export default function SubscriptorList({ subscribers }) {
   const router = useRouter();
 
-  // Função para gerar o CSV manualmente
   const downloadCSV = () => {
-    const headers = ['Name', 'Email', 'Phone Number'];
+    const headers = ['Name', 'Email', 'Phone Number', "Post Link"];
     const rows = subscribers.map(subscriber => [
       subscriber.name,
       subscriber.email,
       subscriber.mobile_number,
+      subscriber.evidence
     ]);
 
-    // Converter os dados em formato CSV
     const csvContent = [
-      headers.join(';'), // Cabeçalho
-      ...rows.map(row => row.join(';')), 
+      headers.join(';'), 
+      ...rows.map(row => row.join(';')),
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'subscribers.csv'; 
-    link.click();  
-    URL.revokeObjectURL(url); 
+    link.download = 'subscribers.csv';
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+    }).catch(err => {
+      console.error("Failed to copy:", err);
+    });
+  }
+  
   return (
     <div>
-      <h1 className='text-[26px]'>Subscribers</h1>
+      <h1 className='text-[26px]'>Registered ADEXer</h1>
       <Table>
         <TableHeader>
           <TableRow>
@@ -57,9 +64,23 @@ export default function SubscriptorList({ subscribers }) {
               <TableCell>{subscriber.email}</TableCell>
               <TableCell>{subscriber.mobile_number}</TableCell>
               <TableCell>
-                <Button onClick={() => router.push(`/market-place/buyer-details?id=${subscriber.id}`)} size='sm' className='ml-auto'>
-                  Details
-                </Button>
+                <div className='flex gap-2'>
+                  <div>
+                    <Button onClick={() => router.push(`/market-place/buyer-details?id=${subscriber.id}`)} size='sm' className='ml-auto'>
+                      Details
+                    </Button>
+                  </div>
+                  {
+                    subscriber.evidence && (
+                      <div>
+                        <Button onClick={() => handleCopy(subscriber.evidence)} size='sm' className='ml-auto' variant='secondary'>
+                          <Copy size={16} className='mr-2' />
+                          Post Link
+                        </Button>
+                      </div>
+                    )
+                  }
+                </div>
               </TableCell>
             </TableRow>
           ))}
