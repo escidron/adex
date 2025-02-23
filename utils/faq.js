@@ -4,7 +4,7 @@ export const faqArray = [
   {
     id: 1,
     question: "What is required to create a listing?",
-    answer: "You must create a profile and complete all the required fields. Additionally, at least one Payout method is required before your listing(s) can be viewed and booked from the Marketplace.",
+    answer: "You must create a profile and complete all the required fields. Additionally, at least one Payout method is required before your listing(s) can be  booked from the Marketplace.",
   },
   {
     id: 2,
