@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useRouter } from "next/navigation";
 import { Divider } from '@mui/material';
-import { Copy } from 'lucide-react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export default function SubscriptorList({ subscribers }) {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function SubscriptorList({ subscribers }) {
     ]);
 
     const csvContent = [
-      headers.join(';'), 
+      headers.join(';'),
       ...rows.map(row => row.join(';')),
     ].join('\n');
 
@@ -39,13 +39,11 @@ export default function SubscriptorList({ subscribers }) {
     URL.revokeObjectURL(url);
   };
 
-  const handleCopy = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-    }).catch(err => {
-      console.error("Failed to copy:", err);
-    });
-  }
+  const handleOpenEvidence = (text) => {
+    window.open(text, '_blank');
+  };
   
+
   return (
     <div>
       <h1 className='text-[26px]'>Registered ADEXer</h1>
@@ -73,8 +71,8 @@ export default function SubscriptorList({ subscribers }) {
                   {
                     subscriber.evidence && (
                       <div>
-                        <Button onClick={() => handleCopy(subscriber.evidence)} size='sm' className='ml-auto' variant='secondary'>
-                          <Copy size={16} className='mr-2' />
+                        <Button onClick={() => handleOpenEvidence(subscriber.evidence)} size='sm' className='ml-auto' variant='secondary'>
+                          <OpenInNewIcon  sx={{ marginRight: '4px',fontSize: '16px' }}/>
                           Post Link
                         </Button>
                       </div>
