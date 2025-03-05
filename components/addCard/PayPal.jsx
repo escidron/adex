@@ -57,7 +57,7 @@ export default function PayPalButton({ subcriber, open, setOpen }) {
   useEffect(() => {
     // Load PayPal SDK script
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_CLIENT_ID}&buyer-country=US&currency=USD&components=buttons&enable-funding=card&disable-funding=credit,venmo`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_CLIENT_ID}&currency=USD&components=buttons&enable-funding=card&disable-funding=credit,venmo`;
     script.async = true;
     script.onload = () => {
       if (window.paypal && checkout == true) {
