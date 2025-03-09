@@ -250,9 +250,10 @@ export default function ListingDetails({ sharedId }) {
                                                 <div className={`w-[350px] h-fit flex flex-col shadow-lg rounded-lg border p-4 `}>
                                                     {
                                                         subscriptionId ? (
-                                                            <div className="flex flex-col gap-1  p-2 rounded-md">
+                                                            <div className="flex flex-col gap-2  p-2 rounded-md">
                                                                 <h1 className="text-[18px] font-bold">You have successfully subscribed</h1>
                                                                 <p className="text-[15px]">When you&apos;re ready to submit your post link, you can find this campaign in <span className="font-bold cursor-pointer underline" onClick={() => router.push('/my-profile?tab=5&sub-tab=1')}>My Bookings</span>.</p>
+                                                                <p className="text-[15px]">Set up your <span className="font-bold cursor-pointer underline" onClick={() => router.push('/my-profile?tab=4')}>Payout</span> method to receive payments.</p>
                                                             </div>
                                                         ) : (
                                                             <>
@@ -263,7 +264,7 @@ export default function ListingDetails({ sharedId }) {
                                                                             setHasCompanySelected(false)
                                                                         }}>
                                                                             <DialogTrigger className='w-full mt-2 h-10 px-4 py-2 bg-black text-primary-foreground hover:bg-black/90 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
-                                                                                Register on campaign
+                                                                                Register for this Campaign
                                                                             </DialogTrigger>
                                                                             <DialogContent className='w-[90%] max-w-[550px]'>
                                                                                 {
@@ -316,7 +317,7 @@ export default function ListingDetails({ sharedId }) {
                                                                         >
                                                                             {isPending && <Loader2 size={15} className="animate-spin mr-2" />}
                                                                             <p>
-                                                                                Register on campaign
+                                                                                Register for this Campaign
                                                                             </p>
                                                                         </Button>
                                                                     )
