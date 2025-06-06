@@ -153,7 +153,7 @@ export default function NavBar() {
                 </div>
                 <Link href="/how-it-works" className='hover:text-[#FCD33B]  '>How It Works</Link>
                 <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
-                <Link href="/event-market" className='hover:text-[#FCD33B]'>Event Market</Link>
+                <Link href="/campaign" className='hover:text-[#FCD33B]'>Campaign</Link>
             </section>
             {user.isLogged
                 ? (
@@ -294,9 +294,9 @@ export default function NavBar() {
                             <Mail size={20} />
                             Contact Us
                         </Link>
-                        <Link href="/event-market" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
+                        <Link href="/campaign" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
                             <Mail size={20} />
-                            Event Market
+                            Campaign
                         </Link>
                         <Link onClick={logout} href="/" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <LogOut size={20} />

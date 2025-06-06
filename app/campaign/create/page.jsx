@@ -1,14 +1,18 @@
 "use client"
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextField from '@/components/inputs/TextField';
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Image from 'next/image';
 
 export default function CreateCampaignPage() {
     const router = useRouter();
+    const [previewImage, setPreviewImage] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
 
     const validate = values => {
         const errors = {};
@@ -38,6 +42,20 @@ export default function CreateCampaignPage() {
         return errors;
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+                formik.setFieldValue('image', reader.result);
+                console.log('Image loaded as base64:', reader.result.substring(0, 50) + '...');
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -47,29 +65,44 @@ export default function CreateCampaignPage() {
             endDate: "",
             budget: "",
             rewardAmount: "",
+            image: null,
         },
         validate,
         onSubmit: values => {
+            const campaignData = {
+                name: values.name,
+                description: values.description,
+                max_participants: parseInt(values.maxParticipants),
+                start_date: values.startDate,
+                end_date: values.endDate,
+                budget: parseInt(values.budget),
+                reward_amount: parseInt(values.rewardAmount),
+            };
+
+            // 이미지가 있을 경우 추가 - Base64 형식으로 전송
+            if (values.image) {
+                console.log('Sending image as Base64');
+                campaignData.images = [
+                    {
+                        file: true,
+                        data_url: values.image
+                    }
+                ];
+            }
+
             axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns`,
-                {
-                    name: values.name,
-                    description: values.description,
-                    max_participants: parseInt(values.maxParticipants),
-                    start_date: values.startDate,
-                    end_date: values.endDate,
-                    budget: parseInt(values.budget),
-                    reward_amount: parseInt(values.rewardAmount),
-                }, {
-                    withCredentials: true,
-                })
-                .then(function (response) {
-                    toast.success('Campaign created successfully!')
-                    router.push('/event-market')
-                })
-                .catch(function (error) {
-                    console.log('error', error)
-                    toast.error('Failed to create campaign. Please try again.')
-                });
+                campaignData,
+                { withCredentials: true }
+            )
+            .then(function (response) {
+                console.log('Campaign creation response:', response.data);
+                toast.success('Campaign created successfully!')
+                router.push('/campaign')
+            })
+            .catch(function (error) {
+                console.log('error', error)
+                toast.error('Failed to create campaign. Please try again.')
+            });
         },
     });
 
@@ -96,6 +129,47 @@ export default function CreateCampaignPage() {
                             {formik.touched.name && formik.errors.name ? 
                                 <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div> 
                             : null}
+                        </div>
+                    </div>
+
+                    {/* Campaign Image */}
+                    <div>
+                        <h2 className="text-xl font-semibold mb-4">Campaign Image</h2>
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+                            {previewImage ? (
+                                <div className="relative h-48 w-full mb-4">
+                                    <Image
+                                        src={previewImage}
+                                        alt="Campaign preview"
+                                        fill
+                                        className="object-cover rounded-lg"
+                                    />
+                                </div>
+                            ) : (
+                                <div className="bg-gray-100 p-8 rounded-lg mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            )}
+                            <label className="flex flex-col items-center justify-center">
+                                <span className="text-blue-500 font-semibold mb-2">Upload Image</span>
+                                <span className="text-gray-500 text-sm mb-4">Click to browse or drag and drop</span>
+                                <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
+                                    onChange={handleImageChange}
+                                />
+                                <Button 
+                                    type="button" 
+                                    variant="outline" 
+                                    className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
+                                    onClick={() => document.querySelector('input[type="file"]').click()}
+                                >
+                                    Select Image
+                                </Button>
+                            </label>
                         </div>
                     </div>
 

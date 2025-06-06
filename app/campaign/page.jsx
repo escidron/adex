@@ -23,6 +23,7 @@ export default function EventMarketPage() {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns`,
                 { withCredentials: true }
             )
+            console.log('Campaigns response with image data:', response.data.data.map(c => ({id: c.id, name: c.name, images: c.images})))
             setCampaigns(response.data.data)
             setIsLoading(false)
         } catch (error) {
@@ -32,15 +33,28 @@ export default function EventMarketPage() {
     }
 
     const handleEnterClick = (campaignId) => {
-        router.push(`/event-market/${campaignId}`)
+        router.push(`/campaign/${campaignId}`)
     }
 
     const handleValidateClick = (campaignId) => {
-        router.push(`/event-market/admin/${campaignId}`)
+        router.push(`/campaign/admin/${campaignId}`)
     }
 
     const handleAddClick = () => {
-        router.push('/event-market/create')
+        router.push('/campaign/create')
+    }
+
+    const handleDeleteClick = async (campaignId) => {
+        try {
+            await axios.delete(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${campaignId}`,
+                { withCredentials: true }
+            )
+            toast.success('Campaign deleted successfully')
+            fetchCampaigns() // Refresh the list
+        } catch (error) {
+            toast.error('Failed to delete campaign')
+        }
     }
 
     if (isLoading) {
@@ -73,33 +87,51 @@ export default function EventMarketPage() {
                         {campaigns.map((campaign) => (
                             <div key={campaign.id} className="bg-white rounded-lg shadow-image overflow-hidden">
                                 <div className="relative h-48">
+                                    
                                     <Image
-                                        src={campaign.image || "/placeholder.jpg"}
+                                        src={
+                                            campaign.image_gallery ? 
+                                                `${process.env.NEXT_PUBLIC_SERVER_IP}/images/${campaign.image_gallery}` : 
+                                                "/no-image.png"
+                                        }
                                         alt={campaign.name}
                                         fill
                                         className="object-cover"
+                                        onError={(e) => {
+                                            console.error(`Failed to load image for campaign ${campaign.id}:`, campaign.image_gallery);
+                                            e.target.src = "/no-image.png";
+                                        }}
                                     />
                                 </div>
                                 <div className="p-6">
                                     <h3 className="text-xl font-semibold mb-4 line-clamp-1">{campaign.name}</h3>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-[#FCD33B] font-semibold">
-                                            {campaign.participant_count}/{campaign.max_participants} joined
-                                        </span>
-                                        <div className="flex gap-2">
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-[#FCD33B] font-semibold">
+                                                {campaign.participant_count}/{campaign.max_participants} joined
+                                            </span>
+                                        </div>
+                                        <div className="flex gap-3">
                                             <Button
                                                 onClick={() => handleEnterClick(campaign.id)}
                                                 variant="secondary"
-                                                className="bg-black text-white hover:bg-black/90"
+                                                className="bg-black text-white hover:bg-black/90 flex-1"
                                             >
                                                 enter
                                             </Button>
                                             <Button
                                                 onClick={() => handleValidateClick(campaign.id)}
                                                 variant="outline"
-                                                className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
+                                                className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10 flex-1"
                                             >
                                                 validate
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleDeleteClick(campaign.id)}
+                                                variant="outline"
+                                                className="border-red-500 text-red-500 hover:bg-red-50 flex-1"
+                                            >
+                                                Delete
                                             </Button>
                                         </div>
                                     </div>
