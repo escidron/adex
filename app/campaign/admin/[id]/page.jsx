@@ -1,13 +1,10 @@
 "use client"
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast"
-import { Button } from '@/components/ui/button'
 import { CheckCircle, Clock } from 'lucide-react'
 
-export default function CampaignAdminPage() {
-    const params = useParams()
+export default function CampaignAdminPage({params}) {
     const [isLoading, setIsLoading] = useState(true)
     const [participants, setParticipants] = useState([])
 
