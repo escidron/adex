@@ -1,14 +1,13 @@
 "use client"
 import { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast"
 import { UserContext } from '@/app/layout'
 import ReactMarkdown from 'react-markdown'
 
-export default function EventDetailPage() {
-    const params = useParams()
+export default function EventDetailPage({ params }) {
     const router = useRouter()
     const [user, setUser] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)
