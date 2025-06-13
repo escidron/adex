@@ -110,8 +110,8 @@ export default function CreateCampaignPage() {
         <div className='flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white'>
             <div><Toaster /></div>
             <form className="flex flex-col w-[90%] max-w-[800px] md:w-[800px] bg-white rounded-lg shadow-lg p-8" onSubmit={formik.handleSubmit}>
-                <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2'>Create Campaign</h1>
-                <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
+            <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
+            <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
                 
                 <div className="space-y-8">
                     {/* Basic Info */}
