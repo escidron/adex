@@ -118,9 +118,9 @@ export default function EventDetailPage({ params }) {
                                     {campaign.name}
                                 </h1>
                                 <div className="flex items-center text-white/80 text-sm">
-                                    <span className="bg-[#FCD33B] text-black px-3 py-1 rounded-full mr-3">
-                                        {campaign.participant_count}/{campaign.max_participants} joined
-                                    </span>
+                                <span className="bg-[#FCD33B] text-black px-3 py-1 rounded-full mr-3">
+                                {(campaign.participant_count ?? 0)}/{campaign.max_participants} joined
+                                </span>
                                     <span>
                                         {new Date(campaign.start_date).toLocaleDateString('en-US', {
                                             year: 'numeric',

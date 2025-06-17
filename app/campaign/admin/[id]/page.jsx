@@ -20,11 +20,9 @@ export default function CampaignAdminPage({params}) {
             )
             console.log('Participants raw data:', response.data.data)
             
-            // 삭제되지 않은 항목만 필터링 (소프트 딜리트 처리)
             const activeParticipants = response.data.data.filter(p => p.deleted_at === null)
             console.log('Active participants:', activeParticipants)
             
-            // 중복 제거 로직
             const uniqueParticipants = Array.from(new Set(activeParticipants.map(p => p.id)))
                 .map(id => activeParticipants.find(p => p.id === id))
             
@@ -87,17 +85,14 @@ export default function CampaignAdminPage({params}) {
     const handleRemoveClick = async (submissionId) => {
         console.log('Remove click - Submission ID:', submissionId)
         try {
-            // API 호출
             const response = await axios.delete(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}/submissions/${submissionId}`,
                 { withCredentials: true }
             )
             console.log('Remove response:', response.data)
             
-            // 성공 메시지 표시
             toast.success('Participant removed successfully')
             
-            // 화면에서 해당 참가자 제거 (백엔드 호출 없이)
             setParticipants(prevParticipants => 
                 prevParticipants.filter(p => p.id !== submissionId)
             )
