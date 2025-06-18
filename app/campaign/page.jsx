@@ -36,6 +36,13 @@ export default function EventMarketPage() {
     }
 
     const handleEnterClick = (campaignId) => {
+        if (!user || !user.isLogged) {
+            toast.error("Login is required to participate in a campaign.", {
+                duration: 3000,
+                style: { fontWeight: 500 }
+            });
+            return;
+        }
         router.push(`/campaign/${campaignId}`)
     }
 
@@ -79,13 +86,16 @@ export default function EventMarketPage() {
                   <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
                     Discover and participate in exclusive ADEX events
                   </h1>
-                  <Button
-                    onClick={handleAddClick}
-                    variant="secondary"
-                    className="bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black"
-                  >
-                    + Add New Campaign
-                  </Button>
+                  {/* Only show 'Add New Campaign' button if the user is a business user */}
+                  {user && user.userType === 1 && (
+                    <Button
+                      onClick={handleAddClick}
+                      variant="secondary"
+                      className="bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black"
+                    >
+                      + Add New Campaign
+                    </Button>
+                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {campaigns.map((campaign) => (
@@ -113,6 +123,9 @@ export default function EventMarketPage() {
                             <span className="text-[#FCD33B] font-semibold">
                               {campaign.participant_count}/{campaign.max_participants} joined
                             </span>
+                            <span className="text-black font-semibold">
+                              Reward: ${Number(campaign.reward_amount).toLocaleString()}
+                            </span>
                           </div>
                           <div className="flex gap-3">
                             <Button
@@ -129,16 +142,19 @@ export default function EventMarketPage() {
                             >
                               validate
                             </Button>
-                            <Button
-                              onClick={() => {
-                                setSelectedCampaignId(campaign.id);
-                                setShowDeleteModal(true);
-                              }}
-                              variant="outline"
-                              className="border-red-500 text-red-500 hover:bg-red-50 flex-1"
-                            >
-                              Delete
-                            </Button>
+                            {/* Only show Delete button if the user is a business user and the creator of the campaign */}
+                            {user && user.userType === 1 && campaign.created_by === user.userId && (
+                              <Button
+                                onClick={() => {
+                                  setSelectedCampaignId(campaign.id);
+                                  setShowDeleteModal(true);
+                                }}
+                                variant="outline"
+                                className="border-red-500 text-red-500 hover:bg-red-50 flex-1"
+                              >
+                                Delete
+                              </Button>
+                            )}
                           </div>
                         </div>
                       </div>
