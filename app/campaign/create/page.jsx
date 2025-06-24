@@ -16,15 +16,6 @@ export default function CreateCampaignPage() {
     const [imageFile, setImageFile] = useState(null);
     const [user, setUser] = useContext(UserContext);
 
-    // Only allow business users to access this page
-    if (!user || user.userType !== 1) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
-                <h1 className="text-2xl font-bold text-red-500">Only business users can create campaigns.</h1>
-            </div>
-        );
-    }
-
     const validate = values => {
         const errors = {};
         
@@ -117,6 +108,15 @@ export default function CreateCampaignPage() {
         },
     });
 
+        // Only allow business users to access this page
+    if (!user || user.userType !== 1) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
+                <h1 className="text-2xl font-bold text-red-500">Only business users can create campaigns.</h1>
+            </div>
+        );
+    }
+    
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white'>
             <div><Toaster /></div>
