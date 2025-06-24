@@ -211,6 +211,10 @@ export default function EventDetailPage({ params }) {
                     </div>
                 </div>
             </div>
+            {/* Only show Delete button if the user is a business user and the creator of the campaign */}
+            {user && user.userType === 1 && campaign.created_by === user.userId && (
+                <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded-lg ml-4">Delete</button>
+            )}
         </div>
     )
 } 

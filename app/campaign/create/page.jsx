@@ -1,6 +1,6 @@
 "use client"
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import TextField from '@/components/inputs/TextField';
 import toast, { Toaster } from "react-hot-toast";
@@ -8,11 +8,22 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
+import { UserContext } from '@/app/layout';
 
 export default function CreateCampaignPage() {
     const router = useRouter();
     const [previewImage, setPreviewImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
+    const [user, setUser] = useContext(UserContext);
+
+    // Only allow business users to access this page
+    if (!user || user.userType !== 1) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
+                <h1 className="text-2xl font-bold text-red-500">Only business users can create campaigns.</h1>
+            </div>
+        );
+    }
 
     const validate = values => {
         const errors = {};
