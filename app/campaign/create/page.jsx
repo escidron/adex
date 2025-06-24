@@ -18,7 +18,7 @@ export default function CreateCampaignPage() {
 
     const validate = values => {
         const errors = {};
-        
+
         if (!values.name) {
             errors.name = 'Please enter campaign name';
         }
@@ -40,7 +40,7 @@ export default function CreateCampaignPage() {
         if (!values.rewardAmount) {
             errors.rewardAmount = 'Please enter reward amount';
         }
-        
+
         return errors;
     };
 
@@ -81,7 +81,6 @@ export default function CreateCampaignPage() {
                 reward_amount: parseInt(values.rewardAmount),
             };
 
-            // 이미지가 있을 경우 추가 - Base64 형식으로 전송
             if (values.image) {
                 console.log('Sending image as Base64');
                 campaignData.images = [
@@ -96,19 +95,19 @@ export default function CreateCampaignPage() {
                 campaignData,
                 { withCredentials: true }
             )
-            .then(function (response) {
-                console.log('Campaign creation response:', response.data);
-                toast.success('Campaign created successfully!')
-                router.push('/campaign')
-            })
-            .catch(function (error) {
-                console.log('error', error)
-                toast.error('Failed to create campaign. Please try again.')
-            });
+                .then(function (response) {
+                    console.log('Campaign creation response:', response.data);
+                    toast.success('Campaign created successfully!')
+                    router.push('/campaign')
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                    toast.error('Failed to create campaign. Please try again.')
+                });
         },
     });
 
-        // Only allow business users to access this page
+    // Only allow business users to access this page
     if (!user || user.userType !== 1) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
@@ -116,14 +115,14 @@ export default function CreateCampaignPage() {
             </div>
         );
     }
-    
+
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white'>
             <div><Toaster /></div>
             <form className="flex flex-col w-[90%] max-w-[800px] md:w-[800px] bg-white rounded-lg shadow-lg p-8" onSubmit={formik.handleSubmit}>
-            <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
-            <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
-                
+                <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
+                <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
+
                 <div className="space-y-8">
                     {/* Basic Info */}
                     <div>
@@ -137,9 +136,9 @@ export default function CreateCampaignPage() {
                                 value={formik.values.name}
                                 errors={formik.errors.name}
                             />
-                            {formik.touched.name && formik.errors.name ? 
-                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div> 
-                            : null}
+                            {formik.touched.name && formik.errors.name ?
+                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div>
+                                : null}
                         </div>
                     </div>
 
@@ -166,15 +165,15 @@ export default function CreateCampaignPage() {
                             <label className="flex flex-col items-center justify-center">
                                 <span className="text-blue-500 font-semibold mb-2">Upload Image</span>
                                 <span className="text-gray-500 text-sm mb-4">Click to browse or drag and drop</span>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    className="hidden" 
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
                                     onChange={handleImageChange}
                                 />
-                                <Button 
-                                    type="button" 
-                                    variant="outline" 
+                                <Button
+                                    type="button"
+                                    variant="outline"
                                     className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
                                     onClick={() => document.querySelector('input[type="file"]').click()}
                                 >
@@ -199,9 +198,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.startDate}
                                     className="w-full"
                                 />
-                                {formik.touched.startDate && formik.errors.startDate ? 
+                                {formik.touched.startDate && formik.errors.startDate ?
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.startDate}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             <div className="relative">
@@ -215,9 +214,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.endDate}
                                     className="w-full"
                                 />
-                                {formik.touched.endDate && formik.errors.endDate ? 
+                                {formik.touched.endDate && formik.errors.endDate ?
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.endDate}</div>
-                                : null}
+                                    : null}
                             </div>
                         </div>
                     </div>
@@ -236,9 +235,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.budget}
                                     errors={formik.errors.budget}
                                 />
-                                {formik.touched.budget && formik.errors.budget ? 
+                                {formik.touched.budget && formik.errors.budget ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.budget}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             <div className="relative">
@@ -251,9 +250,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.rewardAmount}
                                     errors={formik.errors.rewardAmount}
                                 />
-                                {formik.touched.rewardAmount && formik.errors.rewardAmount ? 
+                                {formik.touched.rewardAmount && formik.errors.rewardAmount ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.rewardAmount}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             <div className="relative">
@@ -266,9 +265,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.maxParticipants}
                                     errors={formik.errors.maxParticipants}
                                 />
-                                {formik.touched.maxParticipants && formik.errors.maxParticipants ? 
+                                {formik.touched.maxParticipants && formik.errors.maxParticipants ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.maxParticipants}</div>
-                                : null}
+                                    : null}
                             </div>
                         </div>
                     </div>
@@ -286,23 +285,23 @@ export default function CreateCampaignPage() {
                                 value={formik.values.description}
                                 className="w-full border p-3 rounded-lg outline-none h-[200px] resize-none"
                             />
-                            {formik.touched.description && formik.errors.description ? 
+                            {formik.touched.description && formik.errors.description ?
                                 <div className="absolute top-[210px] text-red-600 text-sm">{formik.errors.description}</div>
-                            : null}
+                                : null}
                         </div>
                     </div>
                 </div>
 
                 <div className="flex gap-4 w-full mt-8">
-                    <Button 
-                        type='submit' 
+                    <Button
+                        type='submit'
                         variant='secondary'
                         className='flex-1 text-lg font-[600] bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black'
                     >
                         Create Campaign
                     </Button>
-                    <Button 
-                        type='button' 
+                    <Button
+                        type='button'
                         variant='outline'
                         className='flex-1 text-lg font-[600] border-[#FCD33B] text-black hover:bg-[#FCD33B]/10'
                         onClick={() => router.back()}
