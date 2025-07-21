@@ -6,6 +6,7 @@ import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast"
 import { UserContext } from '@/app/layout'
 import ReactMarkdown from 'react-markdown'
+import validator from 'validator';
 
 export default function EventDetailPage({ params }) {
     const router = useRouter()
@@ -13,6 +14,7 @@ export default function EventDetailPage({ params }) {
     const [isLoading, setIsLoading] = useState(true)
     const [campaign, setCampaign] = useState(null)
     const [snsUrl, setSnsUrl] = useState('')
+    const [snsUrlError, setSnsUrlError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     useEffect(() => {
@@ -43,12 +45,15 @@ export default function EventDetailPage({ params }) {
             return
         }
 
+        // URL format validation using validator.js
         if (!snsUrl) {
-            toast.error('Please enter your Instagram post URL', {
-                duration: 3000,
-                style: { fontWeight: 500 }
-            })
-            return
+            setSnsUrlError('SNS post URL is required.');
+            return;
+        } else if (!validator.isURL(snsUrl, { require_protocol: true })) {
+            setSnsUrlError('Please enter a valid SNS post URL.');
+            return;
+        } else {
+            setSnsUrlError('');
         }
 
         setIsSubmitting(true)
@@ -190,15 +195,18 @@ export default function EventDetailPage({ params }) {
                             <div className="pt-6 bg-white rounded-lg shadow-sm p-6">
                                 <h3 className="text-xl font-semibold mb-4">Submit Your Entry</h3>
                                 <p className="text-gray-600 mb-4">
-                                    Share your Instagram post URL below to participate in this campaign. Your submission will be reviewed by our team.
+                                    Share your SNS post URL below to participate in this campaign. Your submission will be reviewed by our team.
                                 </p>
                                 <input 
                                     type="text" 
                                     value={snsUrl}
                                     onChange={(e) => setSnsUrl(e.target.value)}
-                                    placeholder="Enter your Instagram post URL"
+                                    placeholder="Enter your SNS post URL"
                                     className="w-full p-3 border border-gray-300 rounded-lg mb-4"
                                 />
+                                {snsUrlError && (
+                                    <div className="text-red-600 text-sm mb-2">{snsUrlError}</div>
+                                )}
                                 <button 
                                     onClick={handleSubmit}
                                     disabled={isSubmitting}

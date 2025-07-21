@@ -12,6 +12,7 @@ export default function EventMarketPage() {
     const [user, setUser] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)
     const [campaigns, setCampaigns] = useState([])
+    const [showPast, setShowPast] = useState(false); // Toggle for past campaigns
 
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [selectedCampaignId, setSelectedCampaignId] = useState(null)
@@ -97,69 +98,90 @@ export default function EventMarketPage() {
                     </Button>
                   )}
                 </div>
+                {/* Filter toggle for past campaigns */}
+                <div className="flex items-center mb-6">
+                  <input
+                    id="showPast"
+                    type="checkbox"
+                    checked={showPast}
+                    onChange={() => setShowPast(!showPast)}
+                    className="mr-2"
+                  />
+                  <label htmlFor="showPast" className="text-gray-700 text-md select-none cursor-pointer">
+                    Show Past Campaigns
+                  </label>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {campaigns.map((campaign) => (
-                    <div key={campaign.id} className="bg-white rounded-lg shadow-image overflow-hidden">
-                      <div className="relative h-48">
-                        <Image
-                          src={
-                            campaign.image_gallery ?
-                              `${process.env.NEXT_PUBLIC_SERVER_IP}/images/${campaign.image_gallery}` :
-                              "/no-image.png"
-                          }
-                          alt={campaign.name}
-                          fill
-                          className="object-cover"
-                          onError={(e) => {
-                            console.error(`Failed to load image for campaign ${campaign.id}:`, campaign.image_gallery);
-                            e.target.src = "/no-image.png";
-                          }}
-                        />
-                      </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold mb-4 line-clamp-1">{campaign.name}</h3>
-                        <div className="flex flex-col gap-4">
-                          <div className="flex justify-between items-center">
-                            <span className="text-[#FCD33B] font-semibold">
-                              {campaign.participant_count}/{campaign.max_participants} joined
-                            </span>
-                            <span className="text-black font-semibold">
-                              Reward: ${Number(campaign.reward_amount).toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="flex gap-3">
-                            <Button
-                              onClick={() => handleEnterClick(campaign.id)}
-                              variant="secondary"
-                              className="bg-black text-white hover:bg-black/90 flex-1"
-                            >
-                              enter
-                            </Button>
-                            <Button
-                              onClick={() => handleValidateClick(campaign.id)}
-                              variant="outline"
-                              className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10 flex-1"
-                            >
-                              validate
-                            </Button>
-                            {/* Only show Delete button if the user is a business user and the creator of the campaign */}
-                            {user && user.userType === 1 && campaign.created_by === user.userId && (
+                  {campaigns
+                    .filter(campaign => {
+                      if (showPast) return true;
+                      // Hide campaigns whose end_date is before today
+                      const today = new Date();
+                      const endDate = new Date(campaign.end_date);
+                      return endDate >= new Date(today.toDateString());
+                    })
+                    .map((campaign) => (
+                      <div key={campaign.id} className="bg-white rounded-lg shadow-image overflow-hidden">
+                        <div className="relative h-48">
+                          <Image
+                            src={
+                              campaign.image_gallery ?
+                                `${process.env.NEXT_PUBLIC_SERVER_IP}/images/${campaign.image_gallery}` :
+                                "/no-image.png"
+                            }
+                            alt={campaign.name}
+                            fill
+                            className="object-cover"
+                            onError={(e) => {
+                              console.error(`Failed to load image for campaign ${campaign.id}:`, campaign.image_gallery);
+                              e.target.src = "/no-image.png";
+                            }}
+                          />
+                        </div>
+                        <div className="p-6">
+                          <h3 className="text-xl font-semibold mb-4 line-clamp-1">{campaign.name}</h3>
+                          <div className="flex flex-col gap-4">
+                            <div className="flex justify-between items-center">
+                              <span className="text-[#FCD33B] font-semibold">
+                                {campaign.participant_count}/{campaign.max_participants} joined
+                              </span>
+                              <span className="text-black font-semibold">
+                                Reward: ${Number(campaign.reward_amount).toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="flex gap-3">
                               <Button
-                                onClick={() => {
-                                  setSelectedCampaignId(campaign.id);
-                                  setShowDeleteModal(true);
-                                }}
-                                variant="outline"
-                                className="border-red-500 text-red-500 hover:bg-red-50 flex-1"
+                                onClick={() => handleEnterClick(campaign.id)}
+                                variant="secondary"
+                                className="bg-black text-white hover:bg-black/90 flex-1"
                               >
-                                Delete
+                                enter
                               </Button>
-                            )}
+                              <Button
+                                onClick={() => handleValidateClick(campaign.id)}
+                                variant="outline"
+                                className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10 flex-1"
+                              >
+                                validate
+                              </Button>
+                              {/* Only show Delete button if the user is a business user and the creator of the campaign */}
+                              {user && user.userType === 1 && campaign.created_by === user.userId && (
+                                <Button
+                                  onClick={() => {
+                                    setSelectedCampaignId(campaign.id);
+                                    setShowDeleteModal(true);
+                                  }}
+                                  variant="outline"
+                                  className="border-red-500 text-red-500 hover:bg-red-50 flex-1"
+                                >
+                                  Delete
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>
