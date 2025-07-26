@@ -17,11 +17,17 @@ export default function CreateCampaignPage() {
     const [imageFile, setImageFile] = useState(null);
     const [user, setUser] = useContext(UserContext);
 
+<<<<<<< HEAD
     // Validation function must be declared before useFormik
     const validate = values => {
         const errors = {};
 
         // 3. Campaign name is required
+=======
+    const validate = values => {
+        const errors = {};
+
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
         if (!values.name) {
             errors.name = 'Campaign name is required.';
         }
@@ -45,6 +51,7 @@ export default function CreateCampaignPage() {
             errors.rewardAmount = 'Reward amount must be greater than 0.';
         }
 
+<<<<<<< HEAD
         // 1. Start date cannot be in the past
         if (!values.startDate) {
             errors.startDate = 'Start date is required.';
@@ -59,6 +66,8 @@ export default function CreateCampaignPage() {
             errors.endDate = 'End date must be after start date.';
         }
 
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
         return errors;
     };
 
@@ -87,7 +96,10 @@ export default function CreateCampaignPage() {
                 budget: parseInt(values.maxParticipants) * parseInt(values.rewardAmount),
             };
 
+<<<<<<< HEAD
             // Add image if present
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
             if (values.image) {
                 campaignData.images = [
                     {
@@ -101,6 +113,7 @@ export default function CreateCampaignPage() {
                 campaignData,
                 { withCredentials: true }
             )
+<<<<<<< HEAD
             .then(function (response) {
                 toast.success('Campaign created successfully!')
                 // Redirect to invoice page after creation
@@ -127,6 +140,21 @@ export default function CreateCampaignPage() {
     };
 
     // Conditional return must come after all hooks
+=======
+                .then(function (response) {
+                    console.log('Campaign creation response:', response.data);
+                    toast.success('Campaign created successfully!')
+                    router.push('/campaign')
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                    toast.error('Failed to create campaign. Please try again.')
+                });
+        },
+    });
+
+    // Only allow business users to access this page
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
     if (!user || user.userType !== 1) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
@@ -135,6 +163,7 @@ export default function CreateCampaignPage() {
         );
     }
 
+<<<<<<< HEAD
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -149,13 +178,15 @@ export default function CreateCampaignPage() {
         }
     };
 
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white'>
             <div><Toaster /></div>
             <form className="flex flex-col w-[90%] max-w-[800px] md:w-[800px] bg-white rounded-lg shadow-lg p-8" onSubmit={formik.handleSubmit}>
-            <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
-            <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
-                
+                <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
+                <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
+
                 <div className="space-y-8">
                     {/* Basic Info */}
                     <div>
@@ -169,9 +200,9 @@ export default function CreateCampaignPage() {
                                 value={formik.values.name}
                                 errors={formik.errors.name}
                             />
-                            {formik.touched.name && formik.errors.name ? 
-                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div> 
-                            : null}
+                            {formik.touched.name && formik.errors.name ?
+                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div>
+                                : null}
                         </div>
                     </div>
 
@@ -198,15 +229,15 @@ export default function CreateCampaignPage() {
                             <label className="flex flex-col items-center justify-center">
                                 <span className="text-blue-500 font-semibold mb-2">Upload Image</span>
                                 <span className="text-gray-500 text-sm mb-4">Click to browse or drag and drop</span>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    className="hidden" 
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
                                     onChange={handleImageChange}
                                 />
-                                <Button 
-                                    type="button" 
-                                    variant="outline" 
+                                <Button
+                                    type="button"
+                                    variant="outline"
                                     className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
                                     onClick={() => document.querySelector('input[type="file"]').click()}
                                 >
@@ -231,9 +262,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.startDate}
                                     className="w-full"
                                 />
-                                {formik.touched.startDate && formik.errors.startDate ? 
+                                {formik.touched.startDate && formik.errors.startDate ?
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.startDate}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             <div className="relative">
@@ -247,9 +278,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.endDate}
                                     className="w-full"
                                 />
-                                {formik.touched.endDate && formik.errors.endDate ? 
+                                {formik.touched.endDate && formik.errors.endDate ?
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.endDate}</div>
-                                : null}
+                                    : null}
                             </div>
                         </div>
                     </div>
@@ -258,7 +289,25 @@ export default function CreateCampaignPage() {
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Budgets and Participants</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+<<<<<<< HEAD
                             {/* Reward Amount */}
+=======
+                            <div className="relative">
+                                <TextField
+                                    id='budget'
+                                    label='Total Budget (USD)'
+                                    type="number"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.budget}
+                                    errors={formik.errors.budget}
+                                />
+                                {formik.touched.budget && formik.errors.budget ?
+                                    <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.budget}</div>
+                                    : null}
+                            </div>
+
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
                             <div className="relative">
                                 <TextField
                                     id='rewardAmount'
@@ -269,9 +318,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.rewardAmount}
                                     errors={formik.errors.rewardAmount}
                                 />
-                                {formik.touched.rewardAmount && formik.errors.rewardAmount ? 
+                                {formik.touched.rewardAmount && formik.errors.rewardAmount ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.rewardAmount}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             {/* Maximum Participants */}
@@ -285,9 +334,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.maxParticipants}
                                     errors={formik.errors.maxParticipants}
                                 />
-                                {formik.touched.maxParticipants && formik.errors.maxParticipants ? 
+                                {formik.touched.maxParticipants && formik.errors.maxParticipants ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.maxParticipants}</div>
-                                : null}
+                                    : null}
                             </div>
 
                             {/* Total Budget (display as styled text, not input) */}
@@ -313,23 +362,23 @@ export default function CreateCampaignPage() {
                                 value={formik.values.description}
                                 className="w-full border p-3 rounded-lg outline-none h-[200px] resize-none"
                             />
-                            {formik.touched.description && formik.errors.description ? 
+                            {formik.touched.description && formik.errors.description ?
                                 <div className="absolute top-[210px] text-red-600 text-sm">{formik.errors.description}</div>
-                            : null}
+                                : null}
                         </div>
                     </div>
                 </div>
 
                 <div className="flex gap-4 w-full mt-8">
-                    <Button 
-                        type='submit' 
+                    <Button
+                        type='submit'
                         variant='secondary'
                         className='flex-1 text-lg font-[600] bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black'
                     >
                         Create Campaign
                     </Button>
-                    <Button 
-                        type='button' 
+                    <Button
+                        type='button'
                         variant='outline'
                         className='flex-1 text-lg font-[600] border-[#FCD33B] text-black hover:bg-[#FCD33B]/10'
                         onClick={() => router.back()}
