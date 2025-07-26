@@ -136,11 +136,11 @@ export default function NavBar() {
 
             <div><Toaster /></div>
             {/* web screen */}
-            <section className='hidden md:flex  md:justify-between md:items-center w-[700px] lg:w-[900px] xl:max-w-[50%]'>
+            <section className='hidden md:flex  md:justify-between md:items-center w-[800px] lg:w-[1000px] xl:max-w-[60%]'>
                 <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
-                <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B]'>Create Listing</Link>
+                <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B] ml-6'>Create Listing</Link>
 
-                <div className='md:h-[50px] md:w-[50px] lg:h-[60px] lg:w-[60px] xl:h-[70px] xl:w-[70px] mx-8'>
+                <div className='md:h-[50px] md:w-[50px] lg:h-[60px] lg:w-[60px] xl:h-[70px] xl:w-[70px] mx-6'>
                     <Link href="/">
                         <Image
                             src={logo}
@@ -151,9 +151,9 @@ export default function NavBar() {
                         />
                     </Link>
                 </div>
-                <Link href="/how-it-works" className='hover:text-[#FCD33B] ml-8'>How It Works</Link>
-                <Link href="/contact-us" className='hover:text-[#FCD33B] ml-8'>Contact Us</Link>
-                <Link href="/campaign" className='hover:text-[#FCD33B] ml-8'>Campaign</Link>
+                <Link href="/how-it-works" className='hover:text-[#FCD33B] ml-6'>How It Works</Link>
+                <Link href="/contact-us" className='hover:text-[#FCD33B] ml-6'>Contact Us</Link>
+                <Link href="/campaign" className='hover:text-[#FCD33B] ml-6'>Campaign</Link>
             </section>
             {user.isLogged
                 ? (

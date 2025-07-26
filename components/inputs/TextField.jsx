@@ -18,7 +18,8 @@ export default function TextField({
   required,
   errors,
   maxLength,
-  autoFocus
+  autoFocus,
+  readOnly
 }) {
   return (
     <div className="w-full relative shadow-sm">
@@ -37,6 +38,9 @@ export default function TextField({
         onInput={formatPrice?onInput:()=>{}}
         value={value}
         maxLength={maxLength ? maxLength : ''}
+        // Add readOnly and disabled props for proper field control
+        readOnly={readOnly}
+        disabled={disabled}
         className={`
           peer
           w-full

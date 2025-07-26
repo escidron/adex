@@ -11,53 +11,67 @@ import Image from 'next/image';
 import { UserContext } from '@/app/layout';
 
 export default function CreateCampaignPage() {
+    // All hooks must be declared at the top level, before any conditional return
     const router = useRouter();
     const [previewImage, setPreviewImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [user, setUser] = useContext(UserContext);
 
+<<<<<<< HEAD
+    // Validation function must be declared before useFormik
     const validate = values => {
         const errors = {};
 
+        // 3. Campaign name is required
+=======
+    const validate = values => {
+        const errors = {};
+
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
         if (!values.name) {
-            errors.name = 'Please enter campaign name';
-        }
-        if (!values.description) {
-            errors.description = 'Please enter campaign description';
-        }
-        if (!values.maxParticipants) {
-            errors.maxParticipants = 'Please enter maximum participants';
-        }
-        if (!values.startDate) {
-            errors.startDate = 'Please select start date';
-        }
-        if (!values.endDate) {
-            errors.endDate = 'Please select end date';
-        }
-        if (!values.budget) {
-            errors.budget = 'Please enter budget';
-        }
-        if (!values.rewardAmount) {
-            errors.rewardAmount = 'Please enter reward amount';
+            errors.name = 'Campaign name is required.';
         }
 
+        // 4. Description is required
+        if (!values.description) {
+            errors.description = 'Description is required.';
+        }
+
+        // 5. Maximum participants must be a positive integer
+        if (!values.maxParticipants) {
+            errors.maxParticipants = 'Maximum participants is required.';
+        } else if (isNaN(values.maxParticipants) || Number(values.maxParticipants) <= 0) {
+            errors.maxParticipants = 'Maximum participants must be greater than 0.';
+        }
+
+        // 6. Reward amount must be a positive number
+        if (!values.rewardAmount) {
+            errors.rewardAmount = 'Reward amount is required.';
+        } else if (isNaN(values.rewardAmount) || Number(values.rewardAmount) <= 0) {
+            errors.rewardAmount = 'Reward amount must be greater than 0.';
+        }
+
+<<<<<<< HEAD
+        // 1. Start date cannot be in the past
+        if (!values.startDate) {
+            errors.startDate = 'Start date is required.';
+        } else if (new Date(values.startDate) < new Date(new Date().toDateString())) {
+            errors.startDate = 'Start date cannot be in the past.';
+        }
+
+        // 2. End date must be after start date
+        if (!values.endDate) {
+            errors.endDate = 'End date is required.';
+        } else if (values.startDate && new Date(values.endDate) <= new Date(values.startDate)) {
+            errors.endDate = 'End date must be after start date.';
+        }
+
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
         return errors;
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImageFile(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result);
-                formik.setFieldValue('image', reader.result);
-                console.log('Image loaded as base64:', reader.result.substring(0, 50) + '...');
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
+    // All hooks must be declared before any conditional return
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -77,12 +91,16 @@ export default function CreateCampaignPage() {
                 max_participants: parseInt(values.maxParticipants),
                 start_date: values.startDate,
                 end_date: values.endDate,
-                budget: parseInt(values.budget),
                 reward_amount: parseInt(values.rewardAmount),
+                // Always include calculated budget in the API request
+                budget: parseInt(values.maxParticipants) * parseInt(values.rewardAmount),
             };
 
+<<<<<<< HEAD
+            // Add image if present
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
             if (values.image) {
-                console.log('Sending image as Base64');
                 campaignData.images = [
                     {
                         file: true,
@@ -95,6 +113,34 @@ export default function CreateCampaignPage() {
                 campaignData,
                 { withCredentials: true }
             )
+<<<<<<< HEAD
+            .then(function (response) {
+                toast.success('Campaign created successfully!')
+                // Redirect to invoice page after creation
+                if (response.data && response.data.data && response.data.data.id) {
+                  router.push(`/campaign/${response.data.data.id}/invoice`);
+                } else {
+                  router.push('/campaign');
+                }
+            })
+            .catch(function (error) {
+                toast.error('Failed to create campaign. Please try again.')
+            });
+        },
+    });
+
+    // Helper function to calculate total budget
+    const calculateBudget = () => {
+        const max = Number(formik.values.maxParticipants);
+        const reward = Number(formik.values.rewardAmount);
+        if (!isNaN(max) && !isNaN(reward) && max > 0 && reward > 0) {
+            return max * reward;
+        }
+        return '';
+    };
+
+    // Conditional return must come after all hooks
+=======
                 .then(function (response) {
                     console.log('Campaign creation response:', response.data);
                     toast.success('Campaign created successfully!')
@@ -108,6 +154,7 @@ export default function CreateCampaignPage() {
     });
 
     // Only allow business users to access this page
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
     if (!user || user.userType !== 1) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white">
@@ -116,6 +163,23 @@ export default function CreateCampaignPage() {
         );
     }
 
+<<<<<<< HEAD
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+                formik.setFieldValue('image', reader.result);
+                console.log('Image loaded as base64:', reader.result.substring(0, 50) + '...');
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+=======
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white'>
             <div><Toaster /></div>
@@ -223,8 +287,11 @@ export default function CreateCampaignPage() {
 
                     {/* Budget & Participants */}
                     <div>
-                        <h2 className="text-xl font-semibold mb-4">Budget & Participants</h2>
+                        <h2 className="text-xl font-semibold mb-4">Budgets and Participants</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+<<<<<<< HEAD
+                            {/* Reward Amount */}
+=======
                             <div className="relative">
                                 <TextField
                                     id='budget'
@@ -240,6 +307,7 @@ export default function CreateCampaignPage() {
                                     : null}
                             </div>
 
+>>>>>>> 58ca055001f54862da259cba8c7292585287a937
                             <div className="relative">
                                 <TextField
                                     id='rewardAmount'
@@ -255,6 +323,7 @@ export default function CreateCampaignPage() {
                                     : null}
                             </div>
 
+                            {/* Maximum Participants */}
                             <div className="relative">
                                 <TextField
                                     id='maxParticipants'
@@ -268,6 +337,14 @@ export default function CreateCampaignPage() {
                                 {formik.touched.maxParticipants && formik.errors.maxParticipants ?
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.maxParticipants}</div>
                                     : null}
+                            </div>
+
+                            {/* Total Budget (display as styled text, not input) */}
+                            <div className="flex flex-col justify-center items-start h-full">
+                                <span className="text-gray-500 text-[15px] mb-1">Total Budget (USD)</span>
+                                <span className="text-2xl font-bold text-[#FCD33B]">
+                                    {calculateBudget() ? `$${calculateBudget().toLocaleString()}` : '-'}
+                                </span>
                             </div>
                         </div>
                     </div>
