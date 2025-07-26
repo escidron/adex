@@ -1,13 +1,16 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import axios from 'axios';
+import { UserContext } from '@/app/layout';
 
 export default function CampaignInvoicePage({ params }) {
   const router = useRouter();
   const [campaign, setCampaign] = useState(null);
+  const [companyData, setCompanyData] = useState(null);
+  const [user, setUser] = useContext(UserContext);
   const invoiceRef = useRef(null);
 
   useEffect(() => {
@@ -20,10 +23,26 @@ export default function CampaignInvoicePage({ params }) {
         );
         setCampaign(response.data.data);
       } catch (error) {
-        // Handle error (could show toast or redirect)
+        console.error('Error fetching campaign:', error);
       }
     }
+
+    // Fetch company data for the logged-in user
+    async function fetchCompanyData() {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-companies`,
+          { withCredentials: true }
+        );
+        console.log('Company API response:', response.data);
+        setCompanyData(response.data);
+      } catch (error) {
+        console.error('Error fetching company data:', error);
+      }
+    }
+
     fetchCampaign();
+    fetchCompanyData();
   }, [params.id]);
 
   const handleDownloadPDF = async () => {
@@ -43,13 +62,22 @@ export default function CampaignInvoicePage({ params }) {
     return <div className="w-full min-h-screen flex justify-center items-center">Loading invoice...</div>;
   }
 
-  // Example company info (replace with real info as needed)
-  const companyInfo = {
+  // Use company data from API if available, otherwise fallback to hardcoded values
+  const companyInfo = companyData && companyData.length > 0 ? {
+    name: companyData[0].company_name,
+    email: companyData[0].email,
+    address: companyData[0].address,
+    phone: companyData[0].phone,
+    // Only bank and account remain hardcoded
+    bank: 'Bank of Example',
+    account: '123-456-789',
+  } : {
     name: 'ADEX Corp.',
     bank: 'Bank of Example',
     account: '123-456-789',
     email: 'info@adex.com',
     address: '123 Adex Street, Seoul, Korea',
+    phone: '010-1234-5678',
   };
 
   return (
@@ -61,15 +89,18 @@ export default function CampaignInvoicePage({ params }) {
           <div className="text-xl mb-2">{campaign.name}</div>
           <div className="text-md mb-1">Participants Limit: <b>{campaign.max_participants}</b></div>
           <div className="text-md mb-1">Reward Amount: <b>${Number(campaign.reward_amount).toLocaleString()}</b></div>
-          <div className="text-md mb-1">Total Budget: <b>${(Number(campaign.max_participants) * Number(campaign.reward_amount)).toLocaleString()}</b></div>
+          <div className="text-md mb-1">Campaign Budget: <b>${(Number(campaign.max_participants) * Number(campaign.reward_amount)).toLocaleString()}</b></div>
+          <div className="text-md mb-1">ADEX Service Fee (10%): <b>${((Number(campaign.max_participants) * Number(campaign.reward_amount)) * 0.1).toLocaleString()}</b></div>
+          <div className="text-md mb-1 font-bold text-lg">Total Budget: <b>${((Number(campaign.max_participants) * Number(campaign.reward_amount)) * 1.1).toLocaleString()}</b></div>
         </div>
         <div className="mb-6">
-          <div className="text-lg font-semibold mb-2">ADEX Company Info</div>
+          <div className="text-lg font-semibold mb-2">Company Info</div>
           <div className="text-md mb-1">Company: <b>{companyInfo.name}</b></div>
+          <div className="text-md mb-1">Email: <b>{companyInfo.email}</b></div>
+          <div className="text-md mb-1">Phone: <b>{companyInfo.phone}</b></div>
+          <div className="text-md mb-1">Address: <b>{companyInfo.address}</b></div>
           <div className="text-md mb-1">Bank: <b>{companyInfo.bank}</b></div>
           <div className="text-md mb-1">Account: <b>{companyInfo.account}</b></div>
-          <div className="text-md mb-1">Email: <b>{companyInfo.email}</b></div>
-          <div className="text-md mb-1">Address: <b>{companyInfo.address}</b></div>
         </div>
         <div className="text-center text-gray-500 text-sm mt-8">* Please transfer the total budget to the above account to complete your campaign registration.</div>
       </div>
