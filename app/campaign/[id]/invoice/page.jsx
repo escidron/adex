@@ -81,7 +81,7 @@ export default function CampaignInvoicePage({ params }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white py-12 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white py-12 px-4 mt-[90px]">
       <div className="max-w-[600px] w-full bg-gray-50 rounded-lg shadow-lg p-8" ref={invoiceRef}>
         <h1 className="text-3xl font-bold mb-4 text-center">Campaign Invoice</h1>
         <div className="mb-6">

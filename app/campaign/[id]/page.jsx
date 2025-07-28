@@ -76,6 +76,26 @@ export default function EventDetailPage({ params }) {
         }
     }
 
+    const handleDelete = async () => {
+        if (!confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            await axios.delete(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}`,
+                { withCredentials: true }
+            );
+            toast.success('Campaign deleted successfully');
+            router.push('/campaign');
+        } catch (error) {
+            toast.error(error.response?.data?.error || 'Failed to delete campaign', {
+                duration: 3000,
+                style: { fontWeight: 500 }
+            });
+        }
+    };
+
     if (isLoading || !campaign) {
         return (
             <div className="w-full min-h-screen flex justify-center items-center">
@@ -87,17 +107,17 @@ export default function EventDetailPage({ params }) {
     return (
         <div className="w-full min-h-screen bg-white">
             <div><Toaster /></div>
-            <div className="w-full xl:w-[1100px] mx-auto px-4 py-8">
-                <div className="flex items-center mb-8">
-                    <button 
-                        onClick={() => router.back()} 
-                        className="text-gray-500 hover:text-black mr-4"
-                    >
-                        &larr; Back
-                    </button>
+            <div className="w-full xl:w-[1100px] mx-auto px-4 py-8 mt-[90px]">
+                <div className="flex items-center justify-between mb-8">
                     <h1 className="text-3xl md:text-4xl font-bold">
                         {campaign.name}
                     </h1>
+                    <button 
+                        onClick={() => router.back()} 
+                        className="text-gray-500 hover:text-black"
+                    >
+                        &larr; Back
+                    </button>
                 </div>
                 
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -219,10 +239,6 @@ export default function EventDetailPage({ params }) {
                     </div>
                 </div>
             </div>
-            {/* Only show Delete button if the user is a business user and the creator of the campaign */}
-            {user && user.userType === 1 && campaign.created_by === user.userId && (
-                <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded-lg ml-4">Delete</button>
-            )}
         </div>
     )
 } 
