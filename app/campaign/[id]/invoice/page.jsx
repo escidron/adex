@@ -102,13 +102,8 @@ export default function CampaignInvoicePage({ params }) {
     email: companyData[0].email,
     address: companyData[0].address,
     phone: companyData[0].phone,
-    // Only bank and account remain hardcoded
-    bank: 'Bank of Example',
-    account: '123-456-789',
   } : {
     name: 'ADEX Corp.',
-    bank: 'Bank of Example',
-    account: '123-456-789',
     email: 'info@adex.com',
     address: '123 Adex Street, Seoul, Korea',
     phone: '010-1234-5678',
@@ -151,8 +146,6 @@ export default function CampaignInvoicePage({ params }) {
               <div><strong className="text-base">Email:</strong> <span className="text-base">{companyInfo.email}</span></div>
               <div><strong className="text-base">Phone:</strong> <span className="text-base">{companyInfo.phone}</span></div>
               <div><strong className="text-base">Address:</strong> <span className="text-base">{companyInfo.address}</span></div>
-              <div><strong className="text-base">Bank:</strong> <span className="text-base">{companyInfo.bank}</span></div>
-              <div><strong className="text-base">Account #:</strong> <span className="text-base">{companyInfo.account}</span></div>
             </div>
           </div>
 
@@ -177,47 +170,83 @@ export default function CampaignInvoicePage({ params }) {
           </div>
         </div>
 
-        {/* Account Details Section */}
-        <div className="bg-white py-2 mb-2">
-          <h2 className="text-center font-bold text-black text-xl">Account Details</h2>
+        {/* Campaign Details Section */}
+        <div className="mb-4">
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">Campaign Details</h3>
+          <div className="w-16 h-1 bg-gray-400 rounded"></div>
         </div>
 
-        <div className="space-y-0 mb-8">
-          <div className="bg-yellow-300 p-2 rounded border-l-4 border-yellow-400 flex items-center">
-            <strong className="text-lg">Campaign Name:</strong> <span className="text-lg">{campaign.name}</span>
+        <div className="space-y-0 mb-4">
+          <div className="bg-yellow-300 py-2 px-2 rounded border-l-4 border-yellow-400">
+            <strong className="text-xl font-bold">Campaign Name:</strong> <span className="text-xl font-bold">{campaign.name}</span>
           </div>
-          <div className="bg-gray-200 p-2 rounded flex items-center">
+          <div className="bg-gray-200 py-2 px-2 rounded">
             <strong className="text-lg">Participants Limit:</strong> <span className="text-lg">{campaign.max_participants}</span>
           </div>
-          <div className="bg-gray-100 p-2 rounded flex items-center">
+          <div className="bg-gray-100 py-2 px-2 rounded">
             <strong className="text-lg">Reward Amount:</strong> <span className="text-lg">${Number(campaign.reward_amount).toLocaleString()}</span>
           </div>
-          <div className="bg-gray-200 p-2 rounded flex items-center">
+          <div className="bg-gray-200 py-2 px-2 rounded">
             <strong className="text-lg">Campaign Budget:</strong> <span className="text-lg">${(Number(campaign.max_participants) * Number(campaign.reward_amount)).toLocaleString()}</span>
           </div>
-          <div className="bg-gray-100 p-2 rounded flex items-center">
+          <div className="bg-gray-100 py-2 px-2 rounded">
             <strong className="text-lg">ADEX Service Fee (10%):</strong> <span className="text-lg">${((Number(campaign.max_participants) * Number(campaign.reward_amount)) * 0.1).toLocaleString()}</span>
           </div>
-          <div className="bg-gray-300 p-2 rounded font-bold text-2xl flex items-center">
+          <div className="bg-gray-300 py-2 px-2 rounded text-lg">
             <strong>Total Budget:</strong> <span>${((Number(campaign.max_participants) * Number(campaign.reward_amount)) * 1.1).toLocaleString()}</span>
           </div>
         </div>
 
+        {/* ARH Information Section */}
+        <div className="mb-4">
+          <div className="mb-2">
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">ARH Information</h3>
+            <div className="w-16 h-1 bg-gray-400 rounded"></div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+            <div className="space-y-3 text-base">
+              <div className="flex items-center py-2 border-b border-gray-100">
+                <span className="font-medium text-gray-600 w-24">Bank Name:</span>
+                <span className="font-semibold text-gray-800 ml-4">Truist Bank</span>
+              </div>
+              <div className="flex items-start py-2 border-b border-gray-100">
+                <span className="font-medium text-gray-600 w-24">Address:</span>
+                <span className="font-semibold text-gray-800 ml-4">7681 Linton Hall Rd, Gainesville, VA 20155</span>
+              </div>
+              <div className="flex items-center py-2 border-b border-gray-100">
+                <span className="font-medium text-gray-600 w-24">Routing #:</span>
+                <span className="font-semibold text-gray-800 ml-4">051404260</span>
+              </div>
+              <div className="flex items-center py-2">
+                <span className="font-medium text-gray-600 w-24">Account #:</span>
+                <span className="font-semibold text-gray-800 ml-4">1470002991527</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Footer Section - Terms and Questions */}
-        <div className="flex justify-between items-start pt-4 border-t">
+        <div className="flex justify-between items-start pt-2 border-t">
           {/* Terms and Conditions */}
           <div className="flex-1 mr-8">
             <h3 className="font-bold text-lg mb-3">Terms and Conditions:</h3>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Payment is due upon receipt of this invoice</li>
-              <li>Late payments may cause campaign start date delays</li>
-            </ul>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center">
+                <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                <span>Payment is due upon receipt of this invoice</span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                <span>Late payments may cause campaign start date delays</span>
+              </div>
+            </div>
           </div>
 
           {/* Questions/Contact Section */}
           <div className="text-right">
-            <h4 className="font-bold mb-2">Questions</h4>
-            <div className="text-sm">
+            <h4 className="font-bold text-lg mb-3">Questions</h4>
+            <div className="space-y-2 text-sm">
               <div>Email: info@adexconnect.com</div>
               <div>Call: (555) 703-2339</div>
             </div>
@@ -225,7 +254,7 @@ export default function CampaignInvoicePage({ params }) {
         </div>
 
         {/* Footer Note */}
-        <div className="text-center text-gray-500 text-sm italic mt-4">
+        <div className="text-center text-gray-500 text-sm italic mt-2">
           *Please transfer the total budget to the above account to complete your campaign registration.
         </div>
       </div>

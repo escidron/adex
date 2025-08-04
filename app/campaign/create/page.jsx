@@ -20,7 +20,7 @@ export default function CreateCampaignPage() {
     // Validation function must be declared before useFormik
     const validate = values => {
         const errors = {};
-
+        
         // 3. Campaign name is required
         if (!values.name) {
             errors.name = 'Campaign name is required.';
@@ -58,7 +58,7 @@ export default function CreateCampaignPage() {
         } else if (values.startDate && new Date(values.endDate) <= new Date(values.startDate)) {
             errors.endDate = 'End date must be after start date.';
         }
-
+        
         return errors;
     };
 
@@ -156,7 +156,7 @@ export default function CreateCampaignPage() {
             <form className="flex flex-col w-[90%] max-w-[800px] md:w-[800px] bg-white rounded-lg shadow-lg p-8" onSubmit={formik.handleSubmit}>
                 <h1 className='text-black text-[40px] md:text-[48px] lg:text-[51px] mb-2 mt-16'>Create Campaign</h1>
                 <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
-
+                
                 <div className="space-y-8">
                     {/* Basic Info */}
                     <div>
@@ -170,9 +170,9 @@ export default function CreateCampaignPage() {
                                 value={formik.values.name}
                                 errors={formik.errors.name}
                             />
-                            {formik.touched.name && formik.errors.name ?
-                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div>
-                                : null}
+                            {formik.touched.name && formik.errors.name ? 
+                                <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.name}</div> 
+                            : null}
                         </div>
                     </div>
 
@@ -199,15 +199,15 @@ export default function CreateCampaignPage() {
                             <label className="flex flex-col items-center justify-center">
                                 <span className="text-blue-500 font-semibold mb-2">Upload Image</span>
                                 <span className="text-gray-500 text-sm mb-4">Click to browse or drag and drop</span>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
+                                <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
                                     onChange={handleImageChange}
                                 />
-                                <Button
-                                    type="button"
-                                    variant="outline"
+                                <Button 
+                                    type="button" 
+                                    variant="outline" 
                                     className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
                                     onClick={() => document.querySelector('input[type="file"]').click()}
                                 >
@@ -232,9 +232,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.startDate}
                                     className="w-full"
                                 />
-                                {formik.touched.startDate && formik.errors.startDate ?
+                                {formik.touched.startDate && formik.errors.startDate ? 
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.startDate}</div>
-                                    : null}
+                                : null}
                             </div>
 
                             <div className="relative">
@@ -248,9 +248,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.endDate}
                                     className="w-full"
                                 />
-                                {formik.touched.endDate && formik.errors.endDate ?
+                                {formik.touched.endDate && formik.errors.endDate ? 
                                     <div className="absolute top-[74px] text-red-600 text-sm">{formik.errors.endDate}</div>
-                                    : null}
+                                : null}
                             </div>
                         </div>
                     </div>
@@ -270,9 +270,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.rewardAmount}
                                     errors={formik.errors.rewardAmount}
                                 />
-                                {formik.touched.rewardAmount && formik.errors.rewardAmount ?
+                                {formik.touched.rewardAmount && formik.errors.rewardAmount ? 
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.rewardAmount}</div>
-                                    : null}
+                                : null}
                             </div>
 
                             {/* Maximum Participants */}
@@ -286,9 +286,9 @@ export default function CreateCampaignPage() {
                                     value={formik.values.maxParticipants}
                                     errors={formik.errors.maxParticipants}
                                 />
-                                {formik.touched.maxParticipants && formik.errors.maxParticipants ?
+                                {formik.touched.maxParticipants && formik.errors.maxParticipants ? 
                                     <div className="absolute top-[50px] text-red-600 text-sm">{formik.errors.maxParticipants}</div>
-                                    : null}
+                                : null}
                             </div>
 
                             {/* Total Budget (display as styled text, not input) */}
@@ -315,21 +315,21 @@ export default function CreateCampaignPage() {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.description}
                             />
-                            {formik.touched.description && formik.errors.description ?
+                            {formik.touched.description && formik.errors.description ? 
                                 <div className="absolute top-[140px] text-red-600 text-sm">{formik.errors.description}</div>
-                                : null}
-                        </div>
+                            : null}
                     </div>
+                </div>
 
                     {/* Submit Button */}
                     <div className="pt-4">
-                        <Button
+                    <Button 
                             type="submit"
                             className="w-full bg-[#FCD33B] text-black hover:bg-[#FCD33B]/90 font-semibold py-3 text-lg"
                             disabled={formik.isSubmitting}
-                        >
+                    >
                             {formik.isSubmitting ? 'Creating Campaign...' : 'Create Campaign'}
-                        </Button>
+                    </Button>
                     </div>
                 </div>
             </form>
