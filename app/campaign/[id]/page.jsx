@@ -121,22 +121,25 @@ export default function EventDetailPage({ params }) {
                 </div>
                 
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="relative h-[400px] w-full">
-                        <Image
-                            src={
-                                campaign.image_gallery
-                                    ? `${process.env.NEXT_PUBLIC_SERVER_IP}/images/${campaign.image_gallery}`
-                                    : "/no-image.png"
-                            }
-                            alt={campaign.name}
-                            fill
-                            className="object-cover"
-                            priority
-                            onError={(e) => {
-                                console.error(`Failed to load image:`, campaign.image_gallery);
-                                e.target.src = "/no-image.png";
-                            }}
-                        />
+                    <div className="relative w-full mt-4 flex gap-1 h-[200px] md:h-[300px] lg:h-[400px]">
+                        <div className="w-full rounded-lg">
+                            <Image
+                                src={
+                                    campaign.image_gallery
+                                        ? `${process.env.NEXT_PUBLIC_SERVER_IP}/images/${campaign.image_gallery}`
+                                        : "/no-image.png"
+                                }
+                                alt={campaign.name}
+                                width={2000}
+                                height={2000}
+                                className="w-full object-cover h-full rounded-lg"
+                                priority
+                                onError={(e) => {
+                                    console.error(`Failed to load image:`, campaign.image_gallery);
+                                    e.target.src = "/no-image.png";
+                                }}
+                            />
+                        </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                             <div className="absolute bottom-0 left-0 p-6 w-full">
                                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
