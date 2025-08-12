@@ -274,30 +274,6 @@ export default function NavBar() {
                             <MessageSquare size={20} />
                             Messages
                         </Link>
-                        <Link href="/market-place" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Store size={20} />
-                            Market Place
-                        </Link>
-                        <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <List size={20} />
-                            Create Listing
-                        </Link>
-                        {/* <Link href={user.isLogged ? `/reverse-listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <List size={20} />
-                            Reverse-Listing
-                        </Link> */}
-                        <Link href="/how-it-works" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <HelpCircle size={20} />
-                            How It Works
-                        </Link>
-                        <Link href="/contact-us" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Mail size={20} />
-                            Contact Us
-                        </Link>
-                        <Link href="/campaign" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Mail size={20} />
-                            Campaigns
-                        </Link>
                         <Link onClick={logout} href="/" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <LogOut size={20} />
                             Logout
