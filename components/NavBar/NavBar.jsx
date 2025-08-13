@@ -137,7 +137,7 @@ export default function NavBar() {
             <div><Toaster /></div>
             {/* web screen */}
             <section className='hidden md:flex  md:justify-between md:items-center w-[800px] lg:w-[1000px] xl:max-w-[60%]'>
-                <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>ADEX Market Place</Link>
+                <Link href='/market-place' className='hover:text-[#FCD33B] cursor-pointer'>Market Place</Link>
                 <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className='hover:text-[#FCD33B] ml-6'>Create Listing</Link>
 
                 <div className='md:h-[50px] md:w-[50px] lg:h-[60px] lg:w-[60px] xl:h-[70px] xl:w-[70px] mx-6'>
@@ -153,7 +153,7 @@ export default function NavBar() {
                 </div>
                 <Link href="/how-it-works" className='hover:text-[#FCD33B] ml-6'>How It Works</Link>
                 <Link href="/contact-us" className='hover:text-[#FCD33B] ml-6'>Contact Us</Link>
-                <Link href="/campaign" className='hover:text-[#FCD33B] ml-6'>Campaign</Link>
+                <Link href="/campaign" className='hover:text-[#FCD33B] ml-6'>Campaigns</Link>
             </section>
             {user.isLogged
                 ? (
@@ -273,30 +273,6 @@ export default function NavBar() {
                         <Link href="/messages" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <MessageSquare size={20} />
                             Messages
-                        </Link>
-                        <Link href="/market-place" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Store size={20} />
-                            ADEX Market Place
-                        </Link>
-                        <Link href={user.isLogged ? `/listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <List size={20} />
-                            Create Listing
-                        </Link>
-                        {/* <Link href={user.isLogged ? `/reverse-listing/create/${user.userType == 1 ? 'select_business' : 'category'}` : '/login'} className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <List size={20} />
-                            Reverse-Listing
-                        </Link> */}
-                        <Link href="/how-it-works" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <HelpCircle size={20} />
-                            How It Works
-                        </Link>
-                        <Link href="/contact-us" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Mail size={20} />
-                            Contact Us
-                        </Link>
-                        <Link href="/campaign" className="flex gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black">
-                            <Mail size={20} />
-                            Campaign
                         </Link>
                         <Link onClick={logout} href="/" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <LogOut size={20} />
