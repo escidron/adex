@@ -1,5 +1,5 @@
 "use client"
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, useContext } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -9,10 +9,14 @@ import adexLogo from '../../../../public/adex-logo-black-yellow.png';
 
 export default function CampaignInvoicePage({ params }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [campaign, setCampaign] = useState(null);
   const [companyData, setCompanyData] = useState(null);
   const [user, setUser] = useContext(UserContext);
   const invoiceRef = useRef(null);
+  const [isAutoSending, setIsAutoSending] = useState(false);
+  const [autoSendStatus, setAutoSendStatus] = useState('');
+  const [hasResent, setHasResent] = useState(false);
 
   useEffect(() => {
     // Fetch campaign details by id
@@ -46,10 +50,29 @@ export default function CampaignInvoicePage({ params }) {
     fetchCompanyData();
   }, [params.id]);
 
-  const handleDownloadPDF = async () => {
-    if (!invoiceRef.current) return;
+  // Auto-send email once when redirected from campaign creation
+  useEffect(() => {
+    const shouldSendEmail = searchParams.get('sendEmail');
     
-    // Wait for images to load before generating PDF
+    if (shouldSendEmail === 'true' && campaign && !isAutoSending && !autoSendStatus) {
+      console.log('🚀 Auto-sending email once...');
+      setIsAutoSending(true);
+      
+      setTimeout(async () => {
+        await sendInvoiceEmail();
+      }, 1000);
+    }
+  }, [campaign]);
+
+  // Common PDF generation function for consistent results
+  const generateInvoicePDF = async () => {
+    if (!invoiceRef.current) {
+      throw new Error('Invoice reference not found');
+    }
+
+    console.log('📄 Starting PDF generation...');
+    
+    // Wait for images to load completely
     const images = invoiceRef.current.querySelectorAll('img');
     await Promise.all(
       Array.from(images).map(
@@ -60,19 +83,23 @@ export default function CampaignInvoicePage({ params }) {
             } else {
               img.onload = resolve;
               img.onerror = resolve;
+              // Add timeout for broken images
+              setTimeout(resolve, 5000);
             }
           })
       )
     );
 
-    // Add a delay to ensure everything is rendered
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
+    // Extended delay for complete rendering (fonts, CSS, layout)
+    console.log('⏳ Waiting for complete rendering...');
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    
     const canvas = await html2canvas(invoiceRef.current, {
       useCORS: true,
       allowTaint: true,
       scale: 2,
-      imageTimeout: 15000,
+      imageTimeout: 20000,
+      backgroundColor: '#ffffff',
       onclone: (clonedDoc) => {
         const clonedImages = clonedDoc.querySelectorAll('img');
         clonedImages.forEach(img => {
@@ -82,14 +109,153 @@ export default function CampaignInvoicePage({ params }) {
       }
     });
     
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL('image/png', 1.0);
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const imgWidth = pageWidth - 40;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    
     pdf.addImage(imgData, 'PNG', 20, 20, imgWidth, imgHeight);
-    pdf.save(`campaign_invoice_${params.id}.pdf`);
+    
+    console.log('✅ PDF generation completed');
+    return pdf;
+  };
+
+  const sendInvoiceEmail = async () => {
+    if (!campaign) {
+      console.log('❌ No campaign data');
+      setAutoSendStatus('❌ Missing campaign data');
+      return;
+    }
+
+    try {
+      setAutoSendStatus('🔄 Generating PDF...');
+      
+      const pdf = await generateInvoicePDF();
+      const pdfBase64 = pdf.output('datauristring').split(',')[1];
+      console.log('✅ PDF generated for email, size:', pdfBase64.length, 'chars');
+      
+      setAutoSendStatus('📧 Preparing invoice email...');
+      
+      const totalBudget = Number(campaign.max_participants) * Number(campaign.reward_amount);
+      const serviceFee = totalBudget * 0.1;
+      const finalTotal = totalBudget + serviceFee;
+      
+      const emailData = {
+        campaign_id: params.id,
+        recipient_email: companyData?.[0]?.email || 'nohdennis@gmail.com',
+        recipient_name: companyData?.[0]?.company_name || 'Test Company',
+        invoice_data: {
+          campaign_name: campaign.name,
+          company_name: companyData?.[0]?.company_name || 'Test Company',
+          company_email: companyData?.[0]?.email || 'nohdennis@gmail.com',
+          company_address: companyData?.[0]?.address || 'Home-based business',
+          company_phone: companyData?.[0]?.phone || 'N/A',
+          invoice_date: new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          total_budget: finalTotal, // 숫자로 전송 (API 검증용)
+          campaign_details: {
+            max_participants: Number(campaign.max_participants),
+            reward_amount: Number(campaign.reward_amount),
+            campaign_budget: totalBudget.toLocaleString(),
+            service_fee: serviceFee.toLocaleString(),
+            total_budget_formatted: finalTotal.toLocaleString()
+          },
+          banking_info: {
+            bank_name: 'Truist Bank',
+            bank_address: '7681 Linton Hall Rd, Gainesville, VA 20155',
+            routing_number: '051404260',
+            account_number: '1470002991527'
+          }
+        },
+        pdf_attachment: {
+          filename: `campaign_invoice_${params.id}.pdf`,
+          content: pdfBase64,
+          contentType: 'application/pdf'
+        }
+      };
+
+      setAutoSendStatus('📧 Sending email...');
+      console.log('📧 Sending email to:', companyData?.[0]?.email || 'nohdennis@gmail.com');
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/send-invoice-email`,
+        emailData,
+        { withCredentials: true }
+      );
+      
+      console.log('📨 Email API response:', response.data);
+      
+      if (response.data.success || response.status === 200) {
+        setAutoSendStatus('✅ Email sent successfully!');
+        console.log('✅ Invoice email sent successfully!');
+        
+        // Save PDF to company after successful email send (non-blocking)
+        try {
+          await savePDFToCompany(pdfBase64, `campaign_invoice_${params.id}.pdf`);
+          setAutoSendStatus('✅ Email sent and invoice saved to company profile!');
+        } catch (saveError) {
+          console.error('❌ PDF save error (non-critical):', saveError);
+          setAutoSendStatus('✅ Email sent! (Invoice save pending - backend API needed)');
+        }
+      } else {
+        throw new Error(response.data.message || 'Email sending failed');
+      }
+      
+    } catch (error) {
+      console.error('❌ Email sending error:', error);
+      setAutoSendStatus('❌ Email sending failed');
+    } finally {
+      setIsAutoSending(false);
+    }
+  };
+
+  const savePDFToCompany = async (pdfBase64, filename) => {
+    try {
+      if (!companyData || companyData.length === 0) {
+        console.log('❌ No company data available');
+        return;
+      }
+
+      const saveData = {
+        company_id: companyData[0].id,
+        campaign_id: params.id,
+        campaign_name: campaign.name,
+        pdf_base64: pdfBase64,
+        filename: filename
+      };
+
+      console.log('💾 Saving PDF to company...');
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/companies/save-invoice-pdf`,
+        saveData,
+        { withCredentials: true }
+      );
+
+      if (response.data.success || response.status === 200) {
+        console.log('✅ PDF saved to company successfully!');
+      } else {
+        console.log('❌ PDF save failed:', response.data.message);
+      }
+    } catch (error) {
+      console.error('❌ PDF save error:', error);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    try {
+      console.log('🔽 Starting download PDF generation...');
+      const pdf = await generateInvoicePDF();
+      pdf.save(`campaign_invoice_${params.id}.pdf`);
+      console.log('✅ PDF download completed');
+    } catch (error) {
+      console.error('❌ PDF download error:', error);
+      alert('PDF 생성 중 오류가 발생했습니다.');
+    }
   };
 
   if (!campaign) {
@@ -111,6 +277,32 @@ export default function CampaignInvoicePage({ params }) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white py-12 px-4 mt-[90px]">
+      {/* Email Status and Resend */}
+      <div className="max-w-[800px] w-full mb-6">
+        {autoSendStatus && autoSendStatus.includes('✅') && (
+          <div className="p-4 rounded-lg text-center bg-green-100 text-green-800">
+            <div className="text-lg font-semibold mb-2">{autoSendStatus}</div>
+            <div className="text-sm">
+              {!hasResent ? (
+                <>
+                  Haven't received the email?{' '}
+                  <button 
+                    onClick={() => {
+                      setHasResent(true);
+                      sendInvoiceEmail();
+                    }}
+                    className="text-blue-600 underline hover:text-blue-800 font-medium"
+                  >
+                    Click here to resend
+                  </button>
+                </>
+              ) : (
+                <span className="text-gray-600">Email has been resent. Please check your inbox.</span>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
       <div className="max-w-[800px] w-full bg-white rounded-lg shadow-lg p-8" ref={invoiceRef}>
         {/* Header Section - Campaign Invoice Title First */}
         <div className="text-center mb-8">
@@ -165,7 +357,6 @@ export default function CampaignInvoicePage({ params }) {
             </div>
             <div className="text-sm text-right">
               <div><strong>Date of Invoice:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-              <div><strong>Invoice Number:</strong> {params.id}-{Math.floor(Math.random() * 1000)}</div>
             </div>
           </div>
         </div>

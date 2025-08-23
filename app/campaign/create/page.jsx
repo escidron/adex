@@ -1,5 +1,5 @@
 "use client"
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -9,6 +9,7 @@ import TextField from '@/components/inputs/TextField'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
+import GetCompanies from '@/actions/GetCompanies'
 
 export default function CreateCampaignPage() {
     // All hooks must be declared at the top level, before any conditional return
@@ -16,6 +17,27 @@ export default function CreateCampaignPage() {
     const [previewImage, setPreviewImage] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [user, setUser] = useContext(UserContext);
+    const [companies, setCompanies] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState(null);
+
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const companiesData = await GetCompanies();
+                if (companiesData && companiesData.length > 0) {
+                    setCompanies(companiesData);
+                    if (companiesData.length === 1) {
+                        setSelectedCompany(companiesData[0]);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+            }
+        };
+        if (user && user.userType === 1) {
+            fetchCompanies();
+        }
+    }, [user]);
 
     // Validation function must be declared before useFormik
     const validate = values => {
@@ -76,6 +98,13 @@ export default function CreateCampaignPage() {
         },
         validate,
         onSubmit: values => {
+            if (!selectedCompany) {
+                toast.error('Please select a company first!');
+                return;
+            }
+            
+            console.log('📤 Creating campaign with company:', selectedCompany);
+            
             const campaignData = {
                 name: values.name,
                 description: values.description,
@@ -85,7 +114,10 @@ export default function CreateCampaignPage() {
                 reward_amount: parseInt(values.rewardAmount),
                 // Always include calculated budget in the API request
                 budget: parseInt(values.maxParticipants) * parseInt(values.rewardAmount),
+                company_id: selectedCompany?.id,
             };
+            
+            console.log('📋 Campaign data to send:', campaignData);
 
             // Add image if present
             if (values.image) {
@@ -102,16 +134,21 @@ export default function CreateCampaignPage() {
                 { withCredentials: true }
             )
             .then(function (response) {
+                console.log('✅ Campaign creation response:', response.data);
                 toast.success('Campaign created successfully!')
-                // Redirect to invoice page after creation
+                
+                // Send invoice email automatically
                 if (response.data && response.data.data && response.data.data.id) {
-                  router.push(`/campaign/${response.data.data.id}/invoice`);
+                  console.log('🔄 Redirecting to invoice page...');
+                  router.push(`/campaign/${response.data.data.id}/invoice?sendEmail=true`);
                 } else {
+                  console.log('❌ No campaign ID in response');
                   router.push('/campaign');
                 }
             })
             .catch(function (error) {
-                console.log('error', error)
+                console.error('❌ Campaign creation error:', error);
+                console.error('❌ Error response:', error.response?.data);
                 toast.error('Failed to create campaign. Please try again.')
             });
         },
@@ -158,6 +195,48 @@ export default function CreateCampaignPage() {
                 <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
                 
                 <div className="space-y-8">
+                    {/* Company Selection - 맨위에 */}
+                    <div>
+                        <h2 className="text-xl font-semibold mb-4">Select Company</h2>
+                        <div className="relative">
+                            <select
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FCD33B] focus:border-transparent"
+                                onChange={(e) => {
+                                    const company = companies.find(c => c.id === parseInt(e.target.value));
+                                    setSelectedCompany(company);
+                                }}
+                                value={selectedCompany?.id || ''}
+                            >
+                                <option value="">Select a company...</option>
+                                {companies.map(company => (
+                                    <option key={company.id} value={company.id}>
+                                        {company.company_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        {/* Selected Company Card */}
+                        {selectedCompany && (
+                            <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                <div className="flex items-start space-x-4">
+                                    {selectedCompany.company_logo && (
+                                        <img 
+                                            src={selectedCompany.company_logo} 
+                                            alt={selectedCompany.company_name}
+                                            className="w-16 h-16 object-contain rounded"
+                                        />
+                                    )}
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold text-lg">{selectedCompany.company_name}</h3>
+                                        <p className="text-sm text-gray-600">Email: {selectedCompany.email}</p>
+                                        <p className="text-sm text-gray-600">Phone: {selectedCompany.phone}</p>
+                                        <p className="text-sm text-gray-600">Address: {selectedCompany.address}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     {/* Basic Info */}
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
@@ -319,16 +398,26 @@ export default function CreateCampaignPage() {
                                 <div className="absolute top-[140px] text-red-600 text-sm">{formik.errors.description}</div>
                             : null}
                     </div>
+
                 </div>
 
-                    {/* Submit Button */}
-                    <div className="pt-4">
+                    {/* Submit and Cancel Buttons */}
+                    <div className="pt-4 flex gap-4">
                     <Button 
                             type="submit"
-                            className="w-full bg-[#FCD33B] text-black hover:bg-[#FCD33B]/90 font-semibold py-3 text-lg"
+                            className="flex-1 bg-[#FCD33B] text-black hover:bg-[#FCD33B]/90 font-semibold py-3 text-lg"
                             disabled={formik.isSubmitting}
                     >
                             {formik.isSubmitting ? 'Creating Campaign...' : 'Create Campaign'}
+                    </Button>
+                    <Button 
+                            type="button"
+                            variant="outline"
+                            className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 text-lg"
+                            onClick={() => router.push('/campaign')}
+                            disabled={formik.isSubmitting}
+                    >
+                            Cancel
                     </Button>
                     </div>
                 </div>
