@@ -19,7 +19,7 @@ import GalleryImage from '../../components/gallery-image/GalleryImage'
 import GalleryCarrousel from '@/components/gallery-image/GalleryCarrousel'
 import ImageLoader from '@/components/ImageLoader/ImageLoader'
 import ImageImporter from '@/components/gallery-image/imageImporter'
-import { ArrowLeft, BookmarkCheck, ImageIcon, LineChart, MapPin } from 'lucide-react'
+import { ArrowLeft, BookmarkCheck, ImageIcon, LineChart, MapPin, FileText } from 'lucide-react'
 import { menuOptions } from '@/utils/companyAccountOptions'
 import GetMyBookings from '@/actions/GetMyBookings'
 import GetPendingBookings from '@/actions/GetPendingBookins'
@@ -41,6 +41,7 @@ export default function MyCompanyPage() {
     const [gallery, setGallery] = useState([]);
     const [balance, setBalance] = useState(null);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
+    const [invoices, setInvoices] = useState([]);
 
     const [status, setStatus] = useState({
         available: 0,
@@ -89,6 +90,24 @@ export default function MyCompanyPage() {
 
     }, []);
 
+    const fetchInvoices = async () => {
+        console.log('🔍 Fetching invoices for company ID:', id);
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/companies/${id}/invoices`,
+                { withCredentials: true }
+            );
+            console.log('📋 Invoices API response:', response.data);
+            if (response.data && response.data.data) {
+                setInvoices(response.data.data);
+            } else if (response.data) {
+                setInvoices(response.data);
+            }
+        } catch (error) {
+            console.error('Error fetching invoices:', error);
+        }
+    };
+
     useEffect(() => {
         axios.post(`${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-company`,
             {
@@ -105,7 +124,12 @@ export default function MyCompanyPage() {
             .catch(function (error) {
                 console.log(error)
             });
-    }, []);
+
+        // Fetch invoices when component mounts
+        if (id) {
+            fetchInvoices();
+        }
+    }, [id]);
 
     useEffect(() => {
         if (images.length > 0) {
@@ -257,6 +281,42 @@ export default function MyCompanyPage() {
                                             <h1 className='mt-2 text-xl text-gray-500'>No balance available</h1>
                                         </div>)
                                 }
+                            </>
+                        )
+                    }
+                    {
+                        selectedOption == 4 && (
+                            <>
+                                <h1 className='text-[26px] mb-4'>My Invoices</h1>
+                                {invoices.length > 0 ? (
+                                    <div className='space-y-4'>
+                                        {invoices.map((invoice, index) => (
+                                            <div key={index} className='bg-white border rounded-lg p-4 shadow-sm'>
+                                                <div className='flex justify-between items-center'>
+                                                    <div>
+                                                        <h3 className='font-semibold text-lg'>{invoice.campaign_name}</h3>
+                                                        <p className='text-gray-500 text-sm'>
+                                                            Generated: {new Date(invoice.generated_at).toLocaleDateString()}
+                                                        </p>
+                                                    </div>
+                                                    <a
+                                                        href={invoice.pdf_url}
+                                                        download={invoice.filename}
+                                                        className='bg-[#FCD33B] text-black px-4 py-2 rounded-lg hover:bg-[#FCD33B]/90 transition-colors inline-block text-center'
+                                                    >
+                                                        Download PDF
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className='mt-8 w-full bg-slate-200 h-[200px] rounded-lg flex flex-col justify-center items-center'>
+                                        <FileText color='gray' size={30} />
+                                        <h1 className='mt-2 text-xl text-gray-500'>No invoices available</h1>
+                                        <p className='text-gray-400 text-sm mt-1'>Invoices will appear here after creating campaigns</p>
+                                    </div>
+                                )}
                             </>
                         )
                     }
