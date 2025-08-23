@@ -195,7 +195,7 @@ export default function CreateCampaignPage() {
                 <p className='text-gray-600 text-[25px] mb-8'>Create a new <span className='text-[#FCD33B] mx-2'>event</span> campaign</p>
                 
                 <div className="space-y-8">
-                    {/* Company Selection - 맨위에 */}
+                    {/* Company Selection - Top Section */}
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Select Company</h2>
                         <div className="relative">

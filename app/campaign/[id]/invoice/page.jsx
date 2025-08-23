@@ -157,7 +157,7 @@ export default function CampaignInvoicePage({ params }) {
             month: 'long', 
             day: 'numeric' 
           }),
-          total_budget: finalTotal, // 숫자로 전송 (API 검증용)
+          total_budget: finalTotal, // Numeric value for API validation
           campaign_details: {
             max_participants: Number(campaign.max_participants),
             reward_amount: Number(campaign.reward_amount),
