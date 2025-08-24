@@ -36,11 +36,12 @@ export default function PhotosForm({ ListingContext }) {
             </div>
             Photos
           </CardTitle>
-          <CardDescription>Across nearly every industry and every major platform, profiles and listings with more pics have been proven to attract more interest, views, likes, and bookings. Be sure to add plenty of clear, high-quality pics to your profile and to your listings.</CardDescription>
+          <CardDescription>Across nearly every industry and every major platform, profiles and listings with more pics have been proven to attract more interest, views, likes, and bookings. Be sure to add plenty of clear, high-quality pics to your profile and to your listings. <strong>This step is optional - you can skip if you don't have photos ready.</strong></CardDescription>
         </CardHeader>
       </Card>
       <div className='w-full h-full mt-6 min-h-[500px]'>
-        <h1 className='text-[28px] md:text-[32px]'>Pick some photos</h1>
+        <h1 className='text-[28px] md:text-[32px]'>Pick some photos (Optional)</h1>
+        <p className='text-gray-500 mt-2 mb-4'>You can add photos now or skip this step and add them later.</p>
         <div className='flex-1 mt-2'>
           <DropImageArea
             images={listingProperties.images}

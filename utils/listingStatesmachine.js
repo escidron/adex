@@ -1,13 +1,13 @@
 
 const listingMachine = {
-    currentState:'category',
-    totalSteps:11,
+    currentState:'select_business',
+    totalSteps:12,
     currentStep:1,
     states:{
         select_business:{
             NEXT:'category',
             PREVIOUS:'select_business',
-            ISVALID:    false //use for render conditional field (false => conditional field, true => always render)
+            ISVALID:    true //use for render conditional field (false => conditional field, true => always render)
         },
         category:{
             NEXT:'campaign_details',
@@ -85,4 +85,48 @@ const listingMachine = {
     }
 }
 
-export { listingMachine };
+// Campaign-specific state machine
+const campaignMachine = {
+    currentState: 'select_business',
+    totalSteps: 6,
+    currentStep: 1,
+    states: {
+        select_business: {
+            NEXT: 'category',
+            PREVIOUS: 'select_business',
+            ISVALID: true
+        },
+        category: {
+            NEXT: 'campaign_participants_rewards',
+            PREVIOUS: 'select_business',
+            ISVALID: true
+        },
+        campaign_participants_rewards: {
+            NEXT: 'campaign_period',
+            PREVIOUS: 'category',
+            ISVALID: true
+        },
+        campaign_period: {
+            NEXT: 'title',
+            PREVIOUS: 'campaign_participants_rewards',
+            ISVALID: true
+        },
+        title: {
+            NEXT: 'description',
+            PREVIOUS: 'campaign_period',
+            ISVALID: true
+        },
+        description: {
+            NEXT: 'images',
+            PREVIOUS: 'title',
+            ISVALID: true
+        },
+        images: {
+            NEXT: 'images', // Final step for campaign creation
+            PREVIOUS: 'description',
+            ISVALID: true
+        }
+    }
+}
+
+export { listingMachine, campaignMachine };
