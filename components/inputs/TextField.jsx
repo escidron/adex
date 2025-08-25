@@ -33,9 +33,9 @@ export default function TextField({
         id={id}
         placeholder=" "
         type={type ? type : "text"}
-        onChange={onChange ? onChange : ''}
-        onBlur={onBlur ? onBlur : ''}
-        onInput={formatPrice?onInput:()=>{}}
+        onChange={onChange ? onChange : () => {}}
+        onBlur={onBlur ? onBlur : () => {}}
+        onInput={formatPrice ? onInput : () => {}}
         value={value}
         maxLength={maxLength ? maxLength : ''}
         // Add readOnly and disabled props for proper field control

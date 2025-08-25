@@ -1,4 +1,4 @@
-import { BookmarkCheck, ImageIcon, LineChart, MapPin } from "lucide-react";
+import { BookmarkCheck, ImageIcon, LineChart, MapPin, FileText } from "lucide-react";
 
 export  const menuOptions = [
     {
@@ -20,5 +20,10 @@ export  const menuOptions = [
         id: 3,
         icon: <LineChart color='#FCD33B' size={30}/>,
         label: 'Company Balance'
+    },
+    {
+        id: 4,
+        icon: <FileText color='#FCD33B' size={30}/>,
+        label: 'My Invoices'
     }
 ]

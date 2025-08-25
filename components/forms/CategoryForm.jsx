@@ -1,10 +1,12 @@
 import axios from 'axios'
 import CategoryCard from '../categories/CategoryCard';
 import { useEffect, useState,useContext } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function CategoryForm({ ListingContext }) {
     const [categories, setCategories] = useState([]);
     const [listingProperties, setListingProperties] = useContext(ListingContext)
+    const router = useRouter()
 
 
     useEffect(() => {
@@ -20,6 +22,7 @@ export default function CategoryForm({ ListingContext }) {
                         selectedCategories.push(category)
                     }
                 })
+                
                 setCategories(selectedCategories)
             })
             .catch(function (error) {
