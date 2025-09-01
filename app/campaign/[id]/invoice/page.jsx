@@ -285,7 +285,7 @@ export default function CampaignInvoicePage({ params }) {
             <div className="text-sm">
               {!hasResent ? (
                 <>
-                  Haven't received the email?{' '}
+                  Haven&apos;t received the email?{' '}
                   <button 
                     onClick={() => {
                       setHasResent(true);
