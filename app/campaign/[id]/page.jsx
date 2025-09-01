@@ -13,13 +13,12 @@ export default function EventDetailPage({ params }) {
     const [user, setUser] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)
     const [campaign, setCampaign] = useState(null)
-    const [snsUrl, setSnsUrl] = useState('')
-    const [snsUrlError, setSnsUrlError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [hasParticipated, setHasParticipated] = useState(false)
 
     useEffect(() => {
         fetchCampaignDetails()
-    }, [params.id])
+    }, [params.id, user.isLogged])
 
     const fetchCampaignDetails = async () => {
         try {
@@ -29,6 +28,11 @@ export default function EventDetailPage({ params }) {
             )
             console.log('캠페인 상세 응답:', response.data)
             setCampaign(response.data.data)
+
+            // Check if user has already participated in this campaign
+            if (user.isLogged) {
+                await checkParticipationStatus()
+            }
         } catch (error) {
             toast.error(error.response?.data?.error || 'Failed to load campaign details', {
                 duration: 3000,
@@ -39,21 +43,34 @@ export default function EventDetailPage({ params }) {
         }
     }
 
-    const handleSubmit = async () => {
+    const checkParticipationStatus = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participated`,
+                { withCredentials: true }
+            )
+            
+            // Check if current campaign is in the participated campaigns list
+            const participatedCampaigns = response.data.data || []
+            const hasParticipated = participatedCampaigns.some(
+                participation => {
+                    const campaignId = participation.campaign_id || participation.campaign?.id
+                    return campaignId === parseInt(params.id)
+                }
+            )
+            
+            setHasParticipated(hasParticipated)
+        } catch (error) {
+            console.error('Failed to check participation status:', error)
+            // If API fails, assume not participated to allow registration attempt
+            setHasParticipated(false)
+        }
+    }
+
+    const handleRegister = async () => {
         if (!user.isLogged) {
             router.push('/login')
             return
-        }
-
-        // URL format validation using validator.js
-        if (!snsUrl) {
-            setSnsUrlError('SNS post URL is required.');
-            return;
-        } else if (!validator.isURL(snsUrl, { require_protocol: true })) {
-            setSnsUrlError('Please enter a valid SNS post URL.');
-            return;
-        } else {
-            setSnsUrlError('');
         }
 
         setIsSubmitting(true)
@@ -62,13 +79,20 @@ export default function EventDetailPage({ params }) {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participate`,
                 {
                     campaign_id: params.id,
-                    sns_url: snsUrl
+                    sns_url: '' // Empty for now, will be submitted later
                 },
                 { withCredentials: true }
             )
-            router.push('/campaign/success')
+            toast.success('Successfully registered for the campaign! You can submit your SNS link from My Profile.', {
+                duration: 4000,
+                style: { fontWeight: 500 }
+            })
+            setHasParticipated(true)
+            setTimeout(() => {
+                router.push('/my-profile?tab=5&sub-tab=2')
+            }, 2000)
         } catch (error) {
-            toast.error(error.response?.data?.error || 'Failed to submit participation', {
+            toast.error(error.response?.data?.error || 'Failed to register for campaign', {
                 duration: 3000,
                 style: { fontWeight: 500 }
             })
@@ -216,27 +240,42 @@ export default function EventDetailPage({ params }) {
                             </div>
 
                             <div className="pt-6 bg-white rounded-lg shadow-sm p-6">
-                                <h3 className="text-xl font-semibold mb-4">Submit Your Entry</h3>
-                                <p className="text-gray-600 mb-4">
-                                    Share your SNS post URL below to participate in this campaign. Your submission will be reviewed by our team.
-                                </p>
-                                <input 
-                                    type="text" 
-                                    value={snsUrl}
-                                    onChange={(e) => setSnsUrl(e.target.value)}
-                                    placeholder="Enter your SNS post URL"
-                                    className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                                />
-                                {snsUrlError && (
-                                    <div className="text-red-600 text-sm mb-2">{snsUrlError}</div>
+                                {user.isLogged ? (
+                                    // Logged in users see Register section
+                                    <>
+                                        <h3 className="text-xl font-semibold mb-4">Join This Campaign</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Register to participate in this campaign. After registration, you can submit your SNS post link from your profile page.
+                                        </p>
+                                        <button 
+                                            onClick={handleRegister}
+                                            disabled={isSubmitting || hasParticipated}
+                                            className="w-full bg-black text-white py-4 rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {hasParticipated ? 'Already Registered' : isSubmitting ? 'Registering...' : 'Register'}
+                                        </button>
+                                    </>
+                                ) : (
+                                    // Non-logged in users see Enter section
+                                    <>
+                                        <h3 className="text-xl font-semibold mb-4">Explore This Campaign</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Learn more about this campaign. Please log in to participate and register.
+                                        </p>
+                                        <button 
+                                            onClick={() => {
+                                                toast.error("Please log in to participate in this campaign.", {
+                                                    duration: 3000,
+                                                    style: { fontWeight: 500 }
+                                                });
+                                                router.push('/login');
+                                            }}
+                                            className="w-full bg-black text-white py-4 rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold"
+                                        >
+                                            Enter (Login Required)
+                                        </button>
+                                    </>
                                 )}
-                                <button 
-                                    onClick={handleSubmit}
-                                    disabled={isSubmitting}
-                                    className="w-full bg-black text-white py-4 rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isSubmitting ? 'Submitting...' : 'Submit Entry'}
-                                </button>
                             </div>
                         </div>
                     </div>
