@@ -64,6 +64,13 @@ export default function ListingDetails({ sharedId }) {
 
         async function getInfo() {
             const myListing = await GetAdvertisementDetails(id)
+            
+            // Check if this is a campaign listing and redirect to campaign page
+            if (myListing && myListing.campaign_id) {
+                router.push(`/campaign/${myListing.campaign_id}`)
+                return
+            }
+            
             const categories = await GetCategories()
             const discounts = await GetDiscounts(id)
             const myProfile = await GetUserProfile()
@@ -169,7 +176,6 @@ export default function ListingDetails({ sharedId }) {
             const subscriptionId = await CreateCampaignSubscription(listingProperties.id,selectedCompany)
             setSubscriptionId(subscriptionId)
         } catch (error) {
-            console.log(error)
         }
         setIsPending(false)
     }

@@ -2,10 +2,12 @@ import axios from 'axios'
 import CategoryCard from '../categories/CategoryCard';
 import { useEffect, useState,useContext } from 'react'
 import { useRouter } from 'next/navigation'
+import { UserContext } from '@/app/layout'
 
 export default function CategoryForm({ ListingContext }) {
     const [categories, setCategories] = useState([]);
     const [listingProperties, setListingProperties] = useContext(ListingContext)
+    const [user, setUser] = useContext(UserContext)
     const router = useRouter()
 
 
@@ -16,9 +18,21 @@ export default function CategoryForm({ ListingContext }) {
         })
             .then(function (response) {
                 const allCategories = response.data
+                
                 const selectedCategories = []
                 allCategories.map((category) => {
                     if (category.parent_id === 0) {
+                        // Filter out campaign category (ID 23 or name contains 'Campaign') 
+                        // for regular users (userType !== 1)
+                        const isCampaignCategory = category.id === 23 || 
+                                                   category.name?.toLowerCase().includes('campaign')
+                        
+                        
+                        if (isCampaignCategory && user?.userType !== 1) {
+                            // Skip campaign category for regular users
+                            return
+                        }
+                        
                         selectedCategories.push(category)
                     }
                 })
@@ -27,7 +41,7 @@ export default function CategoryForm({ ListingContext }) {
             })
             .catch(function (error) {
             });
-    }, [])
+    }, [user?.userType])
     return (
         <div className='w-full h-full max-w-[800px] overflow-y-auto invisible_scroll_bar mx-auto flex flex-col '>
             <div className='flex flex-col'>

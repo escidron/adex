@@ -23,6 +23,7 @@ import { Progress } from '@/components/ui/progress'
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react'
 import { ListingContext, MachineStatesContext } from '../layout'
+import { UserContext } from '@/app/layout'
 import { checkCategoryType } from '@/utils/checkCategoryType'
 import { listingMachine, campaignMachine } from '@/utils/listingStatesmachine'
 import MediaTypesForm from '@/components/forms/MediaTypesForm'
@@ -39,6 +40,7 @@ const campaignRequiredFields = ['select_business', 'category', 'campaign_partici
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
     const [stateMachine, setStateMachine] = useContext(MachineStatesContext)
+    const [user, setUser] = useContext(UserContext)
     const [required, setRequired] = useState(false);
     const [isPending, setIsPending] = useState(false)
     const [isDraftPending, setIsDrafPending] = useState(false)
@@ -51,8 +53,16 @@ export default function Listing({ params }) {
     const router = useRouter();
 
     useEffect(() => {
-        const isCampaign = listingProperties.category === 28; // Campaign category ID
+        const isCampaign = listingProperties.category === 23; // Campaign category ID (corrected from 28 to 23)
         const fieldsToCheck = isCampaign ? campaignRequiredFields : requiredFields;
+        
+        // Prevent regular users from accessing campaign creation
+        // Use user from UserContext instead of userData which might be loaded later
+        if (isCampaign && user?.userType !== 1) {
+            toast.error("Only business users can create campaigns.")
+            router.push('/listing/create/category')
+            return
+        }
         
         if (fieldsToCheck.includes(step)) {
             if (step === 'campaign_participants_rewards' && isCampaign) {
@@ -122,7 +132,7 @@ export default function Listing({ params }) {
         if (typeof setIsPending !== 'function') return;
         setIsPending(true)
         let force = false
-        const isCampaign = listingProperties.category === 28;
+        const isCampaign = listingProperties.category === 23;
         const machine = isCampaign ? campaignMachine : listingMachine;
         let nextRoute = machine.states[stateMachine.currentState].NEXT
         let isValid = machine.states[nextRoute].ISVALID
@@ -145,7 +155,7 @@ export default function Listing({ params }) {
         if (typeof setIsPending !== 'function') return;
         setIsPending(true)
         let force = false
-        const isCampaign = listingProperties.category === 28;
+        const isCampaign = listingProperties.category === 23;
         const machine = isCampaign ? campaignMachine : listingMachine;
         let nextRoute = machine.states[stateMachine.currentState].PREVIOUS
         let isValid = machine.states[nextRoute].ISVALID
@@ -166,7 +176,7 @@ export default function Listing({ params }) {
     const validRoute = (url, direction) => {
         let nextRoute
         let force = false
-        const isCampaign = listingProperties.category === 28;
+        const isCampaign = listingProperties.category === 23;
         const machine = isCampaign ? campaignMachine : listingMachine;
         switch (url) {
             case 'building_assets':
@@ -223,7 +233,7 @@ export default function Listing({ params }) {
 
                 break;
             case 'campaign_parameters':
-                if (listingProperties.category === 999) { // Campaign category
+                if (listingProperties.category === 23) { // Campaign category (corrected ID)
                     nextRoute = machine.states[url][direction];
                 } else {
                     nextRoute = url;
@@ -231,7 +241,7 @@ export default function Listing({ params }) {
                 }
                 break;
             case 'campaign_details':
-                if (listingProperties.category == 24) {
+                if (listingProperties.category == 23) { // Campaign category (corrected from 24 to 23)
                     nextRoute = url;
                     force = true
                 } else {
@@ -326,7 +336,6 @@ export default function Listing({ params }) {
 
             })
             .catch(function (error) {
-                console.log('error', error)
                 toast.error(error.response.data.error)
                 setIsPending(false)
                 setIsDrafPending(false)
@@ -342,7 +351,6 @@ export default function Listing({ params }) {
             return;
         }
         
-        console.log('📤 Creating campaign with properties:', listingProperties);
         
         const campaignData = {
             name: listingProperties.title,
@@ -355,7 +363,6 @@ export default function Listing({ params }) {
             company_id: listingProperties.select_business,
         };
         
-        console.log('📋 Campaign data to send:', campaignData);
 
         // Add images if present
         if (listingProperties.images && listingProperties.images.length > 0) {
@@ -370,22 +377,18 @@ export default function Listing({ params }) {
             { withCredentials: true }
         )
         .then(function (response) {
-            console.log('✅ Campaign creation response:', response.data);
             toast.success('Campaign created successfully!')
             
             // Send invoice email automatically - exact same logic as original
             if (response.data && response.data.data && response.data.data.id) {
-              console.log('🔄 Redirecting to invoice page...');
               router.push(`/campaign/${response.data.data.id}/invoice?sendEmail=true`);
             } else {
-              console.log('❌ No campaign ID in response');
               router.push('/campaign');
             }
             setIsPending(false)
         })
         .catch(function (error) {
-            console.error('❌ Campaign creation error:', error);
-            console.error('❌ Error response:', error.response?.data);
+            console.error('Campaign creation error:', error);
             toast.error('Failed to create campaign. Please try again.')
             setIsPending(false)
         });
@@ -453,7 +456,7 @@ export default function Listing({ params }) {
 
             <div className="bg-white shadow-sm border text-gray-700 h-[120px] justify-end fixed bottom-0 left-0 w-full">
                 <Progress
-                    value={(step === 'campaign_details' || (step === 'images' && listingProperties.category === 28)) ? 100 : (stateMachine.currentStep / (listingProperties.category === 28 ? campaignMachine.totalSteps : stateMachine.totalSteps)) * 100}
+                    value={(step === 'campaign_details' || (step === 'images' && listingProperties.category === 23)) ? 100 : (stateMachine.currentStep / (listingProperties.category === 23 ? campaignMachine.totalSteps : stateMachine.totalSteps)) * 100}
                     className='w-full rounded-none h-[10px] animate-in'
                 />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
@@ -475,7 +478,7 @@ export default function Listing({ params }) {
                         onClick={() => {
                             if (step === 'preview' && typeof createListing === 'function') {
                                 createListing(false);
-                            } else if ((step === 'campaign_details' || (step === 'images' && listingProperties.category === 28)) && typeof createNewCampaign === 'function') {
+                            } else if ((step === 'campaign_details' || (step === 'images' && listingProperties.category === 23)) && typeof createNewCampaign === 'function') {
                                 createNewCampaign();
                             } else if (typeof handleNext === 'function') {
                                 handleNext();
@@ -488,7 +491,7 @@ export default function Listing({ params }) {
                                 <Loader2 size={18} className='animate-spin' />
                             )
                         }
-                        {(step === 'preview' || step === 'campaign_details' || (step === 'images' && listingProperties.category === 28)) ? 'Create Campaign' : 'Next'}
+                        {(step === 'preview' || step === 'campaign_details' || (step === 'images' && listingProperties.category === 23)) ? 'Create Campaign' : 'Next'}
                     </Button>
                 </div>
             </div>

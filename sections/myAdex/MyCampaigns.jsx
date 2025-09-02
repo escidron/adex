@@ -32,10 +32,8 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
   }, [])
 
   const fetchAllCampaigns = async () => {
-    console.log('Fetching campaigns...')
     try {
       // Fetch user's created campaigns
-      console.log('Fetching created campaigns...')
       const createdResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/my-campaigns`,
         { withCredentials: true }
@@ -43,7 +41,6 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
       setCreatedCampaigns(createdResponse.data.data || [])
       
       // Fetch campaigns user participated in
-      console.log('Fetching participated campaigns...')
       const participatedResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participated`,
         { withCredentials: true }

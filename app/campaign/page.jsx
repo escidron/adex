@@ -27,7 +27,6 @@ export default function EventMarketPage() {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns`,
                 { withCredentials: true }
             )
-            console.log('Campaigns response with image data:', response.data.data.map(c => ({id: c.id, name: c.name, images: c.images})))
             setCampaigns(response.data.data)
             setIsLoading(false)
         } catch (error) {
@@ -123,7 +122,6 @@ export default function EventMarketPage() {
                           fill
                           className="object-cover"
                           onError={(e) => {
-                            console.error(`Failed to load image for campaign ${campaign.id}:`, campaign.image_gallery);
                             e.target.src = "/no-image.png";
                           }}
                         />

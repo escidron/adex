@@ -61,7 +61,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                     )
                 }
                 {
-                    item.status === 2 && item.category_id != 24 && (
+                    item.status === 2 && item.category_id != 23 && (
 
                         <div className='bg-white text-black rounded-xl absolute top-2 left-2 text-[10px] px-2 py-1 font-semibold'>
                             {`${days} days left`}
@@ -100,7 +100,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                 </div>
                 <div className='flex justify-between items-center mt-auto'>
                     {
-                        item.category_id != 24 && item.category_id != 999 ? (
+                        item.category_id != 23 && item.category_id != 999 ? (
                             <div className='flex mt-auto text-[20px] font-[600] justify-between items-center '>
                                 {
                                     item.category_id == 7 ? (
@@ -114,7 +114,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                                     )
                                 }
                             </div>
-                        ) : (item.category_id === 24 || item.category_id === 28) ? (
+                        ) : (item.category_id === 23) ? (
                             <div className='flex flex-col gap-1 text-sm'>
                                 <div className='flex items-center gap-2'>
                                     <span className='text-[#FCD33B] font-semibold'>${item.reward_amount || 'N/A'}</span>
@@ -180,7 +180,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         }
 
                         {
-                            (item.category_id === 24 || item.category_id === 28) && isListingView && (
+                            (item.category_id === 23) && isListingView && (
                                 <div onClick={(e) => {
                                     e.stopPropagation()
                                     router.push(`/campaign/admin/${item.id}`)
@@ -191,7 +191,7 @@ export default function Card({ item, route, deleteListing, updateRatingStastus, 
                         }
 
                         {
-                            ((item.status == 1 || item.status == 0 || item.status == 5) && isListingView && item.category_id !== 24 && item.category_id !== 28) && (
+                            ((item.status == 1 || item.status == 0 || item.status == 5) && isListingView && item.category_id !== 23) && (
                                 <>
                                     <div onClick={(e) => {
                                         e.stopPropagation()
