@@ -6,6 +6,7 @@ import AddAccountModals from '@/components/addAccount/AddAccountModals'
 import TabsComponent from '@/components/tabs/TabsComponent'
 import MyListing from './MyListing'
 import MyBookings from './MyBookings'
+import MyCampaigns from './MyCampaigns'
 import GetMyAdvertisement from '@/actions/GetMyAdvertisement'
 import GetMyBookings from '@/actions/GetMyBookings'
 import GetPendingBookings from '@/actions/GetPendingBookins'
@@ -39,6 +40,7 @@ export default function MyAdex() {
 
   const [listingData, setListingData] = useState([]);
   const [bookingData, setBookingData] = useState([]);
+  const [campaignData, setCampaignData] = useState([]);
   const [refresh, setRefresh] = useState(false)
   const searchParams = useSearchParams()
   const subTab = searchParams.get('sub-tab')
@@ -132,6 +134,8 @@ export default function MyAdex() {
 
       if (subTab == '1') {
         setValue(1)
+      } else if (subTab == '2') {
+        setValue(2)
       }
     }
     getInfo();
@@ -236,12 +240,13 @@ export default function MyAdex() {
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData={(newData) => setListingData(newData)} />
               <MyBookings label='My Booking' data={bookingData} status={bookingStatus} isContentLoaded={isContentLoaded} setBookingData={(newData) => setBookingData(newData)} />
+              <MyCampaigns label='My Campaigns' data={campaignData} status={{}} isContentLoaded={isContentLoaded} setCampaignData={(newData) => setCampaignData(newData)} />
             </TabsComponent>
           </RefreshContext.Provider>
         </div>
         
         {
-          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == '0' && dueInfo?.length > 0 && (
+          isContentLoaded && hasPayoutMethod && !sellerAccountIsAccepted && listingData.length > 0 && value == 0 && dueInfo?.length > 0 && (
 
             <Card className='w-full mt-[50px] 2xl:max-w-[560px] h-fit ml-[80px] mx-auto ' >
               <CardHeader>

@@ -1,38 +1,76 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast"
 import { CheckCircle, Clock } from 'lucide-react'
+import { UserContext } from '@/app/layout'
+import { useRouter } from 'next/navigation'
 
 export default function CampaignAdminPage({params}) {
+    const router = useRouter()
+    const [user] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)
     const [participants, setParticipants] = useState([])
+    const [campaign, setCampaign] = useState(null)
+    const [hasAccess, setHasAccess] = useState(false)
 
     useEffect(() => {
-        fetchParticipants()
+        fetchCampaignAndParticipants()
     }, [])
 
-    const fetchParticipants = async () => {
+    const fetchCampaignAndParticipants = async () => {
         try {
-            const response = await axios.get(
+            // First, fetch campaign details to check ownership
+            const campaignResponse = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}`,
+                { withCredentials: true }
+            )
+            const campaignData = campaignResponse.data.data
+            setCampaign(campaignData)
+            
+            // Check if current user owns this campaign
+            const isOwner = checkCampaignOwnership(campaignData)
+            
+            if (!isOwner) {
+                toast.error('Access denied. You can only manage your own campaigns.')
+                router.push('/my-profile?tab=5&sub-tab=1') // Redirect to My Campaigns
+                return
+            }
+            
+            setHasAccess(true)
+            
+            // If user has access, fetch participants
+            const participantsResponse = await axios.get(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}/participants`,
                 { withCredentials: true }
             )
-            console.log('Participants raw data:', response.data.data)
             
-            const activeParticipants = response.data.data.filter(p => p.deleted_at === null)
-            console.log('Active participants:', activeParticipants)
-            
+            const activeParticipants = participantsResponse.data.data.filter(p => p.deleted_at === null)
             const uniqueParticipants = Array.from(new Set(activeParticipants.map(p => p.id)))
                 .map(id => activeParticipants.find(p => p.id === id))
             
             setParticipants(uniqueParticipants || [])
             setIsLoading(false)
         } catch (error) {
-            console.error('Error fetching participants:', error)
-            toast.error(error.response?.data?.error || 'Failed to load participants')
+            console.error('Error fetching campaign data:', error)
+            toast.error(error.response?.data?.error || 'Failed to load campaign data')
+            router.push('/my-profile?tab=5&sub-tab=1')
             setIsLoading(false)
         }
+    }
+
+    const checkCampaignOwnership = (campaign) => {
+        if (!user.userId || !campaign) return false
+        
+        // Check various possible owner field names
+        const ownerFields = ['creator_id', 'user_id', 'owner_id', 'created_by']
+        for (const field of ownerFields) {
+            if (campaign[field] && campaign[field] === user.userId) {
+                return true
+            }
+        }
+        
+        return false
     }
 
     const handleCheckClick = async (submissionId) => {
@@ -112,6 +150,18 @@ export default function CampaignAdminPage({params}) {
         )
     }
 
+    // If user doesn't have access, don't render the page
+    if (!hasAccess) {
+        return (
+            <div className="w-full min-h-screen flex justify-center items-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-semibold text-gray-700 mb-4">Access Denied</h1>
+                    <p className="text-gray-500">Redirecting to your campaigns...</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="min-h-screen bg-white">
             <div><Toaster /></div>
@@ -128,7 +178,7 @@ export default function CampaignAdminPage({params}) {
                                     <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">User Name</th>
                                     <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">SNS URL</th>
                                     <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Submitted At</th>
-                                    <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Check Status</th>
+                                    <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Verify Status</th>
                                     <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Reward Status</th>
                                     <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Actions</th>
                                 </tr>
@@ -148,14 +198,18 @@ export default function CampaignAdminPage({params}) {
                                                     <span className="font-medium">{participant.user_name}</span>
                                                 </td>
                                                 <td className="py-4 px-6">
-                                                    <a 
-                                                        href={participant.sns_url} 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer"
-                                                        className="text-blue-600 hover:underline"
-                                                    >
-                                                        {participant.sns_url}
-                                                    </a>
+                                                    {participant.sns_url ? (
+                                                        <a 
+                                                            href={participant.sns_url} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:underline"
+                                                        >
+                                                            {participant.sns_url}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="text-gray-400 italic">Not submitted yet</span>
+                                                    )}
                                                 </td>
                                                 <td className="py-4 px-6 text-gray-500">
                                                     {new Date(participant.submitted_at).toLocaleString()}
@@ -170,7 +224,7 @@ export default function CampaignAdminPage({params}) {
                                                             {participant.is_checked ? (
                                                                 <span className="flex items-center gap-1">
                                                                     <CheckCircle size={12} />
-                                                                    Checked
+                                                                    Verified
                                                                 </span>
                                                             ) : (
                                                                 <span className="flex items-center gap-1">
@@ -206,14 +260,15 @@ export default function CampaignAdminPage({params}) {
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => handleCheckClick(participant.id)}
-                                                            disabled={participant.is_checked === 1}
+                                                            disabled={participant.is_checked === 1 || !participant.sns_url}
                                                             className={`px-4 py-2 rounded ${
-                                                                participant.is_checked === 1
+                                                                participant.is_checked === 1 || !participant.sns_url
                                                                     ? 'bg-gray-300 cursor-not-allowed'
                                                                     : 'bg-blue-500 hover:bg-blue-600 text-white'
                                                             }`}
+                                                            title={!participant.sns_url ? 'SNS URL not submitted yet' : ''}
                                                         >
-                                                            Check
+                                                            Verify
                                                         </button>
                                                         <button
                                                             onClick={() => handleRewardClick(participant.id)}

@@ -10,7 +10,7 @@ import { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../app/layout';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2, Wallet } from 'lucide-react';
+import { Bell, BookmarkCheck, Building2, HelpCircle, List, LogIn, LogOut, Mail, Menu, MessageSquare, Store, User2, UserPlus2, Wallet, Megaphone } from 'lucide-react';
 import { Button } from '../ui/button';
 
 export default function NavBar() {
@@ -260,6 +260,10 @@ export default function NavBar() {
                         <Link href="/my-profile?tab=5&sub-tab=1" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
                             <BookmarkCheck size={20} />
                             My Bookings
+                        </Link>
+                        <Link href="/my-profile?tab=5&sub-tab=2" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
+                            <Megaphone size={20} />
+                            My Campaigns
                         </Link>
                         {
                             user.userType == '2' && (

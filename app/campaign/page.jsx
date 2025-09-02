@@ -27,7 +27,6 @@ export default function EventMarketPage() {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns`,
                 { withCredentials: true }
             )
-            console.log('Campaigns response with image data:', response.data.data.map(c => ({id: c.id, name: c.name, images: c.images})))
             setCampaigns(response.data.data)
             setIsLoading(false)
         } catch (error) {
@@ -87,16 +86,6 @@ export default function EventMarketPage() {
                   <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
                     Discover and participate in exclusive ADEX events
                   </h1>
-                  {/* Only show 'Add New Campaign' button if the user is a business user */}
-                  {user && user.userType === 1 && (
-                  <Button
-                    onClick={handleAddClick}
-                    variant="secondary"
-                    className="bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black"
-                  >
-                    + Add New Campaign
-                  </Button>
-                  )}
                 </div>
                 {/* Filter toggle for past campaigns */}
                 <div className="flex items-center mb-6">
@@ -133,7 +122,6 @@ export default function EventMarketPage() {
                           fill
                           className="object-cover"
                           onError={(e) => {
-                            console.error(`Failed to load image for campaign ${campaign.id}:`, campaign.image_gallery);
                             e.target.src = "/no-image.png";
                           }}
                         />
@@ -157,13 +145,16 @@ export default function EventMarketPage() {
                             >
                               enter
                             </Button>
-                            <Button
-                              onClick={() => handleValidateClick(campaign.id)}
-                              variant="outline"
-                              className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10 flex-1"
-                            >
-                              validate
-                            </Button>
+                            {/* Only show Validate button if the user is a business user and the creator of the campaign */}
+                            {user && user.userType === 1 && campaign.created_by === user.userId && (
+                              <Button
+                                onClick={() => handleValidateClick(campaign.id)}
+                                variant="outline"
+                                className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10 flex-1"
+                              >
+                                validate
+                              </Button>
+                            )}
                               {/* Only show Delete button if the user is a business user and the creator of the campaign */}
                               {user && user.userType === 1 && campaign.created_by === user.userId && (
                             <Button

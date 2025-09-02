@@ -5,13 +5,12 @@ import ListingHeaderPrice from './ListingHeaderPrice'
 import RatingComponent from '@/components/rating/RatingComponent'
 
 export default function ListingHeader({ listingProperties, advertisementType, hasPaymentBox }) {
-    console.log('sub_category', listingProperties.sub_category)
     return (
         <>
             <div className='mt-2 flex flex-col md:flex-row md:justify-between md:items-center'>
                 <h1 className='text-[20px] md:text-[28px] font-[500] line-clamp-1'>{listingProperties.title}</h1>
                 {
-                    listingProperties.sub_category != '24' && (
+                    listingProperties.sub_category != '23' && (
 
                         <div className='hidden md:flex'>
                             <ListingHeaderPrice
@@ -30,7 +29,7 @@ export default function ListingHeader({ listingProperties, advertisementType, ha
                 <p className='text-[12px] text-gray-600 mb-1'>({listingProperties.amount_reviews ? listingProperties.amount_reviews : 0})</p>
             </div>
             {
-                listingProperties.sub_category != '24' && (
+                listingProperties.sub_category != '23' && (
                     <div className='md:hidden mt-4'>
                         <ListingHeaderPrice
                             hasPaymentBox={hasPaymentBox}

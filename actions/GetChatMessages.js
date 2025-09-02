@@ -9,24 +9,24 @@ export default async function GetChatMessages(key) {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ key: key }),
-
+          body: JSON.stringify({ key: key || null }),
         }
       );
   
       if (response.status === 200) {
         const res = await response.json();
-        if (res.messages.length > 0) {
-          const messages = res.messages;
+        const messages = res.messages || res.data || res || [];
+        
+        if (messages && messages.length > 0) {
           return messages;
         } else {
           return [];
         }
       } else {
-        return null;
+        return [];
       }
     } catch (error) {
-      console.log(error);
-      return null;
+      console.error('Failed to fetch chat messages:', error);
+      return [];
     }
   }

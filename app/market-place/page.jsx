@@ -124,14 +124,16 @@ export default function MarketPlace() {
       }
       const isKeyFound = findKeyWords(ad, key, categories)
 
+
       const filterConditions = [
-        distance < radius || radius == 2000 || ad.category_id == 7 || ad.category_id == 24,
+        distance < radius || radius == 2000 || ad.category_id == 7 || ad.category_id == 23,
         type ? typeArray.includes(ad.category_id) : true,
         adGroup ? ad.created_by_type == adGroup : true,
-        (ad.price >= priceMin && ad.price <= priceMax),
+        ad.category_id == 23 ? true : (ad.price >= priceMin && ad.price <= priceMax),
         key ? isKeyFound : true
 
       ];
+      
       return filterConditions.every(condition => condition);
     });
   }, [allData, located, coords, type, adGroup, priceMin, priceMax, router, radius, key, latitude, longitude]);

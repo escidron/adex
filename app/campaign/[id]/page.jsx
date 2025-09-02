@@ -7,19 +7,23 @@ import toast, { Toaster } from "react-hot-toast"
 import { UserContext } from '@/app/layout'
 import ReactMarkdown from 'react-markdown'
 import validator from 'validator';
+import SendChatMessage from '@/actions/SendChatMessage'
+import { Button } from '@/components/ui/button'
+import { SendHorizontal, Loader2 } from 'lucide-react'
 
 export default function EventDetailPage({ params }) {
     const router = useRouter()
     const [user, setUser] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)
     const [campaign, setCampaign] = useState(null)
-    const [snsUrl, setSnsUrl] = useState('')
-    const [snsUrlError, setSnsUrlError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [hasParticipated, setHasParticipated] = useState(false)
+    const [message, setMessage] = useState('')
+    const [isSendingMessage, setIsSendingMessage] = useState(false)
 
     useEffect(() => {
         fetchCampaignDetails()
-    }, [params.id])
+    }, [params.id, user.isLogged])
 
     const fetchCampaignDetails = async () => {
         try {
@@ -27,8 +31,19 @@ export default function EventDetailPage({ params }) {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}`,
                 { withCredentials: true }
             )
-            console.log('캠페인 상세 응답:', response.data)
-            setCampaign(response.data.data)
+            // Check if campaign has advertisement_id from backend integration
+            const campaignData = response.data.data
+            
+            if (!campaignData.advertisement_id) {
+                // If no advertisement_id, this might be an old campaign - using fallback ID
+            }
+            
+            setCampaign(campaignData)
+
+            // Check if user has already participated in this campaign
+            if (user.isLogged) {
+                await checkParticipationStatus()
+            }
         } catch (error) {
             toast.error(error.response?.data?.error || 'Failed to load campaign details', {
                 duration: 3000,
@@ -39,21 +54,34 @@ export default function EventDetailPage({ params }) {
         }
     }
 
-    const handleSubmit = async () => {
+    const checkParticipationStatus = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participated`,
+                { withCredentials: true }
+            )
+            
+            // Check if current campaign is in the participated campaigns list
+            const participatedCampaigns = response.data.data || []
+            const hasParticipated = participatedCampaigns.some(
+                participation => {
+                    const campaignId = participation.campaign_id || participation.campaign?.id
+                    return campaignId === parseInt(params.id)
+                }
+            )
+            
+            setHasParticipated(hasParticipated)
+        } catch (error) {
+            console.error('Failed to check participation status:', error)
+            // If API fails, assume not participated to allow registration attempt
+            setHasParticipated(false)
+        }
+    }
+
+    const handleRegister = async () => {
         if (!user.isLogged) {
             router.push('/login')
             return
-        }
-
-        // URL format validation using validator.js
-        if (!snsUrl) {
-            setSnsUrlError('SNS post URL is required.');
-            return;
-        } else if (!validator.isURL(snsUrl, { require_protocol: true })) {
-            setSnsUrlError('Please enter a valid SNS post URL.');
-            return;
-        } else {
-            setSnsUrlError('');
         }
 
         setIsSubmitting(true)
@@ -62,13 +90,20 @@ export default function EventDetailPage({ params }) {
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participate`,
                 {
                     campaign_id: params.id,
-                    sns_url: snsUrl
+                    sns_url: '' // Empty for now, will be submitted later
                 },
                 { withCredentials: true }
             )
-            router.push('/campaign/success')
+            toast.success('Successfully registered for the campaign! You can submit your SNS link from My Profile.', {
+                duration: 4000,
+                style: { fontWeight: 500 }
+            })
+            setHasParticipated(true)
+            setTimeout(() => {
+                router.push('/my-profile?tab=5&sub-tab=2')
+            }, 2000)
         } catch (error) {
-            toast.error(error.response?.data?.error || 'Failed to submit participation', {
+            toast.error(error.response?.data?.error || 'Failed to register for campaign', {
                 duration: 3000,
                 style: { fontWeight: 500 }
             })
@@ -93,6 +128,50 @@ export default function EventDetailPage({ params }) {
                 duration: 3000,
                 style: { fontWeight: 500 }
             });
+        }
+    };
+
+    const handleSendMessage = async () => {
+        if (!user.isLogged) {
+            router.push('/login')
+            return
+        }
+
+        if (!message.trim()) {
+            toast.error('Please enter a message')
+            return
+        }
+
+        setIsSendingMessage(true)
+        try {
+            // Use advertisement_id if available (backend integration), otherwise use fallback
+            let messageId
+            if (campaign.advertisement_id) {
+                messageId = Number(campaign.advertisement_id)
+            } else {
+                // Use campaign ID directly as fallback
+                messageId = parseInt(params.id)
+            }
+            
+            await SendChatMessage(
+                user.userId,           // sended_by
+                campaign.created_by,   // seller_id (campaign creator)
+                user.userId,          // buyer_id (person asking)
+                messageId,            // advertisement_id or fallback ID
+                message,
+                []                    // no files for now
+            )
+            
+            setMessage('')
+            toast.success('Message sent successfully!')
+            
+            // Redirect to messages page to see the conversation
+            const messageKey = `${messageId}${campaign.created_by}${user.userId}`
+            router.push(`/messages?key=${messageKey}`)
+        } catch (error) {
+            toast.error('Failed to send message')
+        } finally {
+            setIsSendingMessage(false)
         }
     };
 
@@ -135,7 +214,6 @@ export default function EventDetailPage({ params }) {
                                 className="w-full object-cover h-full rounded-lg"
                                 priority
                                 onError={(e) => {
-                                    console.error(`Failed to load image:`, campaign.image_gallery);
                                     e.target.src = "/no-image.png";
                                 }}
                             />
@@ -215,28 +293,89 @@ export default function EventDetailPage({ params }) {
                                 </div>
                             </div>
 
-                            <div className="pt-6 bg-white rounded-lg shadow-sm p-6">
-                                <h3 className="text-xl font-semibold mb-4">Submit Your Entry</h3>
+                            {/* Message Section - Similar to listing's "Have questions?" */}
+                            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                                <h3 className="text-xl font-semibold mb-4">Have questions about this campaign?</h3>
                                 <p className="text-gray-600 mb-4">
-                                    Share your SNS post URL below to participate in this campaign. Your submission will be reviewed by our team.
+                                    Feel free to reach out to the campaign organizer via a message.
                                 </p>
-                                <input 
-                                    type="text" 
-                                    value={snsUrl}
-                                    onChange={(e) => setSnsUrl(e.target.value)}
-                                    placeholder="Enter your SNS post URL"
-                                    className="w-full p-3 border border-gray-300 rounded-lg mb-4"
-                                />
-                                {snsUrlError && (
-                                    <div className="text-red-600 text-sm mb-2">{snsUrlError}</div>
+                                <div className="space-y-4">
+                                    <textarea
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        placeholder="Ask about campaign requirements, rewards, or any other details..."
+                                        className="w-full min-h-[120px] p-3 border rounded-lg resize-none focus:outline-none focus:border-black"
+                                        disabled={!user.isLogged}
+                                    />
+                                    <div className="flex justify-end">
+                                        <Button 
+                                            onClick={handleSendMessage}
+                                            disabled={!user.isLogged || !message.trim() || isSendingMessage}
+                                            className="px-6 py-2 flex items-center gap-2"
+                                        >
+                                        {isSendingMessage ? (
+                                            <>
+                                                <Loader2 className="animate-spin" size={16} />
+                                                Sending...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <SendHorizontal size={16} />
+                                                Send Message
+                                            </>
+                                        )}
+                                        </Button>
+                                    </div>
+                                    {!user.isLogged && (
+                                        <p className="text-sm text-gray-500 text-center">
+                                            Please log in to send a message to the campaign organizer.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Join Campaign Section - Moved to bottom */}
+                            <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+                                {user.isLogged ? (
+                                    // Logged in users see Register section
+                                    <>
+                                        <h3 className="text-xl font-semibold mb-4">Join This Campaign</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Register to participate in this campaign. After registration, you can submit your SNS post link from your profile page.
+                                        </p>
+                                        <div className="flex justify-center">
+                                            <button 
+                                                onClick={handleRegister}
+                                                disabled={isSubmitting || hasParticipated}
+                                                className="px-8 py-2 bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {hasParticipated ? 'Already Registered' : isSubmitting ? 'Registering...' : 'Register'}
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    // Non-logged in users see Enter section
+                                    <>
+                                        <h3 className="text-xl font-semibold mb-4">Explore This Campaign</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Learn more about this campaign. Please log in to participate and register.
+                                        </p>
+                                        <div className="flex justify-center">
+                                            <button 
+                                                onClick={() => {
+                                                    toast.error("Please log in to participate in this campaign.", {
+                                                        duration: 3000,
+                                                        style: { fontWeight: 500 }
+                                                    });
+                                                    router.push('/login');
+                                                }}
+                                                className="px-8 py-2 bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold"
+                                            >
+                                                Enter
+                                            </button>
+                                        </div>
+                                    </>
                                 )}
-                                <button 
-                                    onClick={handleSubmit}
-                                    disabled={isSubmitting}
-                                    className="w-full bg-black text-white py-4 rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {isSubmitting ? 'Submitting...' : 'Submit Entry'}
-                                </button>
                             </div>
                         </div>
                     </div>
