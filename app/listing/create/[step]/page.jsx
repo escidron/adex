@@ -491,7 +491,8 @@ export default function Listing({ params }) {
                                 <Loader2 size={18} className='animate-spin' />
                             )
                         }
-                        {(step === 'preview' || step === 'campaign_details' || (step === 'images' && listingProperties.category === 23)) ? 'Create Campaign' : 'Next'}
+                        {((step === 'preview' && listingProperties.category !== 23) ? 'Create Listing' : 
+                          (step === 'campaign_details' || (step === 'images' && listingProperties.category === 23) || (step === 'preview' && listingProperties.category === 23)) ? 'Create Campaign' : 'Next')}
                     </Button>
                 </div>
             </div>

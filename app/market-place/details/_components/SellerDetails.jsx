@@ -14,7 +14,7 @@ export default function SellerDetails({sellerId, sellerProfile, companyProfile }
     return (
         <div>
             {
-                sellerProfile.userType == 1 ? (
+                sellerProfile.userType == 1 && companyProfile ? (
                     <div className='flex flex-col gap-2'>
                         <p className='text-[26px]'>Seller</p>
                         <div className="flex items-center">
@@ -45,6 +45,21 @@ export default function SellerDetails({sellerId, sellerProfile, companyProfile }
                                 </div>
                             </div>
                             <Button onClick={() => router.push(`/market-place/seller-details?id=${companyProfile.user_id}&company_id=${companyProfile.id}`)} size='sm' variant='outline' className='ml-auto'>Seller Details</Button>
+                        </div>
+                    </div>
+                ) : sellerProfile.userType == 1 && !companyProfile ? (
+                    <div className='flex flex-col gap-2'>
+                        <p className='text-[26px]'>Seller</p>
+                        <div className="flex items-center">
+                            <div className="bg-black text-white font-[600] rounded-full w-10 h-10 flex justify-center items-center">
+                                ?
+                            </div>
+                            <div className='ml-2'>
+                                <p className="text-[24px]">Company Profile Unavailable</p>
+                                <div className="flex items-center justify-start">
+                                    <p className="text-gray-500 text-sm">Company information not found</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ) : (
