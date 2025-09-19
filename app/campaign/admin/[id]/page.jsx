@@ -86,7 +86,7 @@ export default function CampaignAdminPage({params}) {
             )
             console.log('Check response:', response.data)
             toast.success('Successfully checked submission')
-            await fetchParticipants()
+            await fetchCampaignAndParticipants()
         } catch (error) {
             console.error('Error updating check status:', error)
             toast.error(error.response?.data?.error || 'Failed to check submission')
@@ -109,7 +109,7 @@ export default function CampaignAdminPage({params}) {
 
             // API call was successful
             toast.success('Reward sent successfully')
-            await fetchParticipants()
+            await fetchCampaignAndParticipants()
         } catch (error) {
             console.error('Error updating reward status:', error)
             console.error('Error response:', error.response?.data)
@@ -176,8 +176,8 @@ export default function CampaignAdminPage({params}) {
                             <thead>
                                 <tr className="bg-gray-50 border-b">
                                     <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">User Name</th>
-                                    <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">SNS URL</th>
-                                    <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Submitted At</th>
+                                    <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Social Media Link</th>
+                                    <th className="py-4 px-6 text-left text-sm font-semibold text-gray-900">Timestamp</th>
                                     <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Verify Status</th>
                                     <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Reward Status</th>
                                     <th className="py-4 px-6 text-center text-sm font-semibold text-gray-900">Actions</th>

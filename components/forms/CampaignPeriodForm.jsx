@@ -49,9 +49,9 @@ export default function CampaignPeriodForm({ ListingContext }) {
                     <div className='mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200'>
                         <h3 className='font-semibold text-lg mb-2 text-blue-800'>Campaign Duration</h3>
                         <div className='text-sm text-blue-700'>
-                            <p><strong>Duration:</strong> {Math.ceil((new Date(listingProperties.end_date) - new Date(listingProperties.start_date)) / (1000 * 60 * 60 * 24))} days</p>
-                            <p className='mt-1'><strong>From:</strong> {new Date(listingProperties.start_date).toLocaleDateString()}</p>
-                            <p><strong>To:</strong> {new Date(listingProperties.end_date).toLocaleDateString()}</p>
+                            <p><strong>Duration:</strong> {Math.ceil((new Date(listingProperties.end_date + 'T00:00:00') - new Date(listingProperties.start_date + 'T00:00:00')) / (1000 * 60 * 60 * 24)) + 1} days</p>
+                            <p className='mt-1'><strong>From:</strong> {new Date(listingProperties.start_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
+                            <p><strong>To:</strong> {new Date(listingProperties.end_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}</p>
                         </div>
                     </div>
                 )}

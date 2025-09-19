@@ -107,18 +107,18 @@ const campaignMachine = {
             ISVALID: true
         },
         title: {
-            NEXT: 'description',
+            NEXT: 'campaign_description',
             PREVIOUS: 'campaign_period',
             ISVALID: true
         },
-        description: {
+        campaign_description: {
             NEXT: 'images',
             PREVIOUS: 'title',
             ISVALID: true
         },
         images: {
             NEXT: 'images', // Final step for campaign creation
-            PREVIOUS: 'description',
+            PREVIOUS: 'campaign_description',
             ISVALID: true
         }
     }

@@ -13,7 +13,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 
-export default function MyCampaigns({ label, data = [], status = {}, isContentLoaded, setCampaignData }) {
+export default function MyCampaigns({ label, data = [], status = {}, isContentLoaded, setCampaignData, selectedCompanyId, userType }) {
   const router = useRouter()
   const [user] = useContext(UserContext)
   const [createdCampaigns, setCreatedCampaigns] = useState([])
@@ -29,7 +29,7 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
 
   useEffect(() => {
     fetchAllCampaigns()
-  }, [])
+  }, [selectedCompanyId])
 
   const fetchAllCampaigns = async () => {
     try {
@@ -38,17 +38,30 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/my-campaigns`,
         { withCredentials: true }
       )
-      setCreatedCampaigns(createdResponse.data.data || [])
-      
+
+      let filteredCampaigns = createdResponse.data.data || []
+
+      // For business users (userType === 1), filter campaigns by selected company
+      if (userType === 1 && selectedCompanyId) {
+        filteredCampaigns = filteredCampaigns.filter(campaign => {
+          // Check various possible company field names
+          return campaign.company_id === selectedCompanyId ||
+                 campaign.creator_company_id === selectedCompanyId ||
+                 campaign.company === selectedCompanyId
+        })
+      }
+
+      setCreatedCampaigns(filteredCampaigns)
+
       // Fetch campaigns user participated in
       const participatedResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/participated`,
         { withCredentials: true }
       )
       setParticipatedCampaigns(participatedResponse.data.data || [])
-      
+
       if (setCampaignData) {
-        setCampaignData(createdResponse.data.data || [])
+        setCampaignData(filteredCampaigns)
       }
     } catch (error) {
       console.error('Failed to fetch campaigns:', error.response?.data || error.message)
@@ -195,7 +208,7 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
             <h3 className="text-lg font-semibold mb-2">No Campaigns Created</h3>
             <p className="text-gray-500 mb-4">You haven't created any campaigns yet</p>
             <Button
-              onClick={() => router.push('/campaign/create')}
+              onClick={() => router.push('/listing/create/1')}
               className="bg-[#FCD33B] hover:bg-[#FCD33B]/90 text-black"
             >
               Create Your First Campaign
@@ -423,7 +436,7 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
       </div>
 
       <Box sx={{ width: '100%' }}>
-        {user.userType === 1 ? (
+        {userType === 1 ? (
           // Business users see both tabs
           <>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
