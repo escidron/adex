@@ -359,7 +359,7 @@ export default function Listing({ params }) {
             return;
         }
 
-        if (!listingProperties.description) {
+        if (!listingProperties.campaign_description) {
             toast.error('Please enter a campaign description!');
             setIsPending(false)
             return;
@@ -383,7 +383,7 @@ export default function Listing({ params }) {
 
         const campaignData = {
             name: listingProperties.title,
-            description: listingProperties.description,
+            description: listingProperties.campaign_description,
             max_participants: maxParticipants,
             start_date: listingProperties.start_date,
             end_date: listingProperties.end_date,

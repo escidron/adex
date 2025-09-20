@@ -14,9 +14,9 @@ export default function CampaignDescriptionForm({ ListingContext }) {
     const handleDescription = (description) => {
         //quill component render this when is empty
         if(description == '<p><br></p>'){
-            setListingProperties({ ...listingProperties, description: '' })
+            setListingProperties({ ...listingProperties, campaign_description: '' })
         }else{
-            setListingProperties({ ...listingProperties, description: description })
+            setListingProperties({ ...listingProperties, campaign_description: description })
         }
     }
 
@@ -70,7 +70,7 @@ export default function CampaignDescriptionForm({ ListingContext }) {
                     </div>
                     <div className='mt-4'>
                         <TextAreaEditor
-                            value={listingProperties.description}
+                            value={listingProperties.campaign_description}
                             onChange={(description) => handleDescription(description)}
                             placeholder="Example: Participants will create and share a social media post featuring our product. The post must include our campaign hashtag #YourHashtag and tag our official account @YourAccount. After posting, participants will submit the link to their post for verification..."
                         />

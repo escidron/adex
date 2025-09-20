@@ -3,7 +3,7 @@ export default async function CreateCampaign(listingProperties, selectedCompany)
   try {
       const campaignData = {
         name: listingProperties.title, // Map title to name
-        description: listingProperties.description,
+        description: listingProperties.campaign_description || listingProperties.description,
         max_participants: parseInt(listingProperties.max_participants),
         start_date: listingProperties.start_date,
         end_date: listingProperties.end_date,

@@ -245,6 +245,12 @@ export default function NavBar() {
                             <User2 size={20} />
                             Profile
                         </Link>
+                        {user.userType == 0 && (
+                            <Link href="/admin-dashboard" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>
+                                <User2 size={20} />
+                                Admin Dashboard
+                            </Link>
+                        )}
                         {
                             user.userType == '1' && (
                                 <Link href="/my-profile?tab=6" className={`${user.isLogged ? 'flex' : 'hidden'} gap-2 items-center w-full px-4 py-2  cursor-pointer hover:bg-[#FCD33B] hover:text-black`}>

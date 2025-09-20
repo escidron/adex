@@ -19,6 +19,7 @@ import GalleryImage from '../../components/gallery-image/GalleryImage'
 import GalleryCarrousel from '@/components/gallery-image/GalleryCarrousel'
 import ImageLoader from '@/components/ImageLoader/ImageLoader'
 import ImageImporter from '@/components/gallery-image/imageImporter'
+import AddCompanyModal from '@/sections/companies/AddCompanyModal'
 import { ArrowLeft, BookmarkCheck, ImageIcon, LineChart, MapPin, FileText } from 'lucide-react'
 import { menuOptions } from '@/utils/companyAccountOptions'
 import GetMyBookings from '@/actions/GetMyBookings'
@@ -42,6 +43,8 @@ export default function MyCompanyPage() {
     const [balance, setBalance] = useState(null);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
     const [invoices, setInvoices] = useState([]);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [refetchCompany, setRefetchCompany] = useState(false);
 
     const [status, setStatus] = useState({
         available: 0,
@@ -129,7 +132,7 @@ export default function MyCompanyPage() {
         if (id) {
             fetchInvoices();
         }
-    }, [id]);
+    }, [id, refetchCompany]);
 
     useEffect(() => {
         if (images.length > 0) {
@@ -317,6 +320,24 @@ export default function MyCompanyPage() {
                                         <p className='text-gray-400 text-sm mt-1'>Invoices will appear here after creating campaigns</p>
                                     </div>
                                 )}
+                            </>
+                        )
+                    }
+                    {
+                        selectedOption == 5 && (
+                            <>
+                                <div className='w-full max-w-[500px] mx-auto'>
+                                    <h1 className='text-[26px] mb-4 text-center'>Edit Company Profile</h1>
+                                    <AddCompanyModal
+                                        setAddCompany={(show) => {
+                                            if (!show) {
+                                                router.push(`/my-company?id=${id}`)
+                                            }
+                                        }}
+                                        setRefetch={(refresh) => setRefetchCompany(refresh)}
+                                        editCompany={company}
+                                    />
+                                </div>
                             </>
                         )
                     }
