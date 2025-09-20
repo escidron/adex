@@ -103,6 +103,9 @@ export default function EventMarketPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {campaigns
                     .filter(campaign => {
+                      // Only show active campaigns
+                      if (campaign.status !== 'active') return false;
+
                       if (showPast) return true;
                       // Hide campaigns whose end_date is before today
                       const today = new Date();

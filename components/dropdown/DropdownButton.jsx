@@ -7,9 +7,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 export default function DropDownButton({ label,itens,dropDownSelected,setDropDownSelected,disabled = false }) {
 
   const handleChange = (event) => {
-    if (!disabled) {
-      setDropDownSelected(event.target.value);
-    }
+    setDropDownSelected(event.target.value);
   };
   return (
     <FormControl sx={{ minWidth: 120,width:'100%',height:'100%' }} size="small">
