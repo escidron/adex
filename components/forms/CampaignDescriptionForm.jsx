@@ -42,7 +42,7 @@ export default function CampaignDescriptionForm({ ListingContext }) {
                         For campaigns, please provide as much detail as possible to include:
                         <ul className='list-disc list-inside mt-2 text-sm'>
                             <li>What the campaign for</li>
-                            <li>What you'd like the participant to do</li>
+                            <li>What you&apos;d like the participant to do</li>
                             <li>What the reward is</li>
                         </ul>
                         
@@ -98,7 +98,7 @@ export default function CampaignDescriptionForm({ ListingContext }) {
                         For campaigns, please provide as much detail as possible to include:
                         <ul className='list-disc list-inside mt-2 text-sm'>
                             <li>What the campaign for</li>
-                            <li>What you'd like the participant to do</li>
+                            <li>What you&apos;d like the participant to do</li>
                             <li>What the reward is</li>
                         </ul>
 
