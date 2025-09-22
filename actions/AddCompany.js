@@ -1,5 +1,5 @@
-export default async function AddCompany(name,image,address,industry,hasPhysicalSpace,editCompany,id) {
-    
+export default async function AddCompany(name,phone,email,image,address,industry,hasPhysicalSpace,editCompany,id) {
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/${editCompany ? 'edit-company' : 'add-company'}`,
@@ -7,11 +7,13 @@ export default async function AddCompany(name,image,address,industry,hasPhysical
           method: "POST",
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'        
+            'Content-Type': 'application/json'
           },
           credentials: "include",
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             name,
+            phone,
+            email,
             image,
             address,
             industry,

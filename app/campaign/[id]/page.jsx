@@ -341,7 +341,7 @@ export default function EventDetailPage({ params }) {
                                     <>
                                         <h3 className="text-xl font-semibold mb-4">Join This Campaign</h3>
                                         <p className="text-gray-600 mb-4">
-                                            Register to participate in this campaign. After registration, you can submit your SNS post link from your profile page.
+                                            Register to participate in this campaign. After registration, you can submit your Social Media link from your profile page.
                                         </p>
                                         <div className="flex justify-center">
                                             <button 

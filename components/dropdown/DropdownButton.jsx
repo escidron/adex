@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function DropDownButton({ label,itens,dropDownSelected,setDropDownSelected }) {
+export default function DropDownButton({ label,itens,dropDownSelected,setDropDownSelected,disabled = false }) {
 
   const handleChange = (event) => {
     setDropDownSelected(event.target.value);
@@ -18,6 +18,7 @@ export default function DropDownButton({ label,itens,dropDownSelected,setDropDow
         value={dropDownSelected}
         label={label}
         onChange={handleChange}
+        disabled={disabled}
         sx={{height:'100%'}}
       >
         {

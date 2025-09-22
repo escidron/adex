@@ -41,6 +41,7 @@ export default function MyAdex() {
   const [listingData, setListingData] = useState([]);
   const [bookingData, setBookingData] = useState([]);
   const [campaignData, setCampaignData] = useState([]);
+  const [allCampaigns, setAllCampaigns] = useState([]);
   const [refresh, setRefresh] = useState(false)
   const searchParams = useSearchParams()
   const subTab = searchParams.get('sub-tab')
@@ -132,6 +133,12 @@ export default function MyAdex() {
       setIsContentLoaded(true)
       setCompanies(companies)
 
+      // Initialize campaign data to be filtered later
+      if (companies.length > 0 && user.userType == 1) {
+        setCampaignData([])
+        setAllCampaigns([])
+      }
+
       if (subTab == '1') {
         setValue(1)
       } else if (subTab == '2') {
@@ -194,7 +201,10 @@ export default function MyAdex() {
     const newBookings = allBookings.filter(item => item.requested_by_company == id)
     setBookingData(newBookings)
 
-    //use for both
+    //use for campaign filter
+    // Note: campaigns will be filtered in MyCampaigns component based on selectedCompanyId
+
+    //use for all
     setSelectedCompany(selectedCompany.company_name)
     setSelectedCompanyId(selectedCompany.id)
 
@@ -240,7 +250,15 @@ export default function MyAdex() {
             <TabsComponent value={value} setValue={(value) => setValue(value)}>
               <MyListing label='My Listing' data={listingData} status={status} isContentLoaded={isContentLoaded} setListingData={(newData) => setListingData(newData)} />
               <MyBookings label='My Booking' data={bookingData} status={bookingStatus} isContentLoaded={isContentLoaded} setBookingData={(newData) => setBookingData(newData)} />
-              <MyCampaigns label='My Campaigns' data={campaignData} status={{}} isContentLoaded={isContentLoaded} setCampaignData={(newData) => setCampaignData(newData)} />
+              <MyCampaigns
+                label='My Campaigns'
+                data={campaignData}
+                status={{}}
+                isContentLoaded={isContentLoaded}
+                setCampaignData={(newData) => setCampaignData(newData)}
+                selectedCompanyId={selectedCompanyId}
+                userType={user.userType}
+              />
             </TabsComponent>
           </RefreshContext.Provider>
         </div>

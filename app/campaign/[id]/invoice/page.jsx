@@ -26,20 +26,29 @@ export default function CampaignInvoicePage({ params }) {
           `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}`,
           { withCredentials: true }
         );
-        setCampaign(response.data.data);
+        const campaignData = response.data.data;
+        setCampaign(campaignData);
+
+        // Fetch specific company data using campaign's company_id
+        if (campaignData && campaignData.company_id) {
+          await fetchCompanyData(campaignData.company_id);
+        }
       } catch (error) {
         console.error('Error fetching campaign:', error);
       }
     }
 
-    // Fetch company data for the logged-in user
-    async function fetchCompanyData() {
+    // Fetch specific company data by company_id
+    async function fetchCompanyData(companyId) {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/get-companies`,
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_SERVER_IP}/api/users/my-company`,
+          { id: companyId },
           { withCredentials: true }
         );
         console.log('Company API response:', response.data);
+        console.log('Company data structure:', response.data);
+        console.log('Is array?', Array.isArray(response.data));
         setCompanyData(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
@@ -47,22 +56,21 @@ export default function CampaignInvoicePage({ params }) {
     }
 
     fetchCampaign();
-    fetchCompanyData();
   }, [params.id]);
 
   // Auto-send email once when redirected from campaign creation
   useEffect(() => {
     const shouldSendEmail = searchParams.get('sendEmail');
-    
-    if (shouldSendEmail === 'true' && campaign && !isAutoSending && !autoSendStatus) {
+
+    if (shouldSendEmail === 'true' && campaign && companyData && !isAutoSending && !autoSendStatus) {
       console.log('🚀 Auto-sending email once...');
       setIsAutoSending(true);
-      
+
       setTimeout(async () => {
         await sendInvoiceEmail();
       }, 1000);
     }
-  }, [campaign]);
+  }, [campaign, companyData]);
 
   // Common PDF generation function for consistent results
   const generateInvoicePDF = async () => {
@@ -126,6 +134,12 @@ export default function CampaignInvoicePage({ params }) {
     if (!campaign) {
       console.log('❌ No campaign data');
       setAutoSendStatus('❌ Missing campaign data');
+      return;
+    }
+
+    if (!companyData) {
+      console.log('❌ No company data, waiting...');
+      setAutoSendStatus('❌ Missing company data');
       return;
     }
 
@@ -216,13 +230,24 @@ export default function CampaignInvoicePage({ params }) {
 
   const savePDFToCompany = async (pdfBase64, filename) => {
     try {
-      if (!companyData || companyData.length === 0) {
+      console.log('💾 Company data in savePDF:', companyData);
+      console.log('💾 Company data type:', typeof companyData);
+      console.log('💾 Is array?', Array.isArray(companyData));
+
+      if (!companyData) {
         console.log('❌ No company data available');
         return;
       }
 
+      // Handle both array and single object cases
+      const company = Array.isArray(companyData) ? companyData[0] : companyData;
+      if (!company || !company.id) {
+        console.log('❌ No valid company data available', company);
+        return;
+      }
+
       const saveData = {
-        company_id: companyData[0].id,
+        company_id: company.id,
         campaign_id: params.id,
         campaign_name: campaign.name,
         pdf_base64: pdfBase64,
@@ -439,7 +464,6 @@ export default function CampaignInvoicePage({ params }) {
             <h4 className="font-bold text-lg mb-3">Questions</h4>
             <div className="space-y-2 text-sm">
               <div>Email: info@adexconnect.com</div>
-              <div>Call: (555) 703-2339</div>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import SubCategoryForm from '@/components/forms/SubCategoryForm'
 import TitleForm from '@/components/forms/TitleForm'
 import LocationForm from '@/components/forms/LocationForm'
 import DescriptionForm from '@/components/forms/DescriptionForm'
+import CampaignDescriptionForm from '@/components/forms/CampaignDescriptionForm'
 import PriceForm from '@/components/forms/PriceForm'
 import DiscountsForm from '@/components/forms/DiscountsForm'
 import DateForm from '@/components/forms/DateForm'
@@ -35,7 +36,7 @@ import CreateCampaign from '@/actions/CreateCampaign'
 
 
 const requiredFields = ['select_business', 'category', 'sub_category', 'media_types', 'title', 'location', 'description', 'price', 'images']
-const campaignRequiredFields = ['select_business', 'category', 'campaign_participants_rewards', 'campaign_period', 'title', 'description']
+const campaignRequiredFields = ['select_business', 'category', 'campaign_participants_rewards', 'campaign_period', 'title', 'campaign_description']
 
 export default function Listing({ params }) {
     const [listingProperties, setListingProperties] = useContext(ListingContext)
@@ -350,16 +351,44 @@ export default function Listing({ params }) {
             setIsPending(false)
             return;
         }
-        
-        
+
+        // Validate required fields
+        if (!listingProperties.title) {
+            toast.error('Please enter a campaign title!');
+            setIsPending(false)
+            return;
+        }
+
+        if (!listingProperties.campaign_description) {
+            toast.error('Please enter a campaign description!');
+            setIsPending(false)
+            return;
+        }
+
+        // Validate and parse numeric fields
+        const maxParticipants = parseInt(listingProperties.max_participants);
+        const rewardAmount = parseInt(listingProperties.reward_amount);
+
+        if (isNaN(maxParticipants) || maxParticipants <= 0) {
+            toast.error('Please enter a valid number of participants!');
+            setIsPending(false)
+            return;
+        }
+
+        if (isNaN(rewardAmount) || rewardAmount <= 0) {
+            toast.error('Please enter a valid reward amount!');
+            setIsPending(false)
+            return;
+        }
+
         const campaignData = {
             name: listingProperties.title,
-            description: listingProperties.description,
-            max_participants: parseInt(listingProperties.max_participants),
+            description: listingProperties.campaign_description,
+            max_participants: maxParticipants,
             start_date: listingProperties.start_date,
             end_date: listingProperties.end_date,
-            reward_amount: parseInt(listingProperties.reward_amount),
-            budget: parseInt(listingProperties.max_participants) * parseInt(listingProperties.reward_amount),
+            reward_amount: rewardAmount,
+            budget: maxParticipants * rewardAmount,
             company_id: listingProperties.select_business,
         };
         
@@ -389,7 +418,29 @@ export default function Listing({ params }) {
         })
         .catch(function (error) {
             console.error('Campaign creation error:', error);
-            toast.error('Failed to create campaign. Please try again.')
+            
+            // More specific error messages
+            if (error.response) {
+                const statusCode = error.response.status;
+                const errorMessage = error.response.data?.message || error.response.data?.error;
+                
+                if (statusCode === 400) {
+                    toast.error(errorMessage || 'Invalid campaign data. Please check your inputs.');
+                } else if (statusCode === 401) {
+                    toast.error('You are not authorized. Please log in again.');
+                } else if (statusCode === 403) {
+                    toast.error('You do not have permission to create campaigns.');
+                } else if (statusCode === 500) {
+                    toast.error('Server error. Please try again later.');
+                } else {
+                    toast.error(errorMessage || 'Failed to create campaign. Please try again.');
+                }
+            } else if (error.request) {
+                toast.error('Network error. Please check your connection.');
+            } else {
+                toast.error('Failed to create campaign. Please try again.');
+            }
+            
             setIsPending(false)
         });
     }
@@ -445,6 +496,7 @@ export default function Listing({ params }) {
                 {step === 'media_types' && <MediaTypesForm ListingContext={ListingContext} />}
                 {step === 'title' && <TitleForm ListingContext={ListingContext} />}
                 {step === 'location' && <LocationForm ListingContext={ListingContext} />}
+                {step === 'campaign_description' && <CampaignDescriptionForm ListingContext={ListingContext} />}
                 {step === 'description' && <DescriptionForm ListingContext={ListingContext} />}
                 {step === 'price' && <PriceForm ListingContext={ListingContext} />}
                 {step === 'discounts' && <DiscountsForm ListingContext={ListingContext} />}

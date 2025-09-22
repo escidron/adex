@@ -58,6 +58,16 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
             errors.name = 'Required';
         }
 
+        if (!values.phone) {
+            errors.phone = 'Required';
+        }
+
+        if (!values.email) {
+            errors.email = 'Required';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            errors.email = 'Invalid email address';
+        }
+
         if (dropDownSelected == '') {
             errors.industry = 'Required';
         }
@@ -68,7 +78,6 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
         if (selected === null && hasPhysicalSpace === '2') {
             errors.address = 'Required';
         }
-        console.log(errors)
         return errors;
     };
 
@@ -76,6 +85,8 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
     const formik = useFormik({
         initialValues: {
             name: editCompany ? editCompany.company_name : '',
+            phone: editCompany ? editCompany.phone : '',
+            email: editCompany ? editCompany.email : '',
             image: images,
             address: editCompany ? editCompany.address : address,
             industry: editCompany ? 99 : dropDownSelected,
@@ -86,6 +97,8 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
             setIsPending(true)
             const returnMessage = await AddCompany(
                 values.name,
+                values.phone,
+                values.email,
                 images.length > 0 ? images[0].data_url : '',
                 address,
                 dropDownSelected,
@@ -132,6 +145,28 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
                             />
 
                             {formik.touched.name && formik.errors.name ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.name}</div> : null}
+                        </div>
+                        <div className="relative mt-6 w-full text-black">
+                            <TextField
+                                id='phone'
+                                label='Phone Number'
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.phone}
+                                errors={formik.errors.phone}
+                            />
+                            {formik.touched.phone && formik.errors.phone ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.phone}</div> : null}
+                        </div>
+                        <div className="relative mt-6 w-full text-black">
+                            <TextField
+                                id='email'
+                                label='Email Address'
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.email}
+                                errors={formik.errors.email}
+                            />
+                            {formik.touched.email && formik.errors.email ? <div className="absolute text-[12px] top-[55px] text-red-600 font-bold">{formik.errors.email}</div> : null}
                         </div>
                         <div className='relative w-full mt-6 h-[55px] '>
                             <DropDownButton
@@ -209,17 +244,19 @@ export default function AddCompanyModal({ setAddCompany, setRefetch, editCompany
                             </div>
                             {formik.touched.image && formik.errors.image ? <div className="absolute  top-[160px] text-red-600 font-bold text-[12px]">{formik.errors.image}</div> : null}
                         </div>
-                        <div className='w-full flex justify-between items-center mt-3'>
-                            <Button disabled={isPending} variant='outline' onClick={() => setAddCompany(false)} className='flex gap-2 items-center'>
-                                Cancel
-                            </Button>
+                        <div className={`w-full flex ${editCompany ? 'justify-center' : 'justify-between'} items-center mt-3`}>
+                            {!editCompany && (
+                                <Button disabled={isPending} variant='outline' onClick={() => setAddCompany(false)} className='flex gap-2 items-center'>
+                                    Cancel
+                                </Button>
+                            )}
                             <Button type="submit" disabled={isPending} className='flex gap-2 items-center'>
                                 {
                                     isPending && (
                                         <Loader2 size={18} className='animate-spin' />
                                     )
                                 }
-                                Register
+                                {editCompany ? 'Done' : 'Register'}
                             </Button>
                         </div>
                     </div>
