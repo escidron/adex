@@ -49,8 +49,15 @@ export default function MarketPlaceCard({ ad }) {
           )}
           
           {/* Status Badge */}
-          <span className={`text-white ${ad.status == "1" ? 'bg-green-600' : ad.status == "2" ? "bg-orange-600" : "bg-gray-600"} py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>
-            {ad.status == "1" ? 'Available' : ad.status == "2" ? 'Booked' : (ad.status == "4" && user.userId == ad.requested_by) ? 'Pending' : 'Currently Unavailable'}
+          <span className={`text-white ${
+            isCampaign
+              ? (ad.campaign_status === 'active' ? 'bg-green-600' : ad.campaign_status === 'planned' ? 'bg-blue-600' : 'bg-gray-600')
+              : (ad.status == "1" ? 'bg-green-600' : ad.status == "2" ? "bg-orange-600" : "bg-gray-600")
+          } py-[1px] px-[4px] text-[12px] font-[400] rounded-md`}>
+            {isCampaign
+              ? (ad.campaign_status === 'active' ? 'Active' : ad.campaign_status === 'planned' ? 'Planned' : 'Inactive')
+              : (ad.status == "1" ? 'Available' : ad.status == "2" ? 'Booked' : (ad.status == "4" && user.userId == ad.requested_by) ? 'Pending' : 'Currently Unavailable')
+            }
           </span>
         </div>
         <div className='style_card_info w-full h-1/2 p-[10px] mt-1'>
@@ -63,7 +70,7 @@ export default function MarketPlaceCard({ ad }) {
               <>
                 <Users size={14} color='gray' className='min-w-[14px]' />
                 <p className='text-[12px] text-gray-500 line-clamp-2'>
-                  {ad.max_participants ? `Up to ${ad.max_participants} participants` : 'Campaign Event'}
+                  {ad.max_participants ? `${ad.participant_count || 0}/${ad.max_participants} participants` : 'Campaign Event'}
                 </p>
               </>
             ) : (

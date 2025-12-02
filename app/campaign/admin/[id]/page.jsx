@@ -45,9 +45,10 @@ export default function CampaignAdminPage({params}) {
                 { withCredentials: true }
             )
             
-            const activeParticipants = participantsResponse.data.data.filter(p => p.deleted_at === null)
-            const uniqueParticipants = Array.from(new Set(activeParticipants.map(p => p.id)))
-                .map(id => activeParticipants.find(p => p.id === id))
+            // Include all participants (including rejected) for admin view
+            const allParticipants = participantsResponse.data.data.filter(p => p.deleted_at === null)
+            const uniqueParticipants = Array.from(new Set(allParticipants.map(p => p.id)))
+                .map(id => allParticipants.find(p => p.id === id))
             
             setParticipants(uniqueParticipants || [])
             setIsLoading(false)
@@ -123,21 +124,28 @@ export default function CampaignAdminPage({params}) {
     const handleRemoveClick = async (submissionId) => {
         console.log('Remove click - Submission ID:', submissionId)
         try {
-            const response = await axios.delete(
-                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/${params.id}/submissions/${submissionId}`,
+            const response = await axios.put(
+                `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/submissions/${submissionId}/reject`,
+                {
+                    status: 'rejected',
+                    note: "Submission rejected by campaign owner"
+                },
                 { withCredentials: true }
             )
-            console.log('Remove response:', response.data)
-            
-            toast.success('Participant removed successfully')
-            
-            setParticipants(prevParticipants => 
-                prevParticipants.filter(p => p.id !== submissionId)
+            console.log('Reject response:', response.data)
+
+            toast.success('Participant rejected successfully')
+
+            // Update local state to show rejected status
+            setParticipants(prevParticipants =>
+                prevParticipants.map(p =>
+                    p.id === submissionId ? { ...p, status: 'rejected' } : p
+                )
             )
         } catch (error) {
-            console.error('Error removing participant:', error)
-            
-            const errorMessage = error.response?.data?.message || 'Failed to remove participant'
+            console.error('Error rejecting participant:', error)
+
+            const errorMessage = error.response?.data?.error || 'Failed to reject participant'
             toast.error(errorMessage)
         }
     }
@@ -217,11 +225,17 @@ export default function CampaignAdminPage({params}) {
                                                 <td className="py-4 px-6 text-center">
                                                     <div className="flex flex-col items-center">
                                                         <span className={`px-2 py-1 rounded-full text-xs ${
-                                                            participant.is_checked
+                                                            participant.status === 'rejected'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : participant.is_checked
                                                             ? 'bg-green-100 text-green-800'
                                                             : 'bg-gray-100 text-gray-800'
                                                         }`}>
-                                                            {participant.is_checked ? (
+                                                            {participant.status === 'rejected' ? (
+                                                                <span className="flex items-center gap-1">
+                                                                    Rejected
+                                                                </span>
+                                                            ) : participant.is_checked ? (
                                                                 <span className="flex items-center gap-1">
                                                                     <CheckCircle size={12} />
                                                                     Verified
@@ -257,37 +271,46 @@ export default function CampaignAdminPage({params}) {
                                                     </div>
                                                 </td>
                                                 <td className="py-4 px-6">
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            onClick={() => handleCheckClick(participant.id)}
-                                                            disabled={participant.is_checked === 1 || !participant.sns_url}
-                                                            className={`px-4 py-2 rounded ${
-                                                                participant.is_checked === 1 || !participant.sns_url
-                                                                    ? 'bg-gray-300 cursor-not-allowed'
-                                                                    : 'bg-blue-500 hover:bg-blue-600 text-white'
-                                                            }`}
-                                                            title={!participant.sns_url ? 'SNS URL not submitted yet' : ''}
-                                                        >
-                                                            Verify
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleRewardClick(participant.id)}
-                                                            disabled={participant.is_checked === 0 || participant.is_rewarded === 1}
-                                                            className={`px-4 py-2 rounded ${
-                                                                participant.is_checked === 0 || participant.is_rewarded === 1
-                                                                    ? 'bg-gray-300 cursor-not-allowed'
-                                                                    : 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                                                            }`}
-                                                        >
-                                                            Reward
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleRemoveClick(participant.id)}
-                                                            className="px-4 py-2 rounded text-xs bg-red-500 hover:bg-red-600 text-white"
-                                                        >
-                                                            Remove
-                                                        </button>
-                                                    </div>
+                                                    {participant.status === 'rejected' ? (
+                                                        <span className="text-gray-400 italic">Rejected</span>
+                                                    ) : (
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={() => handleCheckClick(participant.id)}
+                                                                disabled={participant.is_checked === 1 || !participant.sns_url}
+                                                                className={`px-4 py-2 rounded ${
+                                                                    participant.is_checked === 1 || !participant.sns_url
+                                                                        ? 'bg-gray-300 cursor-not-allowed'
+                                                                        : 'bg-blue-500 hover:bg-blue-600 text-white'
+                                                                }`}
+                                                                title={!participant.sns_url ? 'SNS URL not submitted yet' : ''}
+                                                            >
+                                                                Verify
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleRewardClick(participant.id)}
+                                                                disabled={participant.is_checked === 0 || participant.is_rewarded === 1}
+                                                                className={`px-4 py-2 rounded ${
+                                                                    participant.is_checked === 0 || participant.is_rewarded === 1
+                                                                        ? 'bg-gray-300 cursor-not-allowed'
+                                                                        : 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                                                                }`}
+                                                            >
+                                                                Reward
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleRemoveClick(participant.id)}
+                                                                disabled={participant.is_rewarded === 1}
+                                                                className={`px-4 py-2 rounded text-xs ${
+                                                                    participant.is_rewarded === 1
+                                                                        ? 'bg-gray-300 cursor-not-allowed'
+                                                                        : 'bg-red-500 hover:bg-red-600 text-white'
+                                                                }`}
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </td>
                                             </tr>
                                         )

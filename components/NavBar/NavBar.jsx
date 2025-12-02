@@ -194,7 +194,7 @@ export default function NavBar() {
                                         className='w-8 h-8 rounded-full'
                                     />
                                 ) : (
-                                    <div className='w-8 h-8 rounded-full bg-[#FCD33B] text-black font-bold flex justify-center items-center border-2 border-[#FCD33B]'>{user.name.substring(0, 1).toUpperCase()}</div>
+                                    <div className='w-8 h-8 rounded-full bg-[#FCD33B] text-black font-bold flex justify-center items-center border-2 border-[#FCD33B]'>{user.name?.substring(0, 1).toUpperCase() || 'U'}</div>
                                 )
                             }
                         </div>
