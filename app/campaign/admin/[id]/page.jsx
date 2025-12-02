@@ -75,7 +75,6 @@ export default function CampaignAdminPage({params}) {
     }
 
     const handleCheckClick = async (submissionId) => {
-        console.log('Check click - Submission ID:', submissionId)
         try {
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/submissions/${submissionId}/check`,
@@ -85,7 +84,6 @@ export default function CampaignAdminPage({params}) {
                 },
                 { withCredentials: true }
             )
-            console.log('Check response:', response.data)
             toast.success('Successfully checked submission')
             await fetchCampaignAndParticipants()
         } catch (error) {
@@ -95,7 +93,6 @@ export default function CampaignAdminPage({params}) {
     }
 
     const handleRewardClick = async (submissionId) => {
-        console.log('Reward click - Submission ID:', submissionId)
         try {
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/submissions/${submissionId}/reward`,
@@ -105,8 +102,6 @@ export default function CampaignAdminPage({params}) {
                 },
                 { withCredentials: true }
             )
-            console.log('Full reward response:', response)
-            console.log('Reward response data:', response.data)
 
             // API call was successful
             toast.success('Reward sent successfully')
@@ -122,7 +117,6 @@ export default function CampaignAdminPage({params}) {
     }
 
     const handleRemoveClick = async (submissionId) => {
-        console.log('Remove click - Submission ID:', submissionId)
         try {
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/submissions/${submissionId}/reject`,
@@ -132,7 +126,6 @@ export default function CampaignAdminPage({params}) {
                 },
                 { withCredentials: true }
             )
-            console.log('Reject response:', response.data)
 
             toast.success('Participant rejected successfully')
 
@@ -193,14 +186,7 @@ export default function CampaignAdminPage({params}) {
                             </thead>
                             <tbody>
                                 {participants.length > 0 ? (
-                                    participants.map((participant) => {
-                                        console.log('Rendering participant row:', {
-                                            submission_id: participant.id,
-                                            campaign_id: participant.campaign_id,
-                                            is_checked: participant.is_checked,
-                                            is_rewarded: participant.is_rewarded
-                                        })
-                                        return (
+                                    participants.map((participant) => (
                                             <tr key={`submission-${participant.id}`} className="border-b hover:bg-gray-50">
                                                 <td className="py-4 px-6">
                                                     <span className="font-medium">{participant.user_name}</span>
@@ -313,8 +299,7 @@ export default function CampaignAdminPage({params}) {
                                                     )}
                                                 </td>
                                             </tr>
-                                        )
-                                    })
+                                    ))
                                 ) : (
                                     <tr>
                                         <td colSpan="6" className="py-8 text-center text-gray-500">

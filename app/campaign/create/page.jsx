@@ -107,8 +107,6 @@ export default function CreateCampaignPage() {
                 return;
             }
 
-            console.log('📤 Creating campaign with company:', selectedCompany);
-
             const campaignData = {
                 name: values.name,
                 description: values.description,
@@ -120,8 +118,6 @@ export default function CreateCampaignPage() {
                 budget: parseInt(values.maxParticipants) * parseInt(values.rewardAmount),
                 company_id: selectedCompany?.id,
             };
-
-            console.log('📋 Campaign data to send:', campaignData);
 
             // Add image if present
             if (values.image) {
@@ -138,15 +134,12 @@ export default function CreateCampaignPage() {
                 { withCredentials: true }
             )
                 .then(function (response) {
-                    console.log('✅ Campaign creation response:', response.data);
                     toast.success('Campaign created successfully!')
 
                     // Send invoice email automatically
                     if (response.data && response.data.data && response.data.data.id) {
-                        console.log('🔄 Redirecting to invoice page...');
                         router.push(`/campaign/${response.data.data.id}/invoice?sendEmail=true`);
                     } else {
-                        console.log('❌ No campaign ID in response');
                         router.push('/campaign');
                     }
                 })
@@ -185,7 +178,6 @@ export default function CreateCampaignPage() {
             reader.onloadend = () => {
                 setPreviewImage(reader.result);
                 formik.setFieldValue('image', reader.result);
-                console.log('Image loaded as base64:', reader.result.substring(0, 50) + '...');
             };
             reader.readAsDataURL(file);
         }
