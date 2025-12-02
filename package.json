@@ -26,7 +26,6 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toggle": "^1.0.3",
-    "@reach/combobox": "^0.18.0",
     "@react-google-maps/api": "^2.18.1",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.54.0",
