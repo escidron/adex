@@ -22,12 +22,12 @@ export default function ChatBox({ text, currentUser, time, file }) {
                   <Download size={18} onClick={async () => DownloadChatFiles(file)} />
                 </div>
               </div>
-              <p className="text-left">
+              <p className="text-left whitespace-pre-line">
                 {text}
               </p>
             </>
           ) : (
-            <p className="text-left">
+            <p className="text-left whitespace-pre-line">
               {text}
             </p>
 

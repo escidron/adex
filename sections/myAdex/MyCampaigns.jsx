@@ -348,21 +348,26 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
 
           // Determine overall status based on the participation data
           const getOverallStatus = () => {
-            // 4. Rewarded - highest priority
+            // 5. Rewarded - highest priority
             if (participation.reward_sent === true || participation.status === 'rewarded') {
               return { icon: Trophy, color: 'text-green-600 bg-green-100', label: 'Rewarded' }
             }
-            
-            // 3. Verified - approved but not rewarded yet  
+
+            // 4. Rejected
+            if (participation.status === 'rejected') {
+              return { icon: XCircle, color: 'text-red-600 bg-red-100', label: 'Rejected' }
+            }
+
+            // 3. Verified - approved but not rewarded yet
             if (participation.approved_at || participation.status === 'approved') {
               return { icon: CheckCircle, color: 'text-blue-600 bg-blue-100', label: 'Verified' }
             }
-            
+
             // 2. Submitted - has SNS URL but not verified yet
             if (participation.sns_url && participation.sns_url.trim() !== '') {
               return { icon: Send, color: 'text-orange-600 bg-orange-100', label: 'Submitted' }
             }
-            
+
             // 1. Not Submitted - registered but no SNS URL
             return { icon: Clock, color: 'text-gray-600 bg-gray-100', label: 'Not Submitted' }
           }

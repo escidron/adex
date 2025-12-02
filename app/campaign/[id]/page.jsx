@@ -341,15 +341,31 @@ export default function EventDetailPage({ params }) {
                                     <>
                                         <h3 className="text-xl font-semibold mb-4">Join This Campaign</h3>
                                         <p className="text-gray-600 mb-4">
-                                            Register to participate in this campaign. After registration, you can submit your Social Media link from your profile page.
+                                            {campaign.status === 'planned'
+                                                ? 'This campaign has not started yet. Please check back when the campaign begins.'
+                                                : 'Register to participate in this campaign. After registration, you can submit your Social Media link from your profile page.'
+                                            }
                                         </p>
                                         <div className="flex justify-center">
-                                            <button 
+                                            <button
                                                 onClick={handleRegister}
-                                                disabled={isSubmitting || hasParticipated}
-                                                className="px-8 py-2 bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                                disabled={isSubmitting || hasParticipated || campaign.status === 'planned' || (campaign.participant_count >= campaign.max_participants)}
+                                                className={`px-8 py-2 rounded-lg font-semibold transition-colors ${
+                                                    campaign.status === 'planned' || (campaign.participant_count >= campaign.max_participants)
+                                                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                        : 'bg-black text-white hover:bg-[#FCD33B] hover:text-black disabled:opacity-50 disabled:cursor-not-allowed'
+                                                }`}
                                             >
-                                                {hasParticipated ? 'Already Registered' : isSubmitting ? 'Registering...' : 'Register'}
+                                                {campaign.status === 'planned'
+                                                    ? 'Campaign Not Started'
+                                                    : (campaign.participant_count >= campaign.max_participants)
+                                                        ? 'Campaign Full'
+                                                        : hasParticipated
+                                                            ? 'Already Registered'
+                                                            : isSubmitting
+                                                                ? 'Registering...'
+                                                                : 'Register'
+                                                }
                                             </button>
                                         </div>
                                     </>
@@ -358,20 +374,29 @@ export default function EventDetailPage({ params }) {
                                     <>
                                         <h3 className="text-xl font-semibold mb-4">Explore This Campaign</h3>
                                         <p className="text-gray-600 mb-4">
-                                            Learn more about this campaign. Please log in to participate and register.
+                                            {campaign.status === 'planned'
+                                                ? 'This campaign has not started yet. Please check back when the campaign begins.'
+                                                : 'Learn more about this campaign. Please log in to participate and register.'
+                                            }
                                         </p>
                                         <div className="flex justify-center">
-                                            <button 
+                                            <button
                                                 onClick={() => {
+                                                    if (campaign.status === 'planned') return;
                                                     toast.error("Please log in to participate in this campaign.", {
                                                         duration: 3000,
                                                         style: { fontWeight: 500 }
                                                     });
                                                     router.push('/login');
                                                 }}
-                                                className="px-8 py-2 bg-black text-white rounded-lg hover:bg-[#FCD33B] hover:text-black transition-colors font-semibold"
+                                                disabled={campaign.status === 'planned'}
+                                                className={`px-8 py-2 rounded-lg font-semibold transition-colors ${
+                                                    campaign.status === 'planned'
+                                                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                                                        : 'bg-black text-white hover:bg-[#FCD33B] hover:text-black'
+                                                }`}
                                             >
-                                                Enter
+                                                {campaign.status === 'planned' ? 'Campaign Not Started' : 'Enter'}
                                             </button>
                                         </div>
                                     </>

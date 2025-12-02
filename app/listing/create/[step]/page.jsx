@@ -56,7 +56,7 @@ export default function Listing({ params }) {
     useEffect(() => {
         const isCampaign = listingProperties.category === 23; // Campaign category ID (corrected from 28 to 23)
         const fieldsToCheck = isCampaign ? campaignRequiredFields : requiredFields;
-        
+
         // Prevent regular users from accessing campaign creation
         // Use user from UserContext instead of userData which might be loaded later
         if (isCampaign && user?.userType !== 1) {
@@ -64,7 +64,7 @@ export default function Listing({ params }) {
             router.push('/listing/create/category')
             return
         }
-        
+
         if (fieldsToCheck.includes(step)) {
             if (step === 'campaign_participants_rewards' && isCampaign) {
                 if (!listingProperties.max_participants || listingProperties.max_participants <= 0 ||
@@ -80,10 +80,11 @@ export default function Listing({ params }) {
                     // Validate dates
                     const startDate = new Date(listingProperties.start_date);
                     const endDate = new Date(listingProperties.end_date);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    
-                    if (startDate < today || endDate <= startDate) {
+                    const checkDate = new Date();
+                    checkDate.setHours(0, 0, 0, 0);
+                    checkDate.setDate(checkDate.getDate() - 1);
+
+                    if (startDate < checkDate || endDate <= startDate) {
                         setRequired(true)
                     } else {
                         setRequired(false)
@@ -391,7 +392,7 @@ export default function Listing({ params }) {
             budget: maxParticipants * rewardAmount,
             company_id: listingProperties.select_business,
         };
-        
+
 
         // Add images if present
         if (listingProperties.images && listingProperties.images.length > 0) {
@@ -405,44 +406,44 @@ export default function Listing({ params }) {
             campaignData,
             { withCredentials: true }
         )
-        .then(function (response) {
-            toast.success('Campaign created successfully!')
-            
-            // Send invoice email automatically - exact same logic as original
-            if (response.data && response.data.data && response.data.data.id) {
-              router.push(`/campaign/${response.data.data.id}/invoice?sendEmail=true`);
-            } else {
-              router.push('/campaign');
-            }
-            setIsPending(false)
-        })
-        .catch(function (error) {
-            console.error('Campaign creation error:', error);
-            
-            // More specific error messages
-            if (error.response) {
-                const statusCode = error.response.status;
-                const errorMessage = error.response.data?.message || error.response.data?.error;
-                
-                if (statusCode === 400) {
-                    toast.error(errorMessage || 'Invalid campaign data. Please check your inputs.');
-                } else if (statusCode === 401) {
-                    toast.error('You are not authorized. Please log in again.');
-                } else if (statusCode === 403) {
-                    toast.error('You do not have permission to create campaigns.');
-                } else if (statusCode === 500) {
-                    toast.error('Server error. Please try again later.');
+            .then(function (response) {
+                toast.success('Campaign created successfully!')
+
+                // Send invoice email automatically - exact same logic as original
+                if (response.data && response.data.data && response.data.data.id) {
+                    router.push(`/campaign/${response.data.data.id}/invoice?sendEmail=true`);
                 } else {
-                    toast.error(errorMessage || 'Failed to create campaign. Please try again.');
+                    router.push('/campaign');
                 }
-            } else if (error.request) {
-                toast.error('Network error. Please check your connection.');
-            } else {
-                toast.error('Failed to create campaign. Please try again.');
-            }
-            
-            setIsPending(false)
-        });
+                setIsPending(false)
+            })
+            .catch(function (error) {
+                console.error('Campaign creation error:', error);
+
+                // More specific error messages
+                if (error.response) {
+                    const statusCode = error.response.status;
+                    const errorMessage = error.response.data?.message || error.response.data?.error;
+
+                    if (statusCode === 400) {
+                        toast.error(errorMessage || 'Invalid campaign data. Please check your inputs.');
+                    } else if (statusCode === 401) {
+                        toast.error('You are not authorized. Please log in again.');
+                    } else if (statusCode === 403) {
+                        toast.error('You do not have permission to create campaigns.');
+                    } else if (statusCode === 500) {
+                        toast.error('Server error. Please try again later.');
+                    } else {
+                        toast.error(errorMessage || 'Failed to create campaign. Please try again.');
+                    }
+                } else if (error.request) {
+                    toast.error('Network error. Please check your connection.');
+                } else {
+                    toast.error('Failed to create campaign. Please try again.');
+                }
+
+                setIsPending(false)
+            });
     }
     return (
         <div className="flex flex-col h-screen">
@@ -453,25 +454,25 @@ export default function Listing({ params }) {
                     <p className='hidden sm:flex sm:text-[18px] font-[600]'>{listingProperties.isDraft ? 'Finish Your Listing' : 'Create Listing'}</p>
                 </div>
                 <div className='flex gap-2 items-center'>
-                    <Button 
-                        variant='outline' 
-                        disabled={isDraftPending} 
+                    <Button
+                        variant='outline'
+                        disabled={isDraftPending}
                         onClick={() => {
                             if (typeof router?.push === 'function') {
                                 router.push('/');
                             }
-                        }} 
+                        }}
                         className='flex gap-2 items-center'
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        disabled={isDraftPending} 
+                    <Button
+                        disabled={isDraftPending}
                         onClick={() => {
                             if (typeof createListing === 'function') {
                                 createListing(true);
                             }
-                        }} 
+                        }}
                         className='flex gap-2 items-center'
                     >
                         {
@@ -512,14 +513,14 @@ export default function Listing({ params }) {
                     className='w-full rounded-none h-[10px] animate-in'
                 />
                 <div className='mt-4 w-full md:w-[600px] flex justify-between px-6 mx-auto'>
-                    <Button 
-                        disabled={(userData.userType == 2 && step === 'category') || isDraftPending || (userData.userType == 1 && step === 'select_business')} 
+                    <Button
+                        disabled={(userData.userType == 2 && step === 'category') || isDraftPending || (userData.userType == 1 && step === 'select_business')}
                         onClick={() => {
                             if (typeof handlePrevious === 'function') {
                                 handlePrevious();
                             }
-                        }} 
-                        variant='outline' 
+                        }}
+                        variant='outline'
                         className='flex gap-2'
                     >
                         <ChevronLeft size={18} />
@@ -543,8 +544,8 @@ export default function Listing({ params }) {
                                 <Loader2 size={18} className='animate-spin' />
                             )
                         }
-                        {((step === 'preview' && listingProperties.category !== 23) ? 'Create Listing' : 
-                          (step === 'campaign_details' || (step === 'images' && listingProperties.category === 23) || (step === 'preview' && listingProperties.category === 23)) ? 'Create Campaign' : 'Next')}
+                        {((step === 'preview' && listingProperties.category !== 23) ? 'Create Listing' :
+                            (step === 'campaign_details' || (step === 'images' && listingProperties.category === 23) || (step === 'preview' && listingProperties.category === 23)) ? 'Create Campaign' : 'Next')}
                     </Button>
                 </div>
             </div>
