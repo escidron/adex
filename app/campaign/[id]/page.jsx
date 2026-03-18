@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast"
 import { UserContext } from '@/app/layout'
-import ReactMarkdown from 'react-markdown'
 import validator from 'validator';
 import SendChatMessage from '@/actions/SendChatMessage'
 import { Button } from '@/components/ui/button'
@@ -249,9 +248,10 @@ export default function EventDetailPage({ params }) {
                         <div className="space-y-8">
                             <div>
                                 <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
-                                <div className="prose max-w-none mt-6">
-                                    <ReactMarkdown>{campaign.description}</ReactMarkdown>
-                                </div>
+                                <div
+                                    className="prose max-w-none mt-6"
+                                    dangerouslySetInnerHTML={{ __html: campaign.description }}
+                                />
                             </div>
                             
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
