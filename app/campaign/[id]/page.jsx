@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect, useContext } from 'react'
+import DOMPurify from 'dompurify'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -250,7 +251,7 @@ export default function EventDetailPage({ params }) {
                                 <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
                                 <div
                                     className="prose max-w-none mt-6"
-                                    dangerouslySetInnerHTML={{ __html: campaign.description }}
+                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(campaign.description) }}
                                 />
                             </div>
                             
