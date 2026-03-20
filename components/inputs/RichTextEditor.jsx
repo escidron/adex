@@ -80,13 +80,13 @@ export default function RichTextEditor({ value, onChange, error }) {
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
                     active={editor.isActive('bulletList')}
                 >
-                    • 목록
+                    • List
                 </ToolbarButton>
                 <ToolbarButton
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
                     active={editor.isActive('orderedList')}
                 >
-                    1. 목록
+                    1. List
                 </ToolbarButton>
             </div>
 

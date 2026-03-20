@@ -166,7 +166,7 @@ export default function MessagesPage() {
                                     <div className={`w-[90%] md:w-[60%] ${showMessages ? 'hidden md:flex' : 'flex'} flex-col gap-2`}>
 
                                         <div className='h-[200px] border shadow-sm w-full bg-slate-100 rounded-lg p-2 hidden lg:flex gap-4'>
-                                            {/* 이미지 영역 - 항상 공간 확보 */}
+                                            {/* Image area */}
                                             <div className='h-full min-w-[35%] max-w-[35%] flex-shrink-0'>
                                                 {selectedChat.advertisementImage ? (
                                                     <MultiImage images={selectedChat.advertisementImage} height={'180px'} remove={false} />
@@ -183,9 +183,9 @@ export default function MessagesPage() {
                                                 )}
                                             </div>
                                             
-                                            {/* 텍스트 정보 영역 */}
+                                            {/* Text info area */}
                                             <div className='flex-1 flex flex-col justify-between p-2 min-h-0'>
-                                                {/* 상단 텍스트 영역 */}
+                                                {/* Top text area */}
                                                 <div>
                                                     <h1 className='text-[24px] font-[600] mb-2'>{selectedChat.advertisementTitle}</h1>
                                                     <div className='flex gap-2 items-center mb-4'>
@@ -211,7 +211,7 @@ export default function MessagesPage() {
                                                     </div>
                                                 </div>
                                                 
-                                                {/* 하단 가격 영역 */}
+                                                {/* Bottom price area */}
                                                 <div className='mt-auto'>
                                                     {selectedChat.isCampaign ? (
                                                         <div className="flex flex-col">
