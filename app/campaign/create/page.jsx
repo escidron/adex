@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import GetCompanies from '@/actions/GetCompanies'
+import RichTextEditor from '@/components/inputs/RichTextEditor'
 
 export default function CreateCampaignPage() {
     // All hooks must be declared at the top level, before any conditional return
@@ -379,22 +380,14 @@ export default function CreateCampaignPage() {
                     {/* Description */}
                     <div>
                         <h2 className="text-xl font-semibold mb-4">Campaign Description</h2>
-                        <div className="relative">
-                            <textarea
-                                id="description"
-                                name="description"
-                                rows="6"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FCD33B] focus:border-transparent resize-none"
-                                placeholder="Describe your campaign..."
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.description}
-                            />
-                            {formik.touched.description && formik.errors.description ?
-                                <div className="absolute top-[140px] text-red-600 text-sm">{formik.errors.description}</div>
-                                : null}
-                        </div>
-
+                        <RichTextEditor
+                            value={formik.values.description}
+                            onChange={(html) => formik.setFieldValue('description', html)}
+                            error={formik.touched.description && formik.errors.description}
+                        />
+                        {formik.touched.description && formik.errors.description ?
+                            <div className="text-red-600 text-sm mt-1">{formik.errors.description}</div>
+                            : null}
                     </div>
 
                     {/* Submit and Cancel Buttons */}

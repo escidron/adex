@@ -279,7 +279,7 @@ export default function CampaignInvoicePage({ params }) {
       console.log('✅ PDF download completed');
     } catch (error) {
       console.error('❌ PDF download error:', error);
-      alert('PDF 생성 중 오류가 발생했습니다.');
+      alert('Failed to generate PDF. Please try again.');
     }
   };
 
