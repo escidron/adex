@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect, useContext } from 'react'
-import DOMPurify from 'dompurify'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -20,6 +19,7 @@ export default function EventDetailPage({ params }) {
     const [hasParticipated, setHasParticipated] = useState(false)
     const [message, setMessage] = useState('')
     const [isSendingMessage, setIsSendingMessage] = useState(false)
+    const [sanitizedDescription, setSanitizedDescription] = useState('')
 
     useEffect(() => {
         fetchCampaignDetails()
@@ -39,6 +39,9 @@ export default function EventDetailPage({ params }) {
             }
             
             setCampaign(campaignData)
+
+            const { default: DOMPurify } = await import('dompurify')
+            setSanitizedDescription(DOMPurify.sanitize(campaignData.description || ''))
 
             // Check if user has already participated in this campaign
             if (user.isLogged) {
@@ -247,51 +250,45 @@ export default function EventDetailPage({ params }) {
                     
                     <div className="p-6">
                         <div className="space-y-8">
-                            <div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+                                    <h3 className="text-sm font-medium text-gray-500 mb-1">Campaign Period</h3>
+                                    <span className="text-xl font-bold text-gray-900">
+                                        {new Date(campaign.start_date).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric'
+                                        })}
+                                        {' '} - {' '}
+                                        {new Date(campaign.end_date).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric'
+                                        })}
+                                    </span>
+                                </div>
+
+                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+                                    <h3 className="text-sm font-medium text-gray-500 mb-1">Reward Amount</h3>
+                                    <span className="text-2xl font-bold text-gray-900">
+                                        {`$ ${(Number(campaign.reward_amount)).toFixed(2)}`}
+                                    </span>
+                                </div>
+
+                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+                                    <h3 className="text-sm font-medium text-gray-500 mb-1">Maximum Participants</h3>
+                                    <span className="text-2xl font-bold text-gray-900">
+                                        {Number(campaign.max_participants)}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 rounded-lg shadow-sm p-6">
                                 <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
                                 <div
-                                    className="prose max-w-none mt-6"
-                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(campaign.description) }}
+                                    className="prose max-w-none"
+                                    dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
                                 />
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-                                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Campaign Period</h3>
-                                    <div className="flex items-center text-gray-700">
-                                        <span className="bg-[#FCD33B]/20 p-2 rounded-lg">
-                                            {new Date(campaign.start_date).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric'
-                                            })}
-                                            {' '} - {' '}
-                                            {new Date(campaign.end_date).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric'
-                                            })}
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-                                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Reward Amount</h3>
-                                    <div className="flex items-center text-gray-700">
-                                        <span className="bg-[#FCD33B]/20 p-2 rounded-lg font-semibold">
-                                            {`$ ${(Number(campaign.reward_amount)).toFixed(2)}`}
-                                        </span>
-                                    </div>
-                                </div>
-                                
-                                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-                                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Maximum Participants</h3>
-                                    <div className="flex items-center justify-between">
-                                        <span className="bg-[#FCD33B]/20 p-2 rounded-lg font-semibold">
-                                            {Number(campaign.max_participants)}
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Message Section - Similar to listing's "Have questions?" */}
