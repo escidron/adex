@@ -33,8 +33,12 @@ export default function RichTextEditor({ value, onChange, error }) {
     })
 
     useEffect(() => {
-        if (editor && value === '') {
+        if (!editor) return
+        const currentHTML = editor.getHTML()
+        if (value === '' || value === undefined) {
             editor.commands.clearContent()
+        } else if (value !== currentHTML) {
+            editor.commands.setContent(value, false)
         }
     }, [value, editor])
 

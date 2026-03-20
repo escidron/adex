@@ -19,7 +19,7 @@ export default function EventDetailPage({ params }) {
     const [hasParticipated, setHasParticipated] = useState(false)
     const [message, setMessage] = useState('')
     const [isSendingMessage, setIsSendingMessage] = useState(false)
-    const [sanitizedDescription, setSanitizedDescription] = useState('')
+    const [sanitizedDescription, setSanitizedDescription] = useState(null)
 
     useEffect(() => {
         fetchCampaignDetails()
@@ -285,10 +285,16 @@ export default function EventDetailPage({ params }) {
 
                             <div className="bg-gray-50 rounded-lg shadow-sm p-6">
                                 <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
-                                <div
-                                    className="prose max-w-none"
-                                    dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-                                />
+                                {sanitizedDescription === null ? (
+                                    <p className="text-gray-400 text-sm">Description unavailable.</p>
+                                ) : sanitizedDescription === '' ? (
+                                    <p className="text-gray-400 text-sm">No description provided.</p>
+                                ) : (
+                                    <div
+                                        className="prose max-w-none"
+                                        dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+                                    />
+                                )}
                             </div>
 
                             {/* Message Section - Similar to listing's "Have questions?" */}
