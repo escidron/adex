@@ -11,7 +11,14 @@ const inter = Inter({ subsets: ["latin"] });
 const abel = Abel({ subsets: ["latin"], weight: ["400"] });
 
 import dotenv from "dotenv";
+import axios from "axios";
 dotenv.config();
+
+// Attach the client token to every axios request so the backend can verify
+// the request originates from this frontend application.
+if (process.env.NEXT_PUBLIC_CLIENT_TOKEN) {
+  axios.defaults.headers.common['X-Client-Token'] = process.env.NEXT_PUBLIC_CLIENT_TOKEN;
+}
 
 export const UserContext = createContext();
 

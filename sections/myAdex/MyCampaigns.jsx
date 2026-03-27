@@ -120,55 +120,84 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
     setShowSnsModal(true)
   }
 
-  const isValidUrl = (string) => {
-    try {
-      const url = new URL(string);
-      return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch (_) {
-      return false;
+  const ALLOWED_SNS_HOSTNAMES = new Set([
+    'instagram.com', 'instagr.am',
+    'twitter.com', 'x.com',
+    'facebook.com', 'fb.com', 'fb.watch',
+    'tiktok.com', 'vm.tiktok.com',
+    'youtube.com', 'youtu.be',
+    'linkedin.com',
+    'snapchat.com',
+  ])
+
+  const BLOCKED_SCHEMES = ['javascript', 'data', 'vbscript', 'file']
+
+  const MAX_URL_LENGTH = 500
+
+  const normalizeSnsUrl = (raw) => {
+    const trimmed = raw.trim()
+    const schemeMatch = trimmed.match(/^([a-zA-Z][a-zA-Z0-9+\-.]*):\/?\/?/)
+    if (schemeMatch) {
+      const scheme = schemeMatch[1].toLowerCase()
+      if (BLOCKED_SCHEMES.includes(scheme)) return null
+      if (scheme === 'http') return 'https://' + trimmed.slice(schemeMatch[0].length)
+      return trimmed
     }
+    return 'https://' + trimmed
   }
 
-  const isValidSnsUrl = (url) => {
-    if (!isValidUrl(url)) return false;
-    
-    const snsPatterns = [
-      /^https?:\/\/(www\.)?(instagram\.com|instagr\.am)\//,
-      /^https?:\/\/(www\.)?twitter\.com\//,
-      /^https?:\/\/(www\.)?x\.com\//,
-      /^https?:\/\/(www\.)?facebook\.com\//,
-      /^https?:\/\/(www\.)?fb\.com\//,
-      /^https?:\/\/(www\.)?tiktok\.com\//,
-      /^https?:\/\/(www\.)?youtube\.com\//,
-      /^https?:\/\/(www\.)?youtu\.be\//,
-      /^https?:\/\/(www\.)?linkedin\.com\//,
-      /^https?:\/\/(www\.)?snapchat\.com\//
-    ];
-    
-    return snsPatterns.some(pattern => pattern.test(url));
+  const validateSnsUrl = (raw) => {
+    if (!raw || raw.trim() === '') return { valid: false, error: 'Please enter your SNS post URL.' }
+    if (raw.length > MAX_URL_LENGTH) return { valid: false, error: 'URL is too long.' }
+
+    const normalized = normalizeSnsUrl(raw)
+    if (!normalized) return { valid: false, error: 'URL contains a disallowed scheme.' }
+
+    let parsed
+    try {
+      parsed = new URL(normalized)
+    } catch {
+      return { valid: false, error: 'Please enter a valid URL.' }
+    }
+
+    if (parsed.protocol !== 'https:') return { valid: false, error: 'URL must use HTTPS.' }
+
+    const hostname = parsed.hostname.toLowerCase().replace(/^www\./, '')
+    if (!ALLOWED_SNS_HOSTNAMES.has(hostname)) {
+      return { valid: false, error: 'Supported platforms: Instagram, Twitter/X, Facebook, TikTok, YouTube, LinkedIn, Snapchat.' }
+    }
+
+    return { valid: true, normalized }
+  }
+
+  const handleSnsUrlChange = (e) => {
+    setSnsUrl(e.target.value)
+  }
+
+  const handleSnsUrlPaste = (e) => {
+    e.preventDefault()
+    const pasted = e.clipboardData.getData('text')
+    const normalized = normalizeSnsUrl(pasted)
+    setSnsUrl(normalized || pasted)
   }
 
   const submitSnsUrl = async () => {
-    if (!snsUrl.trim()) {
-      toast.error('Please enter your SNS post URL')
-      return
-    }
-
-    if (!isValidSnsUrl(snsUrl.trim())) {
-      toast.error('Please enter a valid social media URL (Instagram, Twitter/X, Facebook, TikTok, YouTube, LinkedIn, Snapchat)')
+    const result = validateSnsUrl(snsUrl)
+    if (!result.valid) {
+      toast.error(result.error)
       return
     }
 
     setIsSubmittingSns(true)
     try {
-      const response = await axios.put(
+      await axios.put(
         `${process.env.NEXT_PUBLIC_SERVER_IP}/api/campaigns/submissions/${selectedParticipation.participation_id}/update-url`,
-        { sns_url: snsUrl.trim() },
+        { sns_url: result.normalized },
         { withCredentials: true }
       )
       toast.success('SNS URL submitted successfully!')
       setShowSnsModal(false)
-      fetchAllCampaigns() // Refresh the list
+      fetchAllCampaigns()
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to submit SNS URL')
     } finally {
@@ -526,10 +555,11 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
               Provide your social media post URL here. Supported platforms: Instagram, Twitter/X, Facebook, TikTok, YouTube, LinkedIn, Snapchat.
             </p>
             <input
-              type="url"
+              type="text"
               value={snsUrl}
-              onChange={(e) => setSnsUrl(e.target.value)}
-              placeholder="https://instagram.com/p/example or https://twitter.com/user/status/123"
+              onChange={handleSnsUrlChange}
+              onPaste={handleSnsUrlPaste}
+              placeholder="e.g. instagram.com/p/ABC123"
               className="w-full p-3 border border-gray-300 rounded-lg mb-4"
               autoFocus
             />

@@ -79,6 +79,10 @@ export default function AdminDashboard() {
     router.push(`/campaign/${campaignId}`);
   };
 
+  const handleValidateCampaign = (campaignId) => {
+    router.push(`/campaign/admin/${campaignId}`);
+  };
+
   const handleStatusChange = async (campaignId, newStatus) => {
     try {
       const response = await axios.put(
@@ -168,6 +172,16 @@ export default function AdminDashboard() {
                   Reject
                 </Button>
               </>
+            )}
+            {campaign.status === 'active' && (
+              <Button
+                onClick={() => handleValidateCampaign(campaign.id)}
+                variant="outline"
+                size="sm"
+                className="border-[#FCD33B] text-black hover:bg-[#FCD33B]/10"
+              >
+                Validate
+              </Button>
             )}
             <Button
               onClick={() => handleViewCampaign(campaign.id)}

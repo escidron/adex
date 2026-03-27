@@ -62,7 +62,10 @@ export default function CampaignAdminPage({params}) {
 
     const checkCampaignOwnership = (campaign) => {
         if (!user.userId || !campaign) return false
-        
+
+        // Admin has access to all campaigns
+        if (user.userType === 0) return true
+
         // Check various possible owner field names
         const ownerFields = ['creator_id', 'user_id', 'owner_id', 'created_by']
         for (const field of ownerFields) {
@@ -70,7 +73,7 @@ export default function CampaignAdminPage({params}) {
                 return true
             }
         }
-        
+
         return false
     }
 
