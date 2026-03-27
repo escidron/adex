@@ -153,7 +153,6 @@ export default function NavBar() {
                 </div>
                 <Link href="/how-it-works" className='hover:text-[#FCD33B]'>How It Works</Link>
                 <Link href="/contact-us" className='hover:text-[#FCD33B]'>Contact Us</Link>
-                <Link href="/campaign" className='hover:text-[#FCD33B]'>Campaigns</Link>
             </section>
             {user.isLogged
                 ? (

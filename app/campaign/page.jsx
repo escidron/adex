@@ -7,7 +7,9 @@ import toast, { Toaster } from "react-hot-toast"
 import { Button } from '@/components/ui/button'
 import { UserContext } from '@/app/layout'
 import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal'
+import { redirect } from 'next/navigation'
 export default function EventMarketPage() {
+    redirect('/market-place')
     const router = useRouter()
     const [user, setUser] = useContext(UserContext)
     const [isLoading, setIsLoading] = useState(true)

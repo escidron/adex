@@ -253,18 +253,10 @@ export default function EventDetailPage({ params }) {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="bg-gray-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
                                     <h3 className="text-sm font-medium text-gray-500 mb-1">Campaign Period</h3>
-                                    <span className="text-xl font-bold text-gray-900">
-                                        {new Date(campaign.start_date).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric'
-                                        })}
-                                        {' '} - {' '}
-                                        {new Date(campaign.end_date).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric'
-                                        })}
+                                    <span className="text-xl font-bold text-gray-900 whitespace-nowrap">
+                                        {new Date(campaign.start_date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
+                                        {' ~ '}
+                                        {new Date(campaign.end_date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }).replace('/', '.')}
                                     </span>
                                 </div>
 
