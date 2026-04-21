@@ -16,8 +16,9 @@ const containerStyle = {
 };
 
 
+const libraries = ["places"]
+
 function Map({ newData, isDataLoaded, located }) {
-  const libraries = ["places"]
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
