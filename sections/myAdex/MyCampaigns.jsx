@@ -555,7 +555,7 @@ export default function MyCampaigns({ label, data = [], status = {}, isContentLo
               Provide your social media post URL here. Supported platforms: Instagram, Twitter/X, Facebook, TikTok, YouTube, LinkedIn, Snapchat.
             </p>
             <input
-              type="text"
+              type="url"
               value={snsUrl}
               onChange={handleSnsUrlChange}
               onPaste={handleSnsUrlPaste}
