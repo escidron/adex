@@ -7,6 +7,7 @@ export default async function SendFiles(data) {
           method: "POST",
           headers: {
             'Accept': 'application/json',
+            "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
           },
           credentials: "include",
           body: data, 
