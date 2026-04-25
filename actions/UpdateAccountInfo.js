@@ -10,6 +10,7 @@ export default async function UpdateStripeAccountInfo(updatedInfo) {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+          "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
           },
           credentials: "include",
           body: JSON.stringify({

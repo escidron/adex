@@ -8,7 +8,8 @@ export default async function AddEvidenceToSubscription(campaign_id,evidence) {
           method: "POST",
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'        
+            'Content-Type': 'application/json',        
+          "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
           },
           credentials: "include",
           body: JSON.stringify({ 

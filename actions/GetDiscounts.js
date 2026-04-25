@@ -9,7 +9,8 @@ export default async function GetDiscounts(id) {
         headers: {
          
           'Accept': 'application/json',
-          'Content-Type': 'application/json'        
+          'Content-Type': 'application/json',        
+          "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
         },
         credentials: "include",
         body: JSON.stringify({ id: id }),

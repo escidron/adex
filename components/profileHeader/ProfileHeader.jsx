@@ -41,6 +41,7 @@ export default function ProfileHeader() {
     useEffect(() => {
         async function GetInfo() {
             const userData = await GetUserProfile()
+            if (!userData) return
             setUserData(userData)
             setSrc(userData.image)
         }

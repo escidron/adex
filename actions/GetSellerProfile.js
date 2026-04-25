@@ -7,6 +7,7 @@ export default async function GetSellerProfile(companyId) {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+          "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
           },
           credentials: "include",
           body: JSON.stringify({ companyId: companyId }),

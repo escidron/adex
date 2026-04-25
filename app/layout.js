@@ -47,6 +47,9 @@ export default function RootLayout({ children }) {
         {
           method: "GET",
           credentials: "include",
+          headers: {
+            "X-Client-Token": process.env.NEXT_PUBLIC_CLIENT_TOKEN || "",
+          },
         }
       );
       if (response.status === 200) {
